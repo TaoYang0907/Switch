@@ -1,0 +1,1167 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  10:58:55
+// Copyright 2004-2018 IAR Systems AB.
+// PC-locked license - IAR Embedded Workbench for 8051
+//
+//    Core               =  plain
+//    Code model         =  banked
+//    Data model         =  large
+//    Calling convention =  xdata reentrant
+//    Constant location  =  data_rom
+//    Dptr setup         =  1,16
+//                          
+//    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
+//    Command line       =  
+//        -f C:\Users\sunli\AppData\Local\Temp\EWAEB5.tmp ("D:\AA\Z-Stack
+//        3.0.2\Components\stack\zcl\zcl_ms.c" -D ZCL_REPORT_DESTINATION_DEVICE
+//        -D BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
+//        xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
+//        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
+//        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
+//        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_HVAC_CLUSTER -D
+//        ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
+//        -lA "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
+//        --diag_suppress Pe001,Pa010 -o "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\Obj"
+//        -e --debug --core=plain --dptr=16,1 --data_model=large
+//        --code_model=banked --calling_convention=xdata_reentrant
+//        --place_constants=data_rom --nr_virtual_regs 16 -f "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wCoord.cfg"
+//        (-DCPU32MHZ -DROOT=__near_func -DMAC_CFG_APP_PENDING_QUEUE=TRUE
+//        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
+//        -DZDO_COORDINATOR -DRTR_NWK) -f "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg"
+//        (-DZIGBEEPRO -DSECURE=1 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+//        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
+//        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
+//        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
+//        -DLINK_STATUS_JITTER_MASK=0x007F -DROUTE_EXPIRY_TIME=30
+//        -DAPSC_ACK_WAIT_DURATION_POLLED=3000 -DNWK_INDIRECT_MSG_TIMEOUT=7
+//        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
+//        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
+//        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
+//        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0}
+//        -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
+//        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
+//        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
+//        -DREJOIN_POLL_RATE=440 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000
+//        -DENABLE_LED4_DISABLE_S1) -f "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\" -I
+//        "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\Source\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\Source\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\ZMain\TI2530DB\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\hal\include\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\hal\target\CC2530EB\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\include\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\high_level\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mt\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\osal\include\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\services\saddr\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\services\sdata\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\af\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\bdb\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\gp\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\nwk\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sapi\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sec\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sys\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\zcl\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\zdo\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\zmac\"
+//        -I "D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
+//        -Ohz --require_prototypes)
+//    Locale             =  Chinese (Simplified)_CHN.936
+//    List file          =  
+//        D:\AA\Z-Stack
+//        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List\zcl_ms.s51
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME zcl_ms
+
+        RTMODEL "__SystemLibrary", "CLib"
+        RTMODEL "__calling_convention", "xdata_reentrant"
+        RTMODEL "__code_model", "banked"
+        RTMODEL "__core", "plain"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__dptr_size", "16"
+        RTMODEL "__extended_stack", "disabled"
+        RTMODEL "__location_for_constants", "data"
+        RTMODEL "__number_of_dptrs", "1"
+        RTMODEL "__register_banks", "*"
+        RTMODEL "__rt_version", "1"
+
+        RSEG DOVERLAY:DATA:NOROOT(0)
+        RSEG IOVERLAY:IDATA:NOROOT(0)
+        RSEG ISTACK:IDATA:NOROOT(0)
+        RSEG PSTACK:XDATA:NOROOT(0)
+        RSEG XSTACK:XDATA:NOROOT(0)
+
+        EXTERN ?V0
+        EXTERN ?V2
+        EXTERN ?V3
+        EXTERN ?BANKED_ENTER_XDATA
+        EXTERN ?BANKED_LEAVE_XDATA
+        EXTERN ?BDISPATCH
+        EXTERN ?BRET
+        EXTERN ?DEALLOC_XSTACK8
+        EXTERN ?PUSH_XSTACK_I_TWO
+        EXTERN __INIT_XDATA_Z
+
+        FUNCTION `??zclMS_FindCallbacks::?relay`,0203H
+        FUNCTION `??zclMS_HdlIncoming::?relay`,0203H
+        PUBLIC `??zclMS_RegisterCmdCallbacks::?relay`
+        FUNCTION `??zclMS_RegisterCmdCallbacks::?relay`,0203H
+        FUNCTION zclMS_FindCallbacks,0203H
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 2, STACK
+        FUNCTION zclMS_HdlIncoming,021603H
+        ARGFRAME XSTACK, 0, STACK
+        LOCFRAME ISTACK, 2, STACK
+        PUBLIC zclMS_RegisterCmdCallbacks
+        FUNCTION zclMS_RegisterCmdCallbacks,0a1203H
+        ARGFRAME XSTACK, 0, STACK
+        LOCFRAME ISTACK, 1, STACK
+        LOCFRAME XSTACK, 14, STACK
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA_SP SP IDATA
+          CFI StackFrame CFA_PSP16 PSP16 XDATA
+          CFI StackFrame CFA_XSP16 XSP16 XDATA
+          CFI StaticOverlayFrame CFA_IOVERLAY IOVERLAY
+          CFI StaticOverlayFrame CFA_DOVERLAY DOVERLAY
+          CFI Resource `PSW.CY`:1, `B.BR0`:1, `B.BR1`:1, `B.BR2`:1, `B.BR3`:1
+          CFI Resource `B.BR4`:1, `B.BR5`:1, `B.BR6`:1, `B.BR7`:1, `VB.BR8`:1
+          CFI Resource `VB.BR9`:1, `VB.BR10`:1, `VB.BR11`:1, `VB.BR12`:1
+          CFI Resource `VB.BR13`:1, `VB.BR14`:1, `VB.BR15`:1, VB:8, B:8, A:8
+          CFI Resource PSW:8, DPL0:8, DPH0:8, R0:8, R1:8, R2:8, R3:8, R4:8, R5:8
+          CFI Resource R6:8, R7:8, V0:8, V1:8, V2:8, V3:8, V4:8, V5:8, V6:8, V7:8
+          CFI Resource V8:8, V9:8, V10:8, V11:8, V12:8, V13:8, V14:8, V15:8, SP:8
+          CFI Resource PSPH:8, PSPL:8, PSP16:16, XSPH:8, XSPL:8, XSP16:16
+          CFI VirtualResource ?RET:24
+          CFI Resource ?BRET_EXT:8
+          CFI VirtualResource ?RET_HIGH:8, ?RET_LOW:8
+          CFI ResourceParts PSP16 PSPH, PSPL
+          CFI ResourceParts XSP16 XSPH, XSPL
+          CFI ResourceParts ?RET ?BRET_EXT, ?RET_HIGH, ?RET_LOW
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 1
+          CFI DataAlign -1
+          CFI ReturnAddress ?RET CODE
+          CFI CFA_DOVERLAY Used
+          CFI CFA_IOVERLAY Used
+          CFI CFA_SP SP+-3
+          CFI CFA_PSP16 PSP16+0
+          CFI CFA_XSP16 XSP16+0
+          CFI `PSW.CY` SameValue
+          CFI `B.BR0` SameValue
+          CFI `B.BR1` SameValue
+          CFI `B.BR2` SameValue
+          CFI `B.BR3` SameValue
+          CFI `B.BR4` SameValue
+          CFI `B.BR5` SameValue
+          CFI `B.BR6` SameValue
+          CFI `B.BR7` SameValue
+          CFI `VB.BR8` SameValue
+          CFI `VB.BR9` SameValue
+          CFI `VB.BR10` SameValue
+          CFI `VB.BR11` SameValue
+          CFI `VB.BR12` SameValue
+          CFI `VB.BR13` SameValue
+          CFI `VB.BR14` SameValue
+          CFI `VB.BR15` SameValue
+          CFI VB SameValue
+          CFI B Undefined
+          CFI A Undefined
+          CFI PSW SameValue
+          CFI DPL0 SameValue
+          CFI DPH0 SameValue
+          CFI R0 Undefined
+          CFI R1 Undefined
+          CFI R2 Undefined
+          CFI R3 Undefined
+          CFI R4 Undefined
+          CFI R5 Undefined
+          CFI R6 SameValue
+          CFI R7 SameValue
+          CFI V0 SameValue
+          CFI V1 SameValue
+          CFI V2 SameValue
+          CFI V3 SameValue
+          CFI V4 SameValue
+          CFI V5 SameValue
+          CFI V6 SameValue
+          CFI V7 SameValue
+          CFI V8 SameValue
+          CFI V9 SameValue
+          CFI V10 SameValue
+          CFI V11 SameValue
+          CFI V12 SameValue
+          CFI V13 SameValue
+          CFI V14 SameValue
+          CFI V15 SameValue
+          CFI PSPH Undefined
+          CFI PSPL Undefined
+          CFI XSPH Undefined
+          CFI XSPL Undefined
+          CFI ?RET Concat
+          CFI ?BRET_EXT Frame(CFA_SP, 3)
+          CFI ?RET_HIGH Frame(CFA_SP, 2)
+          CFI ?RET_LOW Frame(CFA_SP, 1)
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 1
+          CFI DataAlign -1
+          CFI ReturnAddress ?RET CODE
+          CFI CFA_DOVERLAY Used
+          CFI CFA_IOVERLAY Used
+          CFI CFA_SP SP+-2
+          CFI CFA_PSP16 PSP16+0
+          CFI CFA_XSP16 XSP16+0
+          CFI `PSW.CY` SameValue
+          CFI `B.BR0` SameValue
+          CFI `B.BR1` SameValue
+          CFI `B.BR2` SameValue
+          CFI `B.BR3` SameValue
+          CFI `B.BR4` SameValue
+          CFI `B.BR5` SameValue
+          CFI `B.BR6` SameValue
+          CFI `B.BR7` SameValue
+          CFI `VB.BR8` SameValue
+          CFI `VB.BR9` SameValue
+          CFI `VB.BR10` SameValue
+          CFI `VB.BR11` SameValue
+          CFI `VB.BR12` SameValue
+          CFI `VB.BR13` SameValue
+          CFI `VB.BR14` SameValue
+          CFI `VB.BR15` SameValue
+          CFI VB SameValue
+          CFI B SameValue
+          CFI A SameValue
+          CFI PSW SameValue
+          CFI DPL0 SameValue
+          CFI DPH0 SameValue
+          CFI R0 SameValue
+          CFI R1 SameValue
+          CFI R2 SameValue
+          CFI R3 SameValue
+          CFI R4 SameValue
+          CFI R5 SameValue
+          CFI R6 SameValue
+          CFI R7 SameValue
+          CFI V0 SameValue
+          CFI V1 SameValue
+          CFI V2 SameValue
+          CFI V3 SameValue
+          CFI V4 SameValue
+          CFI V5 SameValue
+          CFI V6 SameValue
+          CFI V7 SameValue
+          CFI V8 SameValue
+          CFI V9 SameValue
+          CFI V10 SameValue
+          CFI V11 SameValue
+          CFI V12 SameValue
+          CFI V13 SameValue
+          CFI V14 SameValue
+          CFI V15 SameValue
+          CFI PSPH Undefined
+          CFI PSPL Undefined
+          CFI XSPH Undefined
+          CFI XSPL Undefined
+          CFI ?RET Concat
+          CFI ?BRET_EXT SameValue
+          CFI ?RET_HIGH Frame(CFA_SP, 2)
+          CFI ?RET_LOW Frame(CFA_SP, 1)
+          CFI EndCommon cfiCommon1
+        
+osal_mem_alloc      SYMBOL "osal_mem_alloc"
+`??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
+zcl_registerPlugin  SYMBOL "zcl_registerPlugin"
+`??zcl_registerPlugin::?relay` SYMBOL "?relay", zcl_registerPlugin
+zclMS_RegisterCmdCallbacks SYMBOL "zclMS_RegisterCmdCallbacks"
+`??zclMS_RegisterCmdCallbacks::?relay` SYMBOL "?relay", zclMS_RegisterCmdCallbacks
+
+        EXTERN `??osal_mem_alloc::?relay`
+        FUNCTION `??osal_mem_alloc::?relay`,00H
+        EXTERN `??zcl_registerPlugin::?relay`
+        FUNCTION `??zcl_registerPlugin::?relay`,00H
+        EXTERN osal_mem_alloc
+        FUNCTION osal_mem_alloc,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN zcl_registerPlugin
+        FUNCTION zcl_registerPlugin,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+
+// D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
+//    1 /**************************************************************************************************
+//    2   Filename:       zcl_ms.c
+//    3   Revised:        $Date: 2013-06-11 13:53:09 -0700 (Tue, 11 Jun 2013) $
+//    4   Revision:       $Revision: 34523 $
+//    5 
+//    6   Description:    Zigbee Cluster Library - Measurements and Sensing ( MS )
+//    7 
+//    8 
+//    9   Copyright 2006-2013 Texas Instruments Incorporated. All rights reserved.
+//   10 
+//   11   IMPORTANT: Your use of this Software is limited to those specific rights
+//   12   granted under the terms of a software license agreement between the user
+//   13   who downloaded the software, his/her employer (which must be your employer)
+//   14   and Texas Instruments Incorporated (the "License").  You may not use this
+//   15   Software unless you agree to abide by the terms of the License. The License
+//   16   limits your use, and you acknowledge, that the Software may not be modified,
+//   17   copied or distributed unless embedded on a Texas Instruments microcontroller
+//   18   or used solely and exclusively in conjunction with a Texas Instruments radio
+//   19   frequency transceiver, which is integrated into your product.  Other than for
+//   20   the foregoing purpose, you may not use, reproduce, copy, prepare derivative
+//   21   works of, modify, distribute, perform, display or sell this Software and/or
+//   22   its documentation for any purpose.
+//   23 
+//   24   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
+//   25   PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+//   26   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
+//   27   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
+//   28   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
+//   29   NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
+//   30   LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
+//   31   INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
+//   32   OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
+//   33   OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
+//   34   (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+//   35 
+//   36   Should you have any questions regarding your right to use this Software,
+//   37   contact Texas Instruments Incorporated at www.TI.com. 
+//   38 **************************************************************************************************/
+//   39 
+//   40 /*********************************************************************
+//   41  * INCLUDES
+//   42  */
+//   43 #include "zcl.h"
+//   44 #include "zcl_general.h"
+//   45 #include "zcl_ms.h"
+//   46 
+//   47 #if defined ( INTER_PAN )
+//   48   #include "stub_aps.h"
+//   49 #endif
+//   50 
+//   51 /*********************************************************************
+//   52  * MACROS
+//   53  */
+//   54 
+//   55 /*********************************************************************
+//   56  * CONSTANTS
+//   57  */
+//   58 
+//   59 /*********************************************************************
+//   60  * TYPEDEFS
+//   61  */
+//   62 typedef struct zclMSCBRec
+//   63 {
+//   64   struct zclMSCBRec     *next;
+//   65   uint8                 endpoint; // Used to link it into the endpoint descriptor
+//   66   zclMS_AppCallbacks_t  *CBs;     // Pointer to Callback function
+//   67 } zclMSCBRec_t;
+//   68 
+//   69 /*********************************************************************
+//   70  * GLOBAL VARIABLES
+//   71  */
+//   72 
+//   73 /*********************************************************************
+//   74  * GLOBAL FUNCTIONS
+//   75  */
+//   76 
+//   77 /*********************************************************************
+//   78  * LOCAL VARIABLES
+//   79  */
+
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA16
+//   80 static zclMSCBRec_t *zclMSCBs = (zclMSCBRec_t *)NULL;
+zclMSCBs:
+        DS 2
+        REQUIRE __INIT_XDATA_Z
+
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA8
+//   81 static uint8 zclMSPluginRegisted = FALSE;
+zclMSPluginRegisted:
+        DS 1
+        REQUIRE __INIT_XDATA_Z
+//   82 
+//   83 /*********************************************************************
+//   84  * LOCAL FUNCTIONS
+//   85  */
+//   86 static ZStatus_t zclMS_HdlIncoming( zclIncoming_t *pInMsg );
+//   87 static ZStatus_t zclMS_HdlInSpecificCommands( zclIncoming_t *pInMsg );
+//   88 static zclMS_AppCallbacks_t *zclMS_FindCallbacks( uint8 endpoint );
+//   89 
+//   90 static ZStatus_t zclMS_ProcessIn_IlluminanceMeasurementCmds( zclIncoming_t *pInMsg );
+//   91 static ZStatus_t zclMS_ProcessIn_IlluminanceLevelSensingCmds( zclIncoming_t *pInMsg );
+//   92 static ZStatus_t zclMS_ProcessIn_TemperatureMeasurementCmds( zclIncoming_t *pInMsg );
+//   93 static ZStatus_t zclMS_ProcessIn_PressureMeasurementCmds( zclIncoming_t *pInMsg );
+//   94 static ZStatus_t zclMS_ProcessIn_FlowMeasurementCmds( zclIncoming_t *pInMsg );
+//   95 static ZStatus_t zclMS_ProcessIn_RelativeHumidityCmds( zclIncoming_t *pInMsg );
+//   96 static ZStatus_t zclMS_ProcessIn_OccupancySensingCmds( zclIncoming_t *pInMsg );
+//   97 
+//   98 /*********************************************************************
+//   99  * @fn      zclMS_RegisterCmdCallbacks
+//  100  *
+//  101  * @brief   Register an applications command callbacks
+//  102  *
+//  103  * @param   endpoint - application's endpoint
+//  104  * @param   callbacks - pointer to the callback record.
+//  105  *
+//  106  * @return  ZMemError if not able to allocate
+//  107  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  108 ZStatus_t zclMS_RegisterCmdCallbacks( uint8 endpoint, zclMS_AppCallbacks_t *callbacks )
+zclMS_RegisterCmdCallbacks:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function zclMS_RegisterCmdCallbacks
+        CODE
+//  109 {
+        FUNCALL zclMS_RegisterCmdCallbacks, zcl_registerPlugin
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_RegisterCmdCallbacks, osal_mem_alloc
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V2
+        REQUIRE ?V3
+        MOV       A,#-0xc
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
+        ; Auto size: 0
+        MOV       ?V0,R1
+        MOV       A,R2
+        MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
+//  110   zclMSCBRec_t *pNewItem;
+//  111   zclMSCBRec_t *pLoop;
+//  112 
+//  113   // Register as a ZCL Plugin
+//  114   if ( !zclMSPluginRegisted )
+        MOV       DPTR,#zclMSPluginRegisted
+        MOVX      A,@DPTR
+        JNZ       ??zclMS_RegisterCmdCallbacks_0
+//  115   {
+//  116     zcl_registerPlugin( ZCL_CLUSTER_ID_MS_ILLUMINANCE_MEASUREMENT,
+//  117                         ZCL_CLUSTER_ID_MS_OCCUPANCY_SENSING,
+//  118                         zclMS_HdlIncoming );
+        ; Setup parameters for call to function zcl_registerPlugin
+        MOV       ?V2,#`??zclMS_HdlIncoming::?relay` & 0xff
+        MOV       ?V3,#(`??zclMS_HdlIncoming::?relay` >> 8) & 0xff
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R4,#0x6
+        MOV       R5,#0x4
+        MOV       R2,#0x0
+        MOV       R3,#0x4
+        LCALL     `??zcl_registerPlugin::?relay`; Banked call to: zcl_registerPlugin
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  119     zclMSPluginRegisted = TRUE;
+        MOV       DPTR,#zclMSPluginRegisted
+        MOV       A,#0x1
+        MOVX      @DPTR,A
+//  120   }
+//  121 
+//  122   // Fill in the new profile list
+//  123   pNewItem = zcl_mem_alloc( sizeof( zclMSCBRec_t ) );
+??zclMS_RegisterCmdCallbacks_0:
+        ; Setup parameters for call to function osal_mem_alloc
+        MOV       R2,#0x5
+        MOV       R3,#0x0
+        LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+        MOV       ?V2,R2
+        MOV       ?V3,R3
+        MOV       R0,?V2
+        MOV       R1,?V3
+//  124   if ( pNewItem == NULL )
+        MOV       A,R2
+        ORL       A,R1
+        JNZ       ??zclMS_RegisterCmdCallbacks_1
+//  125     return (ZMemError);
+        MOV       R1,#0x10
+        SJMP      ??zclMS_RegisterCmdCallbacks_2
+//  126 
+//  127   pNewItem->next = (zclMSCBRec_t *)NULL;
+??zclMS_RegisterCmdCallbacks_1:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        CLR       A
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      @DPTR,A
+//  128   pNewItem->endpoint = endpoint;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        MOV       A,?V0
+        MOVX      @DPTR,A
+//  129   pNewItem->CBs = callbacks;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOV       A,R6
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R7
+        MOVX      @DPTR,A
+//  130 
+//  131   // Find spot in list
+//  132   if ( zclMSCBs == NULL )
+        MOV       DPTR,#zclMSCBs
+        LCALL     ?Subroutine1 & 0xFFFF
+??CrossCallReturnLabel_1:
+        MOV       DPTR,#zclMSCBs
+        JZ        ??zclMS_RegisterCmdCallbacks_3
+//  133   {
+//  134     zclMSCBs = pNewItem;
+//  135   }
+//  136   else
+//  137   {
+//  138     // Look for end of list
+//  139     pLoop = zclMSCBs;
+        MOVX      A,@DPTR
+        MOV       R4,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        SJMP      ??zclMS_RegisterCmdCallbacks_4
+//  140     while ( pLoop->next != NULL )
+//  141       pLoop = pLoop->next;
+??zclMS_RegisterCmdCallbacks_5:
+        MOV       A,R2
+        MOV       R4,A
+        MOV       A,R3
+??zclMS_RegisterCmdCallbacks_4:
+        MOV       R5,A
+        MOV       DPL,R4
+        MOV       DPH,R5
+        LCALL     ?Subroutine1 & 0xFFFF
+??CrossCallReturnLabel_2:
+        JNZ       ??zclMS_RegisterCmdCallbacks_5
+//  142 
+//  143     // Put new item at end of list
+//  144     pLoop->next = pNewItem;
+        MOV       DPL,R4
+        MOV       DPH,R5
+??zclMS_RegisterCmdCallbacks_3:
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
+//  145   }
+//  146   return ( ZSuccess );
+        MOV       R1,#0x0
+??zclMS_RegisterCmdCallbacks_2:
+        MOV       R7,#0x4
+        LJMP      ?BANKED_LEAVE_XDATA
+//  147 }
+          CFI EndBlock cfiBlock0
+//  148 
+//  149 /*********************************************************************
+//  150  * @fn      zclMS_FindCallbacks
+//  151  *
+//  152  * @brief   Find the callbacks for an endpoint
+//  153  *
+//  154  * @param   endpoint
+//  155  *
+//  156  * @return  pointer to the callbacks
+//  157  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  158 static zclMS_AppCallbacks_t *zclMS_FindCallbacks( uint8 endpoint )
+zclMS_FindCallbacks:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function zclMS_FindCallbacks
+        CODE
+//  159 {
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 0
+//  160   zclMSCBRec_t *pCBs;
+//  161   
+//  162   pCBs = zclMSCBs;
+        MOV       DPTR,#zclMSCBs
+//  163   while ( pCBs )
+//  164   {
+//  165     if ( pCBs->endpoint == endpoint )
+//  166       return ( pCBs->CBs );
+//  167     pCBs = pCBs->next;
+??zclMS_FindCallbacks_0:
+        LCALL     ?Subroutine1 & 0xFFFF
+??CrossCallReturnLabel_0:
+        JZ        ??zclMS_FindCallbacks_1
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        XRL       A,R1
+        MOV       DPL,R2
+        MOV       DPH,R3
+        JNZ       ??zclMS_FindCallbacks_0
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        SJMP      ??zclMS_FindCallbacks_2
+//  168   }
+//  169   return ( (zclMS_AppCallbacks_t *)NULL );
+??zclMS_FindCallbacks_1:
+        MOV       R2,#0x0
+        MOV       R3,#0x0
+??zclMS_FindCallbacks_2:
+          CFI EndBlock cfiBlock1
+        REQUIRE ?Subroutine0
+        ; // Fall through to label ?Subroutine0
+//  170 }
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine0:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI NoFunction
+          CFI CFA_SP SP+-5
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI DPH0 Frame(CFA_SP, 5)
+        POP       DPH
+          CFI CFA_SP SP+-4
+          CFI DPH0 SameValue
+        POP       DPL
+          CFI CFA_SP SP+-3
+          CFI DPL0 SameValue
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine1:
+          CFI Block cfiCond3 Using cfiCommon0
+          CFI Function zclMS_RegisterCmdCallbacks
+          CFI Conditional ??CrossCallReturnLabel_1
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI CFA_SP SP+-2
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond4 Using cfiCommon0
+          CFI (cfiCond4) Function zclMS_RegisterCmdCallbacks
+          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_2
+          CFI (cfiCond4) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond4) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond4) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond4) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond4) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond4) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond4) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond4) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond4) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond4) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond4) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond4) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond4) CFA_SP SP+-2
+          CFI (cfiCond4) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI (cfiCond5) Function zclMS_FindCallbacks
+          CFI (cfiCond5) Conditional ??CrossCallReturnLabel_0
+          CFI (cfiCond5) DPL0 Frame(CFA_SP, 4)
+          CFI (cfiCond5) DPH0 Frame(CFA_SP, 5)
+          CFI (cfiCond5) CFA_SP SP+-7
+          CFI Block cfiPicker6 Using cfiCommon1
+          CFI (cfiPicker6) NoFunction
+          CFI (cfiPicker6) Picker
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        MOV       A,R2
+        ORL       A,R3
+        RET
+          CFI EndBlock cfiCond3
+          CFI EndBlock cfiCond4
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiPicker6
+//  171 
+//  172 /*********************************************************************
+//  173  * @fn      zclMS_HdlIncoming
+//  174  *
+//  175  * @brief   Callback from ZCL to process incoming Commands specific
+//  176  *          to this cluster library or Profile commands for attributes
+//  177  *          that aren't in the attribute list
+//  178  *
+//  179  * @param   pInMsg - pointer to the incoming message
+//  180  * @param   logicalClusterID
+//  181  *
+//  182  * @return  ZStatus_t
+//  183  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  184 static ZStatus_t zclMS_HdlIncoming( zclIncoming_t *pInMsg )
+zclMS_HdlIncoming:
+          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Function zclMS_HdlIncoming
+        CODE
+//  185 {
+        FUNCALL zclMS_HdlIncoming, zclMS_FindCallbacks
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 0, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 0
+//  186   ZStatus_t stat = ZSuccess;
+//  187 
+//  188 #if defined ( INTER_PAN )
+//  189   if ( StubAPS_InterPan( pInMsg->msg->srcAddr.panId, pInMsg->msg->srcAddr.endPoint ) )
+//  190     return ( stat ); // Cluster not supported thru Inter-PAN
+//  191 #endif
+//  192   if ( zcl_ClusterCmd( pInMsg->hdr.fc.type ) )
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        ANL       A,#0x7
+        XRL       A,#0x1
+        JNZ       ??zclMS_HdlIncoming_0
+//  193   {
+//  194     // Is this a manufacturer specific command?
+//  195     if ( pInMsg->hdr.fc.manuSpecific == 0 ) 
+//  196     {
+//  197       stat = zclMS_HdlInSpecificCommands( pInMsg );
+        ; Setup parameters for call to function zclMS_FindCallbacks
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        XCH       A,R0
+        ADD       A,#0x14
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R0
+        MOV       DPH,A
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??zclMS_FindCallbacks::?relay`; Banked call to: zclMS_FindCallbacks
+//  198     }
+//  199     else
+//  200     {
+//  201       // We don't support any manufacturer specific command -- ignore it.
+//  202       stat = ZFailure;
+//  203     }
+//  204   }
+//  205   else
+//  206   {
+//  207     // Handle all the normal (Read, Write...) commands
+//  208     stat = ZFailure;
+//  209   }
+//  210   return ( stat );
+??zclMS_HdlIncoming_0:
+        MOV       R1,#0x1
+        SJMP      ?Subroutine0
+//  211 }
+          CFI EndBlock cfiBlock7
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_RegisterCmdCallbacks::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_RegisterCmdCallbacks
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_FindCallbacks::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_FindCallbacks
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_HdlIncoming::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_HdlIncoming
+
+        END
+//  212 
+//  213 /*********************************************************************
+//  214  * @fn      zclMS_HdlInSpecificCommands
+//  215  *
+//  216  * @brief   Callback from ZCL to process incoming Commands specific
+//  217  *          to this cluster library
+//  218  *
+//  219  * @param   pInMsg - pointer to the incoming message
+//  220  *
+//  221  * @return  ZStatus_t
+//  222  */
+//  223 static ZStatus_t zclMS_HdlInSpecificCommands( zclIncoming_t *pInMsg )
+//  224 {
+//  225   ZStatus_t stat = ZSuccess;
+//  226   zclMS_AppCallbacks_t *pCBs;
+//  227   
+//  228   // make sure endpoint exists
+//  229   pCBs = (void*)zclMS_FindCallbacks( pInMsg->msg->endPoint );
+//  230   if ( pCBs == NULL )
+//  231     return ( ZFailure );
+//  232   
+//  233   switch ( pInMsg->msg->clusterId )			
+//  234   {
+//  235     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_MEASUREMENT:
+//  236       stat = zclMS_ProcessIn_IlluminanceMeasurementCmds( pInMsg );
+//  237       break;
+//  238 
+//  239     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_LEVEL_SENSING_CONFIG:
+//  240       stat = zclMS_ProcessIn_IlluminanceLevelSensingCmds( pInMsg );
+//  241       break;
+//  242 
+//  243     case ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT:
+//  244       stat = zclMS_ProcessIn_TemperatureMeasurementCmds( pInMsg );
+//  245       break;
+//  246 
+//  247     case ZCL_CLUSTER_ID_MS_PRESSURE_MEASUREMENT:
+//  248       stat = zclMS_ProcessIn_PressureMeasurementCmds( pInMsg );
+//  249       break;
+//  250 
+//  251     case ZCL_CLUSTER_ID_MS_FLOW_MEASUREMENT:
+//  252       stat = zclMS_ProcessIn_FlowMeasurementCmds( pInMsg );
+//  253       break;
+//  254 
+//  255     case ZCL_CLUSTER_ID_MS_RELATIVE_HUMIDITY:
+//  256       stat = zclMS_ProcessIn_RelativeHumidityCmds( pInMsg );
+//  257       break;
+//  258       
+//  259     case ZCL_CLUSTER_ID_MS_OCCUPANCY_SENSING:
+//  260       stat = zclMS_ProcessIn_OccupancySensingCmds( pInMsg );
+//  261       break;
+//  262 
+//  263     default:
+//  264       stat = ZFailure;
+//  265       break;
+//  266   }
+//  267 
+//  268   return ( stat );
+//  269 }
+//  270 
+//  271 /*********************************************************************
+//  272  * @fn      zclMS_ProcessIn_IlluminanceMeasurementCmds
+//  273  *
+//  274  * @brief   Callback from ZCL to process incoming Commands specific
+//  275  *          to this cluster library on a command ID basis
+//  276  *
+//  277  * @param   pInMsg - pointer to the incoming message
+//  278  *
+//  279  * @return  ZStatus_t
+//  280  */
+//  281 static ZStatus_t zclMS_ProcessIn_IlluminanceMeasurementCmds( zclIncoming_t *pInMsg )
+//  282 {
+//  283   ZStatus_t stat = ZFailure;
+//  284 
+//  285   // there are no specific command for this cluster yet.
+//  286   // instead of suppressing a compiler warnings( for a code porting reasons )
+//  287   // fake unused call here and keep the code skeleton intact
+//  288  (void)pInMsg;
+//  289   if ( stat != ZFailure )
+//  290     zclMS_FindCallbacks( 0 );
+//  291 
+//  292   return ( stat );
+//  293 }
+//  294 
+//  295 /*********************************************************************
+//  296  * @fn      zclMS_ProcessIn_IlluminanceLevelSensingCmds
+//  297  *
+//  298  * @brief   Callback from ZCL to process incoming Commands specific
+//  299  *          to this cluster library on a command ID basis
+//  300  *
+//  301  * @param   pInMsg - pointer to the incoming message
+//  302  *
+//  303  * @return  ZStatus_t
+//  304  */
+//  305 static ZStatus_t zclMS_ProcessIn_IlluminanceLevelSensingCmds( zclIncoming_t *pInMsg )
+//  306 {
+//  307   ZStatus_t stat = ZSuccess;
+//  308   uint8 cmdID;
+//  309 
+//  310   cmdID = pInMsg->hdr.commandID;
+//  311 
+//  312   switch ( cmdID )				
+//  313   {
+//  314 
+//  315     default:
+//  316       stat = ZFailure;
+//  317       break;
+//  318   }
+//  319 
+//  320   return ( stat );
+//  321 }
+//  322 
+//  323 /*********************************************************************
+//  324  * @fn      zclMS_ProcessIn_TemperatureMeasurementCmds
+//  325  *
+//  326  * @brief   Callback from ZCL to process incoming Commands specific
+//  327  *          to this cluster library on a command ID basis
+//  328  *
+//  329  * @param   pInMsg - pointer to the incoming message
+//  330  *
+//  331  * @return  ZStatus_t
+//  332  */
+//  333 static ZStatus_t zclMS_ProcessIn_TemperatureMeasurementCmds( zclIncoming_t *pInMsg )
+//  334 {
+//  335   ZStatus_t stat = ZSuccess;
+//  336   uint8 cmdID;
+//  337 
+//  338   cmdID = pInMsg->hdr.commandID;
+//  339 
+//  340   switch ( cmdID )				
+//  341   {
+//  342 
+//  343     default:
+//  344       stat = ZFailure;
+//  345       break;
+//  346   }
+//  347 
+//  348   return ( stat );
+//  349 }
+//  350 
+//  351 /*********************************************************************
+//  352  * @fn      zclMS_ProcessIn_PressureMeasurementCmds
+//  353  *
+//  354  * @brief   Callback from ZCL to process incoming Commands specific
+//  355  *          to this cluster library on a command ID basis
+//  356  *
+//  357  * @param   pInMsg - pointer to the incoming message
+//  358  *
+//  359  * @return  ZStatus_t
+//  360  */
+//  361 static ZStatus_t zclMS_ProcessIn_PressureMeasurementCmds( zclIncoming_t *pInMsg )
+//  362 {
+//  363   ZStatus_t stat = ZSuccess;
+//  364   uint8 cmdID;
+//  365 
+//  366   cmdID = pInMsg->hdr.commandID;
+//  367 
+//  368   switch ( cmdID )				
+//  369   {
+//  370     default:
+//  371       stat = ZFailure;
+//  372       break;
+//  373   }
+//  374 
+//  375   return ( stat );
+//  376 }
+//  377 
+//  378 /*********************************************************************
+//  379  * @fn      zclMS_ProcessIn_FlowMeasurementCmds
+//  380  *
+//  381  * @brief   Callback from ZCL to process incoming Commands specific
+//  382  *          to this cluster library on a command ID basis
+//  383  *
+//  384  * @param   pInMsg - pointer to the incoming message
+//  385  *
+//  386  * @return  ZStatus_t
+//  387  */
+//  388 static ZStatus_t zclMS_ProcessIn_FlowMeasurementCmds( zclIncoming_t *pInMsg )
+//  389 {
+//  390   ZStatus_t stat = ZSuccess;
+//  391   uint8 cmdID;
+//  392 
+//  393   cmdID = pInMsg->hdr.commandID;
+//  394 
+//  395   switch ( cmdID )				
+//  396   {
+//  397 
+//  398     default:
+//  399       stat = ZFailure;
+//  400       break;
+//  401   }
+//  402 
+//  403   return ( stat );
+//  404 }
+//  405 
+//  406 /*********************************************************************
+//  407  * @fn      zclMS_ProcessIn_RelativeHumidityCmds
+//  408  *
+//  409  * @brief   Callback from ZCL to process incoming Commands specific
+//  410  *          to this cluster library on a command ID basis
+//  411  *
+//  412  * @param   pInMsg - pointer to the incoming message
+//  413  *
+//  414  * @return  ZStatus_t
+//  415  */
+//  416 static ZStatus_t zclMS_ProcessIn_RelativeHumidityCmds( zclIncoming_t *pInMsg )
+//  417 {
+//  418   ZStatus_t stat = ZSuccess;
+//  419   uint8 cmdID;
+//  420 
+//  421   cmdID = pInMsg->hdr.commandID;
+//  422 
+//  423   switch ( cmdID )				
+//  424   {
+//  425 
+//  426     default:
+//  427       stat = ZFailure;
+//  428       break;
+//  429   }
+//  430 
+//  431   return ( stat );
+//  432 }
+//  433 
+//  434 /*********************************************************************
+//  435  * @fn      zclMS_ProcessIn_OccupancySensingCmds
+//  436  *
+//  437  * @brief   Callback from ZCL to process incoming Commands specific
+//  438  *          to this cluster library on a command ID basis
+//  439  *
+//  440  * @param   pInMsg - pointer to the incoming message
+//  441  *
+//  442  * @return  ZStatus_t
+//  443  */
+//  444 static ZStatus_t zclMS_ProcessIn_OccupancySensingCmds( zclIncoming_t *pInMsg )
+//  445 {
+//  446   ZStatus_t stat = ZSuccess;
+//  447   uint8 cmdID;
+//  448 
+//  449   cmdID = pInMsg->hdr.commandID;
+//  450 
+//  451   switch ( cmdID )				
+//  452   {
+//  453 
+//  454     default:
+//  455       stat = ZFailure;
+//  456       break;
+//  457   }
+//  458 
+//  459   return ( stat );
+//  460 }
+//  461 
+//  462 /****************************************************************************
+//  463 ****************************************************************************/
+//  464 
+// 
+// 246 bytes in segment BANKED_CODE
+//  18 bytes in segment BANK_RELAYS
+//   3 bytes in segment XDATA_Z
+// 
+//  18 bytes of CODE     memory
+// 246 bytes of HUGECODE memory
+//   3 bytes of XDATA    memory
+//
+//Errors: none
+//Warnings: none

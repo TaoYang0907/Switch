@@ -1,0 +1,3475 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:58:55
+# Copyright 2004-2018 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data_rom
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_hvac.c
+#    Command line       =  
+#        -f C:\Users\sunli\AppData\Local\Temp\EWAB3A.tmp ("D:\AA\Z-Stack
+#        3.0.2\Components\stack\zcl\zcl_hvac.c" -D
+#        ZCL_REPORT_DESTINATION_DEVICE -D BDB_REPORTING -D SECURE=1 -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D
+#        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
+#        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
+#        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
+#        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
+#        -lA "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
+#        --diag_suppress Pe001,Pa010 -o "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\Obj"
+#        -e --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data_rom --nr_virtual_regs 16 -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wCoord.cfg"
+#        (-DCPU32MHZ -DROOT=__near_func -DMAC_CFG_APP_PENDING_QUEUE=TRUE
+#        -DMAC_CFG_TX_DATA_MAX=5 -DMAC_CFG_TX_MAX=8 -DMAC_CFG_RX_MAX=5
+#        -DZDO_COORDINATOR -DRTR_NWK) -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg"
+#        (-DZIGBEEPRO -DSECURE=1 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
+#        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
+#        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
+#        -DLINK_STATUS_JITTER_MASK=0x007F -DROUTE_EXPIRY_TIME=30
+#        -DAPSC_ACK_WAIT_DURATION_POLLED=3000 -DNWK_INDIRECT_MSG_TIMEOUT=7
+#        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
+#        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
+#        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
+#        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0} -DMAC_MAX_FRAME_SIZE=116
+#        -DZDNWKMGR_MIN_TRANSMISSIONS=20 "-DCONST=const __code"
+#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=1000
+#        -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100 -DREJOIN_POLL_RATE=440
+#        -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000 -DENABLE_LED4_DISABLE_S1)
+#        -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\" -I
+#        "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\ZMain\TI2530DB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\hal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\hal\target\CC2530EB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\high_level\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\mt\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\osal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\services\saddr\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\services\sdata\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\af\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\bdb\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\gp\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\nwk\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sapi\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sec\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\sys\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\zcl\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\stack\zdo\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\zmac\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
+#        -Ohz --require_prototypes)
+#    Locale             =  Chinese (Simplified)_CHN.936
+#    List file          =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List\zcl_hvac.lst
+#    Object file        =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\Obj\zcl_hvac.r51
+#
+###############################################################################
+
+D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_hvac.c
+      1          /**************************************************************************************************
+      2            Filename:       zcl_hvac.c
+      3            Revised:        $Date: 2013-10-16 16:08:27 -0700 (Wed, 16 Oct 2013) $
+      4            Revision:       $Revision: 35699 $
+      5          
+      6            Description:    Zigbee Cluster Library - HVAC
+      7          
+      8          
+      9            Copyright 2006-2013 Texas Instruments Incorporated. All rights reserved.
+     10          
+     11            IMPORTANT: Your use of this Software is limited to those specific rights
+     12            granted under the terms of a software license agreement between the user
+     13            who downloaded the software, his/her employer (which must be your employer)
+     14            and Texas Instruments Incorporated (the "License").  You may not use this
+     15            Software unless you agree to abide by the terms of the License. The License
+     16            limits your use, and you acknowledge, that the Software may not be modified,
+     17            copied or distributed unless embedded on a Texas Instruments microcontroller
+     18            or used solely and exclusively in conjunction with a Texas Instruments radio
+     19            frequency transceiver, which is integrated into your product.  Other than for
+     20            the foregoing purpose, you may not use, reproduce, copy, prepare derivative
+     21            works of, modify, distribute, perform, display or sell this Software and/or
+     22            its documentation for any purpose.
+     23          
+     24            YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
+     25            PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+     26            INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
+     27            NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
+     28            TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
+     29            NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
+     30            LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
+     31            INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
+     32            OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
+     33            OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
+     34            (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+     35          
+     36            Should you have any questions regarding your right to use this Software,
+     37            contact Texas Instruments Incorporated at www.TI.com.
+     38          **************************************************************************************************/
+     39          
+     40          #ifdef ZCL_HVAC_CLUSTER
+     41          
+     42          /*********************************************************************
+     43           * INCLUDES
+     44           */
+     45          #include "zcl.h"
+     46          #include "zcl_general.h"
+     47          #include "zcl_hvac.h"
+     48          
+     49          #if defined ( INTER_PAN )
+     50            #include "stub_aps.h"
+     51          #endif
+     52          
+     53          /*********************************************************************
+     54           * MACROS
+     55           */
+     56          
+     57          /*********************************************************************
+     58           * CONSTANTS
+     59           */
+     60          
+     61          /*********************************************************************
+     62           * TYPEDEFS
+     63           */
+     64          typedef struct zclHVACCBRec
+     65          {
+     66            struct zclHVACCBRec     *next;
+     67            uint8                   endpoint; // Used to link it into the endpoint descriptor
+     68            zclHVAC_AppCallbacks_t  *CBs;     // Pointer to Callback function
+     69          } zclHVACCBRec_t;
+     70          
+     71          /*********************************************************************
+     72           * GLOBAL VARIABLES
+     73           */
+     74          
+     75          /*********************************************************************
+     76           * GLOBAL FUNCTIONS
+     77           */
+     78          
+     79          /*********************************************************************
+     80           * LOCAL VARIABLES
+     81           */
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     82          static zclHVACCBRec_t *zclHVACCBs = (zclHVACCBRec_t *)NULL;
+   \                     zclHVACCBs:
+   \   000000                DS 2
+   \   000002                REQUIRE __INIT_XDATA_Z
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     83          static uint8 zclHVACPluginRegisted = FALSE;
+   \                     zclHVACPluginRegisted:
+   \   000000                DS 1
+   \   000001                REQUIRE __INIT_XDATA_Z
+     84          
+     85          
+     86          /*********************************************************************
+     87           * LOCAL FUNCTIONS
+     88           */
+     89          static ZStatus_t zclHVAC_HdlIncoming( zclIncoming_t *pInMsg );
+     90          static ZStatus_t zclHVAC_HdlInSpecificCommands( zclIncoming_t *pInMsg );
+     91          static zclHVAC_AppCallbacks_t *zclHVAC_FindCallbacks( uint8 endpoint );
+     92          
+     93          static ZStatus_t zclHVAC_ProcessInPumpCmds( zclIncoming_t *pInMsg );
+     94          static ZStatus_t zclHVAC_ProcessInThermostatCmds( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+     95          static ZStatus_t zclThermostat_ProcessInCmd_SetpointRaiseLower( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+     96          static ZStatus_t zclThermostat_ProcessInCmd_SetWeeklySchedule( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+     97          static ZStatus_t zclThermostat_ProcessInCmd_GetWeeklySchedule( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+     98          static ZStatus_t zclThermostat_ProcessInCmd_ClearWeeklySchedule( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+     99          static ZStatus_t zclThermostat_ProcessInCmd_GetRelayStatusLog( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+    100          static ZStatus_t zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+    101          static ZStatus_t zclThermostat_ProcessInCmd_GetRelayStatusLogRsp( zclIncoming_t *pInMsg, zclHVAC_AppCallbacks_t *pCBs );
+    102          
+    103          /*********************************************************************
+    104           * @fn      zclHVAC_RegisterCmdCallbacks
+    105           *
+    106           * @brief   Register an applications command callbacks
+    107           *
+    108           * @param   endpoint - application's endpoint
+    109           * @param   callbacks - pointer to the callback record.
+    110           *
+    111           * @return  ZMemError if not able to allocate
+    112           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    113          ZStatus_t zclHVAC_RegisterCmdCallbacks( uint8 endpoint, zclHVAC_AppCallbacks_t *callbacks )
+   \                     zclHVAC_RegisterCmdCallbacks:
+    114          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 0
+   \   000005   89..         MOV       ?V0,R1
+   \   000007   EA           MOV       A,R2
+   \   000008   FE           MOV       R6,A
+   \   000009   EB           MOV       A,R3
+   \   00000A   FF           MOV       R7,A
+    115            zclHVACCBRec_t *pNewItem;
+    116            zclHVACCBRec_t *pLoop;
+    117          
+    118            // Register as a ZCL Plugin
+    119            if ( !zclHVACPluginRegisted )
+   \   00000B   90....       MOV       DPTR,#zclHVACPluginRegisted
+   \   00000E   E0           MOVX      A,@DPTR
+   \   00000F   7021         JNZ       ??zclHVAC_RegisterCmdCallbacks_0
+    120            {
+    121              zcl_registerPlugin( ZCL_CLUSTER_ID_HVAC_PUMP_CONFIG_CONTROL,
+    122                                  ZCL_CLUSTER_ID_HVAC_USER_INTERFACE_CONFIG,
+    123                                  zclHVAC_HdlIncoming );
+   \   000011                ; Setup parameters for call to function zcl_registerPlugin
+   \   000011   75....       MOV       ?V2,#`??zclHVAC_HdlIncoming::?relay` & 0xff
+   \   000014   75....       MOV       ?V3,#(`??zclHVAC_HdlIncoming::?relay` >> 8) & 0xff
+   \   000017   78..         MOV       R0,#?V2
+   \   000019   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00001C   7C04         MOV       R4,#0x4
+   \   00001E   7D02         MOV       R5,#0x2
+   \   000020   7A00         MOV       R2,#0x0
+   \   000022   7B02         MOV       R3,#0x2
+   \   000024   12....       LCALL     `??zcl_registerPlugin::?relay`; Banked call to: zcl_registerPlugin
+   \   000027   7402         MOV       A,#0x2
+   \   000029   12....       LCALL     ?DEALLOC_XSTACK8
+    124              zclHVACPluginRegisted = TRUE;
+   \   00002C   90....       MOV       DPTR,#zclHVACPluginRegisted
+   \   00002F   7401         MOV       A,#0x1
+   \   000031   F0           MOVX      @DPTR,A
+    125            }
+    126          
+    127            // Fill in the new profile list
+    128            pNewItem = zcl_mem_alloc( sizeof( zclHVACCBRec_t ) );
+   \                     ??zclHVAC_RegisterCmdCallbacks_0:
+   \   000032                ; Setup parameters for call to function osal_mem_alloc
+   \   000032   7A05         MOV       R2,#0x5
+   \   000034   7B00         MOV       R3,#0x0
+   \   000036   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   000039   8A..         MOV       ?V2,R2
+   \   00003B   8B..         MOV       ?V3,R3
+   \   00003D   A8..         MOV       R0,?V2
+   \   00003F   A9..         MOV       R1,?V3
+    129            if ( pNewItem == NULL )
+   \   000041   EA           MOV       A,R2
+   \   000042   49           ORL       A,R1
+   \   000043   7004         JNZ       ??zclHVAC_RegisterCmdCallbacks_1
+    130              return (ZMemError);
+   \   000045   7910         MOV       R1,#0x10
+   \   000047   803D         SJMP      ??zclHVAC_RegisterCmdCallbacks_2
+    131          
+    132            pNewItem->next = (zclHVACCBRec_t *)NULL;
+   \                     ??zclHVAC_RegisterCmdCallbacks_1:
+   \   000049   8A82         MOV       DPL,R2
+   \   00004B   8B83         MOV       DPH,R3
+   \   00004D   E4           CLR       A
+   \   00004E   F0           MOVX      @DPTR,A
+   \   00004F   A3           INC       DPTR
+   \   000050   F0           MOVX      @DPTR,A
+    133            pNewItem->endpoint = endpoint;
+   \   000051   8A82         MOV       DPL,R2
+   \   000053   8B83         MOV       DPH,R3
+   \   000055   A3           INC       DPTR
+   \   000056   A3           INC       DPTR
+   \   000057   E5..         MOV       A,?V0
+   \   000059   12....       LCALL     ?Subroutine36 & 0xFFFF
+    134            pNewItem->CBs = callbacks;
+   \                     ??CrossCallReturnLabel_58:
+   \   00005C   EE           MOV       A,R6
+   \   00005D   F0           MOVX      @DPTR,A
+   \   00005E   A3           INC       DPTR
+   \   00005F   EF           MOV       A,R7
+   \   000060   F0           MOVX      @DPTR,A
+    135          
+    136            // Find spot in list
+    137            if ( zclHVACCBs == NULL )
+   \   000061   90....       MOV       DPTR,#zclHVACCBs
+   \   000064   12....       LCALL     ??Subroutine65_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_114:
+   \   000067   90....       MOV       DPTR,#zclHVACCBs
+   \   00006A   6013         JZ        ??zclHVAC_RegisterCmdCallbacks_3
+    138            {
+    139              zclHVACCBs = pNewItem;
+    140            }
+    141            else
+    142            {
+    143              // Look for end of list
+    144              pLoop = zclHVACCBs;
+   \   00006C   E0           MOVX      A,@DPTR
+   \   00006D   FC           MOV       R4,A
+   \   00006E   A3           INC       DPTR
+   \   00006F   E0           MOVX      A,@DPTR
+   \   000070   8003         SJMP      ??zclHVAC_RegisterCmdCallbacks_4
+    145              while ( pLoop->next != NULL )
+    146                pLoop = pLoop->next;
+   \                     ??zclHVAC_RegisterCmdCallbacks_5:
+   \   000072   EA           MOV       A,R2
+   \   000073   FC           MOV       R4,A
+   \   000074   EB           MOV       A,R3
+   \                     ??zclHVAC_RegisterCmdCallbacks_4:
+   \   000075   FD           MOV       R5,A
+   \   000076   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_116:
+   \   000079   70F7         JNZ       ??zclHVAC_RegisterCmdCallbacks_5
+    147          
+    148              // Put new item at end of list
+    149              pLoop->next = pNewItem;
+   \   00007B   8C82         MOV       DPL,R4
+   \   00007D   8D83         MOV       DPH,R5
+   \                     ??zclHVAC_RegisterCmdCallbacks_3:
+   \   00007F   E8           MOV       A,R0
+   \   000080   F0           MOVX      @DPTR,A
+   \   000081   A3           INC       DPTR
+   \   000082   E9           MOV       A,R1
+   \   000083   F0           MOVX      @DPTR,A
+    150            }
+    151            return ( ZSuccess );
+   \   000084   7900         MOV       R1,#0x0
+   \                     ??zclHVAC_RegisterCmdCallbacks_2:
+   \   000086   02....       LJMP      ??Subroutine60_0 & 0xFFFF
+    152          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine60_0:
+   \   000000   7F04         MOV       R7,#0x4
+   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine14:
+   \   000000   8C82         MOV       DPL,R4
+   \   000002   8D83         MOV       DPH,R5
+   \   000004                REQUIRE ??Subroutine65_0
+   \   000004                ; // Fall through to label ??Subroutine65_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine65_0:
+   \   000000   12....       LCALL     ?Subroutine49 & 0xFFFF
+   \                     ??CrossCallReturnLabel_121:
+   \   000003   EA           MOV       A,R2
+   \   000004   4B           ORL       A,R3
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine49:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   FA           MOV       R2,A
+   \   000002   A3           INC       DPTR
+   \   000003   E0           MOVX      A,@DPTR
+   \   000004   FB           MOV       R3,A
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine36:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   8A82         MOV       DPL,R2
+   \   000003   8B83         MOV       DPH,R3
+   \   000005   A3           INC       DPTR
+   \   000006   A3           INC       DPTR
+   \   000007   A3           INC       DPTR
+   \   000008   22           RET
+    153          
+    154          /*********************************************************************
+    155           * @fn      zclHVAC_SendSetpointRaiseLower
+    156           *
+    157           * @brief   Call to send out a Setpoint Raise/Lower Command
+    158           *
+    159           * @param   srcEP - Sending application's endpoint
+    160           * @param   dstAddr - where you want the message to go
+    161           * @param   mode - which setpoint is to be configured
+    162           * @param   amount - amount setpoint(s) are to be increased (or decreased) by,
+    163           *                   in steps of 0.1°C
+    164           * @param   seqNum - transaction sequence number
+    165           *
+    166           * @return  ZStatus_t
+    167           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    168          ZStatus_t zclHVAC_SendSetpointRaiseLower( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendSetpointRaiseLower:
+    169                                                    uint8 mode, int8 amount,
+    170                                                    uint8 disableDefaultRsp, uint8 seqNum )
+    171          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 2
+   \   000005   74FE         MOV       A,#-0x2
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   E9           MOV       A,R1
+   \   00000B   FE           MOV       R6,A
+   \   00000C   EC           MOV       A,R4
+    172            uint8 buf[PAYLOAD_LEN_SETPOINT_RAISE_LOWER];
+    173          
+    174            buf[0] = mode;
+   \   00000D   85..82       MOV       DPL,?XSP + 0
+   \   000010   85..83       MOV       DPH,?XSP + 1
+   \   000013   F0           MOVX      @DPTR,A
+    175            buf[1] = amount;
+   \   000014   7401         MOV       A,#0x1
+   \   000016   12....       LCALL     ?XSTACK_DISP0_8
+   \   000019   12....       LCALL     ?Subroutine32 & 0xFFFF
+    176          
+    177            return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    178                                    COMMAND_THERMOSTAT_SETPOINT_RAISE_LOWER, TRUE,
+    179                                    ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0,
+    180                                    seqNum, PAYLOAD_LEN_SETPOINT_RAISE_LOWER, buf );
+   \                     ??CrossCallReturnLabel_50:
+   \   00001C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00001F   75..02       MOV       ?V2,#0x2
+   \   000022   75..00       MOV       ?V3,#0x0
+   \   000025   78..         MOV       R0,#?V2
+   \   000027   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00002A   7413         MOV       A,#0x13
+   \   00002C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00002F   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_36:
+   \   000032   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000035   E4           CLR       A
+   \   000036   F5..         MOV       ?V2,A
+   \   000038   78..         MOV       R0,#?V2
+   \   00003A   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00003D   7415         MOV       A,#0x15
+   \   00003F   12....       LCALL     ?XSTACK_DISP0_8
+   \   000042   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_37:
+   \   000045   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000048   75..00       MOV       ?V1,#0x0
+   \   00004B   78..         MOV       R0,#?V1
+   \   00004D   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000050   75..01       MOV       ?V1,#0x1
+   \   000053   78..         MOV       R0,#?V1
+   \   000055   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000058   75..00       MOV       ?V1,#0x0
+   \   00005B   02....       LJMP      ?Subroutine0 & 0xFFFF
+    181          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine32:
+   \   000000   ED           MOV       A,R5
+   \   000001   F0           MOVX      @DPTR,A
+   \   000002                ; Setup parameters for call to function zcl_SendCommand
+   \   000002                ; Setup parameters for call to function zcl_SendCommand
+   \   000002   A8..         MOV       R0,?XSP + 0
+   \   000004   A9..         MOV       R1,?XSP + 1
+   \   000006   88..         MOV       ?V2,R0
+   \   000008   89..         MOV       ?V3,R1
+   \   00000A   78..         MOV       R0,#?V2
+   \   00000C   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine26:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F5..         MOV       ?V1,A
+   \   000003   78..         MOV       R0,#?V1
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   78..         MOV       R0,#?V1
+   \   000002   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000005   7C01         MOV       R4,#0x1
+   \   000007   7D02         MOV       R5,#0x2
+   \   000009   EE           MOV       A,R6
+   \   00000A   12....       LCALL     ??Subroutine62_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_106:
+   \   00000D   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000010   7402         MOV       A,#0x2
+   \   000012                REQUIRE ??Subroutine59_0
+   \   000012                ; // Fall through to label ??Subroutine59_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine59_0:
+   \   000000   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000003                REQUIRE ??Subroutine60_0
+   \   000003                ; // Fall through to label ??Subroutine60_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine62_0:
+   \   000000   F9           MOV       R1,A
+   \   000001                REQUIRE ??Subroutine63_0
+   \   000001                ; // Fall through to label ??Subroutine63_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine63_0:
+   \   000000   12....       LCALL     `??zcl_SendCommand::?relay`; Banked call to: zcl_SendCommand
+   \   000003   740B         MOV       A,#0xb
+   \   000005   22           RET
+    182          
+    183          /*********************************************************************
+    184           * @fn      zclHVAC_SendSetWeeklySchedule
+    185           *
+    186           * @brief   Call to send out a Set Weekly Schedule Command
+    187           *
+    188           * @param   srcEP - Sending application's endpoint
+    189           * @param   dstAddr - where you want the message to go
+    190           * @param   pPayload - payload for Set Weekly Schedule cmd
+    191           * @param   seqNum - transaction sequence number
+    192           *
+    193           * @return  ZStatus_t
+    194           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    195          ZStatus_t zclHVAC_SendSetWeeklySchedule( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendSetWeeklySchedule:
+    196                                                   zclThermostatWeeklySchedule_t *pPayload,
+    197                                                   uint8 disableDefaultRsp, uint8 seqNum )
+    198          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000                REQUIRE ?V8
+   \   000000                REQUIRE ?V9
+   \   000000                REQUIRE ?V10
+   \   000000                REQUIRE ?V11
+   \   000000                REQUIRE ?V12
+   \   000000                REQUIRE ?V13
+   \   000000                REQUIRE ?V14
+   \   000000                REQUIRE ?V15
+   \   000000   74E8         MOV       A,#-0x18
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 24
+   \   000005                ; Auto size: 0
+   \   000005   12....       LCALL     ?Subroutine38 & 0xFFFF
+    199            uint8 i;
+    200            uint8 modeBuff;   // buffer to determine how to incorporate heat/cool set points
+    201            uint8 *pBuf;    // variable length payload
+    202            uint8 offset;
+    203            uint16 arrayRecordSize;    // number of bytes in record array
+    204            uint16 calculatedBufSize;
+    205            ZStatus_t status;
+    206          
+    207          
+    208            modeBuff = pPayload->modeForSequence;    // store the modeForSequence in buffer
+    209          
+    210            // if either the heat or cool set points
+    211            if( ( modeBuff == HVAC_THERMOSTAT_MODE_HEAT ) || ( modeBuff == HVAC_THERMOSTAT_MODE_COOL ) )
+   \                     ??CrossCallReturnLabel_66:
+   \   000008   6005         JZ        ??zclHVAC_SendSetWeeklySchedule_0
+   \   00000A   7401         MOV       A,#0x1
+   \   00000C   6E           XRL       A,R6
+   \   00000D   700C         JNZ       ??zclHVAC_SendSetWeeklySchedule_1
+    212            {
+    213              // calculate the number of transitions multiplied by size of transitionTime and heatSetPoint/coolSetPoint
+    214              arrayRecordSize = ( pPayload->numberOfTransitionsForSequence * PAYLOAD_LEN_WEEKLY_SCHEDULE_COOL_HEAT_MODE );
+   \                     ??zclHVAC_SendSetWeeklySchedule_0:
+   \   00000F   12....       LCALL     ?Subroutine21 & 0xFFFF
+    215            }
+   \                     ??CrossCallReturnLabel_26:
+   \   000012   12....       LCALL     ?S_SHL
+   \   000015   A8..         MOV       R0,?V0
+   \   000017   A9..         MOV       R1,?V1
+   \   000019   8008         SJMP      ??CrossCallReturnLabel_44
+    216            // if both cool and heat set points
+    217            else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )
+   \                     ??zclHVAC_SendSetWeeklySchedule_1:
+   \   00001B   7402         MOV       A,#0x2
+   \   00001D   6E           XRL       A,R6
+   \   00001E   705D         JNZ       ??zclHVAC_SendSetWeeklySchedule_2
+    218            {
+    219              // calculate the number of transitions multiplied by size of transitionTime, heatSetPoint, and coolSetPoint
+    220              arrayRecordSize = ( pPayload->numberOfTransitionsForSequence * PAYLOAD_LEN_WEEKLY_SCHEDULE_BOTH_MODES );
+   \   000020   12....       LCALL     ?Subroutine28 & 0xFFFF
+    221            }
+    222            else
+    223            {
+    224              return ( ZFailure );    // invalid data
+    225            }
+    226          
+    227            // get a buffer large enough to hold the whole packet
+    228            calculatedBufSize = ( PAYLOAD_LEN_WEEKLY_SCHEDULE + arrayRecordSize );
+   \                     ??CrossCallReturnLabel_44:
+   \   000023   12....       LCALL     ?Subroutine33 & 0xFFFF
+    229          
+    230            pBuf = zcl_mem_alloc( calculatedBufSize );
+    231            if( !pBuf )
+   \                     ??CrossCallReturnLabel_52:
+   \   000026   6055         JZ        ??zclHVAC_SendSetWeeklySchedule_2
+    232            {
+    233              return ( ZFailure );  // no memory
+    234            }
+    235          
+    236            // over-the-air is always little endian. Break into a byte stream.
+    237            pBuf[0] = pPayload->numberOfTransitionsForSequence;
+   \   000028   12....       LCALL     ?Subroutine6 & 0xFFFF
+    238            pBuf[1] = pPayload->dayOfWeekForSequence;
+    239            pBuf[2] = pPayload->modeForSequence;
+    240            offset = 3;
+    241            for( i = 0; i < ( pPayload->numberOfTransitionsForSequence ); i++ )
+   \                     ??CrossCallReturnLabel_2:
+   \   00002B   8025         SJMP      ??zclHVAC_SendSetWeeklySchedule_3
+    242            {
+    243              if( modeBuff == HVAC_THERMOSTAT_MODE_HEAT )   // heat set point
+    244              {
+    245                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime );
+   \                     ??zclHVAC_SendSetWeeklySchedule_4:
+   \   00002D   12....       LCALL     ?Subroutine8 & 0xFFFF
+    246                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime );
+    247                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint );
+    248                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint );
+    249              }
+   \                     ??CrossCallReturnLabel_6:
+   \   000030   C0E0         PUSH      A
+   \   000032   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_60:
+   \   000035   D0E0         POP       A
+   \   000037   12....       LCALL     ?Subroutine18 & 0xFFFF
+   \                     ??CrossCallReturnLabel_20:
+   \   00003A   C0E0         PUSH      A
+   \   00003C   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_61:
+   \   00003F   D0E0         POP       A
+   \   000041   12....       LCALL     ?Subroutine20 & 0xFFFF
+   \                     ??CrossCallReturnLabel_24:
+   \   000044   A3           INC       DPTR
+   \   000045   A3           INC       DPTR
+   \   000046   A3           INC       DPTR
+   \   000047   E0           MOVX      A,@DPTR
+   \   000048   C0E0         PUSH      A
+   \   00004A   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_62:
+   \   00004D   D0E0         POP       A
+   \   00004F   F0           MOVX      @DPTR,A
+   \   000050   09           INC       R1
+   \   000051   0A           INC       R2
+   \                     ??zclHVAC_SendSetWeeklySchedule_3:
+   \   000052   85..82       MOV       DPL,?V2
+   \   000055   85..83       MOV       DPH,?V3
+   \   000058   E0           MOVX      A,@DPTR
+   \   000059   F8           MOV       R0,A
+   \   00005A   EA           MOV       A,R2
+   \   00005B   C3           CLR       C
+   \   00005C   98           SUBB      A,R0
+   \   00005D   5022         JNC       ??zclHVAC_SendSetWeeklySchedule_5
+   \   00005F   12....       LCALL     ?Subroutine39 & 0xFFFF
+   \                     ??CrossCallReturnLabel_68:
+   \   000062   12....       LCALL     ?S_SHL
+   \   000065   85....       MOV       ?V14,?V4
+   \   000068   85....       MOV       ?V15,?V5
+   \   00006B   EE           MOV       A,R6
+   \   00006C   60BF         JZ        ??zclHVAC_SendSetWeeklySchedule_4
+    250              else if( modeBuff == HVAC_THERMOSTAT_MODE_COOL )    // cool set point
+   \   00006E   7401         MOV       A,#0x1
+   \   000070   6E           XRL       A,R6
+   \   000071   60BA         JZ        ??zclHVAC_SendSetWeeklySchedule_4
+    251              {
+    252                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].transitionTime );
+    253                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].transitionTime );
+    254                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint );
+    255                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint );
+    256              }
+    257              else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )    // both cool and heat set points
+   \   000073   7402         MOV       A,#0x2
+   \   000075   6E           XRL       A,R6
+   \   000076   7005         JNZ       ??zclHVAC_SendSetWeeklySchedule_2
+    258              {
+    259                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime );
+   \   000078   12....       LCALL     ?Subroutine5 & 0xFFFF
+    260                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime );
+    261                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint );
+    262                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint );
+    263                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint );
+    264                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint );
+    265              }
+   \                     ??CrossCallReturnLabel_0:
+   \   00007B   80C7         SJMP      ??CrossCallReturnLabel_24
+    266              else
+    267              {
+    268                return ( ZFailure );    // unsupported mode
+   \                     ??zclHVAC_SendSetWeeklySchedule_2:
+   \   00007D   7901         MOV       R1,#0x1
+   \   00007F   8050         SJMP      ??zclHVAC_SendSetWeeklySchedule_6
+    269              }
+    270            }
+    271          
+    272            status = zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    273                                     COMMAND_THERMOSTAT_SET_WEEKLY_SCHEDULE, TRUE,
+    274                                     ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, calculatedBufSize, pBuf );
+   \                     ??zclHVAC_SendSetWeeklySchedule_5:
+   \   000081                ; Setup parameters for call to function zcl_SendCommand
+   \   000081   78..         MOV       R0,#?V0
+   \   000083   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000086   78..         MOV       R0,#?V6
+   \   000088   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00008B   741D         MOV       A,#0x1d
+   \   00008D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000090   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_40:
+   \   000093   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000096   E4           CLR       A
+   \   000097   F5..         MOV       ?V2,A
+   \   000099   F5..         MOV       ?V3,A
+   \   00009B   78..         MOV       R0,#?V2
+   \   00009D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000A0   741F         MOV       A,#0x1f
+   \   0000A2   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000A5   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_41:
+   \   0000A8   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000AB   75..00       MOV       ?V2,#0x0
+   \   0000AE   78..         MOV       R0,#?V2
+   \   0000B0   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000B3   75..01       MOV       ?V2,#0x1
+   \   0000B6   78..         MOV       R0,#?V2
+   \   0000B8   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000BB   78..         MOV       R0,#?V2
+   \   0000BD   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000C0   12....       LCALL     ?Subroutine42 & 0xFFFF
+   \                     ??CrossCallReturnLabel_104:
+   \   0000C3   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000C6   E9           MOV       A,R1
+   \   0000C7   FE           MOV       R6,A
+    275            zcl_mem_free( pBuf );
+   \   0000C8                ; Setup parameters for call to function osal_mem_free
+   \   0000C8   AA..         MOV       R2,?V0
+   \   0000CA   AB..         MOV       R3,?V1
+   \   0000CC   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+    276          
+    277            return status;
+   \   0000CF   EE           MOV       A,R6
+   \   0000D0   F9           MOV       R1,A
+   \                     ??zclHVAC_SendSetWeeklySchedule_6:
+   \   0000D1                REQUIRE ?Subroutine1
+   \   0000D1                ; // Fall through to label ?Subroutine1
+    278          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   7F10         MOV       R7,#0x10
+   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine39:
+   \   000000   E9           MOV       A,R1
+   \   000001   FC           MOV       R4,A
+   \   000002   E5..         MOV       A,?V0
+   \   000004   2C           ADD       A,R4
+   \   000005   F5..         MOV       ?V12,A
+   \   000007   E4           CLR       A
+   \   000008   3B           ADDC      A,R3
+   \   000009   F5..         MOV       ?V13,A
+   \   00000B   EA           MOV       A,R2
+   \   00000C   FC           MOV       R4,A
+   \   00000D   F5..         MOV       ?V4,A
+   \   00000F   75..00       MOV       ?V5,#0x0
+   \   000012   7402         MOV       A,#0x2
+   \   000014   78..         MOV       R0,#?V4
+   \   000016   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine38:
+   \   000000   E9           MOV       A,R1
+   \   000001   FF           MOV       R7,A
+   \   000002   8A..         MOV       ?V8,R2
+   \   000004   8B..         MOV       ?V9,R3
+   \   000006   8C..         MOV       ?V2,R4
+   \   000008   8D..         MOV       ?V3,R5
+   \   00000A   EC           MOV       A,R4
+   \   00000B   2402         ADD       A,#0x2
+   \   00000D   F5..         MOV       ?V4,A
+   \   00000F   E4           CLR       A
+   \   000010   35..         ADDC      A,?V3
+   \   000012   F5..         MOV       ?V5,A
+   \   000014   85..82       MOV       DPL,?V4
+   \   000017   F583         MOV       DPH,A
+   \   000019   E0           MOVX      A,@DPTR
+   \   00001A   FE           MOV       R6,A
+   \   00001B   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine37:
+   \   000000   E5..         MOV       A,?V0
+   \   000002   29           ADD       A,R1
+   \   000003   F582         MOV       DPL,A
+   \   000005   E4           CLR       A
+   \   000006   3B           ADDC      A,R3
+   \   000007   F583         MOV       DPH,A
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine33:
+   \   000000   E8           MOV       A,R0
+   \   000001   2403         ADD       A,#0x3
+   \   000003   F5..         MOV       ?V6,A
+   \   000005   E4           CLR       A
+   \   000006   39           ADDC      A,R1
+   \   000007   F5..         MOV       ?V7,A
+   \   000009                ; Setup parameters for call to function osal_mem_alloc
+   \   000009                ; Setup parameters for call to function osal_mem_alloc
+   \   000009   AA..         MOV       R2,?V6
+   \   00000B   FB           MOV       R3,A
+   \   00000C   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   00000F   8A..         MOV       ?V0,R2
+   \   000011   8B..         MOV       ?V1,R3
+   \   000013   EA           MOV       A,R2
+   \   000014   4B           ORL       A,R3
+   \   000015   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine28:
+   \   000000   8C82         MOV       DPL,R4
+   \   000002   8D83         MOV       DPH,R5
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   75F006       MOV       B,#0x6
+   \   000008   A4           MUL       AB
+   \   000009   F8           MOV       R0,A
+   \   00000A   A9F0         MOV       R1,B
+   \   00000C   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine27:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F5..         MOV       ?V2,A
+   \   000003   78..         MOV       R0,#?V2
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine21:
+   \   000000   8C82         MOV       DPL,R4
+   \   000002   8D83         MOV       DPH,R5
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   F5..         MOV       ?V0,A
+   \   000007   75..00       MOV       ?V1,#0x0
+   \   00000A   7402         MOV       A,#0x2
+   \   00000C   78..         MOV       R0,#?V0
+   \   00000E   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine20:
+   \   000000   12....       LCALL     ?Subroutine46 & 0xFFFF
+   \                     ??CrossCallReturnLabel_81:
+   \   000003   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine46:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   09           INC       R1
+   \   000002   12....       LCALL     ?Subroutine56 & 0xFFFF
+   \                     ??CrossCallReturnLabel_99:
+   \   000005   8882         MOV       DPL,R0
+   \   000007   F583         MOV       DPH,A
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine18:
+   \   000000   12....       LCALL     ?Subroutine46 & 0xFFFF
+   \                     ??CrossCallReturnLabel_82:
+   \   000003   A3           INC       DPTR
+   \   000004   A3           INC       DPTR
+   \   000005   E0           MOVX      A,@DPTR
+   \   000006   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine8:
+   \   000000   12....       LCALL     ?Subroutine56 & 0xFFFF
+   \                     ??CrossCallReturnLabel_98:
+   \   000003   12....       LCALL     ?Subroutine45 & 0xFFFF
+   \                     ??CrossCallReturnLabel_79:
+   \   000006   25..         ADD       A,?V14
+   \   000008   F8           MOV       R0,A
+   \   000009   A3           INC       DPTR
+   \   00000A   E0           MOVX      A,@DPTR
+   \   00000B   35..         ADDC      A,?V15
+   \   00000D   8882         MOV       DPL,R0
+   \   00000F   F583         MOV       DPH,A
+   \   000011   A3           INC       DPTR
+   \   000012   E0           MOVX      A,@DPTR
+   \   000013   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine56:
+   \   000000   85..82       MOV       DPL,?V10
+   \   000003   85..83       MOV       DPH,?V11
+   \   000006   E0           MOVX      A,@DPTR
+   \   000007   25..         ADD       A,?V14
+   \   000009   F8           MOV       R0,A
+   \   00000A   A3           INC       DPTR
+   \   00000B   E0           MOVX      A,@DPTR
+   \   00000C   35..         ADDC      A,?V15
+   \   00000E   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine6:
+   \   000000   85..82       MOV       DPL,?V2
+   \   000003   85..83       MOV       DPH,?V3
+   \   000006   E0           MOVX      A,@DPTR
+   \   000007   8A82         MOV       DPL,R2
+   \   000009   8B83         MOV       DPH,R3
+   \   00000B   F0           MOVX      @DPTR,A
+   \   00000C   85..82       MOV       DPL,?V2
+   \   00000F   85..83       MOV       DPH,?V3
+   \   000012   A3           INC       DPTR
+   \   000013   E0           MOVX      A,@DPTR
+   \   000014   8A82         MOV       DPL,R2
+   \   000016   8B83         MOV       DPH,R3
+   \   000018   A3           INC       DPTR
+   \   000019   F0           MOVX      @DPTR,A
+   \   00001A   85..82       MOV       DPL,?V4
+   \   00001D   85..83       MOV       DPH,?V5
+   \   000020   E0           MOVX      A,@DPTR
+   \   000021   8A82         MOV       DPL,R2
+   \   000023   8B83         MOV       DPH,R3
+   \   000025   A3           INC       DPTR
+   \   000026   A3           INC       DPTR
+   \   000027   F0           MOVX      @DPTR,A
+   \   000028   7903         MOV       R1,#0x3
+   \   00002A   7A00         MOV       R2,#0x0
+   \   00002C   E5..         MOV       A,?V2
+   \   00002E   29           ADD       A,R1
+   \   00002F   F5..         MOV       ?V10,A
+   \   000031   E4           CLR       A
+   \   000032   35..         ADDC      A,?V3
+   \   000034   F5..         MOV       ?V11,A
+   \   000036   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine5:
+   \   000000   EC           MOV       A,R4
+   \   000001   75F006       MOV       B,#0x6
+   \   000004   A4           MUL       AB
+   \   000005   FC           MOV       R4,A
+   \   000006   ADF0         MOV       R5,B
+   \   000008   85..82       MOV       DPL,?V10
+   \   00000B   85..83       MOV       DPH,?V11
+   \   00000E   E0           MOVX      A,@DPTR
+   \   00000F   2C           ADD       A,R4
+   \   000010   F8           MOV       R0,A
+   \   000011   A3           INC       DPTR
+   \   000012   E0           MOVX      A,@DPTR
+   \   000013   3D           ADDC      A,R5
+   \   000014   12....       LCALL     ?Subroutine45 & 0xFFFF
+   \                     ??CrossCallReturnLabel_80:
+   \   000017   12....       LCALL     ?Subroutine58 & 0xFFFF
+   \                     ??CrossCallReturnLabel_102:
+   \   00001A   12....       LCALL     ?Subroutine44 & 0xFFFF
+   \                     ??CrossCallReturnLabel_77:
+   \   00001D   12....       LCALL     ?Subroutine43 & 0xFFFF
+   \                     ??CrossCallReturnLabel_75:
+   \   000020   12....       LCALL     ?Subroutine43 & 0xFFFF
+   \                     ??CrossCallReturnLabel_76:
+   \   000023   12....       LCALL     ?Subroutine44 & 0xFFFF
+   \                     ??CrossCallReturnLabel_78:
+   \   000026   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine45:
+   \   000000   8882         MOV       DPL,R0
+   \   000002   F583         MOV       DPH,A
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   85..82       MOV       DPL,?V12
+   \   000008   85..83       MOV       DPH,?V13
+   \   00000B   12....       LCALL     ?Subroutine57 & 0xFFFF
+   \                     ??CrossCallReturnLabel_100:
+   \   00000E   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine57:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   09           INC       R1
+   \   000002   85..82       MOV       DPL,?V10
+   \   000005   85..83       MOV       DPH,?V11
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine44:
+   \   000000   A3           INC       DPTR
+   \   000001   12....       LCALL     ?Subroutine54 & 0xFFFF
+   \                     ??CrossCallReturnLabel_94:
+   \   000004   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine54:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F5..         MOV       ?V4,A
+   \   000003   E5..         MOV       A,?V0
+   \   000005   29           ADD       A,R1
+   \   000006   F582         MOV       DPL,A
+   \   000008   E4           CLR       A
+   \   000009   3B           ADDC      A,R3
+   \   00000A   F583         MOV       DPH,A
+   \   00000C   E5..         MOV       A,?V4
+   \   00000E   12....       LCALL     ?Subroutine57 & 0xFFFF
+   \                     ??CrossCallReturnLabel_101:
+   \   000011   12....       LCALL     ?Subroutine58 & 0xFFFF
+   \                     ??CrossCallReturnLabel_103:
+   \   000014   A3           INC       DPTR
+   \   000015   A3           INC       DPTR
+   \   000016   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine58:
+   \   000000   2C           ADD       A,R4
+   \   000001   F8           MOV       R0,A
+   \   000002   A3           INC       DPTR
+   \   000003   E0           MOVX      A,@DPTR
+   \   000004   3D           ADDC      A,R5
+   \   000005   8882         MOV       DPL,R0
+   \   000007   F583         MOV       DPH,A
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine43:
+   \   000000   12....       LCALL     ?Subroutine54 & 0xFFFF
+   \                     ??CrossCallReturnLabel_95:
+   \   000003   A3           INC       DPTR
+   \   000004   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine42:
+   \   000000   7C01         MOV       R4,#0x1
+   \   000002   7D02         MOV       R5,#0x2
+   \   000004   AA..         MOV       R2,?V8
+   \   000006   AB..         MOV       R3,?V9
+   \   000008   EF           MOV       A,R7
+   \   000009                REQUIRE ??Subroutine62_0
+   \   000009                ; // Fall through to label ??Subroutine62_0
+    279          
+    280          /*********************************************************************
+    281           * @fn      zclHVAC_SendGetWeeklySchedule
+    282           *
+    283           * @brief   Call to send out a Get Weekly Schedule Command
+    284           *
+    285           * @param   srcEP - Sending application's endpoint
+    286           * @param   dstAddr - where you want the message to go
+    287           * @param   daysToReturn - indicates number of days client would like to return the set point values for
+    288           * @param   modeToReturn - indicates the mode the client would like to return the set point values for
+    289           * @param   seqNum - transaction sequence number
+    290           *
+    291           * @return  ZStatus_t
+    292           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    293          ZStatus_t zclHVAC_SendGetWeeklySchedule( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendGetWeeklySchedule:
+    294                                                   uint8 daysToReturn, uint8 modeToReturn,
+    295                                                   uint8 disableDefaultRsp, uint8 seqNum )
+    296          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 2
+   \   000005   74FE         MOV       A,#-0x2
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   E9           MOV       A,R1
+   \   00000B   FE           MOV       R6,A
+   \   00000C   EC           MOV       A,R4
+    297            uint8 buf[PAYLOAD_LEN_GET_WEEKLY_SCHEDULE];
+    298          
+    299            buf[0] = daysToReturn;
+   \   00000D   85..82       MOV       DPL,?XSP + 0
+   \   000010   85..83       MOV       DPH,?XSP + 1
+   \   000013   F0           MOVX      @DPTR,A
+    300            buf[1] = modeToReturn;
+   \   000014   7401         MOV       A,#0x1
+   \   000016   12....       LCALL     ?XSTACK_DISP0_8
+   \   000019   12....       LCALL     ?Subroutine32 & 0xFFFF
+    301          
+    302            return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    303                                    COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE, TRUE,
+    304                                    ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0,
+    305                                    seqNum, PAYLOAD_LEN_GET_WEEKLY_SCHEDULE, buf );
+   \                     ??CrossCallReturnLabel_51:
+   \   00001C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00001F   75..02       MOV       ?V2,#0x2
+   \   000022   75..00       MOV       ?V3,#0x0
+   \   000025   78..         MOV       R0,#?V2
+   \   000027   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00002A   7413         MOV       A,#0x13
+   \   00002C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00002F   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_38:
+   \   000032   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000035   E4           CLR       A
+   \   000036   F5..         MOV       ?V2,A
+   \   000038   78..         MOV       R0,#?V2
+   \   00003A   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00003D   7415         MOV       A,#0x15
+   \   00003F   12....       LCALL     ?XSTACK_DISP0_8
+   \   000042   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_39:
+   \   000045   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000048   75..00       MOV       ?V1,#0x0
+   \   00004B   78..         MOV       R0,#?V1
+   \   00004D   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000050   75..01       MOV       ?V1,#0x1
+   \   000053   78..         MOV       R0,#?V1
+   \   000055   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000058   75..02       MOV       ?V1,#0x2
+   \   00005B   80..         SJMP      ?Subroutine0
+    306          }
+    307          
+    308          /*********************************************************************
+    309           * @fn      zclHVAC_SendClearWeeklySchedule
+    310           *
+    311           * @brief   Call to send out a Clear Weekly Schedule Command
+    312           *
+    313           * @param   srcEP - Sending application's endpoint
+    314           * @param   dstAddr - where you want the message to go
+    315           * @param   seqNum - transaction sequence number
+    316           *
+    317           * @return  ZStatus_t
+    318           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    319          ZStatus_t zclHVAC_SendClearWeeklySchedule( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendClearWeeklySchedule:
+    320                                                     uint8 disableDefaultRsp, uint8 seqNum )
+    321          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 0
+    322            // no payload
+    323          
+    324            return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    325                                    COMMAND_THERMOSTAT_CLEAR_WEEKLY_SCHEDULE, TRUE,
+    326                                    ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 0, 0 );
+   \   000005                ; Setup parameters for call to function zcl_SendCommand
+   \   000005   E4           CLR       A
+   \   000006   F5..         MOV       ?V2,A
+   \   000008   F5..         MOV       ?V3,A
+   \   00000A   78..         MOV       R0,#?V2
+   \   00000C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00000F   78..         MOV       R0,#?V2
+   \   000011   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000014   ED           MOV       A,R5
+   \   000015   F5..         MOV       ?V1,A
+   \   000017   78..         MOV       R0,#?V1
+   \   000019   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   00001C   78..         MOV       R0,#?V2
+   \   00001E   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000021   EC           MOV       A,R4
+   \   000022   F5..         MOV       ?V1,A
+   \   000024   78..         MOV       R0,#?V1
+   \   000026   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000029   75..00       MOV       ?V1,#0x0
+   \   00002C   78..         MOV       R0,#?V1
+   \   00002E   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000031   75..01       MOV       ?V1,#0x1
+   \   000034   78..         MOV       R0,#?V1
+   \   000036   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000039   75..03       MOV       ?V1,#0x3
+   \   00003C                REQUIRE ?Subroutine4
+   \   00003C                ; // Fall through to label ?Subroutine4
+    327          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine4:
+   \   000000   78..         MOV       R0,#?V1
+   \   000002   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000005   7C01         MOV       R4,#0x1
+   \   000007   7D02         MOV       R5,#0x2
+   \   000009   12....       LCALL     ??Subroutine63_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_108:
+   \   00000C   80..         SJMP      ??Subroutine59_0
+    328          
+    329          /*********************************************************************
+    330           * @fn      zclHVAC_SendGetRelayStatusLog
+    331           *
+    332           * @brief   Call to send out a Get Relay Status Log Command
+    333           *
+    334           * @param   srcEP - Sending application's endpoint
+    335           * @param   dstAddr - where you want the message to go
+    336           * @param   seqNum - transaction sequence number
+    337           *
+    338           * @return  ZStatus_t
+    339           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    340          ZStatus_t zclHVAC_SendGetRelayStatusLog( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendGetRelayStatusLog:
+    341                                                   uint8 disableDefaultRsp, uint8 seqNum )
+    342          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 0
+    343            // no payload
+    344          
+    345            return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    346                                    COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG, TRUE,
+    347                                    ZCL_FRAME_CLIENT_SERVER_DIR, disableDefaultRsp, 0, seqNum, 0, 0 );
+   \   000005                ; Setup parameters for call to function zcl_SendCommand
+   \   000005   E4           CLR       A
+   \   000006   F5..         MOV       ?V2,A
+   \   000008   F5..         MOV       ?V3,A
+   \   00000A   78..         MOV       R0,#?V2
+   \   00000C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00000F   78..         MOV       R0,#?V2
+   \   000011   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000014   ED           MOV       A,R5
+   \   000015   F5..         MOV       ?V1,A
+   \   000017   78..         MOV       R0,#?V1
+   \   000019   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   00001C   78..         MOV       R0,#?V2
+   \   00001E   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000021   EC           MOV       A,R4
+   \   000022   F5..         MOV       ?V1,A
+   \   000024   78..         MOV       R0,#?V1
+   \   000026   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000029   75..00       MOV       ?V1,#0x0
+   \   00002C   78..         MOV       R0,#?V1
+   \   00002E   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000031   75..01       MOV       ?V1,#0x1
+   \   000034   78..         MOV       R0,#?V1
+   \   000036   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000039   75..04       MOV       ?V1,#0x4
+   \   00003C   80..         SJMP      ?Subroutine4
+    348          }
+    349          
+    350          /*********************************************************************
+    351           * @fn      zclHVAC_SendGetWeeklyScheduleRsp
+    352           *
+    353           * @brief   Call to send out a Get Weekly Schedule Response Command
+    354           *
+    355           * @param   srcEP - Sending application's endpoint
+    356           * @param   dstAddr - where you want the message to go
+    357           * @param   pPayload - payload for Get Weekly Schedule rsp
+    358           * @param   seqNum - transaction sequence number
+    359           *
+    360           * @return  ZStatus_t
+    361           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    362          ZStatus_t zclHVAC_SendGetWeeklyScheduleRsp( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendGetWeeklyScheduleRsp:
+    363                                                      zclThermostatWeeklySchedule_t *pPayload,
+    364                                                      uint8 disableDefaultRsp, uint8 seqNum )
+    365          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000                REQUIRE ?V8
+   \   000000                REQUIRE ?V9
+   \   000000                REQUIRE ?V10
+   \   000000                REQUIRE ?V11
+   \   000000                REQUIRE ?V12
+   \   000000                REQUIRE ?V13
+   \   000000                REQUIRE ?V14
+   \   000000                REQUIRE ?V15
+   \   000000   74E8         MOV       A,#-0x18
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 24
+   \   000005                ; Auto size: 0
+   \   000005   12....       LCALL     ?Subroutine38 & 0xFFFF
+    366            uint8 i;
+    367            uint8 modeBuff;   // buffer to determine how to incorporate heat/cool set points
+    368            uint8 *pBuf;    // variable length payload
+    369            uint8 offset;
+    370            uint16 arrayRecordSize;    // number of bytes in record array
+    371            uint16 calculatedBufSize;
+    372            ZStatus_t status;
+    373          
+    374          
+    375            modeBuff = pPayload->modeForSequence;    // store the modeForSequence in buffer
+    376          
+    377            // if either the heat or cool set points
+    378            if( ( modeBuff == HVAC_THERMOSTAT_MODE_HEAT ) || ( modeBuff == HVAC_THERMOSTAT_MODE_COOL ) )
+   \                     ??CrossCallReturnLabel_67:
+   \   000008   6005         JZ        ??zclHVAC_SendGetWeeklyScheduleRsp_0
+   \   00000A   7401         MOV       A,#0x1
+   \   00000C   6E           XRL       A,R6
+   \   00000D   700C         JNZ       ??zclHVAC_SendGetWeeklyScheduleRsp_1
+    379            {
+    380              // calculate the number of transitions multiplied by size of transitionTime and heatSetPoint/coolSetPoint
+    381              arrayRecordSize = ( pPayload->numberOfTransitionsForSequence * PAYLOAD_LEN_WEEKLY_SCHEDULE_COOL_HEAT_MODE );
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_0:
+   \   00000F   12....       LCALL     ?Subroutine21 & 0xFFFF
+    382            }
+   \                     ??CrossCallReturnLabel_27:
+   \   000012   12....       LCALL     ?S_SHL
+   \   000015   A8..         MOV       R0,?V0
+   \   000017   A9..         MOV       R1,?V1
+   \   000019   8008         SJMP      ??CrossCallReturnLabel_45
+    383            // if both cool and heat set points
+    384            else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_1:
+   \   00001B   7402         MOV       A,#0x2
+   \   00001D   6E           XRL       A,R6
+   \   00001E   705D         JNZ       ??zclHVAC_SendGetWeeklyScheduleRsp_2
+    385            {
+    386              // calculate the number of transitions multiplied by size of transitionTime, heatSetPoint, and coolSetPoint
+    387              arrayRecordSize = ( pPayload->numberOfTransitionsForSequence * PAYLOAD_LEN_WEEKLY_SCHEDULE_BOTH_MODES );
+   \   000020   12....       LCALL     ?Subroutine28 & 0xFFFF
+    388            }
+    389            else
+    390            {
+    391              return ( ZFailure );    // invalid data
+    392            }
+    393          
+    394            // get a buffer large enough to hold the whole packet
+    395            calculatedBufSize = ( PAYLOAD_LEN_WEEKLY_SCHEDULE + arrayRecordSize );
+   \                     ??CrossCallReturnLabel_45:
+   \   000023   12....       LCALL     ?Subroutine33 & 0xFFFF
+    396          
+    397            pBuf = zcl_mem_alloc( calculatedBufSize );
+    398            if( !pBuf )
+   \                     ??CrossCallReturnLabel_53:
+   \   000026   6055         JZ        ??zclHVAC_SendGetWeeklyScheduleRsp_2
+    399            {
+    400              return ( ZFailure );  // no memory
+    401            }
+    402          
+    403            // over-the-air is always little endian. Break into a byte stream.
+    404            pBuf[0] = pPayload->numberOfTransitionsForSequence;
+   \   000028   12....       LCALL     ?Subroutine6 & 0xFFFF
+    405            pBuf[1] = pPayload->dayOfWeekForSequence;
+    406            pBuf[2] = pPayload->modeForSequence;
+    407            offset = 3;
+    408            for( i = 0; i < ( pPayload->numberOfTransitionsForSequence ); i++ )
+   \                     ??CrossCallReturnLabel_3:
+   \   00002B   8025         SJMP      ??zclHVAC_SendGetWeeklyScheduleRsp_3
+    409            {
+    410              if( modeBuff == HVAC_THERMOSTAT_MODE_HEAT )   // heat set point
+    411              {
+    412                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime );
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_4:
+   \   00002D   12....       LCALL     ?Subroutine8 & 0xFFFF
+    413                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime );
+    414                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint );
+    415                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint );
+    416              }
+   \                     ??CrossCallReturnLabel_7:
+   \   000030   C0E0         PUSH      A
+   \   000032   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_63:
+   \   000035   D0E0         POP       A
+   \   000037   12....       LCALL     ?Subroutine18 & 0xFFFF
+   \                     ??CrossCallReturnLabel_21:
+   \   00003A   C0E0         PUSH      A
+   \   00003C   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_64:
+   \   00003F   D0E0         POP       A
+   \   000041   12....       LCALL     ?Subroutine20 & 0xFFFF
+   \                     ??CrossCallReturnLabel_25:
+   \   000044   A3           INC       DPTR
+   \   000045   A3           INC       DPTR
+   \   000046   A3           INC       DPTR
+   \   000047   E0           MOVX      A,@DPTR
+   \   000048   C0E0         PUSH      A
+   \   00004A   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_65:
+   \   00004D   D0E0         POP       A
+   \   00004F   F0           MOVX      @DPTR,A
+   \   000050   09           INC       R1
+   \   000051   0A           INC       R2
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_3:
+   \   000052   85..82       MOV       DPL,?V2
+   \   000055   85..83       MOV       DPH,?V3
+   \   000058   E0           MOVX      A,@DPTR
+   \   000059   F8           MOV       R0,A
+   \   00005A   EA           MOV       A,R2
+   \   00005B   C3           CLR       C
+   \   00005C   98           SUBB      A,R0
+   \   00005D   5022         JNC       ??zclHVAC_SendGetWeeklyScheduleRsp_5
+   \   00005F   12....       LCALL     ?Subroutine39 & 0xFFFF
+   \                     ??CrossCallReturnLabel_69:
+   \   000062   12....       LCALL     ?S_SHL
+   \   000065   85....       MOV       ?V14,?V4
+   \   000068   85....       MOV       ?V15,?V5
+   \   00006B   EE           MOV       A,R6
+   \   00006C   60BF         JZ        ??zclHVAC_SendGetWeeklyScheduleRsp_4
+    417              else if( modeBuff == HVAC_THERMOSTAT_MODE_COOL )    // cool set point
+   \   00006E   7401         MOV       A,#0x1
+   \   000070   6E           XRL       A,R6
+   \   000071   60BA         JZ        ??zclHVAC_SendGetWeeklyScheduleRsp_4
+    418              {
+    419                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].transitionTime );
+    420                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].transitionTime );
+    421                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint );
+    422                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint );
+    423              }
+    424              else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )    // both cool and heat set points
+   \   000073   7402         MOV       A,#0x2
+   \   000075   6E           XRL       A,R6
+   \   000076   7005         JNZ       ??zclHVAC_SendGetWeeklyScheduleRsp_2
+    425              {
+    426                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime );
+   \   000078   12....       LCALL     ?Subroutine5 & 0xFFFF
+    427                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime );
+    428                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint );
+    429                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint );
+    430                pBuf[offset++] = LO_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint );
+    431                pBuf[offset++] = HI_UINT16( pPayload->sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint );
+    432              }
+   \                     ??CrossCallReturnLabel_1:
+   \   00007B   80C7         SJMP      ??CrossCallReturnLabel_25
+    433              else
+    434              {
+    435                return ( ZFailure );    // unsupported mode
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_2:
+   \   00007D   7901         MOV       R1,#0x1
+   \   00007F   8050         SJMP      ??zclHVAC_SendGetWeeklyScheduleRsp_6
+    436              }
+    437            }
+    438          
+    439            status = zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    440                                     COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RSP, TRUE,
+    441                                     ZCL_FRAME_SERVER_CLIENT_DIR, disableDefaultRsp, 0, seqNum, calculatedBufSize, pBuf );
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_5:
+   \   000081                ; Setup parameters for call to function zcl_SendCommand
+   \   000081   78..         MOV       R0,#?V0
+   \   000083   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000086   78..         MOV       R0,#?V6
+   \   000088   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00008B   741D         MOV       A,#0x1d
+   \   00008D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000090   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_42:
+   \   000093   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000096   E4           CLR       A
+   \   000097   F5..         MOV       ?V2,A
+   \   000099   F5..         MOV       ?V3,A
+   \   00009B   78..         MOV       R0,#?V2
+   \   00009D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000A0   741F         MOV       A,#0x1f
+   \   0000A2   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000A5   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_43:
+   \   0000A8   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000AB   75..01       MOV       ?V2,#0x1
+   \   0000AE   78..         MOV       R0,#?V2
+   \   0000B0   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000B3   78..         MOV       R0,#?V2
+   \   0000B5   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000B8   75..00       MOV       ?V2,#0x0
+   \   0000BB   78..         MOV       R0,#?V2
+   \   0000BD   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000C0   12....       LCALL     ?Subroutine42 & 0xFFFF
+   \                     ??CrossCallReturnLabel_105:
+   \   0000C3   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000C6   E9           MOV       A,R1
+   \   0000C7   FE           MOV       R6,A
+    442            zcl_mem_free( pBuf );
+   \   0000C8                ; Setup parameters for call to function osal_mem_free
+   \   0000C8   AA..         MOV       R2,?V0
+   \   0000CA   AB..         MOV       R3,?V1
+   \   0000CC   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+    443          
+    444            return status;
+   \   0000CF   EE           MOV       A,R6
+   \   0000D0   F9           MOV       R1,A
+   \                     ??zclHVAC_SendGetWeeklyScheduleRsp_6:
+   \   0000D1   02....       LJMP      ?Subroutine1 & 0xFFFF
+    445          }
+    446          
+    447          /*********************************************************************
+    448           * @fn      zclHVAC_SendGetRelayStatusLogRsp
+    449           *
+    450           * @brief   Call to send out a Get Relay Status Log Response Command
+    451           *
+    452           * @param   srcEP - Sending application's endpoint
+    453           * @param   dstAddr - where you want the message to go
+    454           * @param   pPayload - payload for Get Relay Status Log rsp
+    455           * @param   seqNum - transaction sequence number
+    456           *
+    457           * @return  ZStatus_t
+    458           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    459          ZStatus_t zclHVAC_SendGetRelayStatusLogRsp( uint8 srcEP, afAddrType_t *dstAddr,
+   \                     zclHVAC_SendGetRelayStatusLogRsp:
+    460                                                      zclThermostatGetRelayStatusLogRsp_t *pPayload,
+    461                                                      uint8 disableDefaultRsp, uint8 seqNum )
+    462          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 11
+   \   000005   74F5         MOV       A,#-0xb
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+   \   00000A   E9           MOV       A,R1
+   \   00000B   FE           MOV       R6,A
+    463            uint8 buf[PAYLOAD_LEN_GET_RELAY_STATUS_LOG_RSP];
+    464          
+    465            buf[0] = LO_UINT16( pPayload->timeOfDay );
+   \   00000C   8C82         MOV       DPL,R4
+   \   00000E   8D83         MOV       DPH,R5
+   \   000010   12....       LCALL     ?Subroutine29 & 0xFFFF
+    466            buf[1] = HI_UINT16( pPayload->timeOfDay );
+   \                     ??CrossCallReturnLabel_46:
+   \   000013   8C82         MOV       DPL,R4
+   \   000015   8D83         MOV       DPH,R5
+   \   000017   A3           INC       DPTR
+   \   000018   E0           MOVX      A,@DPTR
+   \   000019   C0E0         PUSH      A
+   \   00001B   7401         MOV       A,#0x1
+   \   00001D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000020   D0E0         POP       A
+   \   000022   F0           MOVX      @DPTR,A
+    467            buf[2] = LO_UINT16( pPayload->relayStatus );
+   \   000023   EC           MOV       A,R4
+   \   000024   2402         ADD       A,#0x2
+   \   000026   12....       LCALL     ?Subroutine40 & 0xFFFF
+   \                     ??CrossCallReturnLabel_70:
+   \   000029   7402         MOV       A,#0x2
+   \   00002B   12....       LCALL     ?XSTACK_DISP0_8
+   \   00002E   12....       LCALL     ?Subroutine30 & 0xFFFF
+    468            buf[3] = HI_UINT16( pPayload->relayStatus );
+   \                     ??CrossCallReturnLabel_109:
+   \   000031   C0E0         PUSH      A
+   \   000033   7403         MOV       A,#0x3
+   \   000035   12....       LCALL     ?XSTACK_DISP0_8
+   \   000038   D0E0         POP       A
+   \   00003A   F0           MOVX      @DPTR,A
+    469            buf[4] = LO_UINT16( pPayload->localTemperature );
+   \   00003B   EC           MOV       A,R4
+   \   00003C   2404         ADD       A,#0x4
+   \   00003E   12....       LCALL     ?Subroutine40 & 0xFFFF
+   \                     ??CrossCallReturnLabel_71:
+   \   000041   7404         MOV       A,#0x4
+   \   000043   12....       LCALL     ?XSTACK_DISP0_8
+   \   000046   12....       LCALL     ?Subroutine30 & 0xFFFF
+    470            buf[5] = HI_UINT16( pPayload->localTemperature );
+   \                     ??CrossCallReturnLabel_110:
+   \   000049   C0E0         PUSH      A
+   \   00004B   7405         MOV       A,#0x5
+   \   00004D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000050   D0E0         POP       A
+   \   000052   12....       LCALL     ?Subroutine31 & 0xFFFF
+    471            buf[6] = pPayload->humidity;
+   \                     ??CrossCallReturnLabel_48:
+   \   000055   C0E0         PUSH      A
+   \   000057   7406         MOV       A,#0x6
+   \   000059   12....       LCALL     ?XSTACK_DISP0_8
+   \   00005C   D0E0         POP       A
+   \   00005E   F0           MOVX      @DPTR,A
+    472            buf[7] = LO_UINT16( pPayload->setPoint );
+   \   00005F   EC           MOV       A,R4
+   \   000060   2407         ADD       A,#0x7
+   \   000062   12....       LCALL     ?Subroutine40 & 0xFFFF
+   \                     ??CrossCallReturnLabel_72:
+   \   000065   7407         MOV       A,#0x7
+   \   000067   12....       LCALL     ?XSTACK_DISP0_8
+   \   00006A   12....       LCALL     ?Subroutine30 & 0xFFFF
+    473            buf[8] = HI_UINT16( pPayload->setPoint );
+   \                     ??CrossCallReturnLabel_111:
+   \   00006D   C0E0         PUSH      A
+   \   00006F   7408         MOV       A,#0x8
+   \   000071   12....       LCALL     ?XSTACK_DISP0_8
+   \   000074   D0E0         POP       A
+   \   000076   F0           MOVX      @DPTR,A
+    474            buf[9] = LO_UINT16( pPayload->unreadEntries );
+   \   000077   EC           MOV       A,R4
+   \   000078   2409         ADD       A,#0x9
+   \   00007A   12....       LCALL     ?Subroutine53 & 0xFFFF
+   \                     ??CrossCallReturnLabel_91:
+   \   00007D   C0E0         PUSH      A
+   \   00007F   7409         MOV       A,#0x9
+   \   000081   12....       LCALL     ?XSTACK_DISP0_8
+   \   000084   D0E0         POP       A
+   \   000086   12....       LCALL     ??Subroutine64_0 & 0xFFFF
+    475            buf[10] = HI_UINT16( pPayload->unreadEntries );
+   \                     ??CrossCallReturnLabel_112:
+   \   000089   C0E0         PUSH      A
+   \   00008B   740A         MOV       A,#0xa
+   \   00008D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000090   D0E0         POP       A
+   \   000092   F0           MOVX      @DPTR,A
+    476          
+    477            return zcl_SendCommand( srcEP, dstAddr, ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+    478                                    COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RSP, TRUE,
+    479                                    ZCL_FRAME_SERVER_CLIENT_DIR, disableDefaultRsp, 0,
+    480                                    seqNum, PAYLOAD_LEN_GET_RELAY_STATUS_LOG_RSP, buf );
+   \   000093                ; Setup parameters for call to function zcl_SendCommand
+   \   000093   A8..         MOV       R0,?XSP + 0
+   \   000095   A9..         MOV       R1,?XSP + 1
+   \   000097   88..         MOV       ?V0,R0
+   \   000099   89..         MOV       ?V1,R1
+   \   00009B   78..         MOV       R0,#?V0
+   \   00009D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000A0   75..0B       MOV       ?V0,#0xb
+   \   0000A3   75..00       MOV       ?V1,#0x0
+   \   0000A6   78..         MOV       R0,#?V0
+   \   0000A8   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000AB   741A         MOV       A,#0x1a
+   \   0000AD   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000B0   E0           MOVX      A,@DPTR
+   \   0000B1   F5..         MOV       ?V0,A
+   \   0000B3   78..         MOV       R0,#?V0
+   \   0000B5   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000B8   E4           CLR       A
+   \   0000B9   F5..         MOV       ?V0,A
+   \   0000BB   78..         MOV       R0,#?V0
+   \   0000BD   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000C0   741C         MOV       A,#0x1c
+   \   0000C2   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000C5   E0           MOVX      A,@DPTR
+   \   0000C6   F5..         MOV       ?V0,A
+   \   0000C8   78..         MOV       R0,#?V0
+   \   0000CA   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000CD   75..01       MOV       ?V0,#0x1
+   \   0000D0   78..         MOV       R0,#?V0
+   \   0000D2   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000D5   78..         MOV       R0,#?V0
+   \   0000D7   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000DA   78..         MOV       R0,#?V0
+   \   0000DC   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   0000DF   7C01         MOV       R4,#0x1
+   \   0000E1   7D02         MOV       R5,#0x2
+   \   0000E3   EE           MOV       A,R6
+   \   0000E4   12....       LCALL     ??Subroutine62_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_107:
+   \   0000E7   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000EA                REQUIRE ?Subroutine2
+   \   0000EA                ; // Fall through to label ?Subroutine2
+    481          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine2:
+   \   000000   740B         MOV       A,#0xb
+   \   000002   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000005                REQUIRE ??Subroutine61_0
+   \   000005                ; // Fall through to label ??Subroutine61_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine61_0:
+   \   000000   7F02         MOV       R7,#0x2
+   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine40:
+   \   000000   12....       LCALL     ?Subroutine53 & 0xFFFF
+   \                     ??CrossCallReturnLabel_93:
+   \   000003   F5..         MOV       ?V0,A
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine53:
+   \   000000   F8           MOV       R0,A
+   \   000001   E4           CLR       A
+   \   000002   3D           ADDC      A,R5
+   \   000003   F9           MOV       R1,A
+   \   000004   8882         MOV       DPL,R0
+   \   000006   F583         MOV       DPH,A
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine30:
+   \   000000   E5..         MOV       A,?V0
+   \   000002                REQUIRE ??Subroutine64_0
+   \   000002                ; // Fall through to label ??Subroutine64_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine64_0:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   8882         MOV       DPL,R0
+   \   000003   8983         MOV       DPH,R1
+   \   000005   A3           INC       DPTR
+   \   000006   E0           MOVX      A,@DPTR
+   \   000007   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine29:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   85..82       MOV       DPL,?XSP + 0
+   \   000004   85..83       MOV       DPH,?XSP + 1
+   \   000007   F0           MOVX      @DPTR,A
+   \   000008   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine31:
+   \   000000   12....       LCALL     ?Subroutine52 & 0xFFFF
+   \                     ??CrossCallReturnLabel_90:
+   \   000003   A3           INC       DPTR
+   \   000004   A3           INC       DPTR
+   \   000005   E0           MOVX      A,@DPTR
+   \   000006   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine52:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   8C82         MOV       DPL,R4
+   \   000003   8D83         MOV       DPH,R5
+   \   000005   A3           INC       DPTR
+   \   000006   A3           INC       DPTR
+   \   000007   A3           INC       DPTR
+   \   000008   A3           INC       DPTR
+   \   000009   22           RET
+    482          
+    483          /*********************************************************************
+    484           * @fn      zclHVAC_FindCallbacks
+    485           *
+    486           * @brief   Find the callbacks for an endpoint
+    487           *
+    488           * @param   endpoint
+    489           *
+    490           * @return  pointer to the callbacks
+    491           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    492          static zclHVAC_AppCallbacks_t *zclHVAC_FindCallbacks( uint8 endpoint )
+   \                     zclHVAC_FindCallbacks:
+    493          {
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+    494            zclHVACCBRec_t *pCBs;
+    495            pCBs = zclHVACCBs;
+   \   000004   90....       MOV       DPTR,#zclHVACCBs
+    496            while ( pCBs )
+    497            {
+    498              if ( pCBs->endpoint == endpoint )
+    499                return ( pCBs->CBs );
+    500              pCBs = pCBs->next;
+   \                     ??zclHVAC_FindCallbacks_0:
+   \   000007   12....       LCALL     ??Subroutine65_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_113:
+   \   00000A   6016         JZ        ??zclHVAC_FindCallbacks_1
+   \   00000C   8A82         MOV       DPL,R2
+   \   00000E   8B83         MOV       DPH,R3
+   \   000010   A3           INC       DPTR
+   \   000011   A3           INC       DPTR
+   \   000012   E0           MOVX      A,@DPTR
+   \   000013   69           XRL       A,R1
+   \   000014   8A82         MOV       DPL,R2
+   \   000016   8B83         MOV       DPH,R3
+   \   000018   70ED         JNZ       ??zclHVAC_FindCallbacks_0
+   \   00001A   A3           INC       DPTR
+   \   00001B   A3           INC       DPTR
+   \   00001C   A3           INC       DPTR
+   \   00001D   12....       LCALL     ?Subroutine49 & 0xFFFF
+    501            }
+   \                     ??CrossCallReturnLabel_118:
+   \   000020   8004         SJMP      ??zclHVAC_FindCallbacks_2
+    502            return ( (zclHVAC_AppCallbacks_t *)NULL );
+   \                     ??zclHVAC_FindCallbacks_1:
+   \   000022   7A00         MOV       R2,#0x0
+   \   000024   7B00         MOV       R3,#0x0
+   \                     ??zclHVAC_FindCallbacks_2:
+   \   000026   D083         POP       DPH
+   \   000028   D082         POP       DPL
+   \   00002A   02....       LJMP      ?BRET
+    503          }
+    504          
+    505          /*********************************************************************
+    506           * @fn      zclHVAC_HdlIncoming
+    507           *
+    508           * @brief   Callback from ZCL to process incoming Commands specific
+    509           *          to this cluster library or Profile commands for attributes
+    510           *          that aren't in the attribute list
+    511           *
+    512           * @param   pInMsg - pointer to the incoming message
+    513           *
+    514           * @return  ZStatus_t
+    515           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    516          static ZStatus_t zclHVAC_HdlIncoming( zclIncoming_t *pInMsg )
+   \                     zclHVAC_HdlIncoming:
+    517          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 0
+   \   000005   EA           MOV       A,R2
+   \   000006   FE           MOV       R6,A
+   \   000007   EB           MOV       A,R3
+   \   000008   FF           MOV       R7,A
+    518            ZStatus_t stat = ZSuccess;
+    519          
+    520          #if defined ( INTER_PAN )
+    521            if ( StubAPS_InterPan( pInMsg->msg->srcAddr.panId, pInMsg->msg->srcAddr.endPoint ) )
+    522              return ( stat ); // Cluster not supported thru Inter-PAN
+    523          #endif
+    524            if ( zcl_ClusterCmd( pInMsg->hdr.fc.type ) )
+   \   000009   8A82         MOV       DPL,R2
+   \   00000B   F583         MOV       DPH,A
+   \   00000D   A3           INC       DPTR
+   \   00000E   A3           INC       DPTR
+   \   00000F   E0           MOVX      A,@DPTR
+   \   000010   5407         ANL       A,#0x7
+   \   000012   6401         XRL       A,#0x1
+   \   000014   7022         JNZ       ??zclHVAC_HdlIncoming_0
+    525            {
+    526              // Is this a manufacturer specific command?
+    527              if ( pInMsg->hdr.fc.manuSpecific == 0 )
+    528              {
+    529                stat = zclHVAC_HdlInSpecificCommands( pInMsg );
+   \   000016                ; Setup parameters for call to function zclHVAC_FindCallbacks
+   \   000016   8A82         MOV       DPL,R2
+   \   000018   8B83         MOV       DPH,R3
+   \   00001A   E0           MOVX      A,@DPTR
+   \   00001B   F8           MOV       R0,A
+   \   00001C   A3           INC       DPTR
+   \   00001D   E0           MOVX      A,@DPTR
+   \   00001E   C8           XCH       A,R0
+   \   00001F   2414         ADD       A,#0x14
+   \   000021   F582         MOV       DPL,A
+   \   000023   E4           CLR       A
+   \   000024   38           ADDC      A,R0
+   \   000025   F583         MOV       DPH,A
+   \   000027   E0           MOVX      A,@DPTR
+   \   000028   F9           MOV       R1,A
+   \   000029   12....       LCALL     `??zclHVAC_FindCallbacks::?relay`; Banked call to: zclHVAC_FindCallbacks
+   \   00002C   8A..         MOV       ?V0,R2
+   \   00002E   8B..         MOV       ?V1,R3
+   \   000030   AC..         MOV       R4,?V0
+   \   000032   AD..         MOV       R5,?V1
+   \   000034   EA           MOV       A,R2
+   \   000035   4D           ORL       A,R5
+   \   000036   7004         JNZ       ??zclHVAC_HdlIncoming_1
+   \                     ??zclHVAC_HdlIncoming_0:
+   \   000038   7901         MOV       R1,#0x1
+   \   00003A   801F         SJMP      ??zclHVAC_HdlIncoming_2
+   \                     ??zclHVAC_HdlIncoming_1:
+   \   00003C   12....       LCALL     ??Subroutine66_0 & 0xFFFF
+    530              }
+    531              else
+    532              {
+    533                // We don't support any manufacturer specific command -- ignore it.
+    534                stat = ZFailure;
+    535              }
+    536            }
+   \                     ??CrossCallReturnLabel_124:
+   \   00003F   A3           INC       DPTR
+   \   000040   A3           INC       DPTR
+   \   000041   A3           INC       DPTR
+   \   000042   A3           INC       DPTR
+   \   000043   E0           MOVX      A,@DPTR
+   \   000044   6401         XRL       A,#0x1
+   \   000046   7004         JNZ       ??zclHVAC_HdlIncoming_3
+   \   000048   A3           INC       DPTR
+   \   000049   E0           MOVX      A,@DPTR
+   \   00004A   6402         XRL       A,#0x2
+   \                     ??zclHVAC_HdlIncoming_3:
+   \   00004C   700A         JNZ       ??zclHVAC_HdlIncoming_4
+   \   00004E                ; Setup parameters for call to function zclHVAC_ProcessInThermostatCmds
+   \   00004E   EE           MOV       A,R6
+   \   00004F   FA           MOV       R2,A
+   \   000050   EF           MOV       A,R7
+   \   000051   FB           MOV       R3,A
+   \   000052   12....       LCALL     `??zclHVAC_ProcessInThermostatCmds::?relay`; Banked call to: zclHVAC_ProcessInThermostatCmds
+   \   000055   E9           MOV       A,R1
+   \   000056   8002         SJMP      ??zclHVAC_HdlIncoming_5
+   \                     ??zclHVAC_HdlIncoming_4:
+   \   000058   7401         MOV       A,#0x1
+   \                     ??zclHVAC_HdlIncoming_5:
+   \   00005A   F9           MOV       R1,A
+    537            else
+    538            {
+    539              // Handle all the normal (Read, Write...) commands -- should never get here
+    540              stat = ZFailure;
+    541            }
+    542            return ( stat );
+   \                     ??zclHVAC_HdlIncoming_2:
+   \   00005B   02....       LJMP      ??Subroutine61_0 & 0xFFFF
+    543          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine66_0:
+   \   000000   8E82         MOV       DPL,R6
+   \   000002   8F83         MOV       DPH,R7
+   \   000004                REQUIRE ??Subroutine67_0
+   \   000004                ; // Fall through to label ??Subroutine67_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine67_0:
+   \   000000   12....       LCALL     ?Subroutine50 & 0xFFFF
+   \                     ??CrossCallReturnLabel_130:
+   \   000003   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine50:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F8           MOV       R0,A
+   \   000002   A3           INC       DPTR
+   \   000003   E0           MOVX      A,@DPTR
+   \   000004   F583         MOV       DPH,A
+   \   000006   8882         MOV       DPL,R0
+   \   000008   22           RET
+    544          
+    545          /*********************************************************************
+    546           * @fn      zclHVAC_HdlInSpecificCommands
+    547           *
+    548           * @brief   Callback from ZCL to process incoming Commands specific
+    549           *          to this cluster library
+    550          
+    551           * @param   pInMsg - pointer to the incoming message
+    552           *
+    553           * @return  ZStatus_t
+    554           */
+    555          static ZStatus_t zclHVAC_HdlInSpecificCommands( zclIncoming_t *pInMsg )
+    556          {
+    557            ZStatus_t stat = ZSuccess;
+    558            zclHVAC_AppCallbacks_t *pCBs;
+    559          
+    560            // make sure endpoint exists
+    561            pCBs = (void*)zclHVAC_FindCallbacks( pInMsg->msg->endPoint );
+    562            if ( pCBs == NULL )
+    563              return ( ZFailure );
+    564          
+    565            switch ( pInMsg->msg->clusterId )
+    566            {
+    567              case ZCL_CLUSTER_ID_HVAC_PUMP_CONFIG_CONTROL:
+    568                stat = zclHVAC_ProcessInPumpCmds( pInMsg );
+    569                break;
+    570          
+    571              case ZCL_CLUSTER_ID_HVAC_THERMOSTAT:
+    572                stat = zclHVAC_ProcessInThermostatCmds( pInMsg, pCBs );
+    573                break;
+    574          
+    575              default:
+    576                stat = ZFailure;
+    577                break;
+    578            }
+    579          
+    580            return ( stat );
+    581          }
+    582          
+    583          /*********************************************************************
+    584           * @fn      zclHVAC_ProcessInPumpCmds
+    585           *
+    586           * @brief   Callback from ZCL to process incoming Commands specific
+    587           *          to this cluster library on a command ID basis
+    588          
+    589           * @param   pInMsg - pointer to the incoming message
+    590           *
+    591           * @return  ZStatus_t
+    592           */
+    593          static ZStatus_t zclHVAC_ProcessInPumpCmds( zclIncoming_t *pInMsg )
+    594          {
+    595            ZStatus_t stat = ZFailure;
+    596          
+    597            // there are no specific command for this cluster yet.
+    598            // instead of suppressing a compiler warnings( for a code porting reasons )
+    599            // fake unused call here and keep the code skeleton intact
+    600           (void)pInMsg;
+    601            if ( stat != ZFailure )
+    602              zclHVAC_FindCallbacks( 0 );
+    603          
+    604            return ( stat );
+    605          }
+    606          
+    607          /*********************************************************************
+    608           * @fn      zclHVAC_ProcessInThermostatCmds
+    609           *
+    610           * @brief   Callback from ZCL to process incoming Commands specific
+    611           *          to this cluster library on a command ID basis
+    612          
+    613           * @param   pInMsg - pointer to the incoming message
+    614           *
+    615           * @return  ZStatus_t
+    616           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    617          static ZStatus_t zclHVAC_ProcessInThermostatCmds( zclIncoming_t *pInMsg,
+   \                     zclHVAC_ProcessInThermostatCmds:
+    618                                                            zclHVAC_AppCallbacks_t *pCBs )
+    619          {
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 2
+   \   000005   74FE         MOV       A,#-0x2
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+    620            ZStatus_t stat;
+    621          
+    622            if  ( pInMsg->hdr.commandID > COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG )
+   \   00000A   8A82         MOV       DPL,R2
+   \   00000C   8B83         MOV       DPH,R3
+   \   00000E   A3           INC       DPTR
+   \   00000F   A3           INC       DPTR
+   \   000010   A3           INC       DPTR
+   \   000011   A3           INC       DPTR
+   \   000012   A3           INC       DPTR
+   \   000013   A3           INC       DPTR
+   \   000014   A3           INC       DPTR
+   \   000015   E0           MOVX      A,@DPTR
+   \   000016   FE           MOV       R6,A
+   \   000017   C3           CLR       C
+   \   000018   9405         SUBB      A,#0x5
+   \   00001A   4003         JC        $+5
+   \   00001C   02....       LJMP      ??zclHVAC_ProcessInThermostatCmds_0 & 0xFFFF
+    623            {
+    624              return (ZFailure);   // Error ignore the command
+    625            }
+    626          
+    627            // Client-to-Server
+    628            if( zcl_ServerCmd( pInMsg->hdr.fc.direction ) )
+   \   00001F   8A82         MOV       DPL,R2
+   \   000021   8B83         MOV       DPH,R3
+   \   000023   A3           INC       DPTR
+   \   000024   A3           INC       DPTR
+   \   000025   E0           MOVX      A,@DPTR
+   \   000026   5408         ANL       A,#0x8
+   \   000028   6003         JZ        $+5
+   \   00002A   02....       LJMP      ??zclHVAC_ProcessInThermostatCmds_1 & 0xFFFF
+    629            {
+    630              switch( pInMsg->hdr.commandID )
+   \   00002D   EA           MOV       A,R2
+   \   00002E   2408         ADD       A,#0x8
+   \   000030   F8           MOV       R0,A
+   \   000031   E4           CLR       A
+   \   000032   3B           ADDC      A,R3
+   \   000033   F9           MOV       R1,A
+   \   000034   EE           MOV       A,R6
+   \   000035   600F         JZ        ??zclHVAC_ProcessInThermostatCmds_2
+   \   000037   14           DEC       A
+   \   000038   6013         JZ        ??zclHVAC_ProcessInThermostatCmds_3
+   \   00003A   14           DEC       A
+   \   00003B   6015         JZ        ??zclHVAC_ProcessInThermostatCmds_4
+   \   00003D   14           DEC       A
+   \   00003E   6053         JZ        ??zclHVAC_ProcessInThermostatCmds_5
+   \   000040   14           DEC       A
+   \   000041   6056         JZ        ??zclHVAC_ProcessInThermostatCmds_6
+   \   000043   02....       LJMP      ??zclHVAC_ProcessInThermostatCmds_0 & 0xFFFF
+    631              {
+    632                case COMMAND_THERMOSTAT_SETPOINT_RAISE_LOWER:
+    633                  stat = zclThermostat_ProcessInCmd_SetpointRaiseLower( pInMsg, pCBs);
+   \                     ??zclHVAC_ProcessInThermostatCmds_2:
+   \   000046   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_117:
+   \   000049   701B         JNZ       ??zclHVAC_ProcessInThermostatCmds_7
+   \   00004B   807A         SJMP      ??zclHVAC_ProcessInThermostatCmds_0
+    634                  break;
+    635          
+    636                case COMMAND_THERMOSTAT_SET_WEEKLY_SCHEDULE:
+    637                  stat = zclThermostat_ProcessInCmd_SetWeeklySchedule( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_3:
+   \   00004D                ; Setup parameters for call to function zclThermostat_ProcessInCmd_SetWeeklySchedule
+   \   00004D   12....       LCALL     `??zclThermostat_ProcessInCmd_SetWeeklySchedule:`; Banked call to: zclThermostat_ProcessInCmd_SetWeeklySchedule
+   \   000050   8071         SJMP      ??zclHVAC_ProcessInThermostatCmds_8
+    638                  break;
+    639          
+    640                case COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE:
+    641                  stat = zclThermostat_ProcessInCmd_GetWeeklySchedule( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_4:
+   \   000052   EC           MOV       A,R4
+   \   000053   2404         ADD       A,#0x4
+   \   000055   FA           MOV       R2,A
+   \   000056   E4           CLR       A
+   \   000057   3D           ADDC      A,R5
+   \   000058   FB           MOV       R3,A
+   \   000059   EA           MOV       A,R2
+   \   00005A   FC           MOV       R4,A
+   \   00005B   EB           MOV       A,R3
+   \   00005C   FD           MOV       R5,A
+   \   00005D   8A82         MOV       DPL,R2
+   \   00005F   F583         MOV       DPH,A
+   \   000061   12....       LCALL     ??Subroutine65_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_115:
+   \   000064   6061         JZ        ??zclHVAC_ProcessInThermostatCmds_0
+   \                     ??zclHVAC_ProcessInThermostatCmds_7:
+   \   000066   8882         MOV       DPL,R0
+   \   000068   8983         MOV       DPH,R1
+   \   00006A   E0           MOVX      A,@DPTR
+   \   00006B   FA           MOV       R2,A
+   \   00006C   A3           INC       DPTR
+   \   00006D   E0           MOVX      A,@DPTR
+   \   00006E   F583         MOV       DPH,A
+   \   000070   8A82         MOV       DPL,R2
+   \   000072   12....       LCALL     ?Subroutine29 & 0xFFFF
+   \                     ??CrossCallReturnLabel_47:
+   \   000075   8882         MOV       DPL,R0
+   \   000077   8983         MOV       DPH,R1
+   \   000079   12....       LCALL     ??Subroutine68_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_129:
+   \   00007C   C0E0         PUSH      A
+   \   00007E   7401         MOV       A,#0x1
+   \   000080   12....       LCALL     ?XSTACK_DISP0_8
+   \   000083   D0E0         POP       A
+   \   000085   F0           MOVX      @DPTR,A
+   \   000086                ; Setup parameters for indirect call
+   \   000086   AA..         MOV       R2,?XSP + 0
+   \   000088   AB..         MOV       R3,?XSP + 1
+   \   00008A   8C82         MOV       DPL,R4
+   \   00008C   8D83         MOV       DPH,R5
+   \   00008E   12....       LCALL     ??Subroutine67_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_122:
+   \   000091   801B         SJMP      ??zclHVAC_ProcessInThermostatCmds_9
+    642                  break;
+    643          
+    644                case COMMAND_THERMOSTAT_CLEAR_WEEKLY_SCHEDULE:
+    645                  stat = zclThermostat_ProcessInCmd_ClearWeeklySchedule( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_5:
+   \   000093   8C82         MOV       DPL,R4
+   \   000095   8D83         MOV       DPH,R5
+   \   000097   8006         SJMP      ??zclHVAC_ProcessInThermostatCmds_10
+    646                  break;
+    647          
+    648                case COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG:
+    649                  stat = zclThermostat_ProcessInCmd_GetRelayStatusLog( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_6:
+   \   000099   8C82         MOV       DPL,R4
+   \   00009B   8D83         MOV       DPH,R5
+   \   00009D   A3           INC       DPTR
+   \   00009E   A3           INC       DPTR
+   \                     ??zclHVAC_ProcessInThermostatCmds_10:
+   \   00009F   A3           INC       DPTR
+   \   0000A0   A3           INC       DPTR
+   \   0000A1   A3           INC       DPTR
+   \   0000A2   A3           INC       DPTR
+   \   0000A3   A3           INC       DPTR
+   \   0000A4   A3           INC       DPTR
+    650                  break;
+    651          
+    652                default:
+    653                  // Unknown command
+    654                  stat = ZFailure;
+    655                  break;
+    656              }
+    657            }
+   \   0000A5   12....       LCALL     ?Subroutine51 & 0xFFFF
+   \                     ??CrossCallReturnLabel_87:
+   \   0000A8   E582         MOV       A,DPL
+   \   0000AA   4583         ORL       A,DPH
+   \   0000AC   6019         JZ        ??zclHVAC_ProcessInThermostatCmds_0
+   \   0000AE                ; Setup parameters for indirect call
+   \                     ??zclHVAC_ProcessInThermostatCmds_9:
+   \   0000AE   12....       LCALL     ?CALL_IND
+   \   0000B1   8010         SJMP      ??zclHVAC_ProcessInThermostatCmds_8
+    658            // Server-to-Client
+    659            else
+    660            {
+    661              switch( pInMsg->hdr.commandID )
+   \                     ??zclHVAC_ProcessInThermostatCmds_1:
+   \   0000B3   EE           MOV       A,R6
+   \   0000B4   6005         JZ        ??zclHVAC_ProcessInThermostatCmds_11
+   \   0000B6   14           DEC       A
+   \   0000B7   6007         JZ        ??zclHVAC_ProcessInThermostatCmds_12
+   \   0000B9   800C         SJMP      ??zclHVAC_ProcessInThermostatCmds_0
+    662              {
+    663                case COMMAND_THERMOSTAT_GET_WEEKLY_SCHEDULE_RSP:
+    664                  stat = zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_11:
+   \   0000BB                ; Setup parameters for call to function zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+   \   0000BB   12....       LCALL     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR; Banked call to: zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+   \   0000BE   8003         SJMP      ??zclHVAC_ProcessInThermostatCmds_8
+    665                  break;
+    666          
+    667                case COMMAND_THERMOSTAT_GET_RELAY_STATUS_LOG_RSP:
+    668                  stat = zclThermostat_ProcessInCmd_GetRelayStatusLogRsp( pInMsg, pCBs );
+   \                     ??zclHVAC_ProcessInThermostatCmds_12:
+   \   0000C0                ; Setup parameters for call to function zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+   \   0000C0   12....       LCALL     ??zclThermostat_ProcessInCmd_GetRelayStatusLogR; Banked call to: zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+   \                     ??zclHVAC_ProcessInThermostatCmds_8:
+   \   0000C3   E9           MOV       A,R1
+   \   0000C4   F9           MOV       R1,A
+    669                  break;
+   \   0000C5   8002         SJMP      ??zclHVAC_ProcessInThermostatCmds_13
+    670          
+    671                default:
+    672                  // Unknown command
+    673                  stat = ZFailure;
+   \                     ??zclHVAC_ProcessInThermostatCmds_0:
+   \   0000C7   7901         MOV       R1,#0x1
+    674                  break;
+    675              }
+    676            }
+    677          
+    678            return ( stat );
+   \                     ??zclHVAC_ProcessInThermostatCmds_13:
+   \   0000C9   7402         MOV       A,#0x2
+   \   0000CB   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000CE   7F01         MOV       R7,#0x1
+   \   0000D0   02....       LJMP      ?BANKED_LEAVE_XDATA
+    679          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine68_0:
+   \   000000   12....       LCALL     ?Subroutine50 & 0xFFFF
+   \                     ??CrossCallReturnLabel_131:
+   \   000003   A3           INC       DPTR
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine51:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F8           MOV       R0,A
+   \   000002   A3           INC       DPTR
+   \   000003   E0           MOVX      A,@DPTR
+   \   000004   8882         MOV       DPL,R0
+   \   000006   F583         MOV       DPH,A
+   \   000008   22           RET
+    680          
+    681          /*********************************************************************
+    682           * @fn      zclThermostat_ProcessInCmd_SetpointRaiseLower
+    683           *
+    684           * @brief   Process in the received Setpoint Raise/Lower cmd
+    685           *
+    686           * @param   pInMsg - pointer to the incoming message
+    687           * @param   pCBs - pointer to the application callbacks
+    688           *
+    689           * @return  ZStatus_t
+    690           */
+    691          static ZStatus_t zclThermostat_ProcessInCmd_SetpointRaiseLower( zclIncoming_t *pInMsg,
+    692                                                                         zclHVAC_AppCallbacks_t *pCBs )
+    693          {
+    694            if ( pCBs->pfnHVAC_SetpointRaiseLower )
+    695            {
+    696              zclCmdThermostatSetpointRaiseLowerPayload_t cmd;
+    697          
+    698              cmd.mode = pInMsg->pData[0];
+    699              cmd.amount = pInMsg->pData[1];
+    700          
+    701              return ( pCBs->pfnHVAC_SetpointRaiseLower( &cmd ) );
+    702            }
+    703          
+    704            return ( ZFailure );
+    705          }
+    706          
+    707          /*********************************************************************
+    708           * @fn      zclThermostat_ProcessInCmd_SetWeeklySchedule
+    709           *
+    710           * @brief   Process in the received Set Weekly Schedule cmd
+    711           *
+    712           * @param   pInMsg - pointer to the incoming message
+    713           * @param   pCBs - pointer to the application callbacks
+    714           *
+    715           * @return  ZStatus_t
+    716           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine17:
+   \   000000   AA..         MOV       R2,?XSP + 0
+   \   000002   AB..         MOV       R3,?XSP + 1
+   \   000004                REQUIRE ??Subroutine66_0
+   \   000004                ; // Fall through to label ??Subroutine66_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    717          static ZStatus_t zclThermostat_ProcessInCmd_SetWeeklySchedule( zclIncoming_t *pInMsg,
+   \                     zclThermostat_ProcessInCmd_SetWeeklySchedule:
+    718                                                                         zclHVAC_AppCallbacks_t *pCBs )
+    719          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 5
+   \   000005   74FB         MOV       A,#-0x5
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+    720            uint8 i;
+    721            uint8 offset;
+    722            uint8 modeBuff;   // buffer to determine how to incorporate heat/cool set points
+    723            uint8 numTransitionsBuf;  // buffer for number of transitions for sequence
+    724            uint16 arrayRecordSize;
+    725            zclThermostatWeeklySchedule_t cmd;
+    726            ZStatus_t status;
+    727          
+    728            if ( pCBs->pfnHVAC_SetWeeklySchedule )
+   \   00000A   EC           MOV       A,R4
+   \   00000B   2402         ADD       A,#0x2
+   \   00000D   12....       LCALL     ?Subroutine41 & 0xFFFF
+   \                     ??CrossCallReturnLabel_73:
+   \   000010   7003         JNZ       $+5
+   \   000012   02....       LJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_0 & 0xFFFF
+    729            {
+    730              numTransitionsBuf = pInMsg->pData[0];
+   \   000015   12....       LCALL     ?Subroutine15 & 0xFFFF
+    731              modeBuff = pInMsg->pData[2];    // store the modeForSequence in buffer
+    732          
+    733              // if either the heat or cool set points
+    734              if( ( modeBuff == HVAC_THERMOSTAT_MODE_HEAT ) || ( modeBuff == HVAC_THERMOSTAT_MODE_COOL ) )
+   \                     ??CrossCallReturnLabel_18:
+   \   000018   6006         JZ        ??zclThermostat_ProcessInCmd_SetWeeklySchedule_1
+   \   00001A   7401         MOV       A,#0x1
+   \   00001C   65..         XRL       A,?V3
+   \   00001E   7012         JNZ       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_2
+    735              {
+    736                // calculate the number of transitions multiplied by size of transitionTime and heatSetPoint/coolSetPoint
+    737                arrayRecordSize = ( numTransitionsBuf * 4 );
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_1:
+   \   000020   8A..         MOV       ?V4,R2
+   \   000022   75..00       MOV       ?V5,#0x0
+   \   000025   7402         MOV       A,#0x2
+   \   000027   78..         MOV       R0,#?V4
+   \   000029   12....       LCALL     ?S_SHL
+   \   00002C   AA..         MOV       R2,?V4
+   \   00002E   AB..         MOV       R3,?V5
+   \   000030   8011         SJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_3
+    738              }
+    739              // if both cool and heat set points
+    740              else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_2:
+   \   000032   7402         MOV       A,#0x2
+   \   000034   65..         XRL       A,?V3
+   \   000036   6003         JZ        $+5
+   \   000038   02....       LJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_0 & 0xFFFF
+    741              {
+    742                // calculate the number of transitions multiplied by size of transitionTime, heatSetPoint, and coolSetPoint
+    743                arrayRecordSize = ( numTransitionsBuf * 6 );
+   \   00003B   EA           MOV       A,R2
+   \   00003C   75F006       MOV       B,#0x6
+   \   00003F   A4           MUL       AB
+   \   000040   FA           MOV       R2,A
+   \   000041   ABF0         MOV       R3,B
+    744              }
+    745              else
+    746              {
+    747                return ( ZFailure );    // invalid mode field
+    748              }
+    749          
+    750              // allocate memory
+    751              cmd.sThermostateSequenceMode.psThermostatModeBoth = zcl_mem_alloc( arrayRecordSize );
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_3:
+   \   000043                ; Setup parameters for call to function osal_mem_alloc
+   \   000043   12....       LCALL     ?Subroutine34 & 0xFFFF
+   \                     ??CrossCallReturnLabel_54:
+   \   000046   12....       LCALL     ?XSTACK_DISP0_8
+   \   000049   EA           MOV       A,R2
+   \   00004A   F0           MOVX      @DPTR,A
+   \   00004B   A3           INC       DPTR
+   \   00004C   EB           MOV       A,R3
+   \   00004D   F0           MOVX      @DPTR,A
+    752              if( !cmd.sThermostateSequenceMode.psThermostatModeBoth )
+   \   00004E   EA           MOV       A,R2
+   \   00004F   49           ORL       A,R1
+   \   000050   7005         JNZ       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_4
+    753              {
+    754                return ZMemError; // no memory
+   \   000052   7910         MOV       R1,#0x10
+   \   000054   02....       LJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_5 & 0xFFFF
+    755              }
+    756          
+    757              cmd.numberOfTransitionsForSequence = numTransitionsBuf;
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_4:
+   \   000057   12....       LCALL     ?Subroutine16 & 0xFFFF
+    758              cmd.dayOfWeekForSequence = pInMsg->pData[1];
+   \                     ??CrossCallReturnLabel_127:
+   \   00005A   C0E0         PUSH      A
+   \   00005C   7401         MOV       A,#0x1
+   \   00005E   12....       LCALL     ?XSTACK_DISP0_8
+   \   000061   D0E0         POP       A
+   \   000063   F0           MOVX      @DPTR,A
+    759              cmd.modeForSequence = modeBuff;
+   \   000064   7402         MOV       A,#0x2
+   \   000066   12....       LCALL     ?XSTACK_DISP0_8
+   \   000069   E5..         MOV       A,?V3
+   \   00006B   F0           MOVX      @DPTR,A
+    760              offset = 3;
+   \   00006C   75..03       MOV       ?V4,#0x3
+    761              for ( i = 0; i < numTransitionsBuf; i++ )
+   \   00006F   75..00       MOV       ?V5,#0x0
+   \   000072   8021         SJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_6
+    762              {
+    763                if ( modeBuff == HVAC_THERMOSTAT_MODE_HEAT )   // heat set point
+    764                {
+    765                  cmd.sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+    766                  cmd.sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    767                  offset += 4;
+    768                }
+    769                else if ( modeBuff == HVAC_THERMOSTAT_MODE_COOL )    // cool set point
+    770                {
+    771                  cmd.sThermostateSequenceMode.psThermostatModeCool[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+    772                  cmd.sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    773                  offset += 4;
+    774                }
+    775                else if ( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )    // both cool and heat set points
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_7:
+   \   000074   7402         MOV       A,#0x2
+   \   000076   65..         XRL       A,?V3
+   \   000078   7069         JNZ       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_0
+    776                {
+    777                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+   \   00007A   12....       LCALL     ?Subroutine11 & 0xFFFF
+    778                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    779                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint = BUILD_UINT16( pInMsg->pData[offset + 4], pInMsg->pData[offset + 5] );
+    780                  offset += 6;
+    781                }
+   \                     ??CrossCallReturnLabel_12:
+   \   00007D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000080   12....       LCALL     ?Subroutine9 & 0xFFFF
+   \                     ??CrossCallReturnLabel_8:
+   \   000083   12....       LCALL     ?XSTACK_DISP0_8
+   \   000086   12....       LCALL     ?Subroutine7 & 0xFFFF
+   \                     ??CrossCallReturnLabel_4:
+   \   000089   12....       LCALL     ?XSTACK_DISP0_8
+   \   00008C   12....       LCALL     ?Subroutine12 & 0xFFFF
+   \                     ??CrossCallReturnLabel_14:
+   \   00008F   25..         ADD       A,?V4
+   \   000091   F5..         MOV       ?V4,A
+   \   000093   05..         INC       ?V5
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_6:
+   \   000095   E5..         MOV       A,?V5
+   \   000097   C3           CLR       C
+   \   000098   95..         SUBB      A,?V2
+   \   00009A   5035         JNC       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_8
+   \   00009C   AA..         MOV       R2,?V5
+   \   00009E   8A..         MOV       ?V6,R2
+   \   0000A0   75..00       MOV       ?V7,#0x0
+   \   0000A3   7402         MOV       A,#0x2
+   \   0000A5   78..         MOV       R0,#?V6
+   \   0000A7   12....       LCALL     ?S_SHL
+   \   0000AA   A8..         MOV       R0,?V6
+   \   0000AC   A9..         MOV       R1,?V7
+   \   0000AE   E5..         MOV       A,?V3
+   \   0000B0   7014         JNZ       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_9
+   \   0000B2   12....       LCALL     ?Subroutine24 & 0xFFFF
+   \                     ??CrossCallReturnLabel_32:
+   \   0000B5   12....       LCALL     ?Subroutine25 & 0xFFFF
+   \                     ??CrossCallReturnLabel_34:
+   \   0000B8   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000BB   12....       LCALL     ?Subroutine10 & 0xFFFF
+   \                     ??CrossCallReturnLabel_10:
+   \   0000BE   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000C1   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_16:
+   \   0000C4   80C9         SJMP      ??CrossCallReturnLabel_14
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_9:
+   \   0000C6   7401         MOV       A,#0x1
+   \   0000C8   65..         XRL       A,?V3
+   \   0000CA   70A8         JNZ       ??zclThermostat_ProcessInCmd_SetWeeklySchedule_7
+   \   0000CC   12....       LCALL     ?Subroutine19 & 0xFFFF
+    782                else
+    783                {
+    784                  return ( ZFailure );    // unsupported mode
+    785                }
+    786              }
+   \                     ??CrossCallReturnLabel_22:
+   \   0000CF   80E4         SJMP      ??CrossCallReturnLabel_32
+    787          
+    788          
+    789              status = ( pCBs->pfnHVAC_SetWeeklySchedule( &cmd ) );
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_8:
+   \   0000D1                ; Setup parameters for indirect call
+   \   0000D1   12....       LCALL     ?Subroutine17 & 0xFFFF
+   \                     ??CrossCallReturnLabel_125:
+   \   0000D4   12....       LCALL     ?CALL_IND
+   \   0000D7   E9           MOV       A,R1
+   \   0000D8   FE           MOV       R6,A
+    790              zcl_mem_free( cmd.sThermostateSequenceMode.psThermostatModeBoth );
+   \   0000D9                ; Setup parameters for call to function osal_mem_free
+   \   0000D9   7403         MOV       A,#0x3
+   \   0000DB   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000DE   12....       LCALL     ?Subroutine23 & 0xFFFF
+    791              return status;
+    792            }
+   \                     ??CrossCallReturnLabel_30:
+   \   0000E1   8002         SJMP      ??zclThermostat_ProcessInCmd_SetWeeklySchedule_5
+    793          
+    794            return ( ZFailure );
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_0:
+   \   0000E3   7901         MOV       R1,#0x1
+   \                     ??zclThermostat_ProcessInCmd_SetWeeklySchedule_5:
+   \   0000E5                REQUIRE ?Subroutine3
+   \   0000E5                ; // Fall through to label ?Subroutine3
+    795          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine3:
+   \   000000   7405         MOV       A,#0x5
+   \   000002   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000005   7F08         MOV       R7,#0x8
+   \   000007   02....       LJMP      ?BANKED_LEAVE_XDATA
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine16:
+   \   000000   85..82       MOV       DPL,?XSP + 0
+   \   000003   85..83       MOV       DPH,?XSP + 1
+   \   000006   E5..         MOV       A,?V2
+   \   000008   F0           MOVX      @DPTR,A
+   \   000009   85..82       MOV       DPL,?V0
+   \   00000C   85..83       MOV       DPH,?V1
+   \   00000F                REQUIRE ??Subroutine68_0
+   \   00000F                ; // Fall through to label ??Subroutine68_0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine41:
+   \   000000   FE           MOV       R6,A
+   \   000001   E4           CLR       A
+   \   000002   3D           ADDC      A,R5
+   \   000003   FF           MOV       R7,A
+   \   000004   8E82         MOV       DPL,R6
+   \   000006   F583         MOV       DPH,A
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   F8           MOV       R0,A
+   \   00000A   A3           INC       DPTR
+   \   00000B   E0           MOVX      A,@DPTR
+   \   00000C   F9           MOV       R1,A
+   \   00000D   E8           MOV       A,R0
+   \   00000E   49           ORL       A,R1
+   \   00000F   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine34:
+   \   000000   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   000003   8B..         MOV       ?V5,R3
+   \   000005   A9..         MOV       R1,?V5
+   \   000007   7403         MOV       A,#0x3
+   \   000009   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine25:
+   \   000000   F583         MOV       DPH,A
+   \   000002   E0           MOVX      A,@DPTR
+   \   000003   F5..         MOV       ?V6,A
+   \   000005   A3           INC       DPTR
+   \   000006   E0           MOVX      A,@DPTR
+   \   000007   FB           MOV       R3,A
+   \   000008   AA..         MOV       R2,?V6
+   \   00000A   7403         MOV       A,#0x3
+   \   00000C   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine24:
+   \   000000   AA..         MOV       R2,?V4
+   \   000002   85..82       MOV       DPL,?V0
+   \   000005   85..83       MOV       DPH,?V1
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   2A           ADD       A,R2
+   \   00000A   FC           MOV       R4,A
+   \   00000B   A3           INC       DPTR
+   \   00000C   E0           MOVX      A,@DPTR
+   \   00000D   3400         ADDC      A,#0x0
+   \   00000F   FD           MOV       R5,A
+   \   000010   8C82         MOV       DPL,R4
+   \   000012   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine23:
+   \   000000   12....       LCALL     ?Subroutine49 & 0xFFFF
+   \                     ??CrossCallReturnLabel_120:
+   \   000003   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+   \   000006   EE           MOV       A,R6
+   \   000007   F9           MOV       R1,A
+   \   000008   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine19:
+   \   000000   AA..         MOV       R2,?V4
+   \   000002   85..82       MOV       DPL,?V0
+   \   000005   85..83       MOV       DPH,?V1
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   2A           ADD       A,R2
+   \   00000A   FA           MOV       R2,A
+   \   00000B   A3           INC       DPTR
+   \   00000C   E0           MOVX      A,@DPTR
+   \   00000D   3400         ADDC      A,#0x0
+   \   00000F   FB           MOV       R3,A
+   \   000010   EA           MOV       A,R2
+   \   000011   FC           MOV       R4,A
+   \   000012   EB           MOV       A,R3
+   \   000013   FD           MOV       R5,A
+   \   000014   8A82         MOV       DPL,R2
+   \   000016   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine15:
+   \   000000   EA           MOV       A,R2
+   \   000001   2408         ADD       A,#0x8
+   \   000003   F5..         MOV       ?V0,A
+   \   000005   E4           CLR       A
+   \   000006   3B           ADDC      A,R3
+   \   000007   F5..         MOV       ?V1,A
+   \   000009   85..82       MOV       DPL,?V0
+   \   00000C   F583         MOV       DPH,A
+   \   00000E   12....       LCALL     ?Subroutine51 & 0xFFFF
+   \                     ??CrossCallReturnLabel_88:
+   \   000011   E0           MOVX      A,@DPTR
+   \   000012   F5..         MOV       ?V2,A
+   \   000014   A3           INC       DPTR
+   \   000015   A3           INC       DPTR
+   \   000016   E0           MOVX      A,@DPTR
+   \   000017   F5..         MOV       ?V3,A
+   \   000019   AA..         MOV       R2,?V2
+   \   00001B   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine13:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   28           ADD       A,R0
+   \   000002   FC           MOV       R4,A
+   \   000003   A3           INC       DPTR
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   39           ADDC      A,R1
+   \   000006   8C82         MOV       DPL,R4
+   \   000008   F583         MOV       DPH,A
+   \   00000A   A3           INC       DPTR
+   \   00000B   A3           INC       DPTR
+   \   00000C   E5..         MOV       A,?V6
+   \   00000E   F0           MOVX      @DPTR,A
+   \   00000F   A3           INC       DPTR
+   \   000010   EB           MOV       A,R3
+   \   000011   F0           MOVX      @DPTR,A
+   \   000012   7404         MOV       A,#0x4
+   \   000014   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine12:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   2A           ADD       A,R2
+   \   000002   FC           MOV       R4,A
+   \   000003   A3           INC       DPTR
+   \   000004   E0           MOVX      A,@DPTR
+   \   000005   3B           ADDC      A,R3
+   \   000006   8C82         MOV       DPL,R4
+   \   000008   F583         MOV       DPH,A
+   \   00000A   A3           INC       DPTR
+   \   00000B   A3           INC       DPTR
+   \   00000C   A3           INC       DPTR
+   \   00000D   A3           INC       DPTR
+   \   00000E   E5..         MOV       A,?V6
+   \   000010   F0           MOVX      @DPTR,A
+   \   000011   A3           INC       DPTR
+   \   000012   E9           MOV       A,R1
+   \   000013   F0           MOVX      @DPTR,A
+   \   000014   7406         MOV       A,#0x6
+   \   000016   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine11:
+   \   000000   A8..         MOV       R0,?V4
+   \   000002   85..82       MOV       DPL,?V0
+   \   000005   85..83       MOV       DPH,?V1
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   28           ADD       A,R0
+   \   00000A   FC           MOV       R4,A
+   \   00000B   A3           INC       DPTR
+   \   00000C   E0           MOVX      A,@DPTR
+   \   00000D   3400         ADDC      A,#0x0
+   \   00000F   FD           MOV       R5,A
+   \   000010   EA           MOV       A,R2
+   \   000011   75F006       MOV       B,#0x6
+   \   000014   A4           MUL       AB
+   \   000015   FA           MOV       R2,A
+   \   000016   ABF0         MOV       R3,B
+   \   000018   8C82         MOV       DPL,R4
+   \   00001A   8D83         MOV       DPH,R5
+   \   00001C   E0           MOVX      A,@DPTR
+   \   00001D   F5..         MOV       ?V6,A
+   \   00001F   A3           INC       DPTR
+   \   000020   E0           MOVX      A,@DPTR
+   \   000021   F9           MOV       R1,A
+   \   000022   A8..         MOV       R0,?V6
+   \   000024   7403         MOV       A,#0x3
+   \   000026   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine10:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   28           ADD       A,R0
+   \   000002   F5..         MOV       ?V6,A
+   \   000004   A3           INC       DPTR
+   \   000005   E0           MOVX      A,@DPTR
+   \   000006   39           ADDC      A,R1
+   \   000007   85..82       MOV       DPL,?V6
+   \   00000A   F583         MOV       DPH,A
+   \   00000C   EA           MOV       A,R2
+   \   00000D   F0           MOVX      @DPTR,A
+   \   00000E   A3           INC       DPTR
+   \   00000F   EB           MOV       A,R3
+   \   000010   12....       LCALL     ?Subroutine48 & 0xFFFF
+   \                     ??CrossCallReturnLabel_85:
+   \   000013   FB           MOV       R3,A
+   \   000014   7403         MOV       A,#0x3
+   \   000016   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine9:
+   \   000000   12....       LCALL     ?Subroutine47 & 0xFFFF
+   \                     ??CrossCallReturnLabel_84:
+   \   000003   E8           MOV       A,R0
+   \   000004   F0           MOVX      @DPTR,A
+   \   000005   A3           INC       DPTR
+   \   000006   E9           MOV       A,R1
+   \   000007   12....       LCALL     ?Subroutine48 & 0xFFFF
+   \                     ??CrossCallReturnLabel_86:
+   \   00000A   F9           MOV       R1,A
+   \   00000B   A8..         MOV       R0,?V6
+   \   00000D   7403         MOV       A,#0x3
+   \   00000F   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine48:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   8C82         MOV       DPL,R4
+   \   000003   8D83         MOV       DPH,R5
+   \   000005   A3           INC       DPTR
+   \   000006   A3           INC       DPTR
+   \   000007   12....       LCALL     ?Subroutine55 & 0xFFFF
+   \                     ??CrossCallReturnLabel_97:
+   \   00000A   E0           MOVX      A,@DPTR
+   \   00000B   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine7:
+   \   000000   12....       LCALL     ?Subroutine47 & 0xFFFF
+   \                     ??CrossCallReturnLabel_83:
+   \   000003   A3           INC       DPTR
+   \   000004   A3           INC       DPTR
+   \   000005   E8           MOV       A,R0
+   \   000006   F0           MOVX      @DPTR,A
+   \   000007   A3           INC       DPTR
+   \   000008   E9           MOV       A,R1
+   \   000009   12....       LCALL     ?Subroutine52 & 0xFFFF
+   \                     ??CrossCallReturnLabel_89:
+   \   00000C   12....       LCALL     ?Subroutine55 & 0xFFFF
+   \                     ??CrossCallReturnLabel_96:
+   \   00000F   A3           INC       DPTR
+   \   000010   A3           INC       DPTR
+   \   000011   E0           MOVX      A,@DPTR
+   \   000012   F9           MOV       R1,A
+   \   000013   7403         MOV       A,#0x3
+   \   000015   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine55:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   F5..         MOV       ?V6,A
+   \   000003   8C82         MOV       DPL,R4
+   \   000005   8D83         MOV       DPH,R5
+   \   000007   A3           INC       DPTR
+   \   000008   A3           INC       DPTR
+   \   000009   A3           INC       DPTR
+   \   00000A   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine47:
+   \   000000   E0           MOVX      A,@DPTR
+   \   000001   2A           ADD       A,R2
+   \   000002   F5..         MOV       ?V6,A
+   \   000004   A3           INC       DPTR
+   \   000005   E0           MOVX      A,@DPTR
+   \   000006   3B           ADDC      A,R3
+   \   000007   85..82       MOV       DPL,?V6
+   \   00000A   F583         MOV       DPH,A
+   \   00000C   22           RET
+    796          
+    797          /*********************************************************************
+    798           * @fn      zclThermostat_ProcessInCmd_GetWeeklySchedule
+    799           *
+    800           * @brief   Process in the received Get Weekly Schedule cmd
+    801           *
+    802           * @param   pInMsg - pointer to the incoming message
+    803           * @param   pCBs - pointer to the application callbacks
+    804           *
+    805           * @return  ZStatus_t
+    806           */
+    807          static ZStatus_t zclThermostat_ProcessInCmd_GetWeeklySchedule( zclIncoming_t *pInMsg,
+    808                                                                         zclHVAC_AppCallbacks_t *pCBs )
+    809          {
+    810            if ( pCBs->pfnHVAC_GetWeeklySchedule )
+    811            {
+    812              zclThermostatGetWeeklySchedule_t cmd;
+    813          
+    814              cmd.daysToReturn = pInMsg->pData[0];
+    815              cmd.modeToReturn = pInMsg->pData[1];
+    816          
+    817              return ( pCBs->pfnHVAC_GetWeeklySchedule( &cmd ) );
+    818            }
+    819          
+    820            return ( ZFailure );
+    821          }
+    822          
+    823          /*********************************************************************
+    824           * @fn      zclThermostat_ProcessInCmd_ClearWeeklySchedule
+    825           *
+    826           * @brief   Process in the received Clear Weekly Schedule cmd
+    827           *
+    828           * @param   pInMsg - pointer to the incoming message
+    829           * @param   pCBs - pointer to the application callbacks
+    830           *
+    831           * @return  ZStatus_t
+    832           */
+    833          static ZStatus_t zclThermostat_ProcessInCmd_ClearWeeklySchedule( zclIncoming_t *pInMsg,
+    834                                                                           zclHVAC_AppCallbacks_t *pCBs )
+    835          {
+    836            if ( pCBs->pfnHVAC_ClearWeeklySchedule )
+    837            {
+    838              // no payload
+    839          
+    840              return ( pCBs->pfnHVAC_ClearWeeklySchedule(  ) );
+    841            }
+    842          
+    843            return ( ZFailure );
+    844          }
+    845          
+    846          /*********************************************************************
+    847           * @fn      zclThermostat_ProcessInCmd_GetRelayStatusLog
+    848           *
+    849           * @brief   Process in the received Get Relay Status Log cmd
+    850           *
+    851           * @param   pInMsg - pointer to the incoming message
+    852           * @param   pCBs - pointer to the application callbacks
+    853           *
+    854           * @return  ZStatus_t
+    855           */
+    856          static ZStatus_t zclThermostat_ProcessInCmd_GetRelayStatusLog( zclIncoming_t *pInMsg,
+    857                                                                         zclHVAC_AppCallbacks_t *pCBs )
+    858          {
+    859            if ( pCBs->pfnHVAC_GetRelayStatusLog )
+    860            {
+    861              // no payload
+    862          
+    863              return ( pCBs->pfnHVAC_GetRelayStatusLog(  ) );
+    864            }
+    865          
+    866            return ( ZFailure );
+    867          }
+    868          
+    869          /*********************************************************************
+    870           * @fn      zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+    871           *
+    872           * @brief   Process in the received Get Weekly Schedule Response cmd
+    873           *
+    874           * @param   pInMsg - pointer to the incoming message
+    875           * @param   pCBs - pointer to the application callbacks
+    876           *
+    877           * @return  ZStatus_t
+    878           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    879          static ZStatus_t zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp( zclIncoming_t *pInMsg,
+   \                     zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp:
+    880                                                                            zclHVAC_AppCallbacks_t *pCBs )
+    881          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 5
+   \   000005   74FB         MOV       A,#-0x5
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+    882            uint8 i;
+    883            uint8 offset;
+    884            uint8 modeBuff;   // buffer to determine how to incorporate heat/cool set points
+    885            uint8 numTransitions; // buffer for number of transitions for sequence
+    886            uint16 arrayRecordSize;
+    887            zclThermostatWeeklySchedule_t cmd;
+    888            ZStatus_t status;
+    889          
+    890            if ( pCBs->pfnHVAC_GetWeeklyScheduleRsp )
+   \   00000A   EC           MOV       A,R4
+   \   00000B   240A         ADD       A,#0xa
+   \   00000D   12....       LCALL     ?Subroutine41 & 0xFFFF
+   \                     ??CrossCallReturnLabel_74:
+   \   000010   7003         JNZ       $+5
+   \   000012   02....       LJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_1 & 0xFFFF
+    891            {
+    892              numTransitions = pInMsg->pData[0];
+   \   000015   12....       LCALL     ?Subroutine15 & 0xFFFF
+    893              modeBuff = pInMsg->pData[2];    // store the modeForSequence in buffer
+    894          
+    895              // if either the heat or cool set points
+    896              if( ( modeBuff == HVAC_THERMOSTAT_MODE_HEAT ) || ( modeBuff == HVAC_THERMOSTAT_MODE_COOL ) )
+   \                     ??CrossCallReturnLabel_19:
+   \   000018   6006         JZ        ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_2
+   \   00001A   7401         MOV       A,#0x1
+   \   00001C   65..         XRL       A,?V3
+   \   00001E   7012         JNZ       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_3
+    897              {
+    898                // calculate the number of transitions multiplied by size of transitionTime and heatSetPoint/coolSetPoint
+    899                arrayRecordSize = ( numTransitions * 4 );
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_2:
+   \   000020   8A..         MOV       ?V4,R2
+   \   000022   75..00       MOV       ?V5,#0x0
+   \   000025   7402         MOV       A,#0x2
+   \   000027   78..         MOV       R0,#?V4
+   \   000029   12....       LCALL     ?S_SHL
+   \   00002C   AA..         MOV       R2,?V4
+   \   00002E   AB..         MOV       R3,?V5
+   \   000030   8011         SJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_4
+    900              }
+    901              // if both cool and heat set points
+    902              else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_3:
+   \   000032   7402         MOV       A,#0x2
+   \   000034   65..         XRL       A,?V3
+   \   000036   6003         JZ        $+5
+   \   000038   02....       LJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_1 & 0xFFFF
+    903              {
+    904                // calculate the number of transitions multiplied by size of transitionTime, heatSetPoint, and coolSetPoint
+    905                arrayRecordSize = ( numTransitions * 6 );
+   \   00003B   EA           MOV       A,R2
+   \   00003C   75F006       MOV       B,#0x6
+   \   00003F   A4           MUL       AB
+   \   000040   FA           MOV       R2,A
+   \   000041   ABF0         MOV       R3,B
+    906              }
+    907              else
+    908              {
+    909                return ( ZFailure );    // invalid mode field
+    910              }
+    911          
+    912              // allocate memory
+    913              cmd.sThermostateSequenceMode.psThermostatModeBoth = zcl_mem_alloc( arrayRecordSize );
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_4:
+   \   000043                ; Setup parameters for call to function osal_mem_alloc
+   \   000043   12....       LCALL     ?Subroutine34 & 0xFFFF
+   \                     ??CrossCallReturnLabel_55:
+   \   000046   12....       LCALL     ?XSTACK_DISP0_8
+   \   000049   EA           MOV       A,R2
+   \   00004A   F0           MOVX      @DPTR,A
+   \   00004B   A3           INC       DPTR
+   \   00004C   EB           MOV       A,R3
+   \   00004D   F0           MOVX      @DPTR,A
+    914              if( !cmd.sThermostateSequenceMode.psThermostatModeBoth )
+   \   00004E   EA           MOV       A,R2
+   \   00004F   49           ORL       A,R1
+   \   000050   7005         JNZ       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_5
+    915              {
+    916                return ( ZMemError ); // no memory
+   \   000052   7910         MOV       R1,#0x10
+   \   000054   02....       LJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_6 & 0xFFFF
+    917              }
+    918          
+    919              cmd.numberOfTransitionsForSequence = numTransitions;
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_5:
+   \   000057   12....       LCALL     ?Subroutine16 & 0xFFFF
+    920              cmd.dayOfWeekForSequence = pInMsg->pData[1];
+   \                     ??CrossCallReturnLabel_128:
+   \   00005A   C0E0         PUSH      A
+   \   00005C   7401         MOV       A,#0x1
+   \   00005E   12....       LCALL     ?XSTACK_DISP0_8
+   \   000061   D0E0         POP       A
+   \   000063   F0           MOVX      @DPTR,A
+    921              cmd.modeForSequence = modeBuff;
+   \   000064   7402         MOV       A,#0x2
+   \   000066   12....       LCALL     ?XSTACK_DISP0_8
+   \   000069   E5..         MOV       A,?V3
+   \   00006B   F0           MOVX      @DPTR,A
+    922              offset = 3;
+   \   00006C   75..03       MOV       ?V4,#0x3
+    923              for( i = 0; i < numTransitions; i++ )
+   \   00006F   75..00       MOV       ?V5,#0x0
+   \   000072   8021         SJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_7
+    924              {
+    925                if( modeBuff == HVAC_THERMOSTAT_MODE_HEAT )   // heat set point
+    926                {
+    927                  cmd.sThermostateSequenceMode.psThermostatModeHeat[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+    928                  cmd.sThermostateSequenceMode.psThermostatModeHeat[i].heatSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    929                  offset += 4;
+    930                }
+    931                else if( modeBuff == HVAC_THERMOSTAT_MODE_COOL )    // cool set point
+    932                {
+    933                  cmd.sThermostateSequenceMode.psThermostatModeCool[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+    934                  cmd.sThermostateSequenceMode.psThermostatModeCool[i].coolSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    935                  offset += 4;
+    936                }
+    937                else if( modeBuff == HVAC_THERMOSTAT_MODE_BOTH )    // both cool and heat set points
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_8:
+   \   000074   7402         MOV       A,#0x2
+   \   000076   65..         XRL       A,?V3
+   \   000078   7069         JNZ       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_1
+    938                {
+    939                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].transitionTime = BUILD_UINT16( pInMsg->pData[offset], pInMsg->pData[offset + 1] );
+   \   00007A   12....       LCALL     ?Subroutine11 & 0xFFFF
+    940                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].heatSetPoint = BUILD_UINT16( pInMsg->pData[offset + 2], pInMsg->pData[offset + 3] );
+    941                  cmd.sThermostateSequenceMode.psThermostatModeBoth[i].coolSetPoint = BUILD_UINT16( pInMsg->pData[offset + 4], pInMsg->pData[offset + 5] );
+    942                  offset += 6;
+    943                }
+   \                     ??CrossCallReturnLabel_13:
+   \   00007D   12....       LCALL     ?XSTACK_DISP0_8
+   \   000080   12....       LCALL     ?Subroutine9 & 0xFFFF
+   \                     ??CrossCallReturnLabel_9:
+   \   000083   12....       LCALL     ?XSTACK_DISP0_8
+   \   000086   12....       LCALL     ?Subroutine7 & 0xFFFF
+   \                     ??CrossCallReturnLabel_5:
+   \   000089   12....       LCALL     ?XSTACK_DISP0_8
+   \   00008C   12....       LCALL     ?Subroutine12 & 0xFFFF
+   \                     ??CrossCallReturnLabel_15:
+   \   00008F   25..         ADD       A,?V4
+   \   000091   F5..         MOV       ?V4,A
+   \   000093   05..         INC       ?V5
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_7:
+   \   000095   E5..         MOV       A,?V5
+   \   000097   C3           CLR       C
+   \   000098   95..         SUBB      A,?V2
+   \   00009A   5035         JNC       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_9
+   \   00009C   AA..         MOV       R2,?V5
+   \   00009E   8A..         MOV       ?V6,R2
+   \   0000A0   75..00       MOV       ?V7,#0x0
+   \   0000A3   7402         MOV       A,#0x2
+   \   0000A5   78..         MOV       R0,#?V6
+   \   0000A7   12....       LCALL     ?S_SHL
+   \   0000AA   A8..         MOV       R0,?V6
+   \   0000AC   A9..         MOV       R1,?V7
+   \   0000AE   E5..         MOV       A,?V3
+   \   0000B0   7014         JNZ       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_10
+   \   0000B2   12....       LCALL     ?Subroutine24 & 0xFFFF
+   \                     ??CrossCallReturnLabel_33:
+   \   0000B5   12....       LCALL     ?Subroutine25 & 0xFFFF
+   \                     ??CrossCallReturnLabel_35:
+   \   0000B8   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000BB   12....       LCALL     ?Subroutine10 & 0xFFFF
+   \                     ??CrossCallReturnLabel_11:
+   \   0000BE   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000C1   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_17:
+   \   0000C4   80C9         SJMP      ??CrossCallReturnLabel_15
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_10:
+   \   0000C6   7401         MOV       A,#0x1
+   \   0000C8   65..         XRL       A,?V3
+   \   0000CA   70A8         JNZ       ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_8
+   \   0000CC   12....       LCALL     ?Subroutine19 & 0xFFFF
+    944                else
+    945                {
+    946                  return ( ZFailure );    // unsupported mode
+    947                }
+    948              }
+   \                     ??CrossCallReturnLabel_23:
+   \   0000CF   80E4         SJMP      ??CrossCallReturnLabel_33
+    949          
+    950          
+    951              status = ( pCBs->pfnHVAC_GetWeeklyScheduleRsp( &cmd ) );
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_9:
+   \   0000D1                ; Setup parameters for indirect call
+   \   0000D1   12....       LCALL     ?Subroutine17 & 0xFFFF
+   \                     ??CrossCallReturnLabel_126:
+   \   0000D4   12....       LCALL     ?CALL_IND
+   \   0000D7   E9           MOV       A,R1
+   \   0000D8   FE           MOV       R6,A
+    952              zcl_mem_free( cmd.sThermostateSequenceMode.psThermostatModeBoth );
+   \   0000D9                ; Setup parameters for call to function osal_mem_free
+   \   0000D9   7403         MOV       A,#0x3
+   \   0000DB   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000DE   12....       LCALL     ?Subroutine23 & 0xFFFF
+    953              return status;
+    954            }
+   \                     ??CrossCallReturnLabel_31:
+   \   0000E1   8002         SJMP      ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_6
+    955          
+    956            return ( ZFailure );
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_1:
+   \   0000E3   7901         MOV       R1,#0x1
+   \                     ??zclThermostat_ProcessInCmd_GetWeeklyScheduleR_6:
+   \   0000E5   02....       LJMP      ?Subroutine3 & 0xFFFF
+    957          }
+    958          
+    959          /*********************************************************************
+    960           * @fn      zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+    961           *
+    962           * @brief   Process in the received Get Relay Status Log Response cmd
+    963           *
+    964           * @param   pInMsg - pointer to the incoming message
+    965           * @param   pCBs - pointer to the application callbacks
+    966           *
+    967           * @return  ZStatus_t
+    968           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    969          static ZStatus_t zclThermostat_ProcessInCmd_GetRelayStatusLogRsp( zclIncoming_t *pInMsg,
+   \                     zclThermostat_ProcessInCmd_GetRelayStatusLogRsp:
+    970                                                                            zclHVAC_AppCallbacks_t *pCBs )
+    971          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 11
+   \   000005   74F5         MOV       A,#-0xb
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
+    972            if ( pCBs->pfnHVAC_GetRelayStatusLogRsp )
+   \   00000A   EC           MOV       A,R4
+   \   00000B   240C         ADD       A,#0xc
+   \   00000D   12....       LCALL     ?Subroutine53 & 0xFFFF
+   \                     ??CrossCallReturnLabel_92:
+   \   000010   FC           MOV       R4,A
+   \   000011   A3           INC       DPTR
+   \   000012   E0           MOVX      A,@DPTR
+   \   000013   FD           MOV       R5,A
+   \   000014   EC           MOV       A,R4
+   \   000015   4D           ORL       A,R5
+   \   000016   7003         JNZ       $+5
+   \   000018   02....       LJMP      ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_1 & 0xFFFF
+    973            {
+    974              zclThermostatGetRelayStatusLogRsp_t cmd;
+    975          
+    976              cmd.timeOfDay = BUILD_UINT16( pInMsg->pData[0], pInMsg->pData[1] );
+   \   00001B   EA           MOV       A,R2
+   \   00001C   2408         ADD       A,#0x8
+   \   00001E   FA           MOV       R2,A
+   \   00001F   5001         JNC       ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_2
+   \   000021   0B           INC       R3
+   \                     ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_2:
+   \   000022   F582         MOV       DPL,A
+   \   000024   8B83         MOV       DPH,R3
+   \   000026   E0           MOVX      A,@DPTR
+   \   000027   FC           MOV       R4,A
+   \   000028   A3           INC       DPTR
+   \   000029   E0           MOVX      A,@DPTR
+   \   00002A   FD           MOV       R5,A
+   \   00002B   8C82         MOV       DPL,R4
+   \   00002D   F583         MOV       DPH,A
+   \   00002F   E0           MOVX      A,@DPTR
+   \   000030   F5..         MOV       ?V0,A
+   \   000032   A3           INC       DPTR
+   \   000033   E0           MOVX      A,@DPTR
+   \   000034   FF           MOV       R7,A
+   \   000035   E5..         MOV       A,?V0
+   \   000037   85..82       MOV       DPL,?XSP + 0
+   \   00003A   85..83       MOV       DPH,?XSP + 1
+   \   00003D   12....       LCALL     ?Subroutine35 & 0xFFFF
+    977              cmd.relayStatus = BUILD_UINT16( pInMsg->pData[2], pInMsg->pData[3] );
+   \                     ??CrossCallReturnLabel_56:
+   \   000040   12....       LCALL     ?Subroutine22 & 0xFFFF
+   \                     ??CrossCallReturnLabel_28:
+   \   000043   E0           MOVX      A,@DPTR
+   \   000044   FF           MOV       R7,A
+   \   000045   7402         MOV       A,#0x2
+   \   000047   12....       LCALL     ?XSTACK_DISP0_8
+   \   00004A   E5..         MOV       A,?V0
+   \   00004C   12....       LCALL     ?Subroutine35 & 0xFFFF
+    978              cmd.localTemperature = BUILD_UINT16( pInMsg->pData[4], pInMsg->pData[5] );
+   \                     ??CrossCallReturnLabel_57:
+   \   00004F   A3           INC       DPTR
+   \   000050   A3           INC       DPTR
+   \   000051   12....       LCALL     ?Subroutine22 & 0xFFFF
+   \                     ??CrossCallReturnLabel_29:
+   \   000054   A3           INC       DPTR
+   \   000055   A3           INC       DPTR
+   \   000056   E0           MOVX      A,@DPTR
+   \   000057   FF           MOV       R7,A
+   \   000058   7404         MOV       A,#0x4
+   \   00005A   12....       LCALL     ?XSTACK_DISP0_8
+   \   00005D   E5..         MOV       A,?V0
+   \   00005F   F0           MOVX      @DPTR,A
+   \   000060   A3           INC       DPTR
+   \   000061   EF           MOV       A,R7
+   \   000062   12....       LCALL     ?Subroutine31 & 0xFFFF
+    979              cmd.humidity = pInMsg->pData[6];
+   \                     ??CrossCallReturnLabel_49:
+   \   000065   C0E0         PUSH      A
+   \   000067   7406         MOV       A,#0x6
+   \   000069   12....       LCALL     ?XSTACK_DISP0_8
+   \   00006C   D0E0         POP       A
+   \   00006E   F0           MOVX      @DPTR,A
+    980              cmd.setPoint = BUILD_UINT16( pInMsg->pData[7], pInMsg->pData[8] );
+   \   00006F   8A82         MOV       DPL,R2
+   \   000071   8B83         MOV       DPH,R3
+   \   000073   12....       LCALL     ?Subroutine49 & 0xFFFF
+   \                     ??CrossCallReturnLabel_119:
+   \   000076   8A82         MOV       DPL,R2
+   \   000078   F583         MOV       DPH,A
+   \   00007A   A3           INC       DPTR
+   \   00007B   A3           INC       DPTR
+   \   00007C   A3           INC       DPTR
+   \   00007D   A3           INC       DPTR
+   \   00007E   A3           INC       DPTR
+   \   00007F   A3           INC       DPTR
+   \   000080   A3           INC       DPTR
+   \   000081   E0           MOVX      A,@DPTR
+   \   000082   FE           MOV       R6,A
+   \   000083   8A82         MOV       DPL,R2
+   \   000085   8B83         MOV       DPH,R3
+   \   000087   A3           INC       DPTR
+   \   000088   A3           INC       DPTR
+   \   000089   A3           INC       DPTR
+   \   00008A   A3           INC       DPTR
+   \   00008B   A3           INC       DPTR
+   \   00008C   A3           INC       DPTR
+   \   00008D   A3           INC       DPTR
+   \   00008E   A3           INC       DPTR
+   \   00008F   E0           MOVX      A,@DPTR
+   \   000090   FD           MOV       R5,A
+   \   000091   7407         MOV       A,#0x7
+   \   000093   12....       LCALL     ?XSTACK_DISP0_8
+   \   000096   EE           MOV       A,R6
+   \   000097   F0           MOVX      @DPTR,A
+   \   000098   A3           INC       DPTR
+   \   000099   ED           MOV       A,R5
+   \   00009A   12....       LCALL     ?Subroutine36 & 0xFFFF
+    981              cmd.unreadEntries = BUILD_UINT16( pInMsg->pData[9], pInMsg->pData[10] );
+   \                     ??CrossCallReturnLabel_59:
+   \   00009D   A3           INC       DPTR
+   \   00009E   A3           INC       DPTR
+   \   00009F   A3           INC       DPTR
+   \   0000A0   A3           INC       DPTR
+   \   0000A1   A3           INC       DPTR
+   \   0000A2   A3           INC       DPTR
+   \   0000A3   E0           MOVX      A,@DPTR
+   \   0000A4   FC           MOV       R4,A
+   \   0000A5   8A82         MOV       DPL,R2
+   \   0000A7   8B83         MOV       DPH,R3
+   \   0000A9   A3           INC       DPTR
+   \   0000AA   A3           INC       DPTR
+   \   0000AB   A3           INC       DPTR
+   \   0000AC   A3           INC       DPTR
+   \   0000AD   A3           INC       DPTR
+   \   0000AE   A3           INC       DPTR
+   \   0000AF   A3           INC       DPTR
+   \   0000B0   A3           INC       DPTR
+   \   0000B1   A3           INC       DPTR
+   \   0000B2   A3           INC       DPTR
+   \   0000B3   E0           MOVX      A,@DPTR
+   \   0000B4   FB           MOV       R3,A
+   \   0000B5   7409         MOV       A,#0x9
+   \   0000B7   12....       LCALL     ?XSTACK_DISP0_8
+   \   0000BA   EC           MOV       A,R4
+   \   0000BB   F0           MOVX      @DPTR,A
+   \   0000BC   A3           INC       DPTR
+   \   0000BD   EB           MOV       A,R3
+   \   0000BE   F0           MOVX      @DPTR,A
+    982          
+    983              return ( pCBs->pfnHVAC_GetRelayStatusLogRsp( &cmd ) );
+   \   0000BF                ; Setup parameters for indirect call
+   \   0000BF   AA..         MOV       R2,?XSP + 0
+   \   0000C1   AB..         MOV       R3,?XSP + 1
+   \   0000C3   8882         MOV       DPL,R0
+   \   0000C5   8983         MOV       DPH,R1
+   \   0000C7   12....       LCALL     ??Subroutine67_0 & 0xFFFF
+    984            }
+   \                     ??CrossCallReturnLabel_123:
+   \   0000CA   12....       LCALL     ?CALL_IND
+   \   0000CD   8002         SJMP      ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_3
+    985          
+    986            return ( ZFailure );
+   \                     ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_1:
+   \   0000CF   7901         MOV       R1,#0x1
+   \                     ??zclThermostat_ProcessInCmd_GetRelayStatusLogR_3:
+   \   0000D1   02....       LJMP      ?Subroutine2 & 0xFFFF
+    987          }
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine35:
+   \   000000   F0           MOVX      @DPTR,A
+   \   000001   A3           INC       DPTR
+   \   000002   EF           MOV       A,R7
+   \   000003   F0           MOVX      @DPTR,A
+   \   000004   8C82         MOV       DPL,R4
+   \   000006   8D83         MOV       DPH,R5
+   \   000008   22           RET
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine22:
+   \   000000   A3           INC       DPTR
+   \   000001   A3           INC       DPTR
+   \   000002   E0           MOVX      A,@DPTR
+   \   000003   F5..         MOV       ?V0,A
+   \   000005   8C82         MOV       DPL,R4
+   \   000007   8D83         MOV       DPH,R5
+   \   000009   A3           INC       DPTR
+   \   00000A   A3           INC       DPTR
+   \   00000B   A3           INC       DPTR
+   \   00000C   22           RET
+    988          
+    989          #endif //ZCL_HVAC_CLUSTER
+    990          /****************************************************************************
+    991          ****************************************************************************/
+    992          
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      2     10   zclHVAC_FindCallbacks
+      0     10   zclHVAC_HdlIncoming
+        0     10   -> zclHVAC_FindCallbacks
+        0     10   -> zclHVAC_ProcessInThermostatCmds
+      1     21   zclHVAC_ProcessInThermostatCmds
+        0     11   -> zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+        0     11   -> zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+        0     11   -> zclThermostat_ProcessInCmd_SetWeeklySchedule
+      1     14   zclHVAC_RegisterCmdCallbacks
+        0     12   -> osal_mem_alloc
+        0     14   -> zcl_registerPlugin
+      0     23   zclHVAC_SendClearWeeklySchedule
+        0     23   -> zcl_SendCommand
+      0     23   zclHVAC_SendGetRelayStatusLog
+        0     23   -> zcl_SendCommand
+      1     34   zclHVAC_SendGetRelayStatusLogRsp
+        0     32   -> zcl_SendCommand
+      1     27   zclHVAC_SendGetWeeklySchedule
+        0     25   -> zcl_SendCommand
+      1     37   zclHVAC_SendGetWeeklyScheduleRsp
+        0     24   -> osal_mem_alloc
+        0     24   -> osal_mem_free
+        0     35   -> zcl_SendCommand
+      1     37   zclHVAC_SendSetWeeklySchedule
+        0     24   -> osal_mem_alloc
+        0     24   -> osal_mem_free
+        0     35   -> zcl_SendCommand
+      1     27   zclHVAC_SendSetpointRaiseLower
+        0     25   -> zcl_SendCommand
+      1     32   zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+      1     32   zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+        0     21   -> osal_mem_alloc
+        0     21   -> osal_mem_free
+      1     32   zclThermostat_ProcessInCmd_SetWeeklySchedule
+        0     21   -> osal_mem_alloc
+        0     21   -> osal_mem_free
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       3  ??Subroutine59_0
+       5  ??Subroutine60_0
+       5  ??Subroutine61_0
+       1  ??Subroutine62_0
+       6  ??Subroutine63_0
+       8  ??Subroutine64_0
+       6  ??Subroutine65_0
+       4  ??Subroutine66_0
+       4  ??Subroutine67_0
+       6  ??Subroutine68_0
+      18  ?Subroutine0
+       5  ?Subroutine1
+      23  ?Subroutine10
+      39  ?Subroutine11
+      23  ?Subroutine12
+      21  ?Subroutine13
+       4  ?Subroutine14
+      28  ?Subroutine15
+      15  ?Subroutine16
+       4  ?Subroutine17
+       7  ?Subroutine18
+      23  ?Subroutine19
+       5  ?Subroutine2
+       4  ?Subroutine20
+      15  ?Subroutine21
+      13  ?Subroutine22
+       9  ?Subroutine23
+      19  ?Subroutine24
+      13  ?Subroutine25
+       6  ?Subroutine26
+       6  ?Subroutine27
+      13  ?Subroutine28
+       9  ?Subroutine29
+      10  ?Subroutine3
+       2  ?Subroutine30
+       7  ?Subroutine31
+      13  ?Subroutine32
+      22  ?Subroutine33
+      10  ?Subroutine34
+       9  ?Subroutine35
+       9  ?Subroutine36
+      10  ?Subroutine37
+      28  ?Subroutine38
+      23  ?Subroutine39
+      14  ?Subroutine4
+       6  ?Subroutine40
+      16  ?Subroutine41
+       9  ?Subroutine42
+       5  ?Subroutine43
+       5  ?Subroutine44
+      15  ?Subroutine45
+      10  ?Subroutine46
+      13  ?Subroutine47
+      12  ?Subroutine48
+       6  ?Subroutine49
+      39  ?Subroutine5
+       9  ?Subroutine50
+       9  ?Subroutine51
+      10  ?Subroutine52
+      10  ?Subroutine53
+      23  ?Subroutine54
+      11  ?Subroutine55
+      15  ?Subroutine56
+      10  ?Subroutine57
+      10  ?Subroutine58
+      55  ?Subroutine6
+      22  ?Subroutine7
+      20  ?Subroutine8
+      16  ?Subroutine9
+       2  zclHVACCBs
+       1  zclHVACPluginRegisted
+      45  zclHVAC_FindCallbacks
+      94  zclHVAC_HdlIncoming
+     211  zclHVAC_ProcessInThermostatCmds
+     137  zclHVAC_RegisterCmdCallbacks
+      60  zclHVAC_SendClearWeeklySchedule
+      62  zclHVAC_SendGetRelayStatusLog
+     234  zclHVAC_SendGetRelayStatusLogRsp
+      93  zclHVAC_SendGetWeeklySchedule
+     212  zclHVAC_SendGetWeeklyScheduleRsp
+     209  zclHVAC_SendSetWeeklySchedule
+      94  zclHVAC_SendSetpointRaiseLower
+     212  zclThermostat_ProcessInCmd_GetRelayStatusLogRsp
+     232  zclThermostat_ProcessInCmd_GetWeeklyScheduleRsp
+     229  zclThermostat_ProcessInCmd_SetWeeklySchedule
+      84  -- Other
+
+ 
+ 3 007 bytes in segment BANKED_CODE
+    84 bytes in segment BANK_RELAYS
+     3 bytes in segment XDATA_Z
+ 
+    84 bytes of CODE     memory
+ 3 007 bytes of HUGECODE memory
+     3 bytes of XDATA    memory
+
+Errors: none
+Warnings: none
