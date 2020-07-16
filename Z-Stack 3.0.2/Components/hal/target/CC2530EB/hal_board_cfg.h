@@ -567,7 +567,8 @@ st( \
 #if (defined ZAPP_P1) || (defined ZAPP_P2) || (defined ZTOOL_P1) || (defined ZTOOL_P2)
 #define HAL_UART TRUE
 #else
-#define HAL_UART FALSE
+//#define HAL_UART FALSE
+#define HAL_UART TRUE
 #endif
 #endif
 

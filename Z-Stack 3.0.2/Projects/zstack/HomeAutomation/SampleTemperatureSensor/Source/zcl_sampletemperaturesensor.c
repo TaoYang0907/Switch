@@ -351,6 +351,12 @@ static void zclSampleTemperatureSensor_HandleKeys( byte shift, byte keys )
     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
   }
+  if ( keys & HAL_KEY_SW_5 )  // Switch 5
+  {     
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+    zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 350;
+    bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+  }
 }
 
 /*********************************************************************

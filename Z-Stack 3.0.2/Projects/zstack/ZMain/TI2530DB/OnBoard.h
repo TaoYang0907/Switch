@@ -245,6 +245,11 @@ typedef struct
   uint8 keys;  // keys
 } keyChange_t;
 
+typedef struct
+{
+  osal_event_hdr_t hdr;
+} UART0_t;
+
 /*********************************************************************
  * FUNCTIONS
  */

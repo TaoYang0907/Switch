@@ -96,6 +96,10 @@
 
 #include "onboard.h"
 
+/* UART */
+#include "uart0.h"
+#include "user_printf.h"
+
 /* HAL */
 #include "hal_lcd.h"
 #include "hal_led.h"
@@ -258,6 +262,9 @@ void zclSampleThermostat_Init( byte task_id )
 {
   zclSampleThermostat_TaskID = task_id;
 
+  //Initialize the Uart0
+  Uart0_Init(HAL_UART_BR_115200);
+  
   // Register the Simple Descriptor for this application
   bdb_RegisterSimpleDescriptor( &zclSampleThermostat_SimpleDesc );
 
@@ -290,6 +297,8 @@ void zclSampleThermostat_Init( byte task_id )
 #endif  
   
   zdpExternalStateTaskID = zclSampleThermostat_TaskID;
+
+  printf("init successful\r\n");
 }
 
 /*********************************************************************
@@ -838,6 +847,8 @@ static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
   // store the current temperature value sent over the air from temperature sensor
   zclSampleThermostat_LocalTemperature = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[0], pInTempSensorReport->attrList[0].attrData[1]);
 
+  printf("data: %d", zclSampleThermostat_LocalTemperature);
+  
   zclSampleThermostat_UpdateLedState();
 }
 #endif  // ZCL_REPORT_DESTINATION_DEVICE

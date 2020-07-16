@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  15:24:40
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:07:58
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,7 +15,7 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Source\zcl_sampletemperaturesensor.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWE771.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW11AA.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Source\zcl_sampletemperaturesensor.c"
 //        -D BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 //        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
@@ -351,6 +351,8 @@ bdb_RegisterSimpleDescriptor SYMBOL "bdb_RegisterSimpleDescriptor"
 `??bdb_RegisterSimpleDescriptor::?relay` SYMBOL "?relay", bdb_RegisterSimpleDescriptor
 bdb_RepAddAttrCfgRecordDefaultToList SYMBOL "bdb_RepAddAttrCfgRecordDefaultToList"
 `??bdb_RepAddAttrCfgRecordDefaultToList::?relay` SYMBOL "?relay", bdb_RepAddAttrCfgRecordDefaultToList
+bdb_RepChangedAttrValue SYMBOL "bdb_RepChangedAttrValue"
+`??bdb_RepChangedAttrValue::?relay` SYMBOL "?relay", bdb_RepChangedAttrValue
 bdb_StartCommissioning SYMBOL "bdb_StartCommissioning"
 `??bdb_StartCommissioning::?relay` SYMBOL "?relay", bdb_StartCommissioning
 bdb_ZedAttemptRecoverNwk SYMBOL "bdb_ZedAttemptRecoverNwk"
@@ -388,6 +390,8 @@ zclSampleTemperatureSensor_event_loop SYMBOL "zclSampleTemperatureSensor_event_l
         FUNCTION `??bdb_RegisterSimpleDescriptor::?relay`,00H
         EXTERN `??bdb_RepAddAttrCfgRecordDefaultToList::?relay`
         FUNCTION `??bdb_RepAddAttrCfgRecordDefaultToList::?relay`,00H
+        EXTERN `??bdb_RepChangedAttrValue::?relay`
+        FUNCTION `??bdb_RepChangedAttrValue::?relay`,00H
         EXTERN `??bdb_StartCommissioning::?relay`
         FUNCTION `??bdb_StartCommissioning::?relay`,00H
         EXTERN `??bdb_ZedAttemptRecoverNwk::?relay`
@@ -450,6 +454,13 @@ zclSampleTemperatureSensor_event_loop SYMBOL "zclSampleTemperatureSensor_event_l
         ARGFRAME XSTACK, 16, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN bdb_RepChangedAttrValue
+        FUNCTION bdb_RepChangedAttrValue,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN bdb_StartCommissioning
         FUNCTION bdb_StartCommissioning,0202H
         ARGFRAME ISTACK, 2, STACK
@@ -500,6 +511,7 @@ zclSampleTemperatureSensor_event_loop SYMBOL "zclSampleTemperatureSensor_event_l
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclSampleTemperatureSensor_Attrs
+        EXTERN zclSampleTemperatureSensor_MeasuredValue
         EXTERN zclSampleTemperatureSensor_NumAttributes
         EXTERN zclSampleTemperatureSensor_ResetAttributesToDefaultValues
         FUNCTION zclSampleTemperatureSensor_ResetAttributesToDefaultValues,0202H
@@ -1066,6 +1078,28 @@ zclSampleTemperatureSensor_event_loop:
         ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleTemperatureSensor_event_loop, HalLedSet
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleTemperatureSensor_event_loop, bdb_RepChangedAttrValue
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleTemperatureSensor_event_loop, osal_msg_deallocate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1182,6 +1216,7 @@ zclSampleTemperatureSensor_event_loop:
         INC       DPTR
         INC       DPTR
         MOVX      A,@DPTR
+        MOV       ?V2,A
         MOV       C,0xE0 /* A   */.5
         JNC       ??zclSampleTemperatureSensor_event_loop_4
         ; Setup parameters for call to function HalLedSet
@@ -1192,6 +1227,29 @@ zclSampleTemperatureSensor_event_loop:
         MOV       R1,#0xa
         LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
 ??zclSampleTemperatureSensor_event_loop_4:
+        MOV       A,?V2
+        MOV       C,0xE0 /* A   */.2
+        JNC       ??zclSampleTemperatureSensor_event_loop_5
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x8
+        MOV       R1,#0x2
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+        MOV       DPTR,#zclSampleTemperatureSensor_MeasuredValue
+        MOVX      A,@DPTR
+        ADD       A,#0x5e
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        ADDC      A,#0x1
+        MOVX      @DPTR,A
+        ; Setup parameters for call to function bdb_RepChangedAttrValue
+        MOV       R4,#0x0
+        MOV       R5,#0x0
+        MOV       R2,#0x2
+        MOV       R3,#0x4
+        MOV       R1,#0x8
+        LCALL     `??bdb_RepChangedAttrValue::?relay`; Banked call to: bdb_RepChangedAttrValue
+??zclSampleTemperatureSensor_event_loop_5:
         ; Setup parameters for call to function osal_msg_deallocate
         MOV       R2,?V0
         MOV       R3,?V1
@@ -1206,61 +1264,61 @@ zclSampleTemperatureSensor_event_loop:
         MOV       ?V1,R3
         MOV       A,R2
         ORL       A,R3
-        JZ        ??zclSampleTemperatureSensor_event_loop_5
+        JZ        ??zclSampleTemperatureSensor_event_loop_6
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         ADD       A,#-0x34
-        JZ        ??zclSampleTemperatureSensor_event_loop_6
+        JZ        ??zclSampleTemperatureSensor_event_loop_7
         ADD       A,#0x74
         JZ        ??zclSampleTemperatureSensor_event_loop_3
-        SJMP      ??zclSampleTemperatureSensor_event_loop_4
-??zclSampleTemperatureSensor_event_loop_6:
+        SJMP      ??zclSampleTemperatureSensor_event_loop_5
+??zclSampleTemperatureSensor_event_loop_7:
         ; Setup parameters for call to function zclSampleTemperatureSensor_ProcessIncomingMsg
         LCALL     ??zclSampleTemperatureSensor_ProcessIncomingMsg; Banked call to: zclSampleTemperatureSensor_ProcessIncomingMsg
-        SJMP      ??zclSampleTemperatureSensor_event_loop_4
-??zclSampleTemperatureSensor_event_loop_5:
+        SJMP      ??zclSampleTemperatureSensor_event_loop_5
+??zclSampleTemperatureSensor_event_loop_6:
         MOV       A,R6
         MOV       R2,A
         MOV       A,R7
         XRL       A,#0x80
 ??zclSampleTemperatureSensor_event_loop_2:
         MOV       R3,A
-        SJMP      ??zclSampleTemperatureSensor_event_loop_7
+        SJMP      ??zclSampleTemperatureSensor_event_loop_8
 //  316 #endif
 //  317 
 //  318   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
 ??zclSampleTemperatureSensor_event_loop_1:
         MOV       A,R2
         ANL       A,#0x10
-        JZ        ??zclSampleTemperatureSensor_event_loop_8
+        JZ        ??zclSampleTemperatureSensor_event_loop_9
 //  319   {
 //  320     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
         MOV       A,R2
         XRL       A,#0x10
-        SJMP      ??zclSampleTemperatureSensor_event_loop_9
+        SJMP      ??zclSampleTemperatureSensor_event_loop_10
 //  321   }
 //  322 
 //  323   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
-??zclSampleTemperatureSensor_event_loop_8:
+??zclSampleTemperatureSensor_event_loop_9:
         MOV       A,R2
         ANL       A,#0x20
-        JZ        ??zclSampleTemperatureSensor_event_loop_10
+        JZ        ??zclSampleTemperatureSensor_event_loop_11
 //  324   {
 //  325     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
         MOV       A,R2
         XRL       A,#0x20
-??zclSampleTemperatureSensor_event_loop_9:
+??zclSampleTemperatureSensor_event_loop_10:
         MOV       R2,A
-        SJMP      ??zclSampleTemperatureSensor_event_loop_7
+        SJMP      ??zclSampleTemperatureSensor_event_loop_8
 //  326   }
 //  327 
 //  328   // Discard unknown events
 //  329   return 0;
-??zclSampleTemperatureSensor_event_loop_10:
+??zclSampleTemperatureSensor_event_loop_11:
         MOV       R2,#0x0
         MOV       R3,#0x0
-??zclSampleTemperatureSensor_event_loop_7:
+??zclSampleTemperatureSensor_event_loop_8:
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
 //  330 }
@@ -1288,25 +1346,31 @@ zclSampleTemperatureSensor_event_loop:
 //  351     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
 //  352     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
 //  353   }
-//  354 }
-//  355 
-//  356 /*********************************************************************
-//  357  * @fn      zclSampleTemperatureSensor_LcdDisplayMainMode
-//  358  *
-//  359  * @brief   Called to display the main screen on the LCD.
-//  360  *
-//  361  * @param   none
-//  362  *
-//  363  * @return  none
-//  364  */
+//  354   if ( keys & HAL_KEY_SW_5 )  // Switch 5
+//  355   {     
+//  356     HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+//  357     zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 350;
+//  358     bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+//  359   }
+//  360 }
+//  361 
+//  362 /*********************************************************************
+//  363  * @fn      zclSampleTemperatureSensor_LcdDisplayMainMode
+//  364  *
+//  365  * @brief   Called to display the main screen on the LCD.
+//  366  *
+//  367  * @param   none
+//  368  *
+//  369  * @return  none
+//  370  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  365 static void zclSampleTemperatureSensor_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg)
+//  371 static void zclSampleTemperatureSensor_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg)
 zclSampleTemperatureSensor_ProcessCommissioningStatus:
           CFI Block cfiBlock2 Using cfiCommon0
           CFI Function zclSampleTemperatureSensor_ProcessCommissioningStatus
         CODE
-//  366 {
+//  372 {
         FUNCALL zclSampleTemperatureSensor_ProcessCommissioningStatus, bdb_StartCommissioning
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1348,7 +1412,7 @@ zclSampleTemperatureSensor_ProcessCommissioningStatus:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  367     switch(bdbCommissioningModeMsg->bdbCommissioningMode)
+//  373     switch(bdbCommissioningModeMsg->bdbCommissioningMode)
         MOV       DPL,R2
         MOV       DPH,R3
         INC       DPTR
@@ -1360,17 +1424,17 @@ zclSampleTemperatureSensor_ProcessCommissioningStatus:
         ADD       A,#-0x3
         JZ        ??zclSampleTemperatureSensor_ProcessCommissioni_3
         SJMP      ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  368     {
-//  369       case BDB_COMMISSIONING_FORMATION:
-//  370         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  374     {
+//  375       case BDB_COMMISSIONING_FORMATION:
+//  376         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
 ??zclSampleTemperatureSensor_ProcessCommissioni_2:
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         JNZ       ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  371         {
-//  372           //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
-//  373           bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+//  377         {
+//  378           //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
+//  379           bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
         ; Setup parameters for call to function bdb_StartCommissioning
         INC       DPTR
         INC       DPTR
@@ -1379,73 +1443,73 @@ zclSampleTemperatureSensor_ProcessCommissioningStatus:
         MOV       R1,A
         LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
         SJMP      ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  374         }
-//  375         else
-//  376         {
-//  377           //Want to try other channels?
-//  378           //try with bdb_setChannelAttribute
-//  379         }
-//  380       break;
-//  381       case BDB_COMMISSIONING_NWK_STEERING:
-//  382         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  380         }
+//  381         else
+//  382         {
+//  383           //Want to try other channels?
+//  384           //try with bdb_setChannelAttribute
+//  385         }
+//  386       break;
+//  387       case BDB_COMMISSIONING_NWK_STEERING:
+//  388         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
 ??zclSampleTemperatureSensor_ProcessCommissioni_1:
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         JNZ       ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  383         {
-//  384           //YOUR JOB:
-//  385           //We are on the nwk, what now?
-//  386           HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+//  389         {
+//  390           //YOUR JOB:
+//  391           //We are on the nwk, what now?
+//  392           HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
         ; Setup parameters for call to function HalLedSet
         MOV       R2,#0x1
         MOV       R1,#0x1
         LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
         SJMP      ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  387         }
-//  388         else
-//  389         {
-//  390           //See the possible errors for nwk steering procedure
-//  391           //No suitable networks found
-//  392           //Want to try other channels?
-//  393           //try with bdb_setChannelAttribute
-//  394         }
-//  395       break;
-//  396       case BDB_COMMISSIONING_FINDING_BINDING:
-//  397         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-//  398         {
-//  399           //YOUR JOB:
+//  393         }
+//  394         else
+//  395         {
+//  396           //See the possible errors for nwk steering procedure
+//  397           //No suitable networks found
+//  398           //Want to try other channels?
+//  399           //try with bdb_setChannelAttribute
 //  400         }
-//  401         else
-//  402         {
-//  403           //YOUR JOB:
-//  404           //retry?, wait for user interaction?
-//  405         }
-//  406       break;
-//  407       case BDB_COMMISSIONING_INITIALIZATION:
-//  408         //Initialization notification can only be successful. Failure on initialization 
-//  409         //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
-//  410         
-//  411         //YOUR JOB:
-//  412         //We are on a network, what now?
-//  413         
-//  414       break;
-//  415 #if ZG_BUILD_ENDDEVICE_TYPE    
-//  416     case BDB_COMMISSIONING_PARENT_LOST:
-//  417       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
+//  401       break;
+//  402       case BDB_COMMISSIONING_FINDING_BINDING:
+//  403         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  404         {
+//  405           //YOUR JOB:
+//  406         }
+//  407         else
+//  408         {
+//  409           //YOUR JOB:
+//  410           //retry?, wait for user interaction?
+//  411         }
+//  412       break;
+//  413       case BDB_COMMISSIONING_INITIALIZATION:
+//  414         //Initialization notification can only be successful. Failure on initialization 
+//  415         //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
+//  416         
+//  417         //YOUR JOB:
+//  418         //We are on a network, what now?
+//  419         
+//  420       break;
+//  421 #if ZG_BUILD_ENDDEVICE_TYPE    
+//  422     case BDB_COMMISSIONING_PARENT_LOST:
+//  423       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
 ??zclSampleTemperatureSensor_ProcessCommissioni_3:
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         XRL       A,#0xd
         JZ        ??zclSampleTemperatureSensor_ProcessCommissioni_4
-//  418       {
-//  419         //We did recover from losing parent
-//  420       }
-//  421       else
-//  422       {
-//  423         //Parent not found, attempt to rejoin again after a fixed delay
-//  424         osal_start_timerEx(zclSampleTemperatureSensor_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+//  424       {
+//  425         //We did recover from losing parent
+//  426       }
+//  427       else
+//  428       {
+//  429         //Parent not found, attempt to rejoin again after a fixed delay
+//  430         osal_start_timerEx(zclSampleTemperatureSensor_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_2710
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -1459,12 +1523,12 @@ zclSampleTemperatureSensor_ProcessCommissioningStatus:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 XSP16+0
-//  425       }
-//  426     break;
-//  427 #endif 
-//  428     }
-//  429 
-//  430 }
+//  431       }
+//  432     break;
+//  433 #endif 
+//  434     }
+//  435 
+//  436 }
 ??zclSampleTemperatureSensor_ProcessCommissioni_4:
           CFI EndBlock cfiBlock2
         REQUIRE ?Subroutine0
@@ -1485,25 +1549,25 @@ zclSampleTemperatureSensor_ProcessCommissioningStatus:
           CFI DPL0 SameValue
         LJMP      ?BRET
           CFI EndBlock cfiBlock3
-//  431 
-//  432 /*********************************************************************
-//  433  * @fn      zclSampleTemperatureSensor_BasicResetCB
-//  434  *
-//  435  * @brief   Callback from the ZCL General Cluster Library
-//  436  *          to set all the Basic Cluster attributes to default values.
-//  437  *
-//  438  * @param   none
-//  439  *
-//  440  * @return  none
-//  441  */
+//  437 
+//  438 /*********************************************************************
+//  439  * @fn      zclSampleTemperatureSensor_BasicResetCB
+//  440  *
+//  441  * @brief   Callback from the ZCL General Cluster Library
+//  442  *          to set all the Basic Cluster attributes to default values.
+//  443  *
+//  444  * @param   none
+//  445  *
+//  446  * @return  none
+//  447  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  442 static void zclSampleTemperatureSensor_BasicResetCB( void )
+//  448 static void zclSampleTemperatureSensor_BasicResetCB( void )
 zclSampleTemperatureSensor_BasicResetCB:
           CFI Block cfiBlock4 Using cfiCommon0
           CFI Function zclSampleTemperatureSensor_BasicResetCB
         CODE
-//  443 {
+//  449 {
         FUNCALL zclSampleTemperatureSensor_BasicResetCB, zclSampleTemperatureSensor_ResetAttributesToDefaultValues
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1523,67 +1587,67 @@ zclSampleTemperatureSensor_BasicResetCB:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  444   zclSampleTemperatureSensor_ResetAttributesToDefaultValues();
+//  450   zclSampleTemperatureSensor_ResetAttributesToDefaultValues();
         ; Setup parameters for call to function zclSampleTemperatureSensor_ResetAttributesToDefaultValues
         LCALL     ??zclSampleTemperatureSensor_ResetAttributesToD; Banked call to: zclSampleTemperatureSensor_ResetAttributesToDefaultValues
-//  445 }
+//  451 }
         SJMP      ?Subroutine0
           CFI EndBlock cfiBlock4
-//  446 
-//  447 /*********************************************************************
-//  448  * @fn      zclSampleApp_BatteryWarningCB
-//  449  *
-//  450  * @brief   Called to handle battery-low situation.
-//  451  *
-//  452  * @param   voltLevel - level of severity
-//  453  *
-//  454  * @return  none
-//  455  */
+//  452 
+//  453 /*********************************************************************
+//  454  * @fn      zclSampleApp_BatteryWarningCB
+//  455  *
+//  456  * @brief   Called to handle battery-low situation.
+//  457  *
+//  458  * @param   voltLevel - level of severity
+//  459  *
+//  460  * @return  none
+//  461  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  456 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
+//  462 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
 zclSampleApp_BatteryWarningCB:
           CFI Block cfiBlock5 Using cfiCommon0
           CFI Function zclSampleApp_BatteryWarningCB
         CODE
-//  457 {
+//  463 {
         ; Saved register size: 0
         ; Auto size: 0
-//  458   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
-//  459   {
-//  460     // Send warning message to the gateway and blink LED
-//  461   }
-//  462   else if ( voltLevel == VOLT_LEVEL_BAD )
-//  463   {
-//  464     // Shut down the system
-//  465   }
-//  466 }
+//  464   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
+//  465   {
+//  466     // Send warning message to the gateway and blink LED
+//  467   }
+//  468   else if ( voltLevel == VOLT_LEVEL_BAD )
+//  469   {
+//  470     // Shut down the system
+//  471   }
+//  472 }
         LJMP      ?BRET
           CFI EndBlock cfiBlock5
-//  467 
-//  468 /******************************************************************************
-//  469  *
-//  470  *  Functions for processing ZCL Foundation incoming Command/Response messages
-//  471  *
-//  472  *****************************************************************************/
 //  473 
-//  474 /*********************************************************************
-//  475  * @fn      zclSampleTemperatureSensor_ProcessIncomingMsg
-//  476  *
-//  477  * @brief   Process ZCL Foundation incoming message
-//  478  *
-//  479  * @param   pInMsg - pointer to the received message
-//  480  *
-//  481  * @return  none
-//  482  */
+//  474 /******************************************************************************
+//  475  *
+//  476  *  Functions for processing ZCL Foundation incoming Command/Response messages
+//  477  *
+//  478  *****************************************************************************/
+//  479 
+//  480 /*********************************************************************
+//  481  * @fn      zclSampleTemperatureSensor_ProcessIncomingMsg
+//  482  *
+//  483  * @brief   Process ZCL Foundation incoming message
+//  484  *
+//  485  * @param   pInMsg - pointer to the received message
+//  486  *
+//  487  * @return  none
+//  488  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  483 static void zclSampleTemperatureSensor_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg)
+//  489 static void zclSampleTemperatureSensor_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg)
 zclSampleTemperatureSensor_ProcessIncomingMsg:
           CFI Block cfiBlock6 Using cfiCommon0
           CFI Function zclSampleTemperatureSensor_ProcessIncomingMsg
         CODE
-//  484 {
+//  490 {
         FUNCALL zclSampleTemperatureSensor_ProcessIncomingMsg, zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1632,7 +1696,7 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
           CFI CFA_XSP16 add(XSP16, 9)
         ; Saved register size: 9
         ; Auto size: 0
-//  485   switch ( pInMsg->zclHdr.commandID )
+//  491   switch ( pInMsg->zclHdr.commandID )
         MOV       A,R2
         ADD       A,#0x17
         MOV       R0,A
@@ -1666,10 +1730,10 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         ADD       A,#-0x2
         JZ        ??zclSampleTemperatureSensor_ProcessIncomingMsg_5
         SJMP      ??zclSampleTemperatureSensor_ProcessIncomingMsg_6
-//  486   {
-//  487 #ifdef ZCL_READ
-//  488     case ZCL_CMD_READ_RSP:
-//  489       zclSampleTemperatureSensor_ProcessInReadRspCmd( pInMsg );
+//  492   {
+//  493 #ifdef ZCL_READ
+//  494     case ZCL_CMD_READ_RSP:
+//  495       zclSampleTemperatureSensor_ProcessInReadRspCmd( pInMsg );
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_1:
         LCALL     ?Subroutine2 & 0xFFFF
 ??CrossCallReturnLabel_0:
@@ -1681,11 +1745,11 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         JNC       ??zclSampleTemperatureSensor_ProcessIncomingMsg_6
         INC       R0
         SJMP      ??CrossCallReturnLabel_0
-//  490       break;
-//  491 #endif
-//  492 #ifdef ZCL_WRITE
-//  493     case ZCL_CMD_WRITE_RSP:
-//  494       zclSampleTemperatureSensor_ProcessInWriteRspCmd( pInMsg );
+//  496       break;
+//  497 #endif
+//  498 #ifdef ZCL_WRITE
+//  499     case ZCL_CMD_WRITE_RSP:
+//  500       zclSampleTemperatureSensor_ProcessInWriteRspCmd( pInMsg );
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_2:
         LCALL     ?Subroutine2 & 0xFFFF
 ??CrossCallReturnLabel_1:
@@ -1697,46 +1761,46 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         JNC       ??zclSampleTemperatureSensor_ProcessIncomingMsg_6
         INC       R0
         SJMP      ??CrossCallReturnLabel_1
-//  495       break;
-//  496 #endif
-//  497 #ifdef ZCL_REPORT
-//  498     // See ZCL Test Applicaiton (zcl_testapp.c) for sample code on Attribute Reporting
-//  499     case ZCL_CMD_CONFIG_REPORT:
-//  500       //zclSampleTemperatureSensor_ProcessInConfigReportCmd( pInMsg );
 //  501       break;
-//  502       case ZCL_CMD_READ_REPORT_CFG:
-//  503       //zclSampleTemperatureSensor_ProcessInReadReportCfgCmd( pInMsg );
-//  504       break;
-//  505     case ZCL_CMD_CONFIG_REPORT_RSP:
-//  506       //zclSampleTemperatureSensor_ProcessInConfigReportRspCmd( pInMsg );
+//  502 #endif
+//  503 #ifdef ZCL_REPORT
+//  504     // See ZCL Test Applicaiton (zcl_testapp.c) for sample code on Attribute Reporting
+//  505     case ZCL_CMD_CONFIG_REPORT:
+//  506       //zclSampleTemperatureSensor_ProcessInConfigReportCmd( pInMsg );
 //  507       break;
-//  508     case ZCL_CMD_READ_REPORT_CFG_RSP:
-//  509       //zclSampleTemperatureSensor_ProcessInReadReportCfgRspCmd( pInMsg );
+//  508       case ZCL_CMD_READ_REPORT_CFG:
+//  509       //zclSampleTemperatureSensor_ProcessInReadReportCfgCmd( pInMsg );
 //  510       break;
-//  511 
-//  512     case ZCL_CMD_REPORT:
-//  513       //zclSampleTemperatureSensor_ProcessInReportCmd( pInMsg );
-//  514       break;
-//  515 #endif
-//  516     case ZCL_CMD_DEFAULT_RSP:
-//  517       zclSampleTemperatureSensor_ProcessInDefaultRspCmd( pInMsg );
-//  518       break;
-//  519 #ifdef ZCL_DISCOVER
-//  520     case ZCL_CMD_DISCOVER_CMDS_RECEIVED_RSP:
-//  521       zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( pInMsg );
+//  511     case ZCL_CMD_CONFIG_REPORT_RSP:
+//  512       //zclSampleTemperatureSensor_ProcessInConfigReportRspCmd( pInMsg );
+//  513       break;
+//  514     case ZCL_CMD_READ_REPORT_CFG_RSP:
+//  515       //zclSampleTemperatureSensor_ProcessInReadReportCfgRspCmd( pInMsg );
+//  516       break;
+//  517 
+//  518     case ZCL_CMD_REPORT:
+//  519       //zclSampleTemperatureSensor_ProcessInReportCmd( pInMsg );
+//  520       break;
+//  521 #endif
+//  522     case ZCL_CMD_DEFAULT_RSP:
+//  523       zclSampleTemperatureSensor_ProcessInDefaultRspCmd( pInMsg );
+//  524       break;
+//  525 #ifdef ZCL_DISCOVER
+//  526     case ZCL_CMD_DISCOVER_CMDS_RECEIVED_RSP:
+//  527       zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( pInMsg );
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_4:
         ; Setup parameters for call to function zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
-//  522       break;
-//  523 
-//  524     case ZCL_CMD_DISCOVER_CMDS_GEN_RSP:
-//  525       zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( pInMsg );
+//  528       break;
+//  529 
+//  530     case ZCL_CMD_DISCOVER_CMDS_GEN_RSP:
+//  531       zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( pInMsg );
         ; Setup parameters for call to function zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
         LCALL     ??zclSampleTemperatureSensor_ProcessInDiscCmdsR; Banked call to: zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
-//  526       break;
+//  532       break;
         SJMP      ??zclSampleTemperatureSensor_ProcessIncomingMsg_6
-//  527 
-//  528     case ZCL_CMD_DISCOVER_ATTRS_RSP:
-//  529       zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd( pInMsg );
+//  533 
+//  534     case ZCL_CMD_DISCOVER_ATTRS_RSP:
+//  535       zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd( pInMsg );
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_3:
         LCALL     ?Subroutine1 & 0xFFFF
 ??CrossCallReturnLabel_3:
@@ -1751,17 +1815,17 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         JNC       ??zclSampleTemperatureSensor_ProcessIncomingMsg_6
         INC       R2
         SJMP      ??CrossCallReturnLabel_3
-//  530       break;
-//  531 
-//  532     case ZCL_CMD_DISCOVER_ATTRS_EXT_RSP:
-//  533       zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( pInMsg );
+//  536       break;
+//  537 
+//  538     case ZCL_CMD_DISCOVER_ATTRS_EXT_RSP:
+//  539       zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( pInMsg );
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_5:
         LCALL     ?Subroutine1 & 0xFFFF
-//  534       break;
-//  535 #endif
-//  536     default:
-//  537       break;
-//  538   }
+//  540       break;
+//  541 #endif
+//  542     default:
+//  543       break;
+//  544   }
 ??CrossCallReturnLabel_4:
         SJMP      ??zclSampleTemperatureSensor_ProcessIncomingMsg_7
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_8:
@@ -1776,8 +1840,8 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         CLR       C
         SUBB      A,R3
         JC        ??zclSampleTemperatureSensor_ProcessIncomingMsg_8
-//  539 
-//  540   if ( pInMsg->attrCmd )
+//  545 
+//  546   if ( pInMsg->attrCmd )
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_6:
         MOV       DPL,R6
         MOV       DPH,R7
@@ -1789,12 +1853,12 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
         MOV       A,R2
         ORL       A,R3
         JZ        ??zclSampleTemperatureSensor_ProcessIncomingMsg_9
-//  541   {
-//  542     osal_mem_free( pInMsg->attrCmd );
+//  547   {
+//  548     osal_mem_free( pInMsg->attrCmd );
         ; Setup parameters for call to function osal_mem_free
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
-//  543   }
-//  544 }
+//  549   }
+//  550 }
 ??zclSampleTemperatureSensor_ProcessIncomingMsg_9:
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
@@ -1938,97 +2002,97 @@ zclSampleTemperatureSensor_ProcessIncomingMsg:
           CFI EndBlock cfiCond14
           CFI EndBlock cfiCond15
           CFI EndBlock cfiPicker16
-//  545 
-//  546 #ifdef ZCL_READ
-//  547 /*********************************************************************
-//  548  * @fn      zclSampleTemperatureSensor_ProcessInReadRspCmd
-//  549  *
-//  550  * @brief   Process the "Profile" Read Response Command
-//  551  *
-//  552  * @param   pInMsg - incoming message to process
-//  553  *
-//  554  * @return  none
-//  555  */
-//  556 static uint8 zclSampleTemperatureSensor_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
-//  557 {
-//  558   zclReadRspCmd_t *readRspCmd;
-//  559   uint8 i;
-//  560 
-//  561   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
-//  562   for ( i = 0; i < readRspCmd->numAttr; i++ )
-//  563   {
-//  564     // Notify the originator of the results of the original read attributes
-//  565     // attempt and, for each successfull request, the value of the requested
-//  566     // attribute
-//  567   }
-//  568 
-//  569   return ( TRUE );
-//  570 }
-//  571 #endif // ZCL_READ
-//  572 
-//  573 #ifdef ZCL_WRITE
-//  574 /*********************************************************************
-//  575  * @fn      zclSampleTemperatureSensor_ProcessInWriteRspCmd
-//  576  *
-//  577  * @brief   Process the "Profile" Write Response Command
-//  578  *
-//  579  * @param   pInMsg - incoming message to process
-//  580  *
-//  581  * @return  none
-//  582  */
-//  583 static uint8 zclSampleTemperatureSensor_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
-//  584 {
-//  585   zclWriteRspCmd_t *writeRspCmd;
-//  586   uint8 i;
-//  587 
-//  588   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
-//  589   for ( i = 0; i < writeRspCmd->numAttr; i++ )
-//  590   {
-//  591     // Notify the device of the results of the its original write attributes
-//  592     // command.
-//  593   }
-//  594 
-//  595   return ( TRUE );
-//  596 }
-//  597 #endif // ZCL_WRITE
-//  598 
-//  599 /*********************************************************************
-//  600  * @fn      zclSampleTemperatureSensor_ProcessInDefaultRspCmd
-//  601  *
-//  602  * @brief   Process the "Profile" Default Response Command
-//  603  *
-//  604  * @param   pInMsg - incoming message to process
-//  605  *
-//  606  * @return  none
-//  607  */
-//  608 static uint8 zclSampleTemperatureSensor_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
-//  609 {
-//  610   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
-//  611 
-//  612   // Device is notified of the Default Response command.
-//  613   (void)pInMsg;
-//  614 
-//  615   return ( TRUE );
-//  616 }
+//  551 
+//  552 #ifdef ZCL_READ
+//  553 /*********************************************************************
+//  554  * @fn      zclSampleTemperatureSensor_ProcessInReadRspCmd
+//  555  *
+//  556  * @brief   Process the "Profile" Read Response Command
+//  557  *
+//  558  * @param   pInMsg - incoming message to process
+//  559  *
+//  560  * @return  none
+//  561  */
+//  562 static uint8 zclSampleTemperatureSensor_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
+//  563 {
+//  564   zclReadRspCmd_t *readRspCmd;
+//  565   uint8 i;
+//  566 
+//  567   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
+//  568   for ( i = 0; i < readRspCmd->numAttr; i++ )
+//  569   {
+//  570     // Notify the originator of the results of the original read attributes
+//  571     // attempt and, for each successfull request, the value of the requested
+//  572     // attribute
+//  573   }
+//  574 
+//  575   return ( TRUE );
+//  576 }
+//  577 #endif // ZCL_READ
+//  578 
+//  579 #ifdef ZCL_WRITE
+//  580 /*********************************************************************
+//  581  * @fn      zclSampleTemperatureSensor_ProcessInWriteRspCmd
+//  582  *
+//  583  * @brief   Process the "Profile" Write Response Command
+//  584  *
+//  585  * @param   pInMsg - incoming message to process
+//  586  *
+//  587  * @return  none
+//  588  */
+//  589 static uint8 zclSampleTemperatureSensor_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
+//  590 {
+//  591   zclWriteRspCmd_t *writeRspCmd;
+//  592   uint8 i;
+//  593 
+//  594   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
+//  595   for ( i = 0; i < writeRspCmd->numAttr; i++ )
+//  596   {
+//  597     // Notify the device of the results of the its original write attributes
+//  598     // command.
+//  599   }
+//  600 
+//  601   return ( TRUE );
+//  602 }
+//  603 #endif // ZCL_WRITE
+//  604 
+//  605 /*********************************************************************
+//  606  * @fn      zclSampleTemperatureSensor_ProcessInDefaultRspCmd
+//  607  *
+//  608  * @brief   Process the "Profile" Default Response Command
+//  609  *
+//  610  * @param   pInMsg - incoming message to process
+//  611  *
+//  612  * @return  none
+//  613  */
+//  614 static uint8 zclSampleTemperatureSensor_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
+//  615 {
+//  616   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
 //  617 
-//  618 #ifdef ZCL_DISCOVER
-//  619 /*********************************************************************
-//  620  * @fn      zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
-//  621  *
-//  622  * @brief   Process the Discover Commands Response Command
-//  623  *
-//  624  * @param   pInMsg - incoming message to process
-//  625  *
-//  626  * @return  none
-//  627  */
+//  618   // Device is notified of the Default Response command.
+//  619   (void)pInMsg;
+//  620 
+//  621   return ( TRUE );
+//  622 }
+//  623 
+//  624 #ifdef ZCL_DISCOVER
+//  625 /*********************************************************************
+//  626  * @fn      zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
+//  627  *
+//  628  * @brief   Process the Discover Commands Response Command
+//  629  *
+//  630  * @param   pInMsg - incoming message to process
+//  631  *
+//  632  * @return  none
+//  633  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  628 static uint8 zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
+//  634 static uint8 zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
 zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd:
           CFI Block cfiBlock17 Using cfiCommon0
           CFI Function zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
         CODE
-//  629 {
+//  635 {
         PUSH      DPL
           CFI DPL0 Frame(CFA_SP, 4)
           CFI CFA_SP SP+-4
@@ -2037,10 +2101,10 @@ zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  630   zclDiscoverCmdsCmdRsp_t *discoverRspCmd;
-//  631   uint8 i;
-//  632 
-//  633   discoverRspCmd = (zclDiscoverCmdsCmdRsp_t *)pInMsg->attrCmd;
+//  636   zclDiscoverCmdsCmdRsp_t *discoverRspCmd;
+//  637   uint8 i;
+//  638 
+//  639   discoverRspCmd = (zclDiscoverCmdsCmdRsp_t *)pInMsg->attrCmd;
         MOV       A,R2
         ADD       A,#0x17
         MOV       DPL,A
@@ -2048,7 +2112,7 @@ zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd:
         ADDC      A,R3
         MOV       DPH,A
         LCALL     ??Subroutine3_0 & 0xFFFF
-//  634   for ( i = 0; i < discoverRspCmd->numCmd; i++ )
+//  640   for ( i = 0; i < discoverRspCmd->numCmd; i++ )
 ??CrossCallReturnLabel_2:
         SJMP      ??zclSampleTemperatureSensor_ProcessInDiscCmdsR_1
 ??zclSampleTemperatureSensor_ProcessInDiscCmdsR_2:
@@ -2064,14 +2128,14 @@ zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd:
         CLR       C
         SUBB      A,R3
         JC        ??zclSampleTemperatureSensor_ProcessInDiscCmdsR_2
-//  635   {
-//  636     // Device is notified of the result of its attribute discovery command.
-//  637   }
-//  638 
-//  639   return ( TRUE );
+//  641   {
+//  642     // Device is notified of the result of its attribute discovery command.
+//  643   }
+//  644 
+//  645   return ( TRUE );
         MOV       R1,#0x1
         LJMP      ?Subroutine0 & 0xFFFF
-//  640 }
+//  646 }
           CFI EndBlock cfiBlock17
 
         RSEG XDATA_ID:CODE:NOROOT(0)
@@ -2155,98 +2219,98 @@ __Constant_2710:
         DC24    zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd
 
         END
-//  641 
-//  642 /*********************************************************************
-//  643  * @fn      zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd
-//  644  *
-//  645  * @brief   Process the "Profile" Discover Attributes Response Command
-//  646  *
-//  647  * @param   pInMsg - incoming message to process
-//  648  *
-//  649  * @return  none
-//  650  */
-//  651 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
-//  652 {
-//  653   zclDiscoverAttrsRspCmd_t *discoverRspCmd;
-//  654   uint8 i;
-//  655 
-//  656   discoverRspCmd = (zclDiscoverAttrsRspCmd_t *)pInMsg->attrCmd;
-//  657   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
-//  658   {
-//  659     // Device is notified of the result of its attribute discovery command.
-//  660   }
+//  647 
+//  648 /*********************************************************************
+//  649  * @fn      zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd
+//  650  *
+//  651  * @brief   Process the "Profile" Discover Attributes Response Command
+//  652  *
+//  653  * @param   pInMsg - incoming message to process
+//  654  *
+//  655  * @return  none
+//  656  */
+//  657 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
+//  658 {
+//  659   zclDiscoverAttrsRspCmd_t *discoverRspCmd;
+//  660   uint8 i;
 //  661 
-//  662   return ( TRUE );
-//  663 }
-//  664 
-//  665 /*********************************************************************
-//  666  * @fn      zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd
-//  667  *
-//  668  * @brief   Process the "Profile" Discover Attributes Extended Response Command
-//  669  *
-//  670  * @param   pInMsg - incoming message to process
-//  671  *
-//  672  * @return  none
-//  673  */
-//  674 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
-//  675 {
-//  676   zclDiscoverAttrsExtRsp_t *discoverRspCmd;
-//  677   uint8 i;
-//  678 
-//  679   discoverRspCmd = (zclDiscoverAttrsExtRsp_t *)pInMsg->attrCmd;
-//  680   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
-//  681   {
-//  682     // Device is notified of the result of its attribute discovery command.
-//  683   }
+//  662   discoverRspCmd = (zclDiscoverAttrsRspCmd_t *)pInMsg->attrCmd;
+//  663   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
+//  664   {
+//  665     // Device is notified of the result of its attribute discovery command.
+//  666   }
+//  667 
+//  668   return ( TRUE );
+//  669 }
+//  670 
+//  671 /*********************************************************************
+//  672  * @fn      zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd
+//  673  *
+//  674  * @brief   Process the "Profile" Discover Attributes Extended Response Command
+//  675  *
+//  676  * @param   pInMsg - incoming message to process
+//  677  *
+//  678  * @return  none
+//  679  */
+//  680 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
+//  681 {
+//  682   zclDiscoverAttrsExtRsp_t *discoverRspCmd;
+//  683   uint8 i;
 //  684 
-//  685   return ( TRUE );
-//  686 }
-//  687 #endif // ZCL_DISCOVER
-//  688 
-//  689 // GUI_LOCAL_TEMP
-//  690 //static void zclSampleTemperatureSensor_UiActionChangeTemp(uint16 keys)
-//  691 //{
-//  692 //  if ( keys & HAL_KEY_SW_1 )
-//  693 //  {
-//  694 //    // increase the temperature
-//  695 //    if ( zclSampleTemperatureSensor_MeasuredValue < zclSampleTemperatureSensor_MaxMeasuredValue )
-//  696 //    {
-//  697 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 100;  // considering using whole number value
-//  698 //#ifdef BDB_REPORTING      
-//  699 //      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-//  700 //#endif
-//  701 //    }
-//  702 //    else if ( zclSampleTemperatureSensor_MeasuredValue >= zclSampleTemperatureSensor_MaxMeasuredValue )
-//  703 //    {
-//  704 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MaxMeasuredValue;
-//  705 //    }
-//  706 //  }
-//  707 //  
-//  708 //  if ( keys & HAL_KEY_SW_3 )
-//  709 //  {
-//  710 //    // decrease the temperature
-//  711 //    if ( zclSampleTemperatureSensor_MeasuredValue > zclSampleTemperatureSensor_MinMeasuredValue )
-//  712 //    {
-//  713 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue - 100;  // considering using whole number value
-//  714 //#ifdef BDB_REPORTING
-//  715 //      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-//  716 //#endif
-//  717 //    }
-//  718 //    else if ( zclSampleTemperatureSensor_MeasuredValue <= zclSampleTemperatureSensor_MinMeasuredValue )
-//  719 //    {
-//  720 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MinMeasuredValue;
-//  721 //    }
-//  722 //  }
-//  723 //  
-//  724 //  UI_UpdateLcd();
-//  725 //}
-//  726 
-//  727 /****************************************************************************
-//  728 ****************************************************************************/
-//  729 
-//  730 
+//  685   discoverRspCmd = (zclDiscoverAttrsExtRsp_t *)pInMsg->attrCmd;
+//  686   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
+//  687   {
+//  688     // Device is notified of the result of its attribute discovery command.
+//  689   }
+//  690 
+//  691   return ( TRUE );
+//  692 }
+//  693 #endif // ZCL_DISCOVER
+//  694 
+//  695 // GUI_LOCAL_TEMP
+//  696 //static void zclSampleTemperatureSensor_UiActionChangeTemp(uint16 keys)
+//  697 //{
+//  698 //  if ( keys & HAL_KEY_SW_1 )
+//  699 //  {
+//  700 //    // increase the temperature
+//  701 //    if ( zclSampleTemperatureSensor_MeasuredValue < zclSampleTemperatureSensor_MaxMeasuredValue )
+//  702 //    {
+//  703 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 100;  // considering using whole number value
+//  704 //#ifdef BDB_REPORTING      
+//  705 //      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+//  706 //#endif
+//  707 //    }
+//  708 //    else if ( zclSampleTemperatureSensor_MeasuredValue >= zclSampleTemperatureSensor_MaxMeasuredValue )
+//  709 //    {
+//  710 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MaxMeasuredValue;
+//  711 //    }
+//  712 //  }
+//  713 //  
+//  714 //  if ( keys & HAL_KEY_SW_3 )
+//  715 //  {
+//  716 //    // decrease the temperature
+//  717 //    if ( zclSampleTemperatureSensor_MeasuredValue > zclSampleTemperatureSensor_MinMeasuredValue )
+//  718 //    {
+//  719 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue - 100;  // considering using whole number value
+//  720 //#ifdef BDB_REPORTING
+//  721 //      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+//  722 //#endif
+//  723 //    }
+//  724 //    else if ( zclSampleTemperatureSensor_MeasuredValue <= zclSampleTemperatureSensor_MinMeasuredValue )
+//  725 //    {
+//  726 //      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MinMeasuredValue;
+//  727 //    }
+//  728 //  }
+//  729 //  
+//  730 //  UI_UpdateLcd();
+//  731 //}
+//  732 
+//  733 /****************************************************************************
+//  734 ****************************************************************************/
+//  735 
+//  736 
 // 
-// 579 bytes in segment BANKED_CODE
+// 619 bytes in segment BANKED_CODE
 //  42 bytes in segment BANK_RELAYS
 //  23 bytes in segment XDATA_I
 //  23 bytes in segment XDATA_ID
@@ -2255,7 +2319,7 @@ __Constant_2710:
 // 
 //  65 bytes of CODE     memory
 //   0 bytes of CONST    memory (+ 4 bytes shared)
-// 579 bytes of HUGECODE memory
+// 619 bytes of HUGECODE memory
 //  24 bytes of XDATA    memory
 //
 //Errors: none
