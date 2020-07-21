@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:33
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              21/Jul/2020  00:36:41
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWF2B1.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW3560.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\sys\ZGlobals.c" -D BDB_REPORTING -D SECURE=1
 //        -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -132,18 +134,16 @@
         EXTERN ?V2
         EXTERN ?V3
         EXTERN ?V4
-        EXTERN ?V5
         EXTERN ?ALLOC_XSTACK8
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
         EXTERN ?DEALLOC_XSTACK8
+        EXTERN ?PUSH_XSTACK8_C_TWO
         EXTERN ?PUSH_XSTACK_I_THREE
         EXTERN ?PUSH_XSTACK_I_TWO
         EXTERN ?XSP
         EXTERN ?XSTACK_DISP0_8
-        EXTERN ?XSTACK_DISP100_8
-        EXTERN ?XSTACK_DISP101_8
         EXTERN __INIT_XDATA_I
         EXTERN __INIT_XDATA_Z
 
@@ -151,10 +151,13 @@
         FUNCTION `??zgInit::?relay`,0203H
         PUBLIC `??zgInitItems::?relay`
         FUNCTION `??zgInitItems::?relay`,0203H
+        FUNCTION `??zgItemInit::?relay`,0203H
+        FUNCTION `??zgPreconfigKeyInit::?relay`,0203H
         PUBLIC `??zgReadStartupOptions::?relay`
         FUNCTION `??zgReadStartupOptions::?relay`,0203H
         PUBLIC `??zgSetItem::?relay`
         FUNCTION `??zgSetItem::?relay`,0203H
+        FUNCTION `??zgUpgradeNVItems::?relay`,0203H
         PUBLIC `??zgWriteStartupOptions::?relay`
         FUNCTION `??zgWriteStartupOptions::?relay`,0203H
         PUBLIC zTouchLinkNwkStartRtr
@@ -193,13 +196,18 @@
         PUBLIC zgInit
         FUNCTION zgInit,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 32, STACK
+        LOCFRAME XSTACK, 12, STACK
         PUBLIC zgInitItems
-        FUNCTION zgInitItems,0a1203H
-        ARGFRAME XSTACK, 28, STACK
+        FUNCTION zgInitItems,021203H
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME XSTACK, 18, STACK
+        LOCFRAME XSTACK, 11, STACK
+        FUNCTION zgItemInit,0a1203H
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 17, STACK
         PUBLIC zgMaxBcastRetires
         PUBLIC zgMaxDataRetries
         PUBLIC zgMaxPollFailureRetries
@@ -216,6 +224,11 @@
         PUBLIC zgPassiveAckTimeout
         PUBLIC zgPollRate
         PUBLIC zgPreConfigKeys
+        FUNCTION zgPreconfigKeyInit,0a1203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 30, STACK
         PUBLIC zgQueuedPollRate
         PUBLIC zgReadStartupOptions
         FUNCTION zgReadStartupOptions,0a1203H
@@ -238,10 +251,15 @@
         PUBLIC zgStartDelay
         PUBLIC zgSwitchCoordKey
         PUBLIC zgSwitchCoordKeyIndex
+        FUNCTION zgUpgradeNVItems,0a1203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 16, STACK
         PUBLIC zgUseDefaultTCLK
         PUBLIC zgWriteStartupOptions
         FUNCTION zgWriteStartupOptions,0a1203H
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 15, STACK
@@ -335,73 +353,6 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
-        
 ZDSecMgrInitNVKeyTables SYMBOL "ZDSecMgrInitNVKeyTables"
 `??ZDSecMgrInitNVKeyTables::?relay` SYMBOL "?relay", ZDSecMgrInitNVKeyTables
 ZMacGetReq          SYMBOL "ZMacGetReq"
@@ -457,14 +408,14 @@ zgWriteStartupOptions SYMBOL "zgWriteStartupOptions"
         FUNCTION ZDSecMgrInitNVKeyTables,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN ZMacGetReq
         FUNCTION ZMacGetReq,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN bdbAttributes
@@ -472,7 +423,7 @@ zgWriteStartupOptions SYMBOL "zgWriteStartupOptions"
         FUNCTION bdb_setNodeIsOnANetwork,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_memcpy
@@ -486,42 +437,42 @@ zgWriteStartupOptions SYMBOL "zgWriteStartupOptions"
         FUNCTION osal_memset,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 26, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_nv_delete
         FUNCTION osal_nv_delete,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_nv_item_init
         FUNCTION osal_nv_item_init,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 30, STACK
+        ARGFRAME XSTACK, 28, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_nv_item_len
         FUNCTION osal_nv_item_len,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_nv_read
         FUNCTION osal_nv_read,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME XSTACK, 17, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_nv_write
         FUNCTION osal_nv_write,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME XSTACK, 30, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
 
@@ -1684,29 +1635,159 @@ zgItemTable:
 //  549  * @return  ZSUCCESS if successful, NV_ITEM_UNINIT if item did not
 //  550  *          exist in NV, NV_OPER_FAILED if failure.
 //  551  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  552 static uint8 zgItemInit( uint16 id, uint16 len, void *buf, uint8 setDefault )
+zgItemInit:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function zgItemInit
+        CODE
 //  553 {
+        FUNCALL zgItemInit, osal_nv_item_init
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 15, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 15, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgItemInit, osal_nv_write
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 17, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 17, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgItemInit, osal_nv_read
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 17, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 17, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        MOV       A,#-0xd
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 13)
+        ; Saved register size: 13
+        ; Auto size: 0
+        MOV       A,R2
+        MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
+        MOV       ?V2,R4
+        MOV       ?V3,R5
+        MOV       ?V4,R1
+        MOV       A,#0xd
+        LCALL     ?XSTACK_DISP0_8
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V1,A
 //  554   uint8 status;
 //  555 
 //  556   // If the item doesn't exist in NV memory, create and initialize
 //  557   // it with the value passed in.
 //  558   status = osal_nv_item_init( id, len, buf );
+        ; Setup parameters for call to function osal_nv_item_init
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 15)
+        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 13)
+        MOV       A,R1
+        MOV       R1,A
 //  559   if ( status == ZSUCCESS )
+        JNZ       ??zgItemInit_0
 //  560   {
 //  561     if ( setDefault )
+        MOV       A,?V4
+        MOV       R0,#?V0
+        JZ        ??zgItemInit_1
 //  562     {
 //  563       // Write the default value back to NV
 //  564       status = osal_nv_write( id, 0, len, buf );
+        ; Setup parameters for call to function osal_nv_write
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R4,#0x0
+        MOV       R5,#0x0
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
+        SJMP      ??zgItemInit_2
+          CFI CFA_XSP16 add(XSP16, 13)
 //  565     }
 //  566     else
 //  567     {
 //  568       // The item exists in NV memory, read it from NV memory
 //  569       status = osal_nv_read( id, 0, len, buf );
+??zgItemInit_1:
+        ; Setup parameters for call to function osal_nv_read
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R4,#0x0
+        MOV       R5,#0x0
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
+??zgItemInit_2:
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 13)
+        MOV       A,R1
+        MOV       R1,A
 //  570     }
 //  571   }
 //  572 
 //  573   return (status);
+??zgItemInit_0:
+        MOV       R7,#0x5
+        LJMP      ?BANKED_LEAVE_XDATA
 //  574 }
+          CFI EndBlock cfiBlock0
 //  575 
 //  576 /*********************************************************************
 //  577  * API FUNCTIONS
@@ -1734,173 +1815,96 @@ zgItemTable:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  598 uint8 zgInit( void )
 zgInit:
-          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function zgInit
         CODE
 //  599 {
         FUNCALL zgInit, osal_nv_item_init
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 30, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 30, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zgInit, bdb_setNodeIsOnANetwork
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_item_len
+        FUNCALL zgInit, zgUpgradeNVItems
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_item_len
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_read
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 32, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 32, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_item_init
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 30, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 30, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_delete
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zgInit, ZMacGetReq
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zgInit, zgInitItems
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_memset
+        FUNCALL zgInit, zgPreconfigKeyInit
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_item_init
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 30, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 30, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_nv_write
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 32, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 32, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInit, osal_memset
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zgInit, ZDSecMgrInitNVKeyTables
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zgInit, zgWriteStartupOptions
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME XSTACK, 10, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
@@ -1920,10 +1924,7 @@ zgInit:
           CFI CFA_SP SP+0
           CFI CFA_XSP16 add(XSP16, 10)
         ; Saved register size: 10
-        ; Auto size: 18
-        MOV       A,#-0x12
-        LCALL     ?ALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
+        ; Auto size: 0
 //  600   uint8  setDefault = FALSE;
 //  601   uint8  status;
 //  602   
@@ -1946,14 +1947,15 @@ zgInit:
         MOV       ?V1,#((bdbAttributes + 14) >> 8) & 0xff
         MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
+          CFI CFA_XSP16 add(XSP16, 12)
         MOV       R4,#0x1
         MOV       R5,#0x0
         MOV       R2,#0x55
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_0:
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+        MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
+          CFI CFA_XSP16 add(XSP16, 10)
         MOV       A,R1
         JNZ       ??zgInit_0
 //  617   {
@@ -1991,86 +1993,11 @@ zgInit:
 //  646 
 //  647   zgUpgradeNVItems();
 ??zgInit_0:
-        ; Setup parameters for call to function osal_nv_item_len
-        MOV       R2,#0x24
-        MOV       R3,#0x0
-        LCALL     `??osal_nv_item_len::?relay`; Banked call to: osal_nv_item_len
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       R6,?V0
-        ; Setup parameters for call to function osal_nv_item_len
-        MOV       R2,#0x35
-        MOV       R3,#0x0
-        LCALL     `??osal_nv_item_len::?relay`; Banked call to: osal_nv_item_len
-        MOV       A,R2
-        ORL       A,R3
-        JNZ       ??zgInit_1
-        MOV       A,#0x2
-        XRL       A,R6
-        ORL       A,?V1
-        JNZ       ??zgInit_1
-        ; Setup parameters for call to function osal_nv_read
-        MOV       R0,?XSP + 0
-        MOV       R1,?XSP + 1
-        MOV       ?V0,R0
-        MOV       ?V1,R1
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
-        MOV       ?V0,#0x2
-        MOV       ?V1,#0x0
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 32)
-        MOV       R4,#0x0
-        MOV       R5,#0x0
-        MOV       R2,#0x24
-        MOV       R3,#0x0
-        LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
-        MOV       A,#0x4
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
-        MOV       DPL,?XSP + 0
-        MOV       DPH,?XSP + 1
-        MOVX      A,@DPTR
-        MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPTR,#zgPollRate
-        MOV       A,R0
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOV       A,R1
-        MOVX      @DPTR,A
-        INC       DPTR
-        CLR       A
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function osal_nv_item_init
-        MOV       ?V0,#zgPollRate & 0xff
-        MOV       ?V1,#(zgPollRate >> 8) & 0xff
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
-        MOV       R4,#0x4
-        MOV       R5,#0x0
-        MOV       R2,#0x35
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_1:
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
-        ; Setup parameters for call to function osal_nv_delete
-        MOV       R4,#0x2
-        MOV       R5,#0x0
-        MOV       R2,#0x24
-        MOV       R3,#0x0
-        LCALL     `??osal_nv_delete::?relay`; Banked call to: osal_nv_delete
+        ; Setup parameters for call to function zgUpgradeNVItems
+        LCALL     `??zgUpgradeNVItems::?relay`; Banked call to: zgUpgradeNVItems
 //  648 
 //  649   // Initialize the Extended PAN ID as my own extended address
 //  650   ZMacGetReq( ZMacExtAddr, zgExtendedPANID );
-??zgInit_1:
         ; Setup parameters for call to function ZMacGetReq
         MOV       R2,#zgExtendedPANID & 0xff
         MOV       R3,#(zgExtendedPANID >> 8) & 0xff
@@ -2088,55 +2015,9 @@ zgInit:
 //  657   {
 //  658     // Initialize the Pre-Configured Key to the default key
 //  659     zgPreconfigKeyInit( setDefault );
-        ; Setup parameters for call to function osal_memset
-        MOV       R4,#0x10
-        MOV       R5,#0x0
-        MOV       R1,#0x0
-        MOV       A,#0x2
-        LCALL     ?XSTACK_DISP101_8
-        LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-        ; Setup parameters for call to function osal_nv_item_init
-        MOV       A,#0x2
-        LCALL     ?XSTACK_DISP100_8
-        MOV       ?V0,R0
-        MOV       ?V1,R1
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
-        MOV       R4,#0x10
-        MOV       R5,#0x0
-        MOV       R2,#0x62
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_2:
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
-        MOV       A,R1
-        JNZ       ??zgInit_2
-        ; Setup parameters for call to function osal_nv_write
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
-        MOV       ?V0,#0x10
-        MOV       ?V1,#0x0
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 32)
-        MOV       R4,#0x0
-        MOV       R5,#0x0
-        MOV       R2,#0x62
-        MOV       R3,#0x0
-        LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
-        MOV       A,#0x4
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 28)
-??zgInit_2:
-        ; Setup parameters for call to function osal_memset
-        MOV       R4,#0x10
-        MOV       R5,#0x0
-        MOV       R1,#0x0
-        MOV       A,#0x2
-        LCALL     ?XSTACK_DISP101_8
-        LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
+        ; Setup parameters for call to function zgPreconfigKeyInit
+        MOV       R1,#0x1
+        LCALL     `??zgPreconfigKeyInit::?relay`; Banked call to: zgPreconfigKeyInit
 //  660 
 //  661     // Initialize NV items for all Keys: NWK, APS, TCLK and Master
 //  662     ZDSecMgrInitNVKeyTables( setDefault );
@@ -2162,178 +2043,10 @@ zgInit:
 //  675   
 //  676   return ( ZSUCCESS );
         MOV       R1,#0x0
-        MOV       A,#0x12
-        LJMP      ??Subroutine4_0 & 0xFFFF
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
 //  677 }
-          CFI EndBlock cfiBlock0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond1 Using cfiCommon0
-          CFI Function zgInit
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond2 Using cfiCommon0
-          CFI (cfiCond2) Function zgInit
-          CFI (cfiCond2) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond2) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond2) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond2) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond2) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond2) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond2) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond2) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond2) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond2) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond2) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond2) CFA_SP SP+-2
-          CFI (cfiCond2) CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI (cfiCond3) Function zgInit
-          CFI (cfiCond3) Conditional ??CrossCallReturnLabel_2
-          CFI (cfiCond3) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond3) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond3) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond3) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond3) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond3) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond3) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond3) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond3) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond3) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond3) CFA_SP SP+-2
-          CFI (cfiCond3) CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI (cfiCond4) Function zgReadStartupOptions
-          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond4) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond4) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond4) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond4) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond4) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond4) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond4) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond4) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond4) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond4) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond4) CFA_SP SP+-2
-          CFI (cfiCond4) CFA_XSP16 add(XSP16, 13)
-          CFI Block cfiPicker5 Using cfiCommon1
-          CFI (cfiPicker5) NoFunction
-          CFI (cfiPicker5) Picker
-        MOV       R3,#0x0
-          CFI EndBlock cfiCond1
-          CFI EndBlock cfiCond2
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiPicker5
-        REQUIRE ??Subroutine3_0
-        ; // Fall through to label ??Subroutine3_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine3_0:
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI Function zgInitItems
-          CFI Conditional ??CrossCallReturnLabel_4
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 16)
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function zgInit
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_0
-          CFI (cfiCond7) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond7) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond7) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond7) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond7) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond7) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond7) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond7) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond7) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond7) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond7) CFA_SP SP+-2
-          CFI (cfiCond7) CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond8 Using cfiCommon0
-          CFI (cfiCond8) Function zgInit
-          CFI (cfiCond8) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond8) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond8) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond8) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond8) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond8) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond8) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond8) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond8) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond8) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond8) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond8) CFA_SP SP+-2
-          CFI (cfiCond8) CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond9 Using cfiCommon0
-          CFI (cfiCond9) Function zgInit
-          CFI (cfiCond9) Conditional ??CrossCallReturnLabel_2
-          CFI (cfiCond9) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond9) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond9) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond9) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond9) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond9) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond9) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond9) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond9) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond9) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond9) CFA_SP SP+-2
-          CFI (cfiCond9) CFA_XSP16 add(XSP16, 30)
-          CFI Block cfiCond10 Using cfiCommon0
-          CFI (cfiCond10) Function zgReadStartupOptions
-          CFI (cfiCond10) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond10) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond10) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond10) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond10) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond10) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond10) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond10) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond10) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond10) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond10) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond10) CFA_SP SP+-2
-          CFI (cfiCond10) CFA_XSP16 add(XSP16, 13)
-          CFI Block cfiPicker11 Using cfiCommon1
-          CFI (cfiPicker11) NoFunction
-          CFI (cfiPicker11) Picker
-        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
-        MOV       A,#0x2
-        RET
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiCond8
-          CFI EndBlock cfiCond9
-          CFI EndBlock cfiCond10
-          CFI EndBlock cfiPicker11
+          CFI EndBlock cfiBlock1
 //  678 
 //  679 /*********************************************************************
 //  680  * @fn          zgInitItems
@@ -2350,50 +2063,22 @@ zgInit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  690 void zgInitItems( uint8 setDefault )
 zgInitItems:
-          CFI Block cfiBlock12 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function zgInitItems
         CODE
 //  691 {
-        FUNCALL zgInitItems, osal_nv_read
+        FUNCALL zgInitItems, zgItemInit
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 18, STACK
+        LOCFRAME XSTACK, 11, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME XSTACK, 11, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInitItems, osal_nv_item_init
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 16, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 16, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zgInitItems, osal_nv_write
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 18, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        REQUIRE ?V0
-        REQUIRE ?V1
-        REQUIRE ?V2
-        REQUIRE ?V3
-        REQUIRE ?V4
-        REQUIRE ?V5
-        MOV       A,#-0xe
+        MOV       A,#-0x9
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -2401,21 +2086,17 @@ zgInitItems:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 14)
-        ; Saved register size: 14
+          CFI CFA_XSP16 add(XSP16, 9)
+        ; Saved register size: 9
         ; Auto size: 0
-        MOV       ?V5,R1
+        MOV       A,R1
+        MOV       R7,A
 //  692   uint8  i = 0;
-        MOV       ?V4,#0x0
+        MOV       R6,#0x0
 //  693 
 //  694   if ( ZG_BUILD_COORDINATOR_TYPE && ( zgApsLinkKeyType == ZG_UNIQUE_LINK_KEY ) )
 //  695   {
@@ -2433,33 +2114,47 @@ zgInitItems:
 //  703 
 //  704   while ( zgItemTable[i].id != 0x00 )
 //  705   {
-??zgInitItems_1:
-        ; Setup parameters for call to function osal_nv_read
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 16)
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 18)
-        MOV       R4,#0x0
-        MOV       R5,#0x0
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
-        LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
-??zgInitItems_2:
-        MOV       A,#0x4
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
 //  706     // Initialize the item
 //  707     zgItemInit( zgItemTable[i].id, zgItemTable[i].len, zgItemTable[i].buf, setDefault  );
+??zgInitItems_1:
+        ; Setup parameters for call to function zgItemInit
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        LCALL     ?PUSH_XSTACK8_C_TWO
+          CFI CFA_XSP16 add(XSP16, 11)
+        MOV       A,R7
+        MOV       R1,A
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        CLR       A
+        MOVC      A,@A+DPTR
+        MOV       R4,A
+        MOV       A,#0x1
+        MOVC      A,@A+DPTR
+        MOV       R5,A
+        MOV       DPL,R2
+        MOV       DPH,R3
+        CLR       A
+        MOVC      A,@A+DPTR
+        MOV       R2,A
+        MOV       A,#0x1
+        MOVC      A,@A+DPTR
+        MOV       R3,A
+        LCALL     `??zgItemInit::?relay`; Banked call to: zgItemInit
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 9)
 //  708 
 //  709     // Move on to the next item
 //  710     i++;
-??zgInitItems_3:
-        INC       ?V4
+        INC       R6
+//  711   }
 ??zgInitItems_0:
-        MOV       A,?V4
+        MOV       A,R6
         MOV       B,#0x6
         MUL       AB
         MOV       R0,A
@@ -2470,96 +2165,25 @@ zgInitItems:
         MOV       A,#(zgItemTable >> 8) & 0xff
         ADDC      A,R1
         MOV       R1,A
-        MOV       DPL,R0
-        MOV       DPH,A
-        CLR       A
-        MOVC      A,@A+DPTR
+        MOV       A,R0
         MOV       R2,A
-        MOV       A,#0x1
-        MOVC      A,@A+DPTR
-        MOV       R3,A
-        MOV       A,R2
-        ORL       A,R3
-        JZ        ??zgInitItems_4
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        CLR       A
-        MOVC      A,@A+DPTR
-        MOV       ?V2,A
-        MOV       A,#0x1
-        MOVC      A,@A+DPTR
-        MOV       ?V3,A
-        MOV       DPL,R0
-        MOV       DPH,R1
-        INC       DPTR
-        INC       DPTR
-        CLR       A
-        MOVC      A,@A+DPTR
-        PUSH      A
-          CFI CFA_SP SP+-1
-        MOV       A,#0x1
-        MOVC      A,@A+DPTR
-        MOV       DPH,A
-        POP       DPL
-          CFI CFA_SP SP+0
-        MOV       ?V0,DPL
-        MOV       ?V1,DPH
-        MOV       DPL,R0
-        MOV       DPH,R1
-        CLR       A
-        MOVC      A,@A+DPTR
-        PUSH      A
-          CFI CFA_SP SP+-1
-        MOV       A,#0x1
-        MOVC      A,@A+DPTR
-        MOV       DPH,A
-        POP       DPL
-          CFI CFA_SP SP+0
-        MOV       R6,DPL
-        MOV       R7,DPH
-        ; Setup parameters for call to function osal_nv_item_init
-        MOV       R0,#?V2
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 16)
-        MOV       R4,?V0
-        MOV       R5,?V1
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
-        LCALL     ??Subroutine3_0 & 0xFFFF
-??CrossCallReturnLabel_4:
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
         MOV       A,R1
-        JNZ       ??zgInitItems_3
-        MOV       A,?V5
-        MOV       R0,#?V2
-        JNZ       $+5
-        LJMP      ??zgInitItems_1 & 0xFFFF
-        ; Setup parameters for call to function osal_nv_write
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 16)
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 18)
-        MOV       R4,#0x0
-        MOV       R5,#0x0
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
         MOV       R3,A
-        LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
-        LJMP      ??zgInitItems_2 & 0xFFFF
-          CFI CFA_XSP16 add(XSP16, 14)
-//  711   }
+        MOV       DPL,R0
+        MOV       DPH,A
+        CLR       A
+        MOVC      A,@A+DPTR
+        MOV       R0,A
+        MOV       A,#0x1
+        MOVC      A,@A+DPTR
+        MOV       R1,A
+        MOV       A,R0
+        ORL       A,R1
+        JNZ       ??zgInitItems_1
 //  712 }
-??zgInitItems_4:
-        MOV       R7,#0x6
+        MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock12
+          CFI EndBlock cfiBlock2
 //  713 
 //  714 /*********************************************************************
 //  715  * @fn          zgReadStartupOptions
@@ -2574,7 +2198,7 @@ zgInitItems:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  723 uint8 zgReadStartupOptions( void )
 zgReadStartupOptions:
-          CFI Block cfiBlock13 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function zgReadStartupOptions
         CODE
 //  724 {
@@ -2623,20 +2247,29 @@ zgReadStartupOptions:
           CFI CFA_XSP16 add(XSP16, 11)
 //  725   // Default to Use Config State and Use Network State
 //  726   uint8 startupOption = 0;
-        LCALL     ?Subroutine1 & 0xFFFF
+        MOV       DPL,?XSP + 0
+        MOV       DPH,?XSP + 1
+        CLR       A
+        MOVX      @DPTR,A
 //  727 
 //  728   // This should have been done in ZMain.c, but just in case.
 //  729   if ( osal_nv_item_init( ZCD_NV_STARTUP_OPTION,
 //  730                               sizeof(startupOption),
 //  731                               &startupOption ) == ZSUCCESS )
-??CrossCallReturnLabel_5:
+        ; Setup parameters for call to function osal_nv_item_init
+        MOV       R0,?XSP + 0
+        MOV       R1,?XSP + 1
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 13)
         MOV       R4,#0x1
         MOV       R5,#0x0
         MOV       R2,#0x3
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_3:
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+        MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 11)
         MOV       A,R1
@@ -2671,164 +2304,13 @@ zgReadStartupOptions:
         MOV       DPH,?XSP + 1
         MOVX      A,@DPTR
         MOV       R1,A
-          CFI EndBlock cfiBlock13
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-//  740 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock14 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 11)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       A,#0x1
-          CFI EndBlock cfiBlock14
-        REQUIRE ??Subroutine4_0
-        ; // Fall through to label ??Subroutine4_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine4_0:
-          CFI Block cfiBlock15 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 28)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI Invalid
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-          CFI Valid
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock15
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond16 Using cfiCommon0
-          CFI Function zgReadStartupOptions
-          CFI Conditional ??CrossCallReturnLabel_5
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 11)
-          CFI Block cfiCond17 Using cfiCommon0
-          CFI (cfiCond17) Function zgWriteStartupOptions
-          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_6
-          CFI (cfiCond17) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond17) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond17) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond17) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond17) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond17) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond17) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond17) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond17) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond17) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond17) CFA_SP SP+-2
-          CFI (cfiCond17) CFA_XSP16 add(XSP16, 11)
-          CFI Block cfiPicker18 Using cfiCommon1
-          CFI (cfiPicker18) NoFunction
-          CFI (cfiPicker18) Picker
-        MOV       DPL,?XSP + 0
-        MOV       DPH,?XSP + 1
-        CLR       A
-          CFI EndBlock cfiCond16
-          CFI EndBlock cfiCond17
-          CFI EndBlock cfiPicker18
-        REQUIRE ??Subroutine5_0
-        ; // Fall through to label ??Subroutine5_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine5_0:
-          CFI Block cfiCond19 Using cfiCommon0
-          CFI Function zgWriteStartupOptions
-          CFI Conditional ??CrossCallReturnLabel_7
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 11)
-          CFI Block cfiCond20 Using cfiCommon0
-          CFI (cfiCond20) Function zgReadStartupOptions
-          CFI (cfiCond20) Conditional ??CrossCallReturnLabel_5
-          CFI (cfiCond20) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond20) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond20) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond20) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond20) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond20) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond20) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond20) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond20) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond20) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond20) CFA_SP SP+-2
-          CFI (cfiCond20) CFA_XSP16 add(XSP16, 11)
-          CFI Block cfiCond21 Using cfiCommon0
-          CFI (cfiCond21) Function zgWriteStartupOptions
-          CFI (cfiCond21) Conditional ??CrossCallReturnLabel_6
-          CFI (cfiCond21) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond21) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond21) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond21) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond21) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond21) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond21) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond21) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond21) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond21) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond21) CFA_SP SP+-2
-          CFI (cfiCond21) CFA_XSP16 add(XSP16, 11)
-          CFI Block cfiPicker22 Using cfiCommon1
-          CFI (cfiPicker22) NoFunction
-          CFI (cfiPicker22) Picker
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function osal_nv_item_init
-        ; Setup parameters for call to function osal_nv_read
-        ; Setup parameters for call to function osal_nv_write
-        MOV       R0,?XSP + 0
-        MOV       R1,?XSP + 1
-        MOV       ?V0,R0
-        MOV       ?V1,R1
-        MOV       R0,#?V0
-        RET
-          CFI EndBlock cfiCond19
-          CFI EndBlock cfiCond20
-          CFI EndBlock cfiCond21
-          CFI EndBlock cfiPicker22
+//  740 }
+          CFI EndBlock cfiBlock3
 //  741 
 //  742 /*********************************************************************
 //  743  * @fn          zgWriteStartupOptions
@@ -2849,7 +2331,7 @@ zgReadStartupOptions:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  757 uint8 zgWriteStartupOptions( uint8 action, uint8 bitOptions )
 zgWriteStartupOptions:
-          CFI Block cfiBlock23 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function zgWriteStartupOptions
         CODE
 //  758 {
@@ -2902,13 +2384,21 @@ zgWriteStartupOptions:
         MOV       R7,A
 //  759   uint8 status;
 //  760   uint8 startupOptions = 0;
-        LCALL     ?Subroutine1 & 0xFFFF
+        MOV       DPL,?XSP + 0
+        MOV       DPH,?XSP + 1
+        CLR       A
+        MOVX      @DPTR,A
 //  761 
 //  762   status = osal_nv_read( ZCD_NV_STARTUP_OPTION,
 //  763                 0,
 //  764                 sizeof( startupOptions ),
 //  765                 &startupOptions );
-??CrossCallReturnLabel_6:
+        ; Setup parameters for call to function osal_nv_read
+        MOV       R0,?XSP + 0
+        MOV       R1,?XSP + 1
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 13)
         MOV       ?V0,#0x1
@@ -2955,6 +2445,8 @@ zgWriteStartupOptions:
         MOV       DPH,?XSP + 1
         MOVX      A,@DPTR
         ANL       A,R0
+??zgWriteStartupOptions_2:
+        MOVX      @DPTR,A
 //  778     }
 //  779 
 //  780     // Changed?
@@ -2962,10 +2454,12 @@ zgWriteStartupOptions:
 //  782                  0,
 //  783                  sizeof( startupOptions ),
 //  784                  &startupOptions );
-//  785   }
-??zgWriteStartupOptions_2:
-        LCALL     ??Subroutine5_0 & 0xFFFF
-??CrossCallReturnLabel_7:
+        ; Setup parameters for call to function osal_nv_write
+        MOV       R0,?XSP + 0
+        MOV       R1,?XSP + 1
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 13)
         MOV       ?V0,#0x1
@@ -2983,12 +2477,17 @@ zgWriteStartupOptions:
           CFI CFA_XSP16 add(XSP16, 11)
         MOV       A,R1
         MOV       R1,A
+//  785   }
 //  786 
 //  787   return ( status );
 ??zgWriteStartupOptions_0:
-        LJMP      ?Subroutine0 & 0xFFFF
+        MOV       A,#0x1
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 10)
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
 //  788 }
-          CFI EndBlock cfiBlock23
+          CFI EndBlock cfiBlock4
 //  789 
 //  790 /*********************************************************************
 //  791  * @fn          zgSetItem
@@ -3005,7 +2504,7 @@ zgWriteStartupOptions:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  801 void zgSetItem( uint16 id, uint16 len, void *buf )
 zgSetItem:
-          CFI Block cfiBlock24 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function zgSetItem
         CODE
 //  802 {
@@ -3149,7 +2648,408 @@ zgSetItem:
 ??zgSetItem_2:
         MOV       R7,#0x3
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock24
+          CFI EndBlock cfiBlock5
+//  821 
+//  822 #ifndef NONWK
+//  823 /*********************************************************************
+//  824  * @fn       zgPreconfigKeyInit()
+//  825  *
+//  826  * @brief
+//  827  *
+//  828  *   Initialize ZCD_NV_PRECFGKEY NV item. If the item doesn't exist in NV memory,
+//  829  *   write the system default (value passed in) into NV memory. But if
+//  830  *   it exists do not overwrite it.
+//  831  *
+//  832  *   Also, if setDefault is TRUE and the item exists, we will write
+//  833  *   the default value to NV space.
+//  834  *
+//  835  * @param   setDefault - TRUE to set default
+//  836  *
+//  837  * @return  ZSUCCESS if successful, NV_ITEM_UNINIT if item did not
+//  838  *          exist in NV, NV_OPER_FAILED if failure.
+//  839  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  840 static uint8 zgPreconfigKeyInit( uint8 setDefault )
+zgPreconfigKeyInit:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function zgPreconfigKeyInit
+        CODE
+//  841 {
+        FUNCALL zgPreconfigKeyInit, osal_memset
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 26, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 26, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgPreconfigKeyInit, osal_nv_item_init
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 28, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 28, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgPreconfigKeyInit, osal_nv_write
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 30, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 30, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgPreconfigKeyInit, osal_memset
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 26, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 26, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 16
+        MOV       A,#-0x10
+        LCALL     ?ALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 26)
+        MOV       A,R1
+        MOV       R7,A
+//  842   uint8              zgPreConfigKey[SEC_KEY_LEN];
+//  843   uint8              status;
+//  844   
+//  845   //NWK KEY
+//  846   //if nwk key is set to zeros, then generate a random key and use it
+//  847   osal_memset(zgPreConfigKey,0,SEC_KEY_LEN);
+        ; Setup parameters for call to function osal_memset
+        MOV       R4,#0x10
+        MOV       R5,#0x0
+        MOV       R1,#0x0
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
+//  848   
+//  849 #if (ZG_BUILD_RTR_TYPE)
+//  850   if(ZG_DEVICE_RTR_TYPE)
+//  851   {  
+//  852     if(osal_memcmp(defaultKey, zgPreConfigKey,SEC_KEY_LEN))
+//  853     {
+//  854       ZDSecMgrGenerateRndKey(zgPreConfigKey);
+//  855     }
+//  856     else
+//  857     {
+//  858       // Initialize the Pre-Configured Key to the default key
+//  859       osal_memcpy( zgPreConfigKey, defaultKey, SEC_KEY_LEN );
+//  860     }
+//  861   }
+//  862 #endif
+//  863   
+//  864   
+//  865   // If the item doesn't exist in NV memory, create and initialize it
+//  866   status = osal_nv_item_init( ZCD_NV_PRECFGKEY, SEC_KEY_LEN, zgPreConfigKey );
+        ; Setup parameters for call to function osal_nv_item_init
+        MOV       R0,?XSP + 0
+        MOV       R1,?XSP + 1
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 28)
+        MOV       R4,#0x10
+        MOV       R5,#0x0
+        MOV       R2,#0x62
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 26)
+        MOV       A,R1
+        MOV       R6,A
+//  867   if ( status == ZSUCCESS )
+        JNZ       ??zgPreconfigKeyInit_0
+//  868   {
+//  869     if ( setDefault )
+        MOV       A,R7
+        JZ        ??zgPreconfigKeyInit_0
+//  870     {
+//  871       // Write the default value back to NV
+//  872       status =  osal_nv_write( ZCD_NV_PRECFGKEY, 0, SEC_KEY_LEN, zgPreConfigKey );
+        ; Setup parameters for call to function osal_nv_write
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 28)
+        MOV       ?V0,#0x10
+        MOV       ?V1,#0x0
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 30)
+        MOV       R4,#0x0
+        MOV       R5,#0x0
+        MOV       R2,#0x62
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 26)
+        MOV       A,R1
+        MOV       R6,A
+//  873     }
+//  874   }
+//  875   
+//  876   // clear local copy of default key
+//  877   osal_memset(zgPreConfigKey, 0x00, SEC_KEY_LEN);
+??zgPreconfigKeyInit_0:
+        ; Setup parameters for call to function osal_memset
+        MOV       R4,#0x10
+        MOV       R5,#0x0
+        MOV       R1,#0x0
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
+//  878 
+//  879   return (status);
+        MOV       A,R6
+        MOV       R1,A
+        MOV       A,#0x10
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 10)
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+//  880 }
+          CFI EndBlock cfiBlock6
+//  881 #endif
+//  882 
+//  883 /*********************************************************************
+//  884  * @fn       zgUpgradeNVItems()
+//  885  *
+//  886  * @brief
+//  887  *
+//  888  *   Function that upgrades NV Items that have changed.
+//  889  *
+//  890  * @param   none
+//  891  *
+//  892  * @return  none
+//  893  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  894 static void zgUpgradeNVItems( void )
+zgUpgradeNVItems:
+          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Function zgUpgradeNVItems
+        CODE
+//  895 {
+        FUNCALL zgUpgradeNVItems, osal_nv_item_len
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgUpgradeNVItems, osal_nv_item_len
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgUpgradeNVItems, osal_nv_read
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 16, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgUpgradeNVItems, osal_nv_item_init
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zgUpgradeNVItems, osal_nv_delete
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 2
+        MOV       A,#-0x2
+        LCALL     ?ALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  896 #if defined ( ZCD_NV_POLL_RATE_OLD16 )
+//  897   {
+//  898     // This conversion will only happen if the old poll rate exists and
+//  899     // the new poll rate doesn't exist.  It will read the old poll rate,
+//  900     // convert it to the new poll rate, create the new poll rate NV item,
+//  901     // then delete the old poll rate NV item.
+//  902     uint16 oldNvLen;
+//  903     uint16 newNvLen;
+//  904 
+//  905     // Use the length of the NV items to determine if they exist
+//  906     oldNvLen = osal_nv_item_len( ZCD_NV_POLL_RATE_OLD16 );
+        ; Setup parameters for call to function osal_nv_item_len
+        MOV       R2,#0x24
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_len::?relay`; Banked call to: osal_nv_item_len
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+        MOV       R6,?V0
+//  907     newNvLen = osal_nv_item_len( ZCD_NV_POLL_RATE );
+//  908     if ( (newNvLen == 0) && (oldNvLen == sizeof ( uint16 )) )
+        ; Setup parameters for call to function osal_nv_item_len
+        MOV       R2,#0x35
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_len::?relay`; Banked call to: osal_nv_item_len
+        MOV       A,R2
+        ORL       A,R3
+        JNZ       ??zgUpgradeNVItems_0
+        MOV       A,#0x2
+        XRL       A,R6
+        ORL       A,?V1
+        JNZ       ??zgUpgradeNVItems_0
+//  909     {
+//  910       // The old poll rate exists, so read it and convert to the new 32 bit poll rate
+//  911       uint16 oldPollRate;
+//  912       osal_nv_read( ZCD_NV_POLL_RATE_OLD16, 0, sizeof(uint16), &oldPollRate );
+        ; Setup parameters for call to function osal_nv_read
+        MOV       R0,?XSP + 0
+        MOV       R1,?XSP + 1
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       ?V0,#0x2
+        MOV       ?V1,#0x0
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 16)
+        MOV       R4,#0x0
+        MOV       R5,#0x0
+        MOV       R2,#0x24
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  913       zgPollRate = (uint32)oldPollRate;
+        MOV       DPL,?XSP + 0
+        MOV       DPH,?XSP + 1
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#zgPollRate
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
+        INC       DPTR
+        CLR       A
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      @DPTR,A
+//  914       osal_nv_item_init( ZCD_NV_POLL_RATE, sizeof(zgPollRate), &zgPollRate );
+        ; Setup parameters for call to function osal_nv_item_init
+        MOV       ?V0,#zgPollRate & 0xff
+        MOV       ?V1,#(zgPollRate >> 8) & 0xff
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R4,#0x4
+        MOV       R5,#0x0
+        MOV       R2,#0x35
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  915       osal_nv_delete( ZCD_NV_POLL_RATE_OLD16, oldNvLen );
+        ; Setup parameters for call to function osal_nv_delete
+        MOV       R4,#0x2
+        MOV       R5,#0x0
+        MOV       R2,#0x24
+        MOV       R3,#0x0
+        LCALL     `??osal_nv_delete::?relay`; Banked call to: osal_nv_delete
+//  916     }
+//  917   }
+//  918 #endif // ZCD_NV_POLL_RATE_OLD16
+//  919 }
+??zgUpgradeNVItems_0:
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 10)
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock7
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for zgPollRate>`:
@@ -3387,6 +3287,13 @@ zgSetItem:
         DB 224
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zgItemInit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zgItemInit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??zgInit::?relay`:
         CODE
         LCALL   ?BDISPATCH
@@ -3421,106 +3328,21 @@ zgSetItem:
         DATA24
         DC24    zgSetItem
 
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zgPreconfigKeyInit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zgPreconfigKeyInit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zgUpgradeNVItems::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zgUpgradeNVItems
+
         END
-//  821 
-//  822 #ifndef NONWK
-//  823 /*********************************************************************
-//  824  * @fn       zgPreconfigKeyInit()
-//  825  *
-//  826  * @brief
-//  827  *
-//  828  *   Initialize ZCD_NV_PRECFGKEY NV item. If the item doesn't exist in NV memory,
-//  829  *   write the system default (value passed in) into NV memory. But if
-//  830  *   it exists do not overwrite it.
-//  831  *
-//  832  *   Also, if setDefault is TRUE and the item exists, we will write
-//  833  *   the default value to NV space.
-//  834  *
-//  835  * @param   setDefault - TRUE to set default
-//  836  *
-//  837  * @return  ZSUCCESS if successful, NV_ITEM_UNINIT if item did not
-//  838  *          exist in NV, NV_OPER_FAILED if failure.
-//  839  */
-//  840 static uint8 zgPreconfigKeyInit( uint8 setDefault )
-//  841 {
-//  842   uint8              zgPreConfigKey[SEC_KEY_LEN];
-//  843   uint8              status;
-//  844   
-//  845   //NWK KEY
-//  846   //if nwk key is set to zeros, then generate a random key and use it
-//  847   osal_memset(zgPreConfigKey,0,SEC_KEY_LEN);
-//  848   
-//  849 #if (ZG_BUILD_RTR_TYPE)
-//  850   if(ZG_DEVICE_RTR_TYPE)
-//  851   {  
-//  852     if(osal_memcmp(defaultKey, zgPreConfigKey,SEC_KEY_LEN))
-//  853     {
-//  854       ZDSecMgrGenerateRndKey(zgPreConfigKey);
-//  855     }
-//  856     else
-//  857     {
-//  858       // Initialize the Pre-Configured Key to the default key
-//  859       osal_memcpy( zgPreConfigKey, defaultKey, SEC_KEY_LEN );
-//  860     }
-//  861   }
-//  862 #endif
-//  863   
-//  864   
-//  865   // If the item doesn't exist in NV memory, create and initialize it
-//  866   status = osal_nv_item_init( ZCD_NV_PRECFGKEY, SEC_KEY_LEN, zgPreConfigKey );
-//  867   if ( status == ZSUCCESS )
-//  868   {
-//  869     if ( setDefault )
-//  870     {
-//  871       // Write the default value back to NV
-//  872       status =  osal_nv_write( ZCD_NV_PRECFGKEY, 0, SEC_KEY_LEN, zgPreConfigKey );
-//  873     }
-//  874   }
-//  875   
-//  876   // clear local copy of default key
-//  877   osal_memset(zgPreConfigKey, 0x00, SEC_KEY_LEN);
-//  878 
-//  879   return (status);
-//  880 }
-//  881 #endif
-//  882 
-//  883 /*********************************************************************
-//  884  * @fn       zgUpgradeNVItems()
-//  885  *
-//  886  * @brief
-//  887  *
-//  888  *   Function that upgrades NV Items that have changed.
-//  889  *
-//  890  * @param   none
-//  891  *
-//  892  * @return  none
-//  893  */
-//  894 static void zgUpgradeNVItems( void )
-//  895 {
-//  896 #if defined ( ZCD_NV_POLL_RATE_OLD16 )
-//  897   {
-//  898     // This conversion will only happen if the old poll rate exists and
-//  899     // the new poll rate doesn't exist.  It will read the old poll rate,
-//  900     // convert it to the new poll rate, create the new poll rate NV item,
-//  901     // then delete the old poll rate NV item.
-//  902     uint16 oldNvLen;
-//  903     uint16 newNvLen;
-//  904 
-//  905     // Use the length of the NV items to determine if they exist
-//  906     oldNvLen = osal_nv_item_len( ZCD_NV_POLL_RATE_OLD16 );
-//  907     newNvLen = osal_nv_item_len( ZCD_NV_POLL_RATE );
-//  908     if ( (newNvLen == 0) && (oldNvLen == sizeof ( uint16 )) )
-//  909     {
-//  910       // The old poll rate exists, so read it and convert to the new 32 bit poll rate
-//  911       uint16 oldPollRate;
-//  912       osal_nv_read( ZCD_NV_POLL_RATE_OLD16, 0, sizeof(uint16), &oldPollRate );
-//  913       zgPollRate = (uint32)oldPollRate;
-//  914       osal_nv_item_init( ZCD_NV_POLL_RATE, sizeof(zgPollRate), &zgPollRate );
-//  915       osal_nv_delete( ZCD_NV_POLL_RATE_OLD16, oldNvLen );
-//  916     }
-//  917   }
-//  918 #endif // ZCD_NV_POLL_RATE_OLD16
-//  919 }
 //  920 
 //  921 /*********************************************************************
 //  922  * @fn       zgUpgradeSecurityNVItems()
@@ -3592,15 +3414,15 @@ zgSetItem:
 //  988 /*********************************************************************
 //  989 *********************************************************************/
 // 
-// 838 bytes in segment BANKED_CODE
-//  30 bytes in segment BANK_RELAYS
+// 934 bytes in segment BANKED_CODE
+//  48 bytes in segment BANK_RELAYS
 // 330 bytes in segment CODE_C
 //  68 bytes in segment XDATA_I
 //  68 bytes in segment XDATA_ID
 //  42 bytes in segment XDATA_Z
 // 
-// 428 bytes of CODE     memory
-// 838 bytes of HUGECODE memory
+// 446 bytes of CODE     memory
+// 934 bytes of HUGECODE memory
 // 110 bytes of XDATA    memory
 //
 //Errors: none

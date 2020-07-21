@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:31
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:10
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDNwkMgr.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWE7A2.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW9A75.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\zdo\ZDNwkMgr.c" -D BDB_REPORTING -D SECURE=1
 //        -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -139,8 +141,6 @@
         EXTERN ?V9
         EXTERN ?V10
         EXTERN ?V11
-        EXTERN ?V12
-        EXTERN ?V13
         EXTERN ?ALLOC_XSTACK8
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
@@ -171,9 +171,12 @@
         FUNCTION `??ZDNwkMgr_EDScanConfirmCB::?relay`,0203H
         PUBLIC `??ZDNwkMgr_Init::?relay`
         FUNCTION `??ZDNwkMgr_Init::?relay`,0203H
+        FUNCTION `??ZDNwkMgr_ProcessChannelInterference::?relay`,0203H
         PUBLIC `??ZDNwkMgr_ProcessDataConfirm::?relay`
         FUNCTION `??ZDNwkMgr_ProcessDataConfirm::?relay`,0203H
+        FUNCTION `??ZDNwkMgr_ProcessEDScanConfirm::?relay`,0203H
         FUNCTION `??ZDNwkMgr_ProcessMgmtNwkUpdateReq::?relay`,0203H
+        FUNCTION `??ZDNwkMgr_ProcessMsgCBs::?relay`,0203H
         PUBLIC `??ZDNwkMgr_ProcessServerDiscRsp::?relay`
         FUNCTION `??ZDNwkMgr_ProcessServerDiscRsp::?relay`,0203H
         PUBLIC `??ZDNwkMgr_ReportChannelInterference::?relay`
@@ -191,7 +194,7 @@
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 1, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 32, STACK
         FUNCTION ZDNwkMgr_CheckForChannelInterference,0a1203H
         ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
@@ -211,18 +214,33 @@
         PUBLIC ZDNwkMgr_MgmtNwkUpdateReq
         PUBLIC ZDNwkMgr_NewChannel
         PUBLIC ZDNwkMgr_NumUpdateNotifySent
+        FUNCTION ZDNwkMgr_ProcessChannelInterference,021203H
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 9, STACK
         PUBLIC ZDNwkMgr_ProcessDataConfirm
         FUNCTION ZDNwkMgr_ProcessDataConfirm,021603H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
+        FUNCTION ZDNwkMgr_ProcessEDScanConfirm,0a1203H
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 19, STACK
         FUNCTION ZDNwkMgr_ProcessMgmtNwkUpdateReq,0a1203H
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 33, STACK
+        FUNCTION ZDNwkMgr_ProcessMsgCBs,0a1203H
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 10, STACK
         PUBLIC ZDNwkMgr_ProcessServerDiscRsp
         FUNCTION ZDNwkMgr_ProcessServerDiscRsp,021203H
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 12, STACK
@@ -244,7 +262,7 @@
         PUBLIC ZDNwkMgr_event_loop
         FUNCTION ZDNwkMgr_event_loop,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME XSTACK, 16, STACK
         PUBWEAK __Constant_0
         PUBWEAK __Constant_32
         PUBWEAK __Constant_7fff800
@@ -342,73 +360,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 HalLcdWriteString   SYMBOL "HalLcdWriteString"
 `??HalLcdWriteString::?relay` SYMBOL "?relay", HalLcdWriteString
@@ -561,14 +512,14 @@ ZDNwkMgr_event_loop SYMBOL "ZDNwkMgr_event_loop"
         FUNCTION ZDP_MgmtNwkUpdateNotify,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 33, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN ZMacSetReq
         FUNCTION ZMacSetReq,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN _NIB
@@ -583,14 +534,14 @@ ZDNwkMgr_event_loop SYMBOL "ZDNwkMgr_event_loop"
         FUNCTION osal_mem_alloc,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 22, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_mem_free
         FUNCTION osal_mem_free,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 22, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_memcpy
@@ -611,14 +562,14 @@ ZDNwkMgr_event_loop SYMBOL "ZDNwkMgr_event_loop"
         FUNCTION osal_msg_deallocate,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_msg_receive
         FUNCTION osal_msg_receive,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_msg_send
@@ -981,6 +932,8 @@ ZDNwkMgr_Init:
         ; Setup parameters for call to function ZDO_RegisterForZDOMsg
         MOV       R2,#0x15
         MOV       R3,#-0x80
+        MOVX      A,@DPTR
+        MOV       R1,A
         LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
 //  186 
 //  187   // Frequecy Agility initialization
@@ -1036,28 +989,9 @@ ZDNwkMgr_Init:
         INC       A
         MOVX      @DPTR,A
 //  205 }
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock1
+          CFI EndBlock cfiBlock0
 //  206 
 //  207 /*********************************************************************
 //  208  * @fn      ZDNwkMgr_event_loop
@@ -1076,182 +1010,136 @@ ZDNwkMgr_Init:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  220 UINT16 ZDNwkMgr_event_loop( byte task_id, UINT16 events )
 ZDNwkMgr_event_loop:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function ZDNwkMgr_event_loop
         CODE
 //  221 {
         FUNCALL ZDNwkMgr_event_loop, osal_msg_receive
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, nwkTransmissionFailures
+        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_ProcessEDScanConfirm
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_BuildAndSendUpdateNotify
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 19, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 19, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, osal_start_timerEx
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 18, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, osal_msg_deallocate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, osal_msg_receive
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_ProcessServerDiscRsp
+        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_ProcessMsgCBs
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_ProcessMgmtNwkUpdateReq
+        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_ProcessChannelInterference
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, NLME_EDScanRequest
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL ZDNwkMgr_event_loop, ZDNwkMgr_CheckForChannelInterference
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, ZMacSetReq
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, ZDApp_NwkStateUpdateCB
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, nwkTransmissionFailures
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, osal_start_timerEx
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 18, STACK
+        LOCFRAME XSTACK, 16, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME XSTACK, 16, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_event_loop, NLME_EDScanRequest
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
         REQUIRE ?V3
-        REQUIRE ?V4
-        REQUIRE ?V5
-        MOV       A,#-0xe
+        MOV       A,#-0xc
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1259,35 +1147,29 @@ ZDNwkMgr_event_loop:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 14)
-        ; Saved register size: 14
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
         ; Auto size: 0
-        MOV       A,R2
-        MOV       R6,A
-        MOV       A,R3
-        MOV       R7,A
+        MOV       ?V0,R2
+        MOV       ?V1,R3
 //  222   osal_event_hdr_t *msgPtr;
 //  223   (void)task_id;  // Intentionally unreferenced parameter
 //  224 
 //  225   if ( events & SYS_EVENT_MSG )
+        MOV       A,R3
         ANL       A,#0x80
-        JNZ       $+5
-        LJMP      ??ZDNwkMgr_event_loop_0 & 0xFFFF
+        JZ        ??ZDNwkMgr_event_loop_0
 //  226   {
 //  227     msgPtr = (osal_event_hdr_t *)osal_msg_receive( ZDNwkMgr_TaskID );
         ; Setup parameters for call to function osal_msg_receive
         SJMP      ??ZDNwkMgr_event_loop_1
-??ZDNwkMgr_event_loop_2:
-        ; Setup parameters for call to function nwkTransmissionFailures
 //  228     while ( msgPtr )
 //  229     {
 //  230       switch ( msgPtr->event )
@@ -1305,43 +1187,13 @@ ZDNwkMgr_event_loop:
 //  242         case NM_ED_SCAN_CONFIRM:
 //  243           // NWK layer sends the message when it receives an ED scan confirmation
 //  244           ZDNwkMgr_ProcessEDScanConfirm( (ZDNwkMgr_EDScanConfirm_t *)msgPtr );
-        MOV       R1,#0x0
-        LCALL     `??nwkTransmissionFailures::?relay`; Banked call to: nwkTransmissionFailures
-        MOV       ?V2,R2
-        MOV       ?V3,R3
-        ; Setup parameters for call to function ZDNwkMgr_BuildAndSendUpdateNotify
-        MOV       ?V4,#0x0
-        MOV       R0,#?V4
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 15)
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 17)
-        MOV       R0,#?V2
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 19)
-        MOV       DPTR,#_NIB + 107
-        LCALL     ?Subroutine8 & 0xFFFF
-??CrossCallReturnLabel_4:
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyTransSeq
-        MOVX      A,@DPTR
-        MOV       R1,A
-        LCALL     `??ZDNwkMgr_BuildAndSendUpdateNotify::?relay`; Banked call to: ZDNwkMgr_BuildAndSendUpdateNotify
-        MOV       A,#0x5
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        MOVX      A,@DPTR
-        JZ        ??ZDNwkMgr_event_loop_3
-        ; Setup parameters for call to function osal_start_timerEx
-        MOV       DPTR,#__Constant_32
-        LCALL     ?PUSH_XSTACK8_X_FOUR
-          CFI CFA_XSP16 add(XSP16, 18)
-        MOV       R2,#0x8
-        LCALL     ??Subroutine14_0 & 0xFFFF
-??CrossCallReturnLabel_17:
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
+??ZDNwkMgr_event_loop_2:
+        ; Setup parameters for call to function ZDNwkMgr_ProcessEDScanConfirm
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??ZDNwkMgr_ProcessEDScanConfirm::?relay`; Banked call to: ZDNwkMgr_ProcessEDScanConfirm
 //  245           break;
 //  246 #if defined ( NWK_MANAGER )
 //  247         case ZDO_NETWORK_REPORT:
@@ -1362,8 +1214,10 @@ ZDNwkMgr_event_loop:
 //  262       osal_msg_deallocate( (uint8 *)msgPtr );
 ??ZDNwkMgr_event_loop_3:
         ; Setup parameters for call to function osal_msg_deallocate
-        MOV       R2,?V0
-        MOV       R3,?V1
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
         LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
 //  263 
 //  264       // Next
@@ -1374,35 +1228,287 @@ ZDNwkMgr_event_loop:
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??osal_msg_receive::?relay`; Banked call to: osal_msg_receive
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       A,?V0
-        ORL       A,?V1
-        JNZ       $+5
-        LJMP      ??ZDNwkMgr_event_loop_4 & 0xFFFF
-        MOV       DPL,?V0
-        MOV       DPH,?V1
+        MOV       ?V2,R2
+        MOV       ?V3,R3
+        MOV       R6,?V2
+        MOV       R7,?V3
+        MOV       A,R6
+        ORL       A,R7
+        JZ        ??ZDNwkMgr_event_loop_4
+        MOV       DPL,R6
+        MOV       DPH,R7
         MOVX      A,@DPTR
         ADD       A,#-0x31
         JZ        ??ZDNwkMgr_event_loop_5
         DEC       A
-        JZ        ??ZDNwkMgr_event_loop_6
+        JZ        ??ZDNwkMgr_event_loop_2
         ADD       A,#0x5f
         JNZ       ??ZDNwkMgr_event_loop_3
+        ; Setup parameters for call to function ZDNwkMgr_ProcessMsgCBs
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??ZDNwkMgr_ProcessMsgCBs::?relay`; Banked call to: ZDNwkMgr_ProcessMsgCBs
+        SJMP      ??ZDNwkMgr_event_loop_3
+??ZDNwkMgr_event_loop_5:
+        ; Setup parameters for call to function ZDNwkMgr_ProcessChannelInterference
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??ZDNwkMgr_ProcessChannelInterference::?relay`; Banked call to: ZDNwkMgr_ProcessChannelInterference
+        SJMP      ??ZDNwkMgr_event_loop_3
+//  266     }
+//  267     
+//  268     // Return unprocessed events
+//  269     return (events ^ SYS_EVENT_MSG);
+??ZDNwkMgr_event_loop_4:
+        MOV       R2,?V0
+        MOV       A,?V1
+        XRL       A,#0x80
+        MOV       R3,A
+        LJMP      ??ZDNwkMgr_event_loop_6 & 0xFFFF
+//  270   }
+//  271 
+//  272   if ( events & ZDNWKMGR_CHANNEL_CHANGE_EVT )
+??ZDNwkMgr_event_loop_0:
+        MOV       A,R2
+        MOV       C,0xE0 /* A   */.0
+        JNC       ??ZDNwkMgr_event_loop_7
+//  273   {       
+//  274     // Switch channel
+//  275     _NIB.nwkLogicalChannel = ZDNwkMgr_NewChannel;
+        MOV       DPTR,#ZDNwkMgr_NewChannel
+        MOVX      A,@DPTR
+        MOV       DPTR,#_NIB + 22
+        MOVX      @DPTR,A
+//  276     ZMacSetReq( ZMacChannel, &ZDNwkMgr_NewChannel );
+        ; Setup parameters for call to function ZMacSetReq
+        MOV       R2,#ZDNwkMgr_NewChannel & 0xff
+        MOV       R3,#(ZDNwkMgr_NewChannel >> 8) & 0xff
+        MOV       R1,#-0x1f
+        LCALL     `??ZMacSetReq::?relay`; Banked call to: ZMacSetReq
+//  277  
+//  278     // Our Channel has been changed -- notify to save info into NV
+//  279     ZDApp_NwkStateUpdateCB();
+        ; Setup parameters for call to function ZDApp_NwkStateUpdateCB
+        LCALL     `??ZDApp_NwkStateUpdateCB::?relay`; Banked call to: ZDApp_NwkStateUpdateCB
+//  280     
+//  281     // Reset the total transmit count and the transmit failure counters
+//  282     _NIB.nwkTotalTransmissions = 0;
+        MOV       DPTR,#_NIB + 107
+        CLR       A
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      @DPTR,A
+//  283     nwkTransmissionFailures( TRUE );
+        ; Setup parameters for call to function nwkTransmissionFailures
+        MOV       R1,#0x1
+        LCALL     `??nwkTransmissionFailures::?relay`; Banked call to: nwkTransmissionFailures
+//  284     
+//  285     return ( events ^ ZDNWKMGR_CHANNEL_CHANGE_EVT );
         MOV       A,?V0
+        XRL       A,#0x1
+        SJMP      ??ZDNwkMgr_event_loop_8
+//  286   }
+//  287 
+//  288   if ( events & ZDNWKMGR_UPDATE_NOTIFY_EVT )
+??ZDNwkMgr_event_loop_7:
+        ANL       A,#0x2
+        JZ        ??ZDNwkMgr_event_loop_9
+//  289   {
+//  290     // Update the Update Notify timer
+//  291     if ( ZDNwkMgr_UpdateNotifyTimer > 0 )
+        MOV       DPTR,#ZDNwkMgr_UpdateNotifyTimer
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        ORL       A,R1
+        JZ        ??ZDNwkMgr_event_loop_10
+//  292     {
+//  293       ZDNwkMgr_UpdateNotifyTimer--;
+        MOV       DPTR,#ZDNwkMgr_UpdateNotifyTimer
+        MOVX      A,@DPTR
+        ADD       A,#-0x1
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        ADDC      A,#-0x1
+        MOVX      @DPTR,A
+//  294       osal_start_timerEx( ZDNwkMgr_TaskID, ZDNWKMGR_UPDATE_NOTIFY_EVT, ONE_MINUTE );
+        ; Setup parameters for call to function osal_start_timerEx
+        MOV       DPTR,#__Constant_ea60
+        LCALL     ?PUSH_XSTACK8_X_FOUR
+          CFI CFA_XSP16 add(XSP16, 16)
+        MOV       R2,#0x2
+        MOV       R3,#0x0
+        MOV       DPTR,#ZDNwkMgr_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+        SJMP      ??ZDNwkMgr_event_loop_11
+//  295     }
+//  296     else
+//  297     {
+//  298       ZDNwkMgr_NumUpdateNotifySent = 0;
+??ZDNwkMgr_event_loop_10:
+        MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
+        CLR       A
+        MOVX      @DPTR,A
+//  299     }
+//  300     
+//  301     return ( events ^ ZDNWKMGR_UPDATE_NOTIFY_EVT );
+??ZDNwkMgr_event_loop_11:
+        MOV       A,?V0
+        XRL       A,#0x2
+        SJMP      ??ZDNwkMgr_event_loop_8
+//  302   }
+//  303   
+//  304 #if defined ( NWK_MANAGER )
+//  305   if ( events & ZDNWKMGR_UPDATE_REQUEST_EVT )
+//  306   {
+//  307     // Update the Update Request timer
+//  308     if ( ZDNwkMgr_UpdateRequestTimer > 0 )
+//  309     {
+//  310       ZDNwkMgr_UpdateRequestTimer--;
+//  311       osal_start_timerEx( ZDNwkMgr_TaskID, ZDNWKMGR_UPDATE_REQUEST_EVT, ONE_MINUTE );
+//  312     }
+//  313     
+//  314     return ( events ^ ZDNWKMGR_UPDATE_REQUEST_EVT );
+//  315   }
+//  316 #endif // NWK_MANAGER
+//  317   
+//  318   if ( events & ZDNWKMGR_SCAN_REQUEST_EVT )
+??ZDNwkMgr_event_loop_9:
+        MOV       A,R2
+        ANL       A,#0x8
+        JZ        ??ZDNwkMgr_event_loop_12
+//  319   {  
+//  320     if ( ZDNwkMgr_MgmtNwkUpdateReq.scanCount > 0 )
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        MOVX      A,@DPTR
+        JZ        ??ZDNwkMgr_event_loop_13
+//  321     {
+//  322       if (  NLME_EDScanRequest( ZDNwkMgr_MgmtNwkUpdateReq.channelMask, 
+//  323                                 ZDNwkMgr_MgmtNwkUpdateReq.scanDuration ) == ZSuccess )
+        ; Setup parameters for call to function NLME_EDScanRequest
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 4
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq
+        LCALL     ?XLOAD_R2345
+        LCALL     `??NLME_EDScanRequest::?relay`; Banked call to: NLME_EDScanRequest
+        MOV       A,R1
+        JNZ       ??ZDNwkMgr_event_loop_13
+//  324       {
+//  325         ZDNwkMgr_MgmtNwkUpdateReq.scanCount--;
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        MOVX      A,@DPTR
+        DEC       A
+        MOVX      @DPTR,A
+//  326       }
+//  327     }
+//  328       
+//  329     return ( events ^ ZDNWKMGR_SCAN_REQUEST_EVT );
+??ZDNwkMgr_event_loop_13:
+        MOV       A,?V0
+        XRL       A,#0x8
+??ZDNwkMgr_event_loop_8:
+        MOV       R2,A
+        MOV       R3,?V1
+        SJMP      ??ZDNwkMgr_event_loop_6
+//  330   }
+//  331   
+//  332   // Discard or make more handlers
+//  333   return 0;
+??ZDNwkMgr_event_loop_12:
+        MOV       R2,#0x0
+        MOV       R3,#0x0
+??ZDNwkMgr_event_loop_6:
+        MOV       R7,#0x4
+        LJMP      ?BANKED_LEAVE_XDATA
+//  334 }
+          CFI EndBlock cfiBlock1
+//  335 
+//  336 /*********************************************************************
+//  337  * @fn      ZDNwkMgr_ProcessMsgCBs
+//  338  *
+//  339  * @brief   Process the incoming messages.
+//  340  *
+//  341  * @param   msgPtr - message to process
+//  342  *
+//  343  * @return  TRUE if message to be freed. FALSE otherwise.
+//  344  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  345 static void ZDNwkMgr_ProcessMsgCBs( zdoIncomingMsg_t *inMsg )
+ZDNwkMgr_ProcessMsgCBs:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Function ZDNwkMgr_ProcessMsgCBs
+        CODE
+//  346 {
+        FUNCALL ZDNwkMgr_ProcessMsgCBs, ZDNwkMgr_ProcessMgmtNwkUpdateReq
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDNwkMgr_ProcessMsgCBs, ZDNwkMgr_ProcessServerDiscRsp
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 0
+//  347   switch ( inMsg->clusterID )
+        MOV       A,R2
         ADD       A,#0xc
         MOV       DPL,A
         CLR       A
-        ADDC      A,?V1
+        ADDC      A,R3
         MOV       DPH,A
         MOVX      A,@DPTR
-        MOV       ?V2,A
+        MOV       ?V0,A
         INC       DPTR
         MOVX      A,@DPTR
-        MOV       ?V3,A
-        MOV       R0,#?V2
+        MOV       ?V1,A
+        MOV       R0,#?V0
         LCALL     ?US_SWITCH_SPARSE
-`?<Jumptable for ZDNwkMgr_event_loop>_0`:
+`?<Jumptable for ZDNwkMgr_ProcessMsgCBs>_0`:
         DATA
         DATA16
         DATA
@@ -1430,7 +1536,7 @@ ZDNwkMgr_event_loop:
         DATA16
         DATA
         DATA16
-        DW        ??ZDNwkMgr_event_loop_7
+        DW        ??ZDNwkMgr_ProcessMsgCBs_0
         DATA
         DATA16
         DATA
@@ -1444,280 +1550,21 @@ ZDNwkMgr_event_loop:
         DATA16
         DATA
         DATA16
-        DW        ??ZDNwkMgr_event_loop_8
+        DW        ??ZDNwkMgr_ProcessMsgCBs_1
         DATA
         DATA16
         DATA
         DATA16
-        DW        ??ZDNwkMgr_event_loop_3
+        DW        ??ZDNwkMgr_ProcessMsgCBs_2
         CODE
-??ZDNwkMgr_event_loop_8:
-        ; Setup parameters for call to function ZDNwkMgr_ProcessServerDiscRsp
-        MOV       R2,?V0
-        MOV       R3,?V1
-        LCALL     `??ZDNwkMgr_ProcessServerDiscRsp::?relay`; Banked call to: ZDNwkMgr_ProcessServerDiscRsp
-        SJMP      ??ZDNwkMgr_event_loop_3
-??ZDNwkMgr_event_loop_7:
-        ; Setup parameters for call to function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-        MOV       R2,?V0
-        MOV       R3,?V1
-        LCALL     `??ZDNwkMgr_ProcessMgmtNwkUpdateReq::?relay`; Banked call to: ZDNwkMgr_ProcessMgmtNwkUpdateReq
-        SJMP      ??ZDNwkMgr_event_loop_3
-??ZDNwkMgr_event_loop_5:
-        MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
-        MOVX      A,@DPTR
-        CLR       C
-        SUBB      A,#0x4
-        JNC       ??ZDNwkMgr_event_loop_3
-        ; Setup parameters for call to function NLME_EDScanRequest
-        MOV       DPTR,#_NIB + 42
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPTR,#__Constant_7fff800
-        LCALL     ?XLOAD_R2345
-        LCALL     `??NLME_EDScanRequest::?relay`; Banked call to: NLME_EDScanRequest
-        MOV       A,R1
-        JNZ       ??ZDNwkMgr_event_loop_3
-        MOV       DPL,?V0
-        MOV       DPH,?V1
-        LCALL     ?Subroutine13 & 0xFFFF
-??CrossCallReturnLabel_27:
-        MOV       DPTR,#ZDNwkMgr_TotalTransmissions
-        LCALL     ??Subroutine16_0 & 0xFFFF
-??CrossCallReturnLabel_18:
-        MOV       DPL,?V0
-        MOV       DPH,?V1
-        INC       DPTR
-        INC       DPTR
-        LCALL     ?Subroutine13 & 0xFFFF
-??CrossCallReturnLabel_28:
-        MOV       DPTR,#ZDNwkMgr_TxFailures
-        LCALL     ??Subroutine16_0 & 0xFFFF
-??CrossCallReturnLabel_19:
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        MOV       A,#-0x1
-??ZDNwkMgr_event_loop_9:
-        MOVX      @DPTR,A
-        LJMP      ??ZDNwkMgr_event_loop_3 & 0xFFFF
-??ZDNwkMgr_event_loop_6:
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        MOVX      A,@DPTR
-        CPL       A
-        JZ        $+5
-        LJMP      ??ZDNwkMgr_event_loop_2 & 0xFFFF
-        ; Setup parameters for call to function ZDNwkMgr_CheckForChannelInterference
-        MOV       R2,?V0
-        MOV       R3,?V1
-        LCALL     `??ZDNwkMgr_CheckForChannelInterference::?relay`; Banked call to: ZDNwkMgr_CheckForChannelInterference
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        CLR       A
-        SJMP      ??ZDNwkMgr_event_loop_9
-//  266     }
-//  267     
-//  268     // Return unprocessed events
-//  269     return (events ^ SYS_EVENT_MSG);
-??ZDNwkMgr_event_loop_4:
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        XRL       A,#0x80
-        SJMP      ??ZDNwkMgr_event_loop_10
-//  270   }
-//  271 
-//  272   if ( events & ZDNWKMGR_CHANNEL_CHANGE_EVT )
-??ZDNwkMgr_event_loop_0:
-        MOV       A,R2
-        MOV       C,0xE0 /* A   */.0
-        JNC       ??ZDNwkMgr_event_loop_11
-//  273   {       
-//  274     // Switch channel
-//  275     _NIB.nwkLogicalChannel = ZDNwkMgr_NewChannel;
-        MOV       DPTR,#ZDNwkMgr_NewChannel
-        MOVX      A,@DPTR
-        MOV       DPTR,#_NIB + 22
-        MOVX      @DPTR,A
-//  276     ZMacSetReq( ZMacChannel, &ZDNwkMgr_NewChannel );
-        ; Setup parameters for call to function ZMacSetReq
-        MOV       R2,#ZDNwkMgr_NewChannel & 0xff
-        MOV       R3,#(ZDNwkMgr_NewChannel >> 8) & 0xff
-        MOV       R1,#-0x1f
-        LCALL     `??ZMacSetReq::?relay`; Banked call to: ZMacSetReq
-//  277  
-//  278     // Our Channel has been changed -- notify to save info into NV
-//  279     ZDApp_NwkStateUpdateCB();
-        ; Setup parameters for call to function ZDApp_NwkStateUpdateCB
-        LCALL     `??ZDApp_NwkStateUpdateCB::?relay`; Banked call to: ZDApp_NwkStateUpdateCB
-//  280     
-//  281     // Reset the total transmit count and the transmit failure counters
-//  282     _NIB.nwkTotalTransmissions = 0;
-        LCALL     ?Subroutine5 & 0xFFFF
-//  283     nwkTransmissionFailures( TRUE );
-//  284     
-//  285     return ( events ^ ZDNWKMGR_CHANNEL_CHANGE_EVT );
-??CrossCallReturnLabel_0:
-        MOV       A,R6
-        XRL       A,#0x1
-        SJMP      ??ZDNwkMgr_event_loop_12
-//  286   }
-//  287 
-//  288   if ( events & ZDNWKMGR_UPDATE_NOTIFY_EVT )
-??ZDNwkMgr_event_loop_11:
-        ANL       A,#0x2
-        JZ        ??ZDNwkMgr_event_loop_13
-//  289   {
-//  290     // Update the Update Notify timer
-//  291     if ( ZDNwkMgr_UpdateNotifyTimer > 0 )
-        MOV       DPTR,#ZDNwkMgr_UpdateNotifyTimer
-        LCALL     ??Subroutine17_0 & 0xFFFF
-??CrossCallReturnLabel_25:
-        MOV       A,R0
-        ORL       A,R1
-        JZ        ??ZDNwkMgr_event_loop_14
-//  292     {
-//  293       ZDNwkMgr_UpdateNotifyTimer--;
-        MOV       DPTR,#ZDNwkMgr_UpdateNotifyTimer
-        MOVX      A,@DPTR
-        ADD       A,#-0x1
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        ADDC      A,#-0x1
-        MOVX      @DPTR,A
-//  294       osal_start_timerEx( ZDNwkMgr_TaskID, ZDNWKMGR_UPDATE_NOTIFY_EVT, ONE_MINUTE );
-        ; Setup parameters for call to function osal_start_timerEx
-        MOV       DPTR,#__Constant_ea60
-        LCALL     ?PUSH_XSTACK8_X_FOUR
-          CFI CFA_XSP16 add(XSP16, 18)
-        LCALL     ?Subroutine6 & 0xFFFF
-//  295     }
-??CrossCallReturnLabel_14:
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
-        SJMP      ??ZDNwkMgr_event_loop_15
-//  296     else
-//  297     {
-//  298       ZDNwkMgr_NumUpdateNotifySent = 0;
-??ZDNwkMgr_event_loop_14:
-        MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
-        CLR       A
-        MOVX      @DPTR,A
-//  299     }
-//  300     
-//  301     return ( events ^ ZDNWKMGR_UPDATE_NOTIFY_EVT );
-??ZDNwkMgr_event_loop_15:
-        MOV       A,R6
-        XRL       A,#0x2
-        SJMP      ??ZDNwkMgr_event_loop_12
-//  302   }
-//  303   
-//  304 #if defined ( NWK_MANAGER )
-//  305   if ( events & ZDNWKMGR_UPDATE_REQUEST_EVT )
-//  306   {
-//  307     // Update the Update Request timer
-//  308     if ( ZDNwkMgr_UpdateRequestTimer > 0 )
-//  309     {
-//  310       ZDNwkMgr_UpdateRequestTimer--;
-//  311       osal_start_timerEx( ZDNwkMgr_TaskID, ZDNWKMGR_UPDATE_REQUEST_EVT, ONE_MINUTE );
-//  312     }
-//  313     
-//  314     return ( events ^ ZDNWKMGR_UPDATE_REQUEST_EVT );
-//  315   }
-//  316 #endif // NWK_MANAGER
-//  317   
-//  318   if ( events & ZDNWKMGR_SCAN_REQUEST_EVT )
-??ZDNwkMgr_event_loop_13:
-        MOV       A,R2
-        ANL       A,#0x8
-        JZ        ??ZDNwkMgr_event_loop_16
-//  319   {  
-//  320     if ( ZDNwkMgr_MgmtNwkUpdateReq.scanCount > 0 )
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        MOVX      A,@DPTR
-        JZ        ??ZDNwkMgr_event_loop_17
-//  321     {
-//  322       if (  NLME_EDScanRequest( ZDNwkMgr_MgmtNwkUpdateReq.channelMask, 
-//  323                                 ZDNwkMgr_MgmtNwkUpdateReq.scanDuration ) == ZSuccess )
-        ; Setup parameters for call to function NLME_EDScanRequest
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 4
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq
-        LCALL     ?XLOAD_R2345
-        LCALL     `??NLME_EDScanRequest::?relay`; Banked call to: NLME_EDScanRequest
-        MOV       A,R1
-        JNZ       ??ZDNwkMgr_event_loop_17
-//  324       {
-//  325         ZDNwkMgr_MgmtNwkUpdateReq.scanCount--;
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
-        MOVX      A,@DPTR
-        DEC       A
-        MOVX      @DPTR,A
-//  326       }
-//  327     }
-//  328       
-//  329     return ( events ^ ZDNWKMGR_SCAN_REQUEST_EVT );
-??ZDNwkMgr_event_loop_17:
-        MOV       A,R6
-        XRL       A,#0x8
-??ZDNwkMgr_event_loop_12:
-        MOV       R2,A
-        MOV       A,R7
-??ZDNwkMgr_event_loop_10:
-        MOV       R3,A
-        SJMP      ??ZDNwkMgr_event_loop_18
-//  330   }
-//  331   
-//  332   // Discard or make more handlers
-//  333   return 0;
-??ZDNwkMgr_event_loop_16:
-        MOV       R2,#0x0
-        MOV       R3,#0x0
-??ZDNwkMgr_event_loop_18:
-          CFI EndBlock cfiBlock2
-        REQUIRE ?Subroutine1
-        ; // Fall through to label ?Subroutine1
-//  334 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        MOV       R7,#0x6
-        LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock3
-//  335 
-//  336 /*********************************************************************
-//  337  * @fn      ZDNwkMgr_ProcessMsgCBs
-//  338  *
-//  339  * @brief   Process the incoming messages.
-//  340  *
-//  341  * @param   msgPtr - message to process
-//  342  *
-//  343  * @return  TRUE if message to be freed. FALSE otherwise.
-//  344  */
-//  345 static void ZDNwkMgr_ProcessMsgCBs( zdoIncomingMsg_t *inMsg )
-//  346 {
-//  347   switch ( inMsg->clusterID )
 //  348   {   
 //  349     case Mgmt_NWK_Update_req:
 //  350       ZDNwkMgr_ProcessMgmtNwkUpdateReq( inMsg );
+??ZDNwkMgr_ProcessMsgCBs_0:
+        ; Setup parameters for call to function ZDNwkMgr_ProcessMgmtNwkUpdateReq
+        LCALL     `??ZDNwkMgr_ProcessMgmtNwkUpdateReq::?relay`; Banked call to: ZDNwkMgr_ProcessMgmtNwkUpdateReq
 //  351       break;    
+        SJMP      ??ZDNwkMgr_ProcessMsgCBs_2
 //  352 #if defined ( NWK_MANAGER )  
 //  353     case Mgmt_NWK_Update_notify:
 //  354       ZDNwkMgr_ProcessMgmtNwkUpdateNotify( inMsg );
@@ -1725,6 +1572,9 @@ ZDNwkMgr_event_loop:
 //  356 #endif // NWK_MANAGER
 //  357     case Server_Discovery_rsp:
 //  358       ZDNwkMgr_ProcessServerDiscRsp( inMsg );
+??ZDNwkMgr_ProcessMsgCBs_1:
+        ; Setup parameters for call to function ZDNwkMgr_ProcessServerDiscRsp
+        LCALL     `??ZDNwkMgr_ProcessServerDiscRsp::?relay`; Banked call to: ZDNwkMgr_ProcessServerDiscRsp
 //  359       break;
 //  360       
 //  361     default:
@@ -1732,6 +1582,10 @@ ZDNwkMgr_event_loop:
 //  363       break;
 //  364   }
 //  365 }
+??ZDNwkMgr_ProcessMsgCBs_2:
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock2
 //  366 
 //  367 /*********************************************************************
 //  368  * Frequency Agility Routines
@@ -1898,7 +1752,7 @@ ZDNwkMgr_event_loop:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  528 static void ZDNwkMgr_ProcessMgmtNwkUpdateReq( zdoIncomingMsg_t *inMsg )
 ZDNwkMgr_ProcessMgmtNwkUpdateReq:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
         CODE
 //  529 {
@@ -2032,19 +1886,6 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
         MOV       R1,A
-        MOV       A,R6
-        ADD       A,#0x2
-        MOV       ?V2,A
-        CLR       A
-        ADDC      A,R7
-        MOV       ?V3,A
-        MOV       A,R6
-        ADD       A,#0xf
-        MOV       ?V0,A
-        CLR       A
-        ADDC      A,R7
-        MOV       ?V1,A
-        MOV       A,R1
         CLR       C
         SUBB      A,#0x6
         JNC       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_0
@@ -2053,8 +1894,13 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 //  537     if ( ( !inMsg->wasBroadcast )                     && 
 //  538          ( Req.scanCount >  ZDNWKMGR_MIN_SCAN_COUNT ) && 
 //  539          ( Req.scanCount <= ZDNWKMGR_MAX_SCAN_COUNT ) )
-        LCALL     ?Subroutine12 & 0xFFFF
-??CrossCallReturnLabel_12:
+        MOV       A,R6
+        ADD       A,#0xb
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R7
+        MOV       DPH,A
+        MOVX      A,@DPTR
         JZ        $+5
         LJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1 & 0xFFFF
         MOV       A,#0x5
@@ -2079,16 +1925,33 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 //  542       {
 //  543         // Save off the information to be used for the notify
 //  544         ZDNwkMgr_MgmtNwkUpdateNotifyTransSeq            = inMsg->TransSeq;
-        MOV       DPL,?V0
-        MOV       DPH,?V1
+        MOV       A,R6
+        ADD       A,#0xf
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R7
+        MOV       DPH,A
         MOVX      A,@DPTR
         MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyTransSeq
         MOVX      @DPTR,A
 //  545         ZDNwkMgr_MgmtNwkUpdateNotifyAddr.addr.shortAddr = inMsg->srcAddr.addr.shortAddr;
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  546         
 //  547         Req.scanCount--;
-??CrossCallReturnLabel_23:
         MOV       A,#0x5
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
@@ -2118,8 +1981,12 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 //  558     if ( Req.nwkUpdateId > _NIB.nwkUpdateId )
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
-        LCALL     ?Subroutine10 & 0xFFFF
-??CrossCallReturnLabel_8:
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#_NIB + 109
+        MOVX      A,@DPTR
+        CLR       C
+        SUBB      A,R1
         JC        $+5
         LJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1 & 0xFFFF
 //  559     {
@@ -2133,9 +2000,16 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 //  565       // Find out the new active channel
 //  566       for ( i = 0; i < ED_SCAN_MAXCHANNELS; i++ )
         MOV       R1,#0x0
+        SJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_3
+??ZDNwkMgr_ProcessMgmtNwkUpdateReq_4:
+        INC       R1
+??ZDNwkMgr_ProcessMgmtNwkUpdateReq_3:
+        MOV       A,R1
+        CLR       C
+        SUBB      A,#0x1b
+        JNC       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_5
 //  567       {
 //  568         if ( ( (uint32)1 << i ) & Req.channelMask )
-??ZDNwkMgr_ProcessMgmtNwkUpdateReq_3:
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         MOV       R0,#?V0
@@ -2145,19 +2019,14 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         LCALL     ?UL_SHR
         MOV       A,?V0
         MOV       C,0xE0 /* A   */.0
-        JC        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_4
+        JNC       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_4
 //  569         {
 //  570           break;
 //  571         }
 //  572       }
-        INC       R1
-        MOV       A,R1
-        CLR       C
-        SUBB      A,#0x1b
-        JC        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_3
 //  573 
 //  574       if ( _NIB.nwkLogicalChannel != i )
-??ZDNwkMgr_ProcessMgmtNwkUpdateReq_4:
+??ZDNwkMgr_ProcessMgmtNwkUpdateReq_5:
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
         XRL       A,R1
@@ -2195,26 +2064,34 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         LCALL     ?PUSH_XSTACK_I_FOUR
           CFI CFA_XSP16 add(XSP16, 25)
         MOV       R2,#0x1
-        LCALL     ??Subroutine14_0 & 0xFFFF
-//  586       }
-//  587     }
-//  588   }
-??CrossCallReturnLabel_16:
+        MOV       R3,#0x0
+        MOV       DPTR,#ZDNwkMgr_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+        MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 21)
         LJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1 & 0xFFFF
+//  586       }
+//  587     }
+//  588   }
 //  589   else if ( Req.scanDuration == 0xFF )
 ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_2:
         MOV       A,#-0x1
         XRL       A,R1
-        JNZ       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_5
+        JNZ       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_6
 //  590   {
 //  591     // Request is to change apsChannelMask and nwkManagerAddr
 //  592     if ( Req.nwkUpdateId > _NIB.nwkUpdateId )
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
-        LCALL     ?Subroutine10 & 0xFFFF
-??CrossCallReturnLabel_9:
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#_NIB + 109
+        MOVX      A,@DPTR
+        CLR       C
+        SUBB      A,R1
         JC        $+5
         LJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1 & 0xFFFF
 //  593     {
@@ -2230,7 +2107,7 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         ORL       A,R1
         ORL       A,R2
         ORL       A,R3
-        JZ        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_6
+        JZ        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_7
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         MOV       R0,#?V0
@@ -2238,7 +2115,7 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         MOV       DPTR,#_NIB + 36
         MOV       R0,#?V0
         LCALL     ?L_EQ_X
-        JZ        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_6
+        JZ        ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_7
 //  597       {
 //  598         _NIB.channelList = Req.channelMask;
         MOV       DPL,?XSP + 0
@@ -2254,46 +2131,68 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 //  602       }
 //  603     
 //  604       ZDNwkMgr_SetNwkManagerAddr( Req.nwkManagerAddr );
-??ZDNwkMgr_ProcessMgmtNwkUpdateReq_6:
+??ZDNwkMgr_ProcessMgmtNwkUpdateReq_7:
         ; Setup parameters for call to function ZDNwkMgr_SetNwkManagerAddr
         MOV       A,#0x7
         LCALL     ?XSTACK_DISP0_8
-        LCALL     ?Subroutine9 & 0xFFFF
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        LCALL     `??ZDNwkMgr_SetNwkManagerAddr::?relay`; Banked call to: ZDNwkMgr_SetNwkManagerAddr
+        SJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1
 //  605     }
 //  606   }
-??CrossCallReturnLabel_6:
-        SJMP      ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1
 //  607   else // 0x06-0xFD
 //  608   {
 //  609     // Request is invalid
 //  610     if ( !inMsg->wasBroadcast )
-??ZDNwkMgr_ProcessMgmtNwkUpdateReq_5:
-        LCALL     ?Subroutine12 & 0xFFFF
-??CrossCallReturnLabel_13:
+??ZDNwkMgr_ProcessMgmtNwkUpdateReq_6:
+        MOV       A,R6
+        ADD       A,#0xb
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R7
+        MOV       DPH,A
+        MOVX      A,@DPTR
         JNZ       ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1
 //  611     {
 //  612       ZDNwkMgr_MgmtNwkUpdateNotifyAddr.addr.shortAddr = inMsg->srcAddr.addr.shortAddr;
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  613       ZDP_MgmtNwkUpdateNotify( inMsg->TransSeq, &ZDNwkMgr_MgmtNwkUpdateNotifyAddr,
 //  614                                ZDP_INVALID_REQTYPE, 0, 0, 0, 0, NULL, AF_TX_OPTIONS_NONE, false );
-??CrossCallReturnLabel_24:
         ; Setup parameters for call to function ZDP_MgmtNwkUpdateNotify
-        MOV       ?V2,#0x0
-        MOV       R0,#?V2
+        MOV       ?V0,#0x0
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_ONE
           CFI CFA_XSP16 add(XSP16, 22)
-        MOV       R0,#?V2
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_ONE
           CFI CFA_XSP16 add(XSP16, 23)
         CLR       A
-        MOV       ?V3,A
-        MOV       R0,#?V2
+        MOV       ?V1,A
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 25)
-        MOV       R0,#?V2
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 27)
-        MOV       R0,#?V2
+        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 29)
         MOV       DPTR,#__Constant_0
@@ -2303,8 +2202,12 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         MOV       R4,#-0x80
         MOV       R2,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr & 0xff
         MOV       R3,#(ZDNwkMgr_MgmtNwkUpdateNotifyAddr >> 8) & 0xff
-        MOV       DPL,?V0
-        MOV       DPH,?V1
+        MOV       A,R6
+        ADD       A,#0xf
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R7
+        MOV       DPH,A
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??ZDP_MgmtNwkUpdateNotify::?relay`; Banked call to: ZDP_MgmtNwkUpdateNotify
@@ -2317,274 +2220,10 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
 ??ZDNwkMgr_ProcessMgmtNwkUpdateReq_1:
         MOV       A,#0x9
         LCALL     ?DEALLOC_XSTACK8
-          CFI EndBlock cfiBlock4
-        REQUIRE ?Subroutine2
-        ; // Fall through to label ?Subroutine2
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiBlock5 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
           CFI CFA_XSP16 add(XSP16, 12)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock5
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine12:
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI Conditional ??CrossCallReturnLabel_12
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_13
-          CFI (cfiCond7) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond7) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond7) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond7) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond7) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond7) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond7) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond7) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond7) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond7) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond7) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond7) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond7) CFA_SP SP+-2
-          CFI (cfiCond7) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiPicker8 Using cfiCommon1
-          CFI (cfiPicker8) NoFunction
-          CFI (cfiPicker8) Picker
-        MOV       A,R6
-        ADD       A,#0xb
-        MOV       DPL,A
-        CLR       A
-        ADDC      A,R7
-        MOV       DPH,A
-        MOVX      A,@DPTR
-        RET
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiPicker8
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine10:
-          CFI Block cfiCond9 Using cfiCommon0
-          CFI Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI Conditional ??CrossCallReturnLabel_8
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond10 Using cfiCommon0
-          CFI (cfiCond10) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond10) Conditional ??CrossCallReturnLabel_9
-          CFI (cfiCond10) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond10) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond10) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond10) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond10) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond10) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond10) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond10) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond10) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond10) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond10) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond10) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond10) CFA_SP SP+-2
-          CFI (cfiCond10) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiPicker11 Using cfiCommon1
-          CFI (cfiPicker11) NoFunction
-          CFI (cfiPicker11) Picker
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPTR,#_NIB + 109
-        MOVX      A,@DPTR
-        CLR       C
-        SUBB      A,R1
-        RET
-          CFI EndBlock cfiCond9
-          CFI EndBlock cfiCond10
-          CFI EndBlock cfiPicker11
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine6:
-          CFI Block cfiCond12 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_14
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 18)
-          CFI Block cfiCond13 Using cfiCommon0
-          CFI (cfiCond13) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_15
-          CFI (cfiCond13) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond13) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond13) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond13) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond13) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond13) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond13) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond13) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond13) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond13) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond13) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond13) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond13) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond13) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond13) CFA_SP SP+-2
-          CFI (cfiCond13) CFA_XSP16 add(XSP16, 18)
-          CFI Block cfiPicker14 Using cfiCommon1
-          CFI (cfiPicker14) NoFunction
-          CFI (cfiPicker14) Picker
-        MOV       R2,#0x2
-          CFI EndBlock cfiCond12
-          CFI EndBlock cfiCond13
-          CFI EndBlock cfiPicker14
-        REQUIRE ??Subroutine14_0
-        ; // Fall through to label ??Subroutine14_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine14_0:
-          CFI Block cfiCond15 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_17
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 18)
-          CFI Block cfiCond16 Using cfiCommon0
-          CFI (cfiCond16) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond16) Conditional ??CrossCallReturnLabel_16
-          CFI (cfiCond16) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond16) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond16) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond16) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond16) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond16) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond16) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond16) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond16) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond16) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond16) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond16) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond16) CFA_SP SP+-2
-          CFI (cfiCond16) CFA_XSP16 add(XSP16, 25)
-          CFI Block cfiCond17 Using cfiCommon0
-          CFI (cfiCond17) Function ZDNwkMgr_event_loop
-          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_14
-          CFI (cfiCond17) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond17) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond17) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond17) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond17) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond17) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond17) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond17) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond17) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond17) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond17) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond17) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond17) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond17) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond17) CFA_SP SP+-2
-          CFI (cfiCond17) CFA_XSP16 add(XSP16, 18)
-          CFI Block cfiCond18 Using cfiCommon0
-          CFI (cfiCond18) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond18) Conditional ??CrossCallReturnLabel_15
-          CFI (cfiCond18) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond18) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond18) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond18) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond18) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond18) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond18) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond18) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond18) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond18) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond18) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond18) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond18) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond18) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond18) CFA_SP SP+-2
-          CFI (cfiCond18) CFA_XSP16 add(XSP16, 18)
-          CFI Block cfiPicker19 Using cfiCommon1
-          CFI (cfiPicker19) NoFunction
-          CFI (cfiPicker19) Picker
-        MOV       R3,#0x0
-        MOV       DPTR,#ZDNwkMgr_TaskID
-        MOVX      A,@DPTR
-        MOV       R1,A
-        LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
-        MOV       A,#0x4
-        RET
-          CFI EndBlock cfiCond15
-          CFI EndBlock cfiCond16
-          CFI EndBlock cfiCond17
-          CFI EndBlock cfiCond18
-          CFI EndBlock cfiPicker19
+          CFI EndBlock cfiBlock3
 //  618 
 //  619 /*********************************************************************
 //  620  * @fn      ZDNwkMgr_ProcessServerDiscRsp
@@ -2599,7 +2238,7 @@ ZDNwkMgr_ProcessMgmtNwkUpdateReq:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  628 void ZDNwkMgr_ProcessServerDiscRsp( zdoIncomingMsg_t *inMsg )
 ZDNwkMgr_ProcessServerDiscRsp:
-          CFI Block cfiBlock20 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function ZDNwkMgr_ProcessServerDiscRsp
         CODE
 //  629 {
@@ -2659,7 +2298,7 @@ ZDNwkMgr_ProcessServerDiscRsp:
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         MOVX      A,@DPTR
-        JNZ       ??CrossCallReturnLabel_7
+        JNZ       ??ZDNwkMgr_ProcessServerDiscRsp_0
 //  635   {
 //  636     // Is the Network Manager bit set in the response?
 //  637     if ( Rsp.serverMask & NETWORK_MANAGER )
@@ -2667,7 +2306,7 @@ ZDNwkMgr_ProcessServerDiscRsp:
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
         ANL       A,#0x40
-        JZ        ??CrossCallReturnLabel_7
+        JZ        ??ZDNwkMgr_ProcessServerDiscRsp_0
 //  638     {
 //  639       // Set the Remote Device's NWK Address as the Network Manager Address
 //  640       ZDNwkMgr_SetNwkManagerAddr( inMsg->srcAddr.addr.shortAddr );
@@ -2676,63 +2315,22 @@ ZDNwkMgr_ProcessServerDiscRsp:
         MOV       DPH,R7
         INC       DPTR
         INC       DPTR
-        LCALL     ?Subroutine9 & 0xFFFF
-//  641     }
-//  642   }
-//  643 }
-??CrossCallReturnLabel_7:
-        MOV       A,#0x3
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 9)
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock20
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine9:
-          CFI Block cfiCond21 Using cfiCommon0
-          CFI Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI Conditional ??CrossCallReturnLabel_6
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond22 Using cfiCommon0
-          CFI (cfiCond22) Function ZDNwkMgr_ProcessServerDiscRsp
-          CFI (cfiCond22) Conditional ??CrossCallReturnLabel_7
-          CFI (cfiCond22) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond22) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond22) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond22) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond22) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond22) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond22) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond22) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond22) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond22) CFA_SP SP+-2
-          CFI (cfiCond22) CFA_XSP16 add(XSP16, 12)
-          CFI Block cfiPicker23 Using cfiCommon1
-          CFI (cfiPicker23) NoFunction
-          CFI (cfiPicker23) Picker
         MOVX      A,@DPTR
         MOV       R2,A
         INC       DPTR
         MOVX      A,@DPTR
         MOV       R3,A
         LCALL     `??ZDNwkMgr_SetNwkManagerAddr::?relay`; Banked call to: ZDNwkMgr_SetNwkManagerAddr
-        RET
-          CFI EndBlock cfiCond21
-          CFI EndBlock cfiCond22
-          CFI EndBlock cfiPicker23
+//  641     }
+//  642   }
+//  643 }
+??ZDNwkMgr_ProcessServerDiscRsp_0:
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 9)
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock4
 //  644 
 //  645 /*********************************************************************
 //  646  * @fn          ZDNwkMgr_ProcessChannelInterference
@@ -2744,25 +2342,114 @@ ZDNwkMgr_ProcessServerDiscRsp:
 //  652  *
 //  653  * @return      none
 //  654  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  655 static void ZDNwkMgr_ProcessChannelInterference( ZDNwkMgr_ChanInterference_t *pChanInterference )
+ZDNwkMgr_ProcessChannelInterference:
+          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Function ZDNwkMgr_ProcessChannelInterference
+        CODE
 //  656 {
+        FUNCALL ZDNwkMgr_ProcessChannelInterference, NLME_EDScanRequest
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        MOV       A,#-0x9
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 9)
+        ; Saved register size: 9
+        ; Auto size: 0
+        MOV       A,R2
+        MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
 //  657   // To avoid a device with communication problems from constantly 
 //  658   // sending reports to the network manager, the device should not 
 //  659   // send a Mgmt_NWK_Update_notify more than 4 times per hour.
 //  660   if ( ZDNwkMgr_NumUpdateNotifySent < 4 )
+        MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
+        MOVX      A,@DPTR
+        CLR       C
+        SUBB      A,#0x4
+        JNC       ??ZDNwkMgr_ProcessChannelInterference_0
 //  661   {
 //  662     // Conduct an energy scan on all channels.
 //  663     if ( NLME_EDScanRequest( MAX_CHANNELS_24GHZ, _NIB.scanDuration ) == ZSuccess )
+        ; Setup parameters for call to function NLME_EDScanRequest
+        MOV       DPTR,#_NIB + 42
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#__Constant_7fff800
+        LCALL     ?XLOAD_R2345
+        LCALL     `??NLME_EDScanRequest::?relay`; Banked call to: NLME_EDScanRequest
+        MOV       A,R1
+        JNZ       ??ZDNwkMgr_ProcessChannelInterference_0
 //  664     {
 //  665       // Save the counters for the Update Notify message to be sent
 //  666       ZDNwkMgr_TotalTransmissions = pChanInterference->totalTransmissions;
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_TotalTransmissions
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  667       ZDNwkMgr_TxFailures = pChanInterference->txFailures;
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_TxFailures
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  668 
 //  669       // Mark scan as channel inetrference check
 //  670       ZDNwkMgr_MgmtNwkUpdateReq.scanCount = 0xFF;
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        MOV       A,#-0x1
+        MOVX      @DPTR,A
 //  671     }
 //  672   }
 //  673 }
+??ZDNwkMgr_ProcessChannelInterference_0:
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock5
 //  674 
 //  675 /*********************************************************************
 //  676  * @fn          ZDNwkMgr_ProcessEDScanConfirm
@@ -2774,31 +2461,171 @@ ZDNwkMgr_ProcessServerDiscRsp:
 //  682  *
 //  683  * @return      none
 //  684  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  685 static void ZDNwkMgr_ProcessEDScanConfirm( ZDNwkMgr_EDScanConfirm_t *pEDScanConfirm )
+ZDNwkMgr_ProcessEDScanConfirm:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function ZDNwkMgr_ProcessEDScanConfirm
+        CODE
 //  686 { 
+        FUNCALL ZDNwkMgr_ProcessEDScanConfirm, ZDNwkMgr_CheckForChannelInterference
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDNwkMgr_ProcessEDScanConfirm, nwkTransmissionFailures
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDNwkMgr_ProcessEDScanConfirm, ZDNwkMgr_BuildAndSendUpdateNotify
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDNwkMgr_ProcessEDScanConfirm, osal_start_timerEx
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 18, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        MOV       A,#-0xe
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 14)
+        ; Saved register size: 14
+        ; Auto size: 0
+        MOV       ?V2,R2
+        MOV       ?V3,R3
 //  687   if ( ZDNwkMgr_MgmtNwkUpdateReq.scanCount == 0xFF )
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        MOVX      A,@DPTR
+        CPL       A
+        JNZ       ??ZDNwkMgr_ProcessEDScanConfirm_0
 //  688   {
 //  689     // Confirm to scan all channels for channel interference check
 //  690     ZDNwkMgr_CheckForChannelInterference( pEDScanConfirm ); 
+        ; Setup parameters for call to function ZDNwkMgr_CheckForChannelInterference
+        LCALL     `??ZDNwkMgr_CheckForChannelInterference::?relay`; Banked call to: ZDNwkMgr_CheckForChannelInterference
 //  691     
 //  692     ZDNwkMgr_MgmtNwkUpdateReq.scanCount = 0;
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        CLR       A
+        MOVX      @DPTR,A
+        SJMP      ??ZDNwkMgr_ProcessEDScanConfirm_1
 //  693   }
 //  694   else
 //  695   {
 //  696     // Confirm to the requested scan
 //  697     uint16 txFailures = nwkTransmissionFailures( FALSE );
+??ZDNwkMgr_ProcessEDScanConfirm_0:
+        ; Setup parameters for call to function nwkTransmissionFailures
+        MOV       R1,#0x0
+        LCALL     `??nwkTransmissionFailures::?relay`; Banked call to: nwkTransmissionFailures
+        MOV       ?V0,R2
+        MOV       ?V1,R3
 //  698     
 //  699     ZDNwkMgr_BuildAndSendUpdateNotify( ZDNwkMgr_MgmtNwkUpdateNotifyTransSeq,
 //  700                                        &ZDNwkMgr_MgmtNwkUpdateNotifyAddr, 
 //  701                                        _NIB.nwkTotalTransmissions, txFailures, 
 //  702                                        pEDScanConfirm, AF_TX_OPTIONS_NONE );
+        ; Setup parameters for call to function ZDNwkMgr_BuildAndSendUpdateNotify
+        MOV       ?V4,#0x0
+        MOV       R0,#?V4
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 19)
+        MOV       DPTR,#_NIB + 107
+        MOVX      A,@DPTR
+        MOV       R4,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R5,A
+        MOV       R2,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr & 0xff
+        MOV       R3,#(ZDNwkMgr_MgmtNwkUpdateNotifyAddr >> 8) & 0xff
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyTransSeq
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??ZDNwkMgr_BuildAndSendUpdateNotify::?relay`; Banked call to: ZDNwkMgr_BuildAndSendUpdateNotify
+        MOV       A,#0x5
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 14)
 //  703     // More scans needed?
 //  704     if ( ZDNwkMgr_MgmtNwkUpdateReq.scanCount > 0 )
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateReq + 5
+        MOVX      A,@DPTR
+        JZ        ??ZDNwkMgr_ProcessEDScanConfirm_1
 //  705     {
 //  706       osal_start_timerEx( ZDNwkMgr_TaskID, ZDNWKMGR_SCAN_REQUEST_EVT, 50 );
+        ; Setup parameters for call to function osal_start_timerEx
+        MOV       DPTR,#__Constant_32
+        LCALL     ?PUSH_XSTACK8_X_FOUR
+          CFI CFA_XSP16 add(XSP16, 18)
+        MOV       R2,#0x8
+        MOV       R3,#0x0
+        MOV       DPTR,#ZDNwkMgr_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 14)
 //  707     }
 //  708   }
 //  709 }
+??ZDNwkMgr_ProcessEDScanConfirm_1:
+        MOV       R7,#0x6
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock6
 //  710 
 //  711 /*********************************************************************
 //  712  * @fn          ZDNwkMgr_CheckForChannelInterference
@@ -2814,7 +2641,7 @@ ZDNwkMgr_ProcessServerDiscRsp:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  721 static void ZDNwkMgr_CheckForChannelInterference( ZDNwkMgr_EDScanConfirm_t *pEDScanConfirm )
 ZDNwkMgr_CheckForChannelInterference:
-          CFI Block cfiBlock24 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function ZDNwkMgr_CheckForChannelInterference
         CODE
 //  722 {
@@ -2894,12 +2721,13 @@ ZDNwkMgr_CheckForChannelInterference:
 //  724   uint8 channelEnergy = 0;
         MOV       R6,#0x0
 //  725   uint8 energyIncreased = FALSE;
+        MOV       R4,#0x0
 //  726     
 //  727   // Get the current channel energy
 //  728   if ( ( (uint32)1 << _NIB.nwkLogicalChannel ) & pEDScanConfirm->scannedChannels )
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
-        MOV       R4,A
+        MOV       R5,A
         MOV       A,R2
         ADD       A,#0x3
         CLR       A
@@ -2912,7 +2740,7 @@ ZDNwkMgr_CheckForChannelInterference:
         MOV       DPH,A
         MOV       R0,#?V0
         LCALL     ?L_MOV_X
-        MOV       A,R4
+        MOV       A,R5
         MOV       R0,#?V0
         LCALL     ?UL_SHR
         MOV       A,?V0
@@ -2920,10 +2748,22 @@ ZDNwkMgr_CheckForChannelInterference:
         JNC       ??ZDNwkMgr_CheckForChannelInterference_0
 //  729   {
 //  730     channelEnergy = pEDScanConfirm->energyDetectList[_NIB.nwkLogicalChannel];
-        LCALL     ?Subroutine11 & 0xFFFF
-//  731   }
-??CrossCallReturnLabel_10:
+        MOV       A,?V4
+        ADD       A,R5
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,?V5
+        MOV       DPH,A
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
         MOV       R6,A
+//  731   }
 //  732     
 //  733   // If this energy scan does not indicate higher energy on the current 
 //  734   // channel then other channels, no action is taken. The device should 
@@ -2931,10 +2771,17 @@ ZDNwkMgr_CheckForChannelInterference:
 //  736   for ( i = 0; i < ED_SCAN_MAXCHANNELS; i++ )
 ??ZDNwkMgr_CheckForChannelInterference_0:
         MOV       R1,#0x0
+        SJMP      ??ZDNwkMgr_CheckForChannelInterference_1
+??ZDNwkMgr_CheckForChannelInterference_2:
+        INC       R1
+??ZDNwkMgr_CheckForChannelInterference_1:
+        MOV       A,R1
+        CLR       C
+        SUBB      A,#0x1b
+        JNC       ??ZDNwkMgr_CheckForChannelInterference_3
 //  737   {
 //  738     if ( ( ( (uint32)1 << i ) & pEDScanConfirm->scannedChannels ) && 
 //  739          ( channelEnergy > pEDScanConfirm->energyDetectList[i] ) )
-??ZDNwkMgr_CheckForChannelInterference_1:
         MOV       DPL,R2
         MOV       DPH,R3
         MOV       R0,#?V0
@@ -2945,15 +2792,26 @@ ZDNwkMgr_CheckForChannelInterference:
         MOV       A,?V0
         MOV       C,0xE0 /* A   */.0
         JNC       ??ZDNwkMgr_CheckForChannelInterference_2
-        MOV       A,R1
-        MOV       R4,A
-        LCALL     ?Subroutine11 & 0xFFFF
-??CrossCallReturnLabel_11:
+        MOV       A,?V4
+        ADD       A,R1
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,?V5
+        MOV       DPH,A
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
         CLR       C
         SUBB      A,R6
         JNC       ??ZDNwkMgr_CheckForChannelInterference_2
 //  740     {
 //  741       energyIncreased = TRUE;
+        MOV       R4,#0x1
 //  742       break;
 //  743     }
 //  744   }
@@ -2962,15 +2820,27 @@ ZDNwkMgr_CheckForChannelInterference:
 //  747   // in use, a Mgmt_NWK_Update_notify should be sent to the Network 
 //  748   // Manager to indicate interference is present.
 //  749   if ( energyIncreased )
+??ZDNwkMgr_CheckForChannelInterference_3:
+        MOV       A,R4
+        JZ        ??ZDNwkMgr_CheckForChannelInterference_4
 //  750   {
 //  751     // Send a Management Network Update notify to the Network Manager
 //  752     ZDNwkMgr_MgmtNwkUpdateNotifyAddr.addr.shortAddr = _NIB.nwkManagerAddr;
         MOV       DPTR,#_NIB + 105
-        LCALL     ??Subroutine15_0 & 0xFFFF
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  753     ZDNwkMgr_BuildAndSendUpdateNotify( 0, &ZDNwkMgr_MgmtNwkUpdateNotifyAddr, 
 //  754                                        ZDNwkMgr_TotalTransmissions, ZDNwkMgr_TxFailures,
 //  755                                        pEDScanConfirm, AF_MSG_ACK_REQUEST );
-??CrossCallReturnLabel_22:
         ; Setup parameters for call to function ZDNwkMgr_BuildAndSendUpdateNotify
         MOV       ?V0,#0x10
         MOV       R0,#?V0
@@ -2983,8 +2853,13 @@ ZDNwkMgr_CheckForChannelInterference:
         LCALL     ?PUSH_XSTACK8_X_TWO
           CFI CFA_XSP16 add(XSP16, 19)
         MOV       DPTR,#ZDNwkMgr_TotalTransmissions
-        LCALL     ?Subroutine8 & 0xFFFF
-??CrossCallReturnLabel_5:
+        MOVX      A,@DPTR
+        MOV       R4,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R5,A
+        MOV       R2,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr & 0xff
+        MOV       R3,#(ZDNwkMgr_MgmtNwkUpdateNotifyAddr >> 8) & 0xff
         MOV       R1,#0x0
         LCALL     `??ZDNwkMgr_BuildAndSendUpdateNotify::?relay`; Banked call to: ZDNwkMgr_BuildAndSendUpdateNotify
         MOV       A,#0x5
@@ -2998,7 +2873,7 @@ ZDNwkMgr_CheckForChannelInterference:
 //  758     if ( ZDNwkMgr_NumUpdateNotifySent == 0 )
         MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
         MOVX      A,@DPTR
-        JNZ       ??ZDNwkMgr_CheckForChannelInterference_3
+        JNZ       ??ZDNwkMgr_CheckForChannelInterference_5
 //  759     {
 //  760       // First notify message sent within this hour. Start the Update Notify timer.
 //  761       ZDNwkMgr_UpdateNotifyTimer = ZDNWKMGR_UPDATE_NOTIFY_TIMER;
@@ -3013,30 +2888,30 @@ ZDNwkMgr_CheckForChannelInterference:
         MOV       DPTR,#__Constant_ea60
         LCALL     ?PUSH_XSTACK8_X_FOUR
           CFI CFA_XSP16 add(XSP16, 18)
-        LCALL     ?Subroutine6 & 0xFFFF
-//  763     }
-??CrossCallReturnLabel_15:
+        MOV       R2,#0x2
+        MOV       R3,#0x0
+        MOV       DPTR,#ZDNwkMgr_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+        MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 14)
+//  763     }
 //  764     
 //  765     ZDNwkMgr_NumUpdateNotifySent++;
-??ZDNwkMgr_CheckForChannelInterference_3:
+??ZDNwkMgr_CheckForChannelInterference_5:
         MOV       DPTR,#ZDNwkMgr_NumUpdateNotifySent
         MOVX      A,@DPTR
         INC       A
         MOVX      @DPTR,A
-        SJMP      ??ZDNwkMgr_CheckForChannelInterference_4
+        SJMP      ??ZDNwkMgr_CheckForChannelInterference_6
 //  766   }
-??ZDNwkMgr_CheckForChannelInterference_2:
-        INC       R1
-        MOV       A,R1
-        CLR       C
-        SUBB      A,#0x1b
-        JC        ??ZDNwkMgr_CheckForChannelInterference_1
 //  767 #if defined ( LCD_SUPPORTED )
 //  768   else
 //  769   {
 //  770     HalLcdWriteString( (char*)NwkMgrStr_4, HAL_LCD_LINE_1 );
+??ZDNwkMgr_CheckForChannelInterference_4:
         ; Setup parameters for call to function HalLcdWriteString
         MOV       R1,#0x1
         MOV       R2,#NwkMgrStr_4 & 0xff
@@ -3072,594 +2947,10 @@ ZDNwkMgr_CheckForChannelInterference:
 //  772   }
 //  773 #endif
 //  774 }
-??ZDNwkMgr_CheckForChannelInterference_4:
-        LJMP      ?Subroutine1 & 0xFFFF
-          CFI EndBlock cfiBlock24
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine11:
-          CFI Block cfiCond25 Using cfiCommon0
-          CFI Function ZDNwkMgr_CheckForChannelInterference
-          CFI Conditional ??CrossCallReturnLabel_10
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond26 Using cfiCommon0
-          CFI (cfiCond26) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond26) Conditional ??CrossCallReturnLabel_11
-          CFI (cfiCond26) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond26) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond26) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond26) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond26) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond26) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond26) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond26) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond26) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond26) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond26) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond26) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond26) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond26) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond26) CFA_SP SP+-2
-          CFI (cfiCond26) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiPicker27 Using cfiCommon1
-          CFI (cfiPicker27) NoFunction
-          CFI (cfiPicker27) Picker
-        MOV       A,?V4
-        ADD       A,R4
-        MOV       DPL,A
-        CLR       A
-        ADDC      A,?V5
-        MOV       DPH,A
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        RET
-          CFI EndBlock cfiCond25
-          CFI EndBlock cfiCond26
-          CFI EndBlock cfiPicker27
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine8:
-          CFI Block cfiCond28 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_4
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 19)
-          CFI Block cfiCond29 Using cfiCommon0
-          CFI (cfiCond29) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond29) Conditional ??CrossCallReturnLabel_5
-          CFI (cfiCond29) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond29) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond29) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond29) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond29) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond29) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond29) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond29) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond29) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond29) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond29) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond29) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond29) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond29) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond29) CFA_SP SP+-2
-          CFI (cfiCond29) CFA_XSP16 add(XSP16, 19)
-          CFI Block cfiPicker30 Using cfiCommon1
-          CFI (cfiPicker30) NoFunction
-          CFI (cfiPicker30) Picker
-        MOVX      A,@DPTR
-        MOV       R4,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R5,A
-        MOV       R2,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr & 0xff
-        MOV       R3,#(ZDNwkMgr_MgmtNwkUpdateNotifyAddr >> 8) & 0xff
-        RET
-          CFI EndBlock cfiCond28
-          CFI EndBlock cfiCond29
-          CFI EndBlock cfiPicker30
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond31 Using cfiCommon0
-          CFI Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI Conditional ??CrossCallReturnLabel_23
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond32 Using cfiCommon0
-          CFI (cfiCond32) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond32) Conditional ??CrossCallReturnLabel_24
-          CFI (cfiCond32) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond32) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond32) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond32) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond32) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond32) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond32) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond32) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond32) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond32) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond32) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond32) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond32) CFA_SP SP+-2
-          CFI (cfiCond32) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiPicker33 Using cfiCommon1
-          CFI (cfiPicker33) NoFunction
-          CFI (cfiPicker33) Picker
-        MOV       DPL,?V2
-        MOV       DPH,?V3
-          CFI EndBlock cfiCond31
-          CFI EndBlock cfiCond32
-          CFI EndBlock cfiPicker33
-        REQUIRE ??Subroutine15_0
-        ; // Fall through to label ??Subroutine15_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine15_0:
-          CFI Block cfiCond34 Using cfiCommon0
-          CFI Function ZDNwkMgr_CheckForChannelInterference
-          CFI Conditional ??CrossCallReturnLabel_22
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond35 Using cfiCommon0
-          CFI (cfiCond35) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond35) Conditional ??CrossCallReturnLabel_23
-          CFI (cfiCond35) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond35) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond35) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond35) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond35) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond35) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond35) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond35) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond35) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond35) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond35) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond35) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond35) CFA_SP SP+-2
-          CFI (cfiCond35) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond36 Using cfiCommon0
-          CFI (cfiCond36) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond36) Conditional ??CrossCallReturnLabel_24
-          CFI (cfiCond36) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond36) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond36) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond36) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond36) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond36) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond36) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond36) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond36) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond36) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond36) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond36) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond36) CFA_SP SP+-2
-          CFI (cfiCond36) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiPicker37 Using cfiCommon1
-          CFI (cfiPicker37) NoFunction
-          CFI (cfiPicker37) Picker
-        LCALL     ??Subroutine17_0 & 0xFFFF
-??CrossCallReturnLabel_29:
-        MOV       DPTR,#ZDNwkMgr_MgmtNwkUpdateNotifyAddr
-          CFI EndBlock cfiCond34
-          CFI EndBlock cfiCond35
-          CFI EndBlock cfiCond36
-          CFI EndBlock cfiPicker37
-        REQUIRE ??Subroutine16_0
-        ; // Fall through to label ??Subroutine16_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine16_0:
-          CFI Block cfiCond38 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_18
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond39 Using cfiCommon0
-          CFI (cfiCond39) Function ZDNwkMgr_event_loop
-          CFI (cfiCond39) Conditional ??CrossCallReturnLabel_19
-          CFI (cfiCond39) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond39) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond39) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond39) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond39) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond39) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond39) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond39) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond39) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond39) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond39) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond39) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond39) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond39) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond39) CFA_SP SP+-2
-          CFI (cfiCond39) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond40 Using cfiCommon0
-          CFI (cfiCond40) Function ZDNwkMgr_ReportChannelInterference
-          CFI (cfiCond40) Conditional ??CrossCallReturnLabel_20
-          CFI (cfiCond40) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond40) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond40) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond40) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond40) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond40) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond40) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond40) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond40) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond40) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond40) CFA_SP SP+-2
-          CFI (cfiCond40) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond41 Using cfiCommon0
-          CFI (cfiCond41) Function ZDNwkMgr_ReportChannelInterference
-          CFI (cfiCond41) Conditional ??CrossCallReturnLabel_21
-          CFI (cfiCond41) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond41) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond41) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond41) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond41) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond41) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond41) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond41) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond41) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond41) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond41) CFA_SP SP+-2
-          CFI (cfiCond41) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond42 Using cfiCommon0
-          CFI (cfiCond42) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond42) Conditional ??CrossCallReturnLabel_22
-          CFI (cfiCond42) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond42) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond42) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond42) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond42) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond42) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond42) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond42) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond42) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond42) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond42) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond42) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond42) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond42) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond42) CFA_SP SP+-2
-          CFI (cfiCond42) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond43 Using cfiCommon0
-          CFI (cfiCond43) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond43) Conditional ??CrossCallReturnLabel_23
-          CFI (cfiCond43) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond43) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond43) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond43) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond43) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond43) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond43) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond43) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond43) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond43) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond43) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond43) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond43) CFA_SP SP+-2
-          CFI (cfiCond43) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond44 Using cfiCommon0
-          CFI (cfiCond44) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond44) Conditional ??CrossCallReturnLabel_24
-          CFI (cfiCond44) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond44) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond44) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond44) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond44) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond44) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond44) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond44) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond44) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond44) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond44) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond44) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond44) CFA_SP SP+-2
-          CFI (cfiCond44) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiPicker45 Using cfiCommon1
-          CFI (cfiPicker45) NoFunction
-          CFI (cfiPicker45) Picker
-        MOV       A,R0
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOV       A,R1
-        MOVX      @DPTR,A
-        RET
-          CFI EndBlock cfiCond38
-          CFI EndBlock cfiCond39
-          CFI EndBlock cfiCond40
-          CFI EndBlock cfiCond41
-          CFI EndBlock cfiCond42
-          CFI EndBlock cfiCond43
-          CFI EndBlock cfiCond44
-          CFI EndBlock cfiPicker45
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine13:
-          CFI Block cfiCond46 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_27
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond47 Using cfiCommon0
-          CFI (cfiCond47) Function ZDNwkMgr_event_loop
-          CFI (cfiCond47) Conditional ??CrossCallReturnLabel_28
-          CFI (cfiCond47) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond47) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond47) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond47) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond47) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond47) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond47) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond47) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond47) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond47) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond47) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond47) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond47) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond47) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond47) CFA_SP SP+-2
-          CFI (cfiCond47) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiPicker48 Using cfiCommon1
-          CFI (cfiPicker48) NoFunction
-          CFI (cfiPicker48) Picker
-        INC       DPTR
-        INC       DPTR
-          CFI EndBlock cfiCond46
-          CFI EndBlock cfiCond47
-          CFI EndBlock cfiPicker48
-        REQUIRE ??Subroutine17_0
-        ; // Fall through to label ??Subroutine17_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine17_0:
-          CFI Block cfiCond49 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_25
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond50 Using cfiCommon0
-          CFI (cfiCond50) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond50) Conditional ??CrossCallReturnLabel_29, ??CrossCallReturnLabel_23
-          CFI (cfiCond50) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond50) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond50) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond50) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond50) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond50) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond50) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond50) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond50) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond50) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond50) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond50) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond50) CFA_SP SP+-4
-          CFI (cfiCond50) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond51 Using cfiCommon0
-          CFI (cfiCond51) Function ZDNwkMgr_ProcessMgmtNwkUpdateReq
-          CFI (cfiCond51) Conditional ??CrossCallReturnLabel_29, ??CrossCallReturnLabel_24
-          CFI (cfiCond51) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond51) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond51) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond51) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond51) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond51) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond51) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond51) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond51) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond51) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond51) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond51) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond51) CFA_SP SP+-4
-          CFI (cfiCond51) CFA_XSP16 add(XSP16, 21)
-          CFI Block cfiCond52 Using cfiCommon0
-          CFI (cfiCond52) Function ZDNwkMgr_CheckForChannelInterference
-          CFI (cfiCond52) Conditional ??CrossCallReturnLabel_29, ??CrossCallReturnLabel_22
-          CFI (cfiCond52) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond52) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond52) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond52) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond52) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond52) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond52) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond52) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond52) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond52) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond52) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond52) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond52) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond52) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond52) CFA_SP SP+-4
-          CFI (cfiCond52) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond53 Using cfiCommon0
-          CFI (cfiCond53) Function ZDNwkMgr_ReportChannelInterference
-          CFI (cfiCond53) Conditional ??CrossCallReturnLabel_26, ??CrossCallReturnLabel_2
-          CFI (cfiCond53) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond53) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond53) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond53) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond53) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond53) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond53) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond53) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond53) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond53) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond53) CFA_SP SP+-4
-          CFI (cfiCond53) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond54 Using cfiCommon0
-          CFI (cfiCond54) Function ZDNwkMgr_ReportChannelInterference
-          CFI (cfiCond54) Conditional ??CrossCallReturnLabel_26, ??CrossCallReturnLabel_3
-          CFI (cfiCond54) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond54) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond54) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond54) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond54) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond54) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond54) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond54) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond54) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond54) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond54) CFA_SP SP+-4
-          CFI (cfiCond54) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond55 Using cfiCommon0
-          CFI (cfiCond55) Function ZDNwkMgr_event_loop
-          CFI (cfiCond55) Conditional ??CrossCallReturnLabel_27
-          CFI (cfiCond55) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond55) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond55) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond55) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond55) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond55) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond55) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond55) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond55) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond55) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond55) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond55) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond55) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond55) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond55) CFA_SP SP+-2
-          CFI (cfiCond55) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond56 Using cfiCommon0
-          CFI (cfiCond56) Function ZDNwkMgr_event_loop
-          CFI (cfiCond56) Conditional ??CrossCallReturnLabel_28
-          CFI (cfiCond56) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond56) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond56) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond56) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond56) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond56) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond56) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond56) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond56) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond56) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond56) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond56) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond56) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond56) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond56) CFA_SP SP+-2
-          CFI (cfiCond56) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiPicker57 Using cfiCommon1
-          CFI (cfiPicker57) NoFunction
-          CFI (cfiPicker57) Picker
-        MOVX      A,@DPTR
-        MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        RET
-          CFI EndBlock cfiCond49
-          CFI EndBlock cfiCond50
-          CFI EndBlock cfiCond51
-          CFI EndBlock cfiCond52
-          CFI EndBlock cfiCond53
-          CFI EndBlock cfiCond54
-          CFI EndBlock cfiCond55
-          CFI EndBlock cfiCond56
-          CFI EndBlock cfiPicker57
+??ZDNwkMgr_CheckForChannelInterference_6:
+        MOV       R7,#0x6
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock7
 //  775 
 //  776 /*********************************************************************
 //  777  * @fn          ZDNwkMgr_BuildAndSendUpdateNotify
@@ -3677,7 +2968,7 @@ ZDNwkMgr_CheckForChannelInterference:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  788 static void ZDNwkMgr_BuildAndSendUpdateNotify( uint8 TransSeq, zAddrType_t *dstAddr,
 ZDNwkMgr_BuildAndSendUpdateNotify:
-          CFI Block cfiBlock58 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function ZDNwkMgr_BuildAndSendUpdateNotify
         CODE
 //  789                                                uint16 totalTransmissions, uint16 txFailures,
@@ -3687,34 +2978,34 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         FUNCALL ZDNwkMgr_BuildAndSendUpdateNotify, osal_mem_alloc
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 22, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 22, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_BuildAndSendUpdateNotify, ZDP_MgmtNwkUpdateNotify
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 32, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 32, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDNwkMgr_BuildAndSendUpdateNotify, osal_mem_free
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 22, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 22, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
@@ -3729,9 +3020,7 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         REQUIRE ?V9
         REQUIRE ?V10
         REQUIRE ?V11
-        REQUIRE ?V12
-        REQUIRE ?V13
-        MOV       A,#-0x16
+        MOV       A,#-0x14
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -3739,29 +3028,27 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V13 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V12 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-22)))
+          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-17)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-18)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-19)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-20)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 22)
-        ; Saved register size: 22
+          CFI CFA_XSP16 add(XSP16, 20)
+        ; Saved register size: 20
         ; Auto size: 0
         MOV       ?V9,R1
-        MOV       ?V12,R2
-        MOV       ?V13,R3
+        MOV       ?V10,R2
+        MOV       ?V11,R3
         MOV       A,R4
         MOV       R6,A
         MOV       A,R5
@@ -3776,24 +3063,22 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
 //  797   // Count number of energy detects
 //  798   for ( i = 0; i < ED_SCAN_MAXCHANNELS; i++ )
         MOV       R1,#0x0
-        MOV       A,#0x18
+        MOV       A,#0x16
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
-        MOV       ?V10,A
+        MOV       ?V2,A
         INC       DPTR
         MOVX      A,@DPTR
-        MOV       ?V11,A
-        MOV       A,?V10
-        ADD       A,#0x3
-        MOV       ?V2,A
-        CLR       A
-        ADDC      A,?V11
         MOV       ?V3,A
+        SJMP      ??ZDNwkMgr_BuildAndSendUpdateNotify_0
 //  799   {
 //  800     if ( ( (uint32)1 << i ) & pEDScanConfirm->scannedChannels )
-??ZDNwkMgr_BuildAndSendUpdateNotify_0:
+??ZDNwkMgr_BuildAndSendUpdateNotify_1:
         MOV       DPL,?V2
         MOV       DPH,?V3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
         MOV       R0,#?V4
         LCALL     ?L_MOV_X
         MOV       A,R1
@@ -3801,20 +3086,21 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         LCALL     ?UL_SHR
         MOV       A,?V4
         MOV       C,0xE0 /* A   */.0
-        JNC       ??ZDNwkMgr_BuildAndSendUpdateNotify_1
+        JNC       ??ZDNwkMgr_BuildAndSendUpdateNotify_2
 //  801       listCount++;
         INC       ?V8
 //  802   }
-??ZDNwkMgr_BuildAndSendUpdateNotify_1:
+??ZDNwkMgr_BuildAndSendUpdateNotify_2:
         INC       R1
+??ZDNwkMgr_BuildAndSendUpdateNotify_0:
         MOV       A,R1
         CLR       C
         SUBB      A,#0x1b
-        JC        ??ZDNwkMgr_BuildAndSendUpdateNotify_0
+        JC        ??ZDNwkMgr_BuildAndSendUpdateNotify_1
 //  803   
 //  804   if ( listCount > 0 )
         MOV       A,?V8
-        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_2
+        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_3
 //  805   {
 //  806     energyValues = (uint8 *)osal_mem_alloc( listCount );
         ; Setup parameters for call to function osal_mem_alloc
@@ -3826,18 +3112,22 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
 //  807     if ( energyValues )
         MOV       A,R2
         ORL       A,R3
-        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_2
+        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_3
 //  808     {
 //  809       uint8 j = 0;
         MOV       R2,#0x0
 //  810 
 //  811       for ( i = 0; i < ED_SCAN_MAXCHANNELS; i++ )
         MOV       R1,#0x0
+        SJMP      ??ZDNwkMgr_BuildAndSendUpdateNotify_4
 //  812       {
 //  813         if ( ( (uint32)1 << i ) & pEDScanConfirm->scannedChannels )
-??ZDNwkMgr_BuildAndSendUpdateNotify_3:
+??ZDNwkMgr_BuildAndSendUpdateNotify_5:
         MOV       DPL,?V2
         MOV       DPH,?V3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
         MOV       R0,#?V4
         LCALL     ?L_MOV_X
         MOV       A,R1
@@ -3845,15 +3135,15 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         LCALL     ?UL_SHR
         MOV       A,?V4
         MOV       C,0xE0 /* A   */.0
-        JNC       ??ZDNwkMgr_BuildAndSendUpdateNotify_4
+        JNC       ??ZDNwkMgr_BuildAndSendUpdateNotify_6
 //  814           energyValues[j++] = pEDScanConfirm->energyDetectList[i];
         MOV       A,R1
         MOV       R4,A
-        MOV       A,?V10
+        MOV       A,?V2
         ADD       A,R4
         MOV       DPL,A
         CLR       A
-        ADDC      A,?V11
+        ADDC      A,?V3
         MOV       DPH,A
         INC       DPTR
         INC       DPTR
@@ -3878,12 +3168,13 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         MOVX      @DPTR,A
         INC       R2
 //  815       }
-??ZDNwkMgr_BuildAndSendUpdateNotify_4:
+??ZDNwkMgr_BuildAndSendUpdateNotify_6:
         INC       R1
+??ZDNwkMgr_BuildAndSendUpdateNotify_4:
         MOV       A,R1
         CLR       C
         SUBB      A,#0x1b
-        JC        ??ZDNwkMgr_BuildAndSendUpdateNotify_3
+        JC        ??ZDNwkMgr_BuildAndSendUpdateNotify_5
 //  816     }
 //  817   }
 //  818     
@@ -3892,63 +3183,66 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
 //  821                            pEDScanConfirm->scannedChannels,
 //  822                            totalTransmissions, txFailures,
 //  823                            listCount, energyValues, txOptions, false );
-??ZDNwkMgr_BuildAndSendUpdateNotify_2:
+??ZDNwkMgr_BuildAndSendUpdateNotify_3:
         ; Setup parameters for call to function ZDP_MgmtNwkUpdateNotify
         MOV       ?V4,#0x0
         MOV       R0,#?V4
         LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 23)
-        MOV       A,#0x1b
+          CFI CFA_XSP16 add(XSP16, 21)
+        MOV       A,#0x19
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
         MOV       ?V4,A
         MOV       R0,#?V4
         LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 24)
+          CFI CFA_XSP16 add(XSP16, 22)
         MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 26)
-        MOV       A,#0x1a
+          CFI CFA_XSP16 add(XSP16, 24)
+        MOV       A,#0x18
         LCALL     ?XSTACK_DISP0_8
         LCALL     ?PUSH_XSTACK8_X_TWO
-          CFI CFA_XSP16 add(XSP16, 28)
+          CFI CFA_XSP16 add(XSP16, 26)
         MOV       ?V4,R6
         MOV       ?V5,R7
         MOV       R0,#?V4
         LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 30)
+          CFI CFA_XSP16 add(XSP16, 28)
         MOV       DPL,?V2
         MOV       DPH,?V3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
         LCALL     ?PUSH_XSTACK8_X_FOUR
-          CFI CFA_XSP16 add(XSP16, 34)
+          CFI CFA_XSP16 add(XSP16, 32)
         MOV       R5,?V8
-        MOV       DPL,?V10
-        MOV       DPH,?V11
+        MOV       DPL,?V2
+        MOV       DPH,?V3
         INC       DPTR
         INC       DPTR
         MOVX      A,@DPTR
         MOV       R4,A
-        MOV       R2,?V12
-        MOV       R3,?V13
+        MOV       R2,?V10
+        MOV       R3,?V11
         MOV       R1,?V9
         LCALL     `??ZDP_MgmtNwkUpdateNotify::?relay`; Banked call to: ZDP_MgmtNwkUpdateNotify
         MOV       A,#0xc
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 22)
+          CFI CFA_XSP16 add(XSP16, 20)
 //  824   if ( energyValues )
         MOV       A,?V0
         ORL       A,?V1
-        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_5
+        JZ        ??ZDNwkMgr_BuildAndSendUpdateNotify_7
 //  825     osal_mem_free( energyValues );
         ; Setup parameters for call to function osal_mem_free
         MOV       R2,?V0
         MOV       R3,?V1
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
 //  826 }
-??ZDNwkMgr_BuildAndSendUpdateNotify_5:
-        MOV       R7,#0xe
+??ZDNwkMgr_BuildAndSendUpdateNotify_7:
+        MOV       R7,#0xc
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock58
+          CFI EndBlock cfiBlock8
 //  827 
 //  828 #if defined ( NWK_MANAGER )
 //  829 /*********************************************************************
@@ -3986,7 +3280,7 @@ ZDNwkMgr_BuildAndSendUpdateNotify:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  860 void ZDNwkMgr_SetNwkManagerAddr( uint16 nwkManagerAddr )
 ZDNwkMgr_SetNwkManagerAddr:
-          CFI Block cfiBlock59 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function ZDNwkMgr_SetNwkManagerAddr
         CODE
 //  861 {
@@ -4036,25 +3330,14 @@ ZDNwkMgr_SetNwkManagerAddr:
 //  869   }
 //  870 }
 ??ZDNwkMgr_SetNwkManagerAddr_1:
-          CFI EndBlock cfiBlock59
-        REQUIRE ?Subroutine3
-        ; // Fall through to label ?Subroutine3
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiBlock60 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock60
+          CFI EndBlock cfiBlock9
 //  871 
 //  872 /*********************************************************************
 //  873  * @fn          ZDNwkMgr_ReportChannelInterference
@@ -4070,7 +3353,7 @@ ZDNwkMgr_SetNwkManagerAddr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  882 void ZDNwkMgr_ReportChannelInterference(  NLME_ChanInterference_t *chanInterference  )
 ZDNwkMgr_ReportChannelInterference:
-          CFI Block cfiBlock61 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function ZDNwkMgr_ReportChannelInterference
         CODE
 //  883 {
@@ -4141,23 +3424,43 @@ ZDNwkMgr_ReportChannelInterference:
 //  893     pChanInterference->totalTransmissions = chanInterference->totalTransmissions;
         MOV       DPL,R6
         MOV       DPH,R7
-        LCALL     ?Subroutine7 & 0xFFFF
-??CrossCallReturnLabel_2:
-        LCALL     ??Subroutine16_0 & 0xFFFF
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  894     pChanInterference->txFailures = chanInterference->txFailures;
-??CrossCallReturnLabel_20:
         MOV       DPL,R6
         MOV       DPH,R7
         INC       DPTR
         INC       DPTR
-        LCALL     ?Subroutine7 & 0xFFFF
-??CrossCallReturnLabel_3:
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPL,R2
+        MOV       DPH,R3
         INC       DPTR
         INC       DPTR
-        LCALL     ??Subroutine16_0 & 0xFFFF
+        INC       DPTR
+        INC       DPTR
+        MOV       A,R0
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
 //  895               
 //  896     osal_msg_send( ZDNwkMgr_TaskID, (uint8 *)pChanInterference );
-??CrossCallReturnLabel_21:
         ; Setup parameters for call to function osal_msg_send
         MOV       DPTR,#ZDNwkMgr_TaskID
         MOVX      A,@DPTR
@@ -4168,53 +3471,7 @@ ZDNwkMgr_ReportChannelInterference:
 ??ZDNwkMgr_ReportChannelInterference_0:
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock61
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine7:
-          CFI Block cfiCond62 Using cfiCommon0
-          CFI Function ZDNwkMgr_ReportChannelInterference
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond63 Using cfiCommon0
-          CFI (cfiCond63) Function ZDNwkMgr_ReportChannelInterference
-          CFI (cfiCond63) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond63) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond63) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond63) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond63) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond63) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond63) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond63) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond63) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond63) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond63) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond63) CFA_SP SP+-2
-          CFI (cfiCond63) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiPicker64 Using cfiCommon1
-          CFI (cfiPicker64) NoFunction
-          CFI (cfiPicker64) Picker
-        LCALL     ??Subroutine17_0 & 0xFFFF
-??CrossCallReturnLabel_26:
-        MOV       DPL,R2
-        MOV       DPH,R3
-        INC       DPTR
-        INC       DPTR
-        RET
-          CFI EndBlock cfiCond62
-          CFI EndBlock cfiCond63
-          CFI EndBlock cfiPicker64
+          CFI EndBlock cfiBlock10
 //  899 
 //  900 /*********************************************************************
 //  901  * @fn          ZDNwkMgr_EDScanConfirmCB
@@ -4230,7 +3487,7 @@ ZDNwkMgr_ReportChannelInterference:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  910 void ZDNwkMgr_EDScanConfirmCB( NLME_EDScanConfirm_t *EDScanConfirm )
 ZDNwkMgr_EDScanConfirmCB:
-          CFI Block cfiBlock65 Using cfiCommon0
+          CFI Block cfiBlock11 Using cfiCommon0
           CFI Function ZDNwkMgr_EDScanConfirmCB
         CODE
 //  911 {
@@ -4379,8 +3636,9 @@ ZDNwkMgr_EDScanConfirmCB:
 //  926   }
 //  927 }
 ??ZDNwkMgr_EDScanConfirmCB_0:
-        LJMP      ?Subroutine2 & 0xFFFF
-          CFI EndBlock cfiBlock65
+        MOV       R7,#0x4
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock11
 //  928 
 //  929 /*********************************************************************
 //  930  * @fn      ZDNwkMgr_ProcessDataConfirm
@@ -4395,7 +3653,7 @@ ZDNwkMgr_EDScanConfirmCB:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  938 void ZDNwkMgr_ProcessDataConfirm( afDataConfirm_t *afDataConfirm )
 ZDNwkMgr_ProcessDataConfirm:
-          CFI Block cfiBlock66 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function ZDNwkMgr_ProcessDataConfirm
         CODE
 //  939 {
@@ -4441,63 +3699,31 @@ ZDNwkMgr_ProcessDataConfirm:
 //  945     // acknowledgement and once the acknowledgment is received the 
 //  946     // total transmit and transmit failure counters are reset to zero.  
 //  947     _NIB.nwkTotalTransmissions = 0;
-        LCALL     ?Subroutine5 & 0xFFFF
+        MOV       DPTR,#_NIB + 107
+        CLR       A
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      @DPTR,A
 //  948     nwkTransmissionFailures( TRUE );
+        ; Setup parameters for call to function nwkTransmissionFailures
+        MOV       R1,#0x1
+        LCALL     `??nwkTransmissionFailures::?relay`; Banked call to: nwkTransmissionFailures
 //  949     
 //  950     ZDNwkMgr_WaitingForNotifyConfirm = FALSE;
-??CrossCallReturnLabel_1:
         MOV       DPTR,#ZDNwkMgr_WaitingForNotifyConfirm
         CLR       A
         MOVX      @DPTR,A
 //  951   }
 //  952 }
 ??ZDNwkMgr_ProcessDataConfirm_0:
-        LJMP      ?Subroutine3 & 0xFFFF
-          CFI EndBlock cfiBlock66
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine5:
-          CFI Block cfiCond67 Using cfiCommon0
-          CFI Function ZDNwkMgr_event_loop
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond68 Using cfiCommon0
-          CFI (cfiCond68) Function ZDNwkMgr_ProcessDataConfirm
-          CFI (cfiCond68) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond68) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond68) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond68) CFA_SP SP+-7
-          CFI Block cfiPicker69 Using cfiCommon1
-          CFI (cfiPicker69) NoFunction
-          CFI (cfiPicker69) Picker
-        MOV       DPTR,#_NIB + 107
-        CLR       A
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function nwkTransmissionFailures
-        ; Setup parameters for call to function nwkTransmissionFailures
-        MOV       R1,#0x1
-        LCALL     `??nwkTransmissionFailures::?relay`; Banked call to: nwkTransmissionFailures
-        RET
-          CFI EndBlock cfiCond67
-          CFI EndBlock cfiCond68
-          CFI EndBlock cfiPicker69
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock12
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??ZDNwkMgr_Init::?relay`:
@@ -4514,6 +3740,13 @@ ZDNwkMgr_ProcessDataConfirm:
         DC24    ZDNwkMgr_event_loop
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??ZDNwkMgr_ProcessMsgCBs::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    ZDNwkMgr_ProcessMsgCBs
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??ZDNwkMgr_ProcessMgmtNwkUpdateReq::?relay`:
         CODE
         LCALL   ?BDISPATCH
@@ -4526,6 +3759,20 @@ ZDNwkMgr_ProcessDataConfirm:
         LCALL   ?BDISPATCH
         DATA24
         DC24    ZDNwkMgr_ProcessServerDiscRsp
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??ZDNwkMgr_ProcessChannelInterference::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    ZDNwkMgr_ProcessChannelInterference
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??ZDNwkMgr_ProcessEDScanConfirm::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    ZDNwkMgr_ProcessEDScanConfirm
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??ZDNwkMgr_CheckForChannelInterference::?relay`:
@@ -4576,8 +3823,13 @@ ZDNwkMgr_ProcessDataConfirm:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
-__Constant_32:
-        DD 50
+__Constant_ea60:
+        DD 60000
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA32
+__Constant_0:
+        DD 0
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
@@ -4586,13 +3838,8 @@ __Constant_7fff800:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
-__Constant_ea60:
-        DD 60000
-
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA32
-__Constant_0:
-        DD 0
+__Constant_32:
+        DD 50
 
         END
 //  953 
@@ -4707,14 +3954,14 @@ __Constant_0:
 // 1062 /*********************************************************************
 // 1063 *********************************************************************/
 // 
-// 1 846 bytes in segment BANKED_CODE
-//    60 bytes in segment BANK_RELAYS
+// 1 983 bytes in segment BANKED_CODE
+//    78 bytes in segment BANK_RELAYS
 //    85 bytes in segment XDATA_ROM_C
 //    39 bytes in segment XDATA_Z
 // 
-//    60 bytes of CODE     memory
+//    78 bytes of CODE     memory
 //    69 bytes of CONST    memory (+ 16 bytes shared)
-// 1 846 bytes of HUGECODE memory
+// 1 983 bytes of HUGECODE memory
 //    39 bytes of XDATA    memory
 //
 //Errors: none

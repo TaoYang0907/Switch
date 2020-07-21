@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:20
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:40
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWBF00.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW5D63.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\target\CC2530EB\hal_key.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -450,19 +452,15 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
    \   000027   90....       MOV       DPTR,#HalKeyConfigured
    \   00002A   F0           MOVX      @DPTR,A
     204          }
-   \   00002B   02....       LJMP      ?Subroutine0 & 0xFFFF
-   \   00002E                REQUIRE P0SEL
-   \   00002E                REQUIRE P0DIR
-   \   00002E                REQUIRE P0INP
-   \   00002E                REQUIRE P2INP
-   \   00002E                REQUIRE P2SEL
-   \   00002E                REQUIRE P2DIR
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   00002B   D083         POP       DPH
+   \   00002D   D082         POP       DPL
+   \   00002F   02....       LJMP      ?BRET
+   \   000032                REQUIRE P0SEL
+   \   000032                REQUIRE P0DIR
+   \   000032                REQUIRE P0INP
+   \   000032                REQUIRE P2INP
+   \   000032                REQUIRE P2SEL
+   \   000032                REQUIRE P2DIR
     205          
     206          
     207          /**************************************************************************************************
@@ -655,18 +653,13 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     311          
     312            return keys;
    \                     ??HalKeyRead_1:
-   \   000018                REQUIRE ?Subroutine1
-   \   000018                REQUIRE _A_P0
-   \   000018                REQUIRE _A_P2
-   \   000018                ; // Fall through to label ?Subroutine1
+   \   000018   EE           MOV       A,R6
+   \   000019   F9           MOV       R1,A
+   \   00001A   7F01         MOV       R7,#0x1
+   \   00001C   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00001F                REQUIRE _A_P0
+   \   00001F                REQUIRE _A_P2
     313          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   EE           MOV       A,R6
-   \   000001   F9           MOV       R1,A
-   \   000002   7F01         MOV       R7,#0x1
-   \   000004   02....       LJMP      ?BANKED_LEAVE_XDATA
     314          
     315          
     316          /**************************************************************************************************
@@ -790,9 +783,11 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     374            }
     375          }
    \                     ??HalKeyPoll_2:
-   \   000050   02....       LJMP      ?Subroutine0 & 0xFFFF
-   \   000053                REQUIRE _A_P2
-   \   000053                REQUIRE _A_P0
+   \   000050   D083         POP       DPH
+   \   000052   D082         POP       DPL
+   \   000054   02....       LJMP      ?BRET
+   \   000057                REQUIRE _A_P2
+   \   000057                REQUIRE _A_P0
     376          
     377          /**************************************************************************************************
     378           * @fn      halGetJoyKeyInput
@@ -908,7 +903,10 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
    \   000054   70B1         JNZ       ??halGetJoyKeyInput_0
     423          
     424            return ksave0;
-   \   000056   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000056   EE           MOV       A,R6
+   \   000057   F9           MOV       R1,A
+   \   000058   7F01         MOV       R7,#0x1
+   \   00005A   02....       LJMP      ?BANKED_LEAVE_XDATA
     425          }
     426          
     427          
@@ -957,35 +955,34 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     453              HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT); /* Clear Interrupt Flag */
    \   000017   758BFE       MOV       0x8b,#-0x2
     454              valid = TRUE;
-   \   00001A   8005         SJMP      ??halProcessKeyInterrupt_2
+   \   00001A   7801         MOV       R0,#0x1
     455            }
     456          
     457            if (valid)
    \                     ??halProcessKeyInterrupt_1:
    \   00001C   E8           MOV       A,R0
-   \   00001D   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00001F   5017         JNC       ??halProcessKeyInterrupt_3
+   \   00001D   6017         JZ        ??halProcessKeyInterrupt_2
     458            {
     459              osal_start_timerEx (Hal_TaskID, HAL_KEY_EVENT, HAL_KEY_DEBOUNCE_VALUE);
-   \                     ??halProcessKeyInterrupt_2:
-   \   000021                ; Setup parameters for call to function osal_start_timerEx
-   \   000021   90....       MOV       DPTR,#__Constant_19
-   \   000024   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   000027   7A10         MOV       R2,#0x10
-   \   000029   7B00         MOV       R3,#0x0
-   \   00002B   90....       MOV       DPTR,#Hal_TaskID
-   \   00002E   E0           MOVX      A,@DPTR
-   \   00002F   F9           MOV       R1,A
-   \   000030   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
-   \   000033   7404         MOV       A,#0x4
-   \   000035   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00001F                ; Setup parameters for call to function osal_start_timerEx
+   \   00001F   90....       MOV       DPTR,#__Constant_19
+   \   000022   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
+   \   000025   7A10         MOV       R2,#0x10
+   \   000027   7B00         MOV       R3,#0x0
+   \   000029   90....       MOV       DPTR,#Hal_TaskID
+   \   00002C   E0           MOVX      A,@DPTR
+   \   00002D   F9           MOV       R1,A
+   \   00002E   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+   \   000031   7404         MOV       A,#0x4
+   \   000033   12....       LCALL     ?DEALLOC_XSTACK8
     460            }
     461          }
-   \                     ??halProcessKeyInterrupt_3:
-   \   000038                REQUIRE ?Subroutine0
-   \   000038                REQUIRE P0IFG
-   \   000038                REQUIRE P2IFG
-   \   000038                ; // Fall through to label ?Subroutine0
+   \                     ??halProcessKeyInterrupt_2:
+   \   000036   D083         POP       DPH
+   \   000038   D082         POP       DPL
+   \   00003A   02....       LJMP      ?BRET
+   \   00003D                REQUIRE P0IFG
+   \   00003D                REQUIRE P2IFG
     462          
     463          /**************************************************************************************************
     464           * @fn      HalKeyEnterSleep
@@ -1028,7 +1025,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     488            return ( HalKeyRead () );
    \   000004                ; Setup parameters for call to function HalKeyRead
    \   000004   12....       LCALL     `??HalKeyRead::?relay`; Banked call to: HalKeyRead
-   \   000007   80..         SJMP      ?Subroutine0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     489          }
     490          
     491          /***************************************************************************************************
@@ -1083,20 +1082,15 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     519            
     520            CLEAR_SLEEP_MODE();
     521            HAL_EXIT_ISR();
-   \   00001C                REQUIRE ?Subroutine2
-   \   00001C                REQUIRE _A_IEN0
-   \   00001C                REQUIRE P0IFG
-   \   00001C                REQUIRE _A_IRCON
-   \   00001C                ; // Fall through to label ?Subroutine2
+   \   00001C   EE           MOV       A,R6
+   \   00001D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001F   92AF         MOV       0xa8.7,C
     522          }
-
-   \                                 In  segment NEAR_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   EE           MOV       A,R6
-   \   000001   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000003   92AF         MOV       0xa8.7,C
-   \   000005   7F01         MOV       R7,#0x1
-   \   000007   02....       LJMP      ?INTERRUPT_LEAVE_XSP
+   \   000021   7F01         MOV       R7,#0x1
+   \   000023   02....       LJMP      ?INTERRUPT_LEAVE_XSP
+   \   000026                REQUIRE _A_IEN0
+   \   000026                REQUIRE P0IFG
+   \   000026                REQUIRE _A_IRCON
     523          
     524          
     525          /**************************************************************************************************
@@ -1148,11 +1142,15 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
     550          
     551            CLEAR_SLEEP_MODE();
     552            HAL_EXIT_ISR();
-   \   00001C   80..         SJMP      ?Subroutine2
-   \   00001E                REQUIRE _A_IEN0
-   \   00001E                REQUIRE P2IFG
-   \   00001E                REQUIRE _A_IRCON2
+   \   00001C   EE           MOV       A,R6
+   \   00001D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001F   92AF         MOV       0xa8.7,C
     553          }
+   \   000021   7F01         MOV       R7,#0x1
+   \   000023   02....       LJMP      ?INTERRUPT_LEAVE_XSP
+   \   000026                REQUIRE _A_IEN0
+   \   000026                REQUIRE P2IFG
+   \   000026                REQUIRE _A_IRCON2
 
    \                                 In  segment INTVEC, offset 0x33, root
    \                     `??halKeyPort2Isr::??INTVEC 51`:
@@ -1215,16 +1213,13 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ?Subroutine0
-       7  ?Subroutine1
-      10  ?Subroutine2
       99  HalKeyConfig
        1  HalKeyConfigured
        3  HalKeyEnterSleep
-       9  HalKeyExitSleep
-      46  HalKeyInit
-      83  HalKeyPoll
-      24  HalKeyRead
+      14  HalKeyExitSleep
+      50  HalKeyInit
+      87  HalKeyPoll
+      31  HalKeyRead
        1  Hal_KeyIntEnable
        1  IEN2
        1  P0DIR
@@ -1245,29 +1240,29 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
        1  _A_P0
        1  _A_P2
        4  __Constant_19
-      89  halGetJoyKeyInput
-      28  halKeyPort0Isr
+      93  halGetJoyKeyInput
+      38  halKeyPort0Isr
        3  halKeyPort0Isr::??INTVEC 107
-      30  halKeyPort2Isr
+      38  halKeyPort2Isr
        3  halKeyPort2Isr::??INTVEC 51
        1  halKeySavedKeys
-      56  halProcessKeyInterrupt
+      61  halProcessKeyInterrupt
        2  pHalKeyProcessFunction
       48  -- Other
 
  
- 423 bytes in segment BANKED_CODE
+ 438 bytes in segment BANKED_CODE
   48 bytes in segment BANK_RELAYS
    6 bytes in segment INTVEC
-  68 bytes in segment NEAR_CODE
+  76 bytes in segment NEAR_CODE
   18 bytes in segment SFR_AN
    4 bytes in segment XDATA_ROM_C
    5 bytes in segment XDATA_Z
  
- 116 bytes of CODE     memory (+  6 bytes shared)
+ 124 bytes of CODE     memory (+  6 bytes shared)
    0 bytes of CONST    memory (+  4 bytes shared)
    0 bytes of DATA     memory (+ 18 bytes shared)
- 423 bytes of HUGECODE memory
+ 438 bytes of HUGECODE memory
    5 bytes of XDATA    memory
 
 Errors: none

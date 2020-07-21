@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:24
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:44
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWCD58.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW6D83.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c" -D BDB_REPORTING
 #        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 #        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -240,13 +242,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
    \   000009   90....       MOV       DPTR,#macRxOnFlag
    \   00000C   F0           MOVX      @DPTR,A
      86          }
-   \   00000D   80..         SJMP      ??Subroutine4_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine4_0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   00000D   D083         POP       DPH
+   \   00000F   D082         POP       DPL
+   \   000011   02....       LJMP      ?BRET
      87          
      88          
      89          /**************************************************************************************************
@@ -280,38 +278,27 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     105            /* set enable flags and then turn on receiver */
     106            HAL_ENTER_CRITICAL_SECTION(s);
    \                     ??macRxEnable_0:
-   \   00000C   AEA8         MOV       R6,0xa8+0x0
-   \   00000E   C2AF         CLR       0xa8.7
+   \   00000C   A2AF         MOV       C,0xa8.7
+   \   00000E   E4           CLR       A
+   \   00000F   33           RLC       A
+   \   000010   FE           MOV       R6,A
+   \   000011   C2AF         CLR       0xa8.7
     107            macRxEnableFlags |= flags;
-   \   000010   90....       MOV       DPTR,#macRxEnableFlags
-   \   000013   E0           MOVX      A,@DPTR
-   \   000014   4F           ORL       A,R7
-   \   000015   F0           MOVX      @DPTR,A
+   \   000013   90....       MOV       DPTR,#macRxEnableFlags
+   \   000016   E0           MOVX      A,@DPTR
+   \   000017   4F           ORL       A,R7
+   \   000018   F0           MOVX      @DPTR,A
     108            macRxOn();
-   \   000016                ; Setup parameters for call to function macRxOn
-   \   000016   12....       LCALL     `??macRxOn::?relay`; Banked call to: macRxOn
+   \   000019                ; Setup parameters for call to function macRxOn
+   \   000019   12....       LCALL     `??macRxOn::?relay`; Banked call to: macRxOn
     109            HAL_EXIT_CRITICAL_SECTION(s);
-   \   000019   EE           MOV       A,R6
-   \   00001A                REQUIRE ?Subroutine2
-   \   00001A                REQUIRE _A_IEN0
-   \   00001A                ; // Fall through to label ?Subroutine2
+   \   00001C   EE           MOV       A,R6
+   \   00001D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001F   92AF         MOV       0xa8.7,C
     110          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000002   80..         SJMP      ??Subroutine5_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine5_0:
-   \   000000   92AF         MOV       0xa8.7,C
-   \   000002                REQUIRE ??Subroutine6_0
-   \   000002                ; // Fall through to label ??Subroutine6_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine6_0:
-   \   000000   7F01         MOV       R7,#0x1
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000021   7F01         MOV       R7,#0x1
+   \   000023   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000026                REQUIRE _A_IEN0
     111          
     112          
     113          /**************************************************************************************************
@@ -346,18 +333,24 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     130            /* set the enable flags but do not turn on the receiver */
     131            HAL_ENTER_CRITICAL_SECTION(s);
    \                     ??macRxSoftEnable_0:
-   \   00000C   A8A8         MOV       R0,0xa8+0x0
-   \   00000E   C2AF         CLR       0xa8.7
+   \   00000C   A2AF         MOV       C,0xa8.7
+   \   00000E   E4           CLR       A
+   \   00000F   33           RLC       A
+   \   000010   F8           MOV       R0,A
+   \   000011   C2AF         CLR       0xa8.7
     132            macRxEnableFlags |= flags;
-   \   000010   90....       MOV       DPTR,#macRxEnableFlags
-   \   000013   E0           MOVX      A,@DPTR
-   \   000014   4E           ORL       A,R6
-   \   000015   F0           MOVX      @DPTR,A
+   \   000013   90....       MOV       DPTR,#macRxEnableFlags
+   \   000016   E0           MOVX      A,@DPTR
+   \   000017   4E           ORL       A,R6
+   \   000018   F0           MOVX      @DPTR,A
     133            HAL_EXIT_CRITICAL_SECTION(s);
-   \   000016   E8           MOV       A,R0
-   \   000017   80..         SJMP      ?Subroutine2
-   \   000019                REQUIRE _A_IEN0
+   \   000019   E8           MOV       A,R0
+   \   00001A   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001C   92AF         MOV       0xa8.7,C
     134          }
+   \   00001E   7F01         MOV       R7,#0x1
+   \   000020   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000023                REQUIRE _A_IEN0
     135          
     136          
     137          /**************************************************************************************************
@@ -392,28 +385,32 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     154            /* clear the indicated flags */
     155            HAL_ENTER_CRITICAL_SECTION(s);
    \                     ??macRxDisable_0:
-   \   00000C   A8A8         MOV       R0,0xa8+0x0
-   \   00000E   C2AF         CLR       0xa8.7
+   \   00000C   A2AF         MOV       C,0xa8.7
+   \   00000E   E4           CLR       A
+   \   00000F   33           RLC       A
+   \   000010   F8           MOV       R0,A
+   \   000011   C2AF         CLR       0xa8.7
     156            macRxEnableFlags &= (flags ^ 0xFF);
-   \   000010   74FF         MOV       A,#-0x1
-   \   000012   6E           XRL       A,R6
-   \   000013   F9           MOV       R1,A
-   \   000014   90....       MOV       DPTR,#macRxEnableFlags
-   \   000017   E0           MOVX      A,@DPTR
-   \   000018   59           ANL       A,R1
-   \   000019   F0           MOVX      @DPTR,A
+   \   000013   74FF         MOV       A,#-0x1
+   \   000015   6E           XRL       A,R6
+   \   000016   F9           MOV       R1,A
+   \   000017   90....       MOV       DPTR,#macRxEnableFlags
+   \   00001A   E0           MOVX      A,@DPTR
+   \   00001B   59           ANL       A,R1
+   \   00001C   F0           MOVX      @DPTR,A
     157            HAL_EXIT_CRITICAL_SECTION(s);
-   \   00001A   E8           MOV       A,R0
-   \   00001B   A2E7         MOV       C,0xE0 /* A   */.7
-   \   00001D   92AF         MOV       0xa8.7,C
+   \   00001D   E8           MOV       A,R0
+   \   00001E   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000020   92AF         MOV       0xa8.7,C
     158          
     159            /* turn off the radio if it is allowed */
     160            macRxOffRequest();
-   \   00001F                ; Setup parameters for call to function macRxOffRequest
-   \   00001F   12....       LCALL     `??macRxOffRequest::?relay`; Banked call to: macRxOffRequest
+   \   000022                ; Setup parameters for call to function macRxOffRequest
+   \   000022   12....       LCALL     `??macRxOffRequest::?relay`; Banked call to: macRxOffRequest
     161          }
-   \   000022   80..         SJMP      ??Subroutine6_0
-   \   000024                REQUIRE _A_IEN0
+   \   000025   7F01         MOV       R7,#0x1
+   \   000027   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00002A                REQUIRE _A_IEN0
     162          
     163          
     164          /**************************************************************************************************
@@ -438,44 +435,43 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     176            halIntState_t  s;
     177          
     178            HAL_ENTER_CRITICAL_SECTION(s);
-   \   000004   A8A8         MOV       R0,0xa8+0x0
-   \   000006   C2AF         CLR       0xa8.7
+   \   000004   A2AF         MOV       C,0xa8.7
+   \   000006   E4           CLR       A
+   \   000007   33           RLC       A
+   \   000008   F8           MOV       R0,A
+   \   000009   C2AF         CLR       0xa8.7
     179          
     180            macRxEnableFlags = 0;
-   \   000008   90....       MOV       DPTR,#macRxEnableFlags
-   \   00000B   E4           CLR       A
-   \   00000C   F0           MOVX      @DPTR,A
+   \   00000B   90....       MOV       DPTR,#macRxEnableFlags
+   \   00000E   E4           CLR       A
+   \   00000F   F0           MOVX      @DPTR,A
     181            macRxOnFlag = 0;
-   \   00000D   90....       MOV       DPTR,#macRxOnFlag
-   \   000010   12....       LCALL     ?Subroutine3 & 0xFFFF
+   \   000010   90....       MOV       DPTR,#macRxOnFlag
+   \   000013   F0           MOVX      @DPTR,A
     182          
     183            /* force receiver off */
     184            MAC_RADIO_RXTX_OFF();
+   \   000014   75E1EF       MOV       0xe1,#-0x11
     185            MAC_RADIO_FLUSH_RX_FIFO();
+   \   000017   75E1ED       MOV       0xe1,#-0x13
+   \   00001A   75E1ED       MOV       0xe1,#-0x13
     186            MAC_DEBUG_TURN_OFF_RX_LED();
     187          
     188            HAL_EXIT_CRITICAL_SECTION(s);
-   \                     ??CrossCallReturnLabel_0:
-   \   000013   E8           MOV       A,R0
-   \   000014   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000016   92AF         MOV       0xa8.7,C
+   \   00001D   E8           MOV       A,R0
+   \   00001E   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000020   92AF         MOV       0xa8.7,C
     189          
     190            /* clean up after being forced off */
     191            macRxHaltCleanup();
-   \   000018                ; Setup parameters for call to function macRxHaltCleanup
-   \   000018   12....       LCALL     `??macRxHaltCleanup::?relay`; Banked call to: macRxHaltCleanup
+   \   000022                ; Setup parameters for call to function macRxHaltCleanup
+   \   000022   12....       LCALL     `??macRxHaltCleanup::?relay`; Banked call to: macRxHaltCleanup
     192          }
-   \   00001B   02....       LJMP      ??Subroutine4_0 & 0xFFFF
-   \   00001E                REQUIRE _A_IEN0
-   \   00001E                REQUIRE RFST
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine3:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   75E1EF       MOV       0xe1,#-0x11
-   \   000004   75E1ED       MOV       0xe1,#-0x13
-   \   000007   75E1ED       MOV       0xe1,#-0x13
-   \   00000A   22           RET
+   \   000025   D083         POP       DPH
+   \   000027   D082         POP       DPL
+   \   000029   02....       LJMP      ?BRET
+   \   00002C                REQUIRE _A_IEN0
+   \   00002C                REQUIRE RFST
     193          
     194          /**************************************************************************************************
     195           * @fn          macRxOnRequest
@@ -487,13 +483,6 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     201           * @return      none
     202           **************************************************************************************************
     203           */
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   EE           MOV       A,R6
-   \   000001   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000003                REQUIRE ??Subroutine5_0
-   \   000003                ; // Fall through to label ??Subroutine5_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
     204          MAC_INTERNAL_API void macRxOnRequest(void)
@@ -522,9 +511,13 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     212            }
     213            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRxOnRequest_0:
-   \   000015   80..         SJMP      ?Subroutine1
-   \   000017                REQUIRE _A_IEN0
+   \   000015   EE           MOV       A,R6
+   \   000016   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000018   92AF         MOV       0xa8.7,C
     214          }
+   \   00001A   7F01         MOV       R7,#0x1
+   \   00001C   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00001F                REQUIRE _A_IEN0
     215          
     216          
     217          /**************************************************************************************************
@@ -579,9 +572,13 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     238            }
     239            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRxOffRequest_0:
-   \   00002B   02....       LJMP      ?Subroutine1 & 0xFFFF
-   \   00002E                REQUIRE _A_IEN0
+   \   00002B   EE           MOV       A,R6
+   \   00002C   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00002E   92AF         MOV       0xa8.7,C
     240          }
+   \   000030   7F01         MOV       R7,#0x1
+   \   000032   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000035                REQUIRE _A_IEN0
     241          
     242          
     243          /**************************************************************************************************
@@ -594,13 +591,6 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     250           * @return      none
     251           **************************************************************************************************
     252           */
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000002   92AF         MOV       0xa8.7,C
-   \   000004                REQUIRE ??Subroutine4_0
-   \   000004                ; // Fall through to label ??Subroutine4_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
     253          MAC_INTERNAL_API void macRxOn(void)
@@ -633,10 +623,14 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     264            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRxOn_0:
    \   000017   E8           MOV       A,R0
-   \   000018   02....       LJMP      ?Subroutine0 & 0xFFFF
-   \   00001B                REQUIRE _A_IEN0
-   \   00001B                REQUIRE RFST
+   \   000018   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001A   92AF         MOV       0xa8.7,C
     265          }
+   \   00001C   D083         POP       DPH
+   \   00001E   D082         POP       DPL
+   \   000020   02....       LJMP      ?BRET
+   \   000023                REQUIRE _A_IEN0
+   \   000023                REQUIRE RFST
     266          
     267          
     268          /**************************************************************************************************
@@ -669,38 +663,45 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
     283            if (macRxOnFlag)
    \   00000B   90....       MOV       DPTR,#macRxOnFlag
    \   00000E   E0           MOVX      A,@DPTR
-   \   00000F   6013         JZ        ??macRxOff_0
+   \   00000F   601B         JZ        ??macRxOff_0
     284            {
     285              macRxOnFlag = 0;
    \   000011   E4           CLR       A
-   \   000012   12....       LCALL     ?Subroutine3 & 0xFFFF
+   \   000012   F0           MOVX      @DPTR,A
     286              MAC_RADIO_RXTX_OFF();
+   \   000013   75E1EF       MOV       0xe1,#-0x11
     287              MAC_DEBUG_TURN_OFF_RX_LED();
     288              
     289              /* just in case a receive was about to start, flush the receive FIFO */
     290              MAC_RADIO_FLUSH_RX_FIFO();
+   \   000016   75E1ED       MOV       0xe1,#-0x13
+   \   000019   75E1ED       MOV       0xe1,#-0x13
     291          
     292              /* clear any receive interrupt that happened to squeak through */
     293              MAC_RADIO_CLEAR_RX_THRESHOLD_INTERRUPT_FLAG();
-   \                     ??CrossCallReturnLabel_1:
-   \   000015   A8A8         MOV       R0,0xa8+0x0
-   \   000017   C2AF         CLR       0xa8.7
-   \   000019   759B00       MOV       0x9b,#0x0
-   \   00001C   75E9FB       MOV       0xe9,#-0x5
-   \   00001F   E8           MOV       A,R0
-   \   000020   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000022   92AF         MOV       0xa8.7,C
+   \   00001C   A2AF         MOV       C,0xa8.7
+   \   00001E   33           RLC       A
+   \   00001F   F8           MOV       R0,A
+   \   000020   C2AF         CLR       0xa8.7
+   \   000022   759B00       MOV       0x9b,#0x0
+   \   000025   75E9FB       MOV       0xe9,#-0x5
+   \   000028   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00002A   92AF         MOV       0xa8.7,C
     294          
     295            }
     296            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRxOff_0:
-   \   000024   E9           MOV       A,R1
-   \   000025   02....       LJMP      ?Subroutine0 & 0xFFFF
-   \   000028                REQUIRE _A_IEN0
-   \   000028                REQUIRE RFST
-   \   000028                REQUIRE S1CON
-   \   000028                REQUIRE RFIRQF0
+   \   00002C   E9           MOV       A,R1
+   \   00002D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00002F   92AF         MOV       0xa8.7,C
     297          }
+   \   000031   D083         POP       DPH
+   \   000033   D082         POP       DPL
+   \   000035   02....       LJMP      ?BRET
+   \   000038                REQUIRE _A_IEN0
+   \   000038                REQUIRE RFST
+   \   000038                REQUIRE S1CON
+   \   000038                REQUIRE RFIRQF0
     298          
     299          
     300          /**************************************************************************************************
@@ -733,39 +734,32 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ??Subroutine4_0
-       2  ??Subroutine5_0
-       5  ??Subroutine6_0
-       4  ?Subroutine0
-       3  ?Subroutine1
-       4  ?Subroutine2
-      11  ?Subroutine3
        1  RFIRQF0
        1  RFST
        1  S1CON
        1  _A_IEN0
-      36  macRxDisable
-      26  macRxEnable
+      42  macRxDisable
+      38  macRxEnable
        1  macRxEnableFlags
-      30  macRxHardDisable
-      40  macRxOff
-      46  macRxOffRequest
-      27  macRxOn
+      44  macRxHardDisable
+      56  macRxOff
+      53  macRxOffRequest
+      35  macRxOn
        1  macRxOnFlag
-      15  macRxOnOffInit
-      23  macRxOnRequest
-      25  macRxSoftEnable
+      20  macRxOnOffInit
+      31  macRxOnRequest
+      35  macRxSoftEnable
       54  -- Other
 
  
- 304 bytes in segment BANKED_CODE
+ 354 bytes in segment BANKED_CODE
   54 bytes in segment BANK_RELAYS
    4 bytes in segment SFR_AN
    2 bytes in segment XDATA_Z
  
   54 bytes of CODE     memory
    0 bytes of DATA     memory (+ 4 bytes shared)
- 304 bytes of HUGECODE memory
+ 354 bytes of HUGECODE memory
    2 bytes of XDATA    memory
 
 Errors: none

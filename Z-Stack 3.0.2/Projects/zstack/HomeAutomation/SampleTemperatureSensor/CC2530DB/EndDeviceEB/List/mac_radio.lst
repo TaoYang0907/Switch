@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:23
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:44
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWCA56.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW6A24.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\mac_radio.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -269,20 +271,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000013   F0           MOVX      @DPTR,A
     116            reqTxPower    = MAC_RADIO_TX_POWER_INVALID;
    \   000014   90....       MOV       DPTR,#reqTxPower
-   \   000017   80..         SJMP      ??Subroutine3_0
+   \   000017   F0           MOVX      @DPTR,A
     117          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine3_0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001                REQUIRE ??Subroutine4_0
-   \   000001                ; // Fall through to label ??Subroutine4_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine4_0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   000018   D083         POP       DPH
+   \   00001A   D082         POP       DPL
+   \   00001C   02....       LJMP      ?BRET
     118          
     119          
     120          /**************************************************************************************************
@@ -311,7 +304,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000007                ; Setup parameters for call to function macRadioEnergyDetectStop
    \   000007   12....       LCALL     `??macRadioEnergyDetectStop::?relay`; Banked call to: macRadioEnergyDetectStop
     134          }
-   \   00000A   80..         SJMP      ??Subroutine4_0
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
     135          
     136          
     137          /**************************************************************************************************
@@ -336,7 +331,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     149            return(MAC_RADIO_RANDOM_BYTE());
    \   000004                ; Setup parameters for call to function macMcuRandomByte
    \   000004   12....       LCALL     `??macMcuRandomByte::?relay`; Banked call to: macMcuRandomByte
-   \   000007   80..         SJMP      ??Subroutine4_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     150          }
     151          
     152          
@@ -380,8 +377,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000018   74FD         MOV       A,#-0x3
    \   00001A   58           ANL       A,R0
    \   00001B   4A           ORL       A,R2
-   \   00001C   80..         SJMP      ??Subroutine3_0
+   \   00001C   F0           MOVX      @DPTR,A
     168          }
+   \   00001D   D083         POP       DPH
+   \   00001F   D082         POP       DPL
+   \   000021   02....       LJMP      ?BRET
     169          
     170          
     171          /**************************************************************************************************
@@ -396,14 +396,6 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     180           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   EB           MOV       A,R3
-   \   000002   A3           INC       DPTR
-   \   000003                REQUIRE ??Subroutine3_0
-   \   000003                ; // Fall through to label ??Subroutine3_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     181          void macRadioSetPanID(uint16 panID)
    \                     macRadioSetPanID:
     182          {
@@ -415,8 +407,14 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     184            MAC_RADIO_SET_PAN_ID(panID);
    \   000004   EA           MOV       A,R2
    \   000005   906172       MOV       DPTR,#0x6172
-   \   000008   80..         SJMP      ?Subroutine0
+   \   000008   F0           MOVX      @DPTR,A
+   \   000009   EB           MOV       A,R3
+   \   00000A   A3           INC       DPTR
+   \   00000B   F0           MOVX      @DPTR,A
     185          }
+   \   00000C   D083         POP       DPH
+   \   00000E   D082         POP       DPL
+   \   000010   02....       LJMP      ?BRET
     186          
     187          
     188          /**************************************************************************************************
@@ -442,8 +440,14 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     201            MAC_RADIO_SET_SHORT_ADDR(shortAddr);
    \   000004   EA           MOV       A,R2
    \   000005   906174       MOV       DPTR,#0x6174
-   \   000008   80..         SJMP      ?Subroutine0
+   \   000008   F0           MOVX      @DPTR,A
+   \   000009   EB           MOV       A,R3
+   \   00000A   A3           INC       DPTR
+   \   00000B   F0           MOVX      @DPTR,A
     202          }
+   \   00000C   D083         POP       DPH
+   \   00000E   D082         POP       DPL
+   \   000010   02....       LJMP      ?BRET
     203          
     204          
     205          /**************************************************************************************************
@@ -478,7 +482,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   00000C   7B61         MOV       R3,#0x61
    \   00000E   12....       LCALL     `??macMemWriteRam::?relay`; Banked call to: macMemWriteRam
     220          }
-   \   000011   80..         SJMP      ??Subroutine4_0
+   \   000011   D083         POP       DPH
+   \   000013   D082         POP       DPL
+   \   000015   02....       LJMP      ?BRET
     221          
     222          
     223          /**************************************************************************************************
@@ -608,60 +614,50 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000059   E4           CLR       A
    \   00005A   93           MOVC      A,@A+DPTR
    \   00005B   90....       MOV       DPTR,#reqTxPower
-   \   00005E   12....       LCALL     ?Subroutine2 & 0xFFFF
+   \   00005E   F0           MOVX      @DPTR,A
     277          
     278              /* abstracted boost mode selection */
     279              MAC_RADIO_SELECT_BOOST_MODE(reqTxPower);
-   \                     ??CrossCallReturnLabel_0:
-   \   000061   6005         JZ        ??macRadioSetTxPower_5
-   \   000063   7434         MOV       A,#0x34
-   \   000065   68           XRL       A,R0
-   \   000066   7011         JNZ       ??macRadioSetTxPower_6
+   \   00005F   907803       MOV       DPTR,#0x7803
+   \   000062   E0           MOVX      A,@DPTR
+   \   000063   F8           MOV       R0,A
+   \   000064   7495         MOV       A,#-0x6b
+   \   000066   68           XRL       A,R0
+   \   000067   6005         JZ        ??macRadioSetTxPower_5
+   \   000069   7434         MOV       A,#0x34
+   \   00006B   68           XRL       A,R0
+   \   00006C   7011         JNZ       ??macRadioSetTxPower_6
    \                     ??macRadioSetTxPower_5:
-   \   000068   90....       MOV       DPTR,#reqTxPower
-   \   00006B   E0           MOVX      A,@DPTR
-   \   00006C   64FD         XRL       A,#0xfd
-   \   00006E   90....       MOV       DPTR,#reqTxBoost
-   \   000071   7004         JNZ       ??macRadioSetTxPower_7
-   \   000073   7401         MOV       A,#0x1
-   \   000075   8001         SJMP      ??macRadioSetTxPower_8
+   \   00006E   90....       MOV       DPTR,#reqTxPower
+   \   000071   E0           MOVX      A,@DPTR
+   \   000072   64FD         XRL       A,#0xfd
+   \   000074   90....       MOV       DPTR,#reqTxBoost
+   \   000077   7004         JNZ       ??macRadioSetTxPower_7
+   \   000079   7401         MOV       A,#0x1
+   \   00007B   8001         SJMP      ??macRadioSetTxPower_8
    \                     ??macRadioSetTxPower_7:
-   \   000077   E4           CLR       A
+   \   00007D   E4           CLR       A
    \                     ??macRadioSetTxPower_8:
-   \   000078   F0           MOVX      @DPTR,A
+   \   00007E   F0           MOVX      @DPTR,A
     280            }
     281            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRadioSetTxPower_6:
-   \   000079   E9           MOV       A,R1
-   \   00007A   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00007C   92AF         MOV       0xa8.7,C
+   \   00007F   E9           MOV       A,R1
+   \   000080   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000082   92AF         MOV       0xa8.7,C
     282          
     283            /* update the radio power setting */
     284            macRadioUpdateTxPower();
-   \   00007E                ; Setup parameters for call to function macRadioUpdateTxPower
-   \   00007E   12....       LCALL     `??macRadioUpdateTxPower::?relay`; Banked call to: macRadioUpdateTxPower
+   \   000084                ; Setup parameters for call to function macRadioUpdateTxPower
+   \   000084   12....       LCALL     `??macRadioUpdateTxPower::?relay`; Banked call to: macRadioUpdateTxPower
     285          
     286            return txPower;
-   \   000081   EE           MOV       A,R6
-   \   000082   F9           MOV       R1,A
-   \   000083   02....       LJMP      ?Subroutine1 & 0xFFFF
-   \   000086                REQUIRE _A_IEN0
+   \   000087   EE           MOV       A,R6
+   \   000088   F9           MOV       R1,A
+   \   000089   7F01         MOV       R7,#0x1
+   \   00008B   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00008E                REQUIRE _A_IEN0
     287          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   907803       MOV       DPTR,#0x7803
-   \   000004   E0           MOVX      A,@DPTR
-   \   000005   F8           MOV       R0,A
-   \   000006   7495         MOV       A,#-0x6b
-   \   000008   68           XRL       A,R0
-   \   000009   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   7F01         MOV       R7,#0x1
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
     288          
     289          #else
     290          /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -724,7 +720,7 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000010   90....       MOV       DPTR,#macPhyTxPower
    \   000013   E0           MOVX      A,@DPTR
    \   000014   68           XRL       A,R0
-   \   000015   604C         JZ        ??macRadioUpdateTxPower_0
+   \   000015   6052         JZ        ??macRadioUpdateTxPower_0
     332            {
     333              /*
     334               *  Radio power cannot be updated when the radio is physically transmitting.
@@ -735,11 +731,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     339              if (!macRxOutgoingAckFlag && !MAC_TX_IS_PHYSICALLY_ACTIVE())
    \   000017   90....       MOV       DPTR,#macRxOutgoingAckFlag
    \   00001A   E0           MOVX      A,@DPTR
-   \   00001B   7046         JNZ       ??macRadioUpdateTxPower_0
+   \   00001B   704C         JNZ       ??macRadioUpdateTxPower_0
    \   00001D   90....       MOV       DPTR,#macTxActive
    \   000020   E0           MOVX      A,@DPTR
    \   000021   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000023   403E         JC        ??macRadioUpdateTxPower_0
+   \   000023   4044         JC        ??macRadioUpdateTxPower_0
     340              {
     341                /*
     342                 *  Set new power level;  update the shadow value and write
@@ -749,49 +745,55 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000025   90....       MOV       DPTR,#reqTxPower
    \   000028   E0           MOVX      A,@DPTR
    \   000029   90....       MOV       DPTR,#macPhyTxPower
-   \   00002C   12....       LCALL     ?Subroutine2 & 0xFFFF
+   \   00002C   F0           MOVX      @DPTR,A
     346                MAC_RADIO_SET_TX_POWER(macPhyTxPower);
-   \                     ??CrossCallReturnLabel_1:
-   \   00002F   6005         JZ        ??macRadioUpdateTxPower_1
-   \   000031   7434         MOV       A,#0x34
-   \   000033   68           XRL       A,R0
-   \   000034   7025         JNZ       ??macRadioUpdateTxPower_2
+   \   00002D   907803       MOV       DPTR,#0x7803
+   \   000030   E0           MOVX      A,@DPTR
+   \   000031   F8           MOV       R0,A
+   \   000032   7495         MOV       A,#-0x6b
+   \   000034   68           XRL       A,R0
+   \   000035   6005         JZ        ??macRadioUpdateTxPower_1
+   \   000037   7434         MOV       A,#0x34
+   \   000039   68           XRL       A,R0
+   \   00003A   7025         JNZ       ??macRadioUpdateTxPower_2
    \                     ??macRadioUpdateTxPower_1:
-   \   000036   90....       MOV       DPTR,#macPhyTxPower
-   \   000039   E0           MOVX      A,@DPTR
-   \   00003A   906190       MOV       DPTR,#0x6190
-   \   00003D   F0           MOVX      @DPTR,A
-   \   00003E   90....       MOV       DPTR,#reqTxBoost
-   \   000041   E0           MOVX      A,@DPTR
-   \   000042   9061AC       MOV       DPTR,#0x61ac
-   \   000045   600A         JZ        ??macRadioUpdateTxPower_3
-   \   000047   74F5         MOV       A,#-0xb
-   \   000049   F0           MOVX      @DPTR,A
-   \   00004A   906191       MOV       DPTR,#0x6191
-   \   00004D   7474         MOV       A,#0x74
-   \   00004F   8011         SJMP      ??macRadioUpdateTxPower_4
+   \   00003C   90....       MOV       DPTR,#macPhyTxPower
+   \   00003F   E0           MOVX      A,@DPTR
+   \   000040   906190       MOV       DPTR,#0x6190
+   \   000043   F0           MOVX      @DPTR,A
+   \   000044   90....       MOV       DPTR,#reqTxBoost
+   \   000047   E0           MOVX      A,@DPTR
+   \   000048   9061AC       MOV       DPTR,#0x61ac
+   \   00004B   600A         JZ        ??macRadioUpdateTxPower_3
+   \   00004D   74F5         MOV       A,#-0xb
+   \   00004F   F0           MOVX      @DPTR,A
+   \   000050   906191       MOV       DPTR,#0x6191
+   \   000053   7474         MOV       A,#0x74
+   \   000055   8011         SJMP      ??macRadioUpdateTxPower_4
    \                     ??macRadioUpdateTxPower_3:
-   \   000051   7455         MOV       A,#0x55
-   \   000053   F0           MOVX      @DPTR,A
-   \   000054   906191       MOV       DPTR,#0x6191
-   \   000057   7469         MOV       A,#0x69
-   \   000059   8007         SJMP      ??macRadioUpdateTxPower_4
+   \   000057   7455         MOV       A,#0x55
+   \   000059   F0           MOVX      @DPTR,A
+   \   00005A   906191       MOV       DPTR,#0x6191
+   \   00005D   7469         MOV       A,#0x69
+   \   00005F   8007         SJMP      ??macRadioUpdateTxPower_4
    \                     ??macRadioUpdateTxPower_2:
-   \   00005B   90....       MOV       DPTR,#macPhyTxPower
-   \   00005E   E0           MOVX      A,@DPTR
-   \   00005F   906190       MOV       DPTR,#0x6190
+   \   000061   90....       MOV       DPTR,#macPhyTxPower
+   \   000064   E0           MOVX      A,@DPTR
+   \   000065   906190       MOV       DPTR,#0x6190
    \                     ??macRadioUpdateTxPower_4:
-   \   000062   F0           MOVX      @DPTR,A
+   \   000068   F0           MOVX      @DPTR,A
     347              }
     348            }
     349            HAL_EXIT_CRITICAL_SECTION(s);
    \                     ??macRadioUpdateTxPower_0:
-   \   000063   E9           MOV       A,R1
-   \   000064   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000066   92AF         MOV       0xa8.7,C
+   \   000069   E9           MOV       A,R1
+   \   00006A   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00006C   92AF         MOV       0xa8.7,C
     350          }
-   \   000068   02....       LJMP      ??Subroutine4_0 & 0xFFFF
-   \   00006B                REQUIRE _A_IEN0
+   \   00006E   D083         POP       DPH
+   \   000070   D082         POP       DPL
+   \   000072   02....       LJMP      ?BRET
+   \   000075                REQUIRE _A_IEN0
     351          
     352          
     353          /**************************************************************************************************
@@ -862,8 +864,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000028   A2E0         MOV       C,0xE0 /* A   */.0
    \   00002A   92AF         MOV       0xa8.7,C
     386          }
-   \   00002C   02....       LJMP      ?Subroutine1 & 0xFFFF
-   \   00002F                REQUIRE _A_IEN0
+   \   00002C   7F01         MOV       R7,#0x1
+   \   00002E   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000031                REQUIRE _A_IEN0
     387          
     388          
     389          /**************************************************************************************************
@@ -956,8 +959,10 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     426            }
     427          }
    \                     ??macRadioUpdateChannel_2:
-   \   00004B   02....       LJMP      ??Subroutine4_0 & 0xFFFF
-   \   00004E                REQUIRE _A_IEN0
+   \   00004B   D083         POP       DPH
+   \   00004D   D082         POP       DPL
+   \   00004F   02....       LJMP      ?BRET
+   \   000052                REQUIRE _A_IEN0
     428          
     429          
     430          /**************************************************************************************************
@@ -1051,8 +1056,8 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000049   F0           MOVX      @DPTR,A
     467            }
     468          }
-   \   00004A                REQUIRE ?Subroutine1
-   \   00004A                ; // Fall through to label ?Subroutine1
+   \   00004A   7F01         MOV       R7,#0x1
+   \   00004C   02....       LJMP      ?BANKED_LEAVE_XDATA
     469          
     470          
     471          /**************************************************************************************************
@@ -1088,8 +1093,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000011   90....       MOV       DPTR,#macPib + 30
    \   000014   E0           MOVX      A,@DPTR
    \   000015   906173       MOV       DPTR,#0x6173
-   \   000018   02....       LJMP      ??Subroutine3_0 & 0xFFFF
+   \   000018   F0           MOVX      @DPTR,A
     487          }
+   \   000019   D083         POP       DPH
+   \   00001B   D082         POP       DPL
+   \   00001D   02....       LJMP      ?BRET
     488          
     489          
     490          /**************************************************************************************************
@@ -1116,7 +1124,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
    \   000004                ; Setup parameters for call to function macMcuRecordMaxRssiStart
    \   000004   12....       LCALL     `??macMcuRecordMaxRssiStart::?relay`; Banked call to: macMcuRecordMaxRssiStart
     504          }
-   \   000007   02....       LJMP      ??Subroutine4_0 & 0xFFFF
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     505          
     506          
     507          /**************************************************************************************************
@@ -1143,18 +1153,20 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     521            uint8 energyDetectMeasurement;
     522          
     523            rssiDbm = MAC_RADIO_RECORD_MAX_RSSI_STOP() + MAC_RADIO_RSSI_OFFSET;
-    524            MAC_RADIO_RSSI_LNA_OFFSET(rssiDbm);
-    525            energyDetectMeasurement = radioComputeED(rssiDbm);
-    526          
-    527            return(energyDetectMeasurement);
-   \   000004                ; Setup parameters for call to function radioComputeED
    \   000004                ; Setup parameters for call to function macMcuRecordMaxRssiStop
    \   000004   12....       LCALL     `??macMcuRecordMaxRssiStop::?relay`; Banked call to: macMcuRecordMaxRssiStop
    \   000007   E9           MOV       A,R1
    \   000008   24B7         ADD       A,#-0x49
    \   00000A   F9           MOV       R1,A
+    524            MAC_RADIO_RSSI_LNA_OFFSET(rssiDbm);
+    525            energyDetectMeasurement = radioComputeED(rssiDbm);
+    526          
+    527            return(energyDetectMeasurement);
+   \   00000B                ; Setup parameters for call to function radioComputeED
    \   00000B   12....       LCALL     `??radioComputeED::?relay`; Banked call to: radioComputeED
-   \   00000E   02....       LJMP      ??Subroutine4_0 & 0xFFFF
+   \   00000E   D083         POP       DPH
+   \   000010   D082         POP       DPL
+   \   000012   02....       LJMP      ?BRET
     528          }
     529          
     530          /*=================================================================================================
@@ -1283,7 +1295,8 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
     596            return(radioComputeED(rssiDbm));
    \   000005                ; Setup parameters for call to function radioComputeED
    \   000005   12....       LCALL     `??radioComputeED::?relay`; Banked call to: radioComputeED
-   \   000008   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000008   7F01         MOV       R7,#0x1
+   \   00000A   02....       LJMP      ?BANKED_LEAVE_XDATA
     597          }
     598          
     599          
@@ -1333,44 +1346,39 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
 
    Bytes  Function/Label
    -----  --------------
-       1  ??Subroutine3_0
-       7  ??Subroutine4_0
-       3  ?Subroutine0
-       5  ?Subroutine1
-      10  ?Subroutine2
        1  _A_IEN0
        1  macPhyChannel
        1  macPhyTxPower
-      11  macRadioComputeLQI
-      10  macRadioEnergyDetectStart
-      17  macRadioEnergyDetectStop
-      25  macRadioInit
-       9  macRadioRandomByte
-      12  macRadioReset
-      47  macRadioSetChannel
-      19  macRadioSetIEEEAddr
-      30  macRadioSetPanCoordinator
-      10  macRadioSetPanID
-      10  macRadioSetShortAddr
-     134  macRadioSetTxPower
-      74  macRadioStartScan
-      27  macRadioStopScan
-      78  macRadioUpdateChannel
-     107  macRadioUpdateTxPower
+      13  macRadioComputeLQI
+      14  macRadioEnergyDetectStart
+      21  macRadioEnergyDetectStop
+      31  macRadioInit
+      14  macRadioRandomByte
+      17  macRadioReset
+      49  macRadioSetChannel
+      24  macRadioSetIEEEAddr
+      36  macRadioSetPanCoordinator
+      19  macRadioSetPanID
+      19  macRadioSetShortAddr
+     142  macRadioSetTxPower
+      79  macRadioStartScan
+      32  macRadioStopScan
+      82  macRadioUpdateChannel
+     117  macRadioUpdateTxPower
       67  radioComputeED
        1  reqChannel
        1  reqTxPower
      102  -- Other
 
  
- 713 bytes in segment BANKED_CODE
+ 776 bytes in segment BANKED_CODE
  102 bytes in segment BANK_RELAYS
    1 byte  in segment SFR_AN
    4 bytes in segment XDATA_Z
  
  102 bytes of CODE     memory
    0 bytes of DATA     memory (+ 1 byte shared)
- 713 bytes of HUGECODE memory
+ 776 bytes of HUGECODE memory
    4 bytes of XDATA    memory
 
 Errors: none

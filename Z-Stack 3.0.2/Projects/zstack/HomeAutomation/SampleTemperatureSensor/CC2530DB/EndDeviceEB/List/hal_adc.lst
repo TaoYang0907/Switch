@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:18
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:39
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWB90F.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW58E9.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\target\CC2530EB\hal_adc.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -270,8 +272,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
     119            adcRef = HAL_ADC_REF_VOLT;
    \   000004   90....       MOV       DPTR,#adcRef
    \   000007   7480         MOV       A,#-0x80
-   \   000009                REQUIRE ?Subroutine0
-   \   000009                ; // Fall through to label ?Subroutine0
+   \   000009   F0           MOVX      @DPTR,A
     120          #ifdef ADC_CAL
     121            {
     122              vdd3InfoPg = ((INFO_CAL_H << 8) | INFO_CAL_L) >> 4;
@@ -280,13 +281,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
     125          #endif //ADC_CAL
     126          #endif
     127          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   D083         POP       DPH
-   \   000003   D082         POP       DPL
-   \   000005   02....       LJMP      ?BRET
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
     128          
     129          #ifdef ADC_CAL
     130          /**************************************************************************************************
@@ -470,9 +467,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
     240          
     241            /* Read the result */
     242            reading = (int16) (ADCL);
-   \   000051   E5BA         MOV       A,0xba+0x0
-    243            reading |= (int16) (ADCH << 8);
+   \   000051   E5BA         MOV       A,0xba
    \   000053   FA           MOV       R2,A
+    243            reading |= (int16) (ADCH << 8);
    \   000054   A9BB         MOV       R1,0xbb
    \   000056   E9           MOV       A,R1
    \   000057   FB           MOV       R3,A
@@ -579,9 +576,12 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
     289            adcRef = reference;
    \   000004   E9           MOV       A,R1
    \   000005   90....       MOV       DPTR,#adcRef
-   \   000008   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   000008   F0           MOVX      @DPTR,A
     290          #endif
     291          }
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
     292          
     293          /*********************************************************************
     294           * @fn      HalAdcCheckVdd
@@ -695,7 +695,6 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
 
    Bytes  Function/Label
    -----  --------------
-       8  ?Subroutine0
        1  ADCCFG
        1  ADCCON1
        1  ADCCON3
@@ -703,21 +702,21 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
        1  ADCL
       24  HalAdcCheckVdd
       15  HalAdcCheckVddRaw
-       9  HalAdcInit
+      17  HalAdcInit
      158  HalAdcRead
-      11  HalAdcSetReference
+      16  HalAdcSetReference
        1  adcRef
       30  -- Other
 
  
- 225 bytes in segment BANKED_CODE
+ 230 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    5 bytes in segment SFR_AN
    1 byte  in segment XDATA_Z
  
   30 bytes of CODE     memory
    0 bytes of DATA     memory (+ 5 bytes shared)
- 225 bytes of HUGECODE memory
+ 230 bytes of HUGECODE memory
    1 byte  of XDATA    memory
 
 Errors: none

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:19
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:39
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWBAB6.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW5A42.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\common\hal_assert.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -505,23 +507,26 @@ halAssertHazardLights:
         MOV       C,0xE0 /* A   */.6
         JNC       ??halAssertHazardLights_0
         NOP
-        MOV       R0,#-0x8
-        MOV       R1,#0x1
-??halAssertHazardLights_1:
-        NOP
-        MOV       A,R0
-        ADD       A,#-0x1
-        DEC       R0
-        MOV       A,R1
-        ADDC      A,#-0x1
-        MOV       R1,A
-        MOV       A,R0
-        ORL       A,R1
-        JNZ       ??halAssertHazardLights_1
-        MOV       0xc6,#0x0
+        MOV       R0,#0x0
+        MOV       R1,#0x0
+        SJMP      ??halAssertHazardLights_1
 ??halAssertHazardLights_2:
+        NOP
+        INC       R0
+        MOV       A,R0
+        JNZ       ??halAssertHazardLights_1
+        INC       R1
+??halAssertHazardLights_1:
+        CLR       C
+        MOV       A,R0
+        SUBB      A,#-0x8
+        MOV       A,R1
+        SUBB      A,#0x1
+        JC        ??halAssertHazardLights_2
+        MOV       0xc6,#0x0
+??halAssertHazardLights_3:
         MOV       A,0x9e
-        JNZ       ??halAssertHazardLights_2
+        JNZ       ??halAssertHazardLights_3
         ORL       0xbe,#0x4
         MOV       DPTR,#0x6270
         MOV       A,#0x8
@@ -544,7 +549,7 @@ halAssertHazardLights:
         CLR       0x90.4
 //  134   HAL_TURN_OFF_LED4();
         CLR       0x80.1
-        SJMP      ??halAssertHazardLights_3
+        SJMP      ??halAssertHazardLights_4
 //  135 
 //  136   /*-------------------------------------------------------------------------------
 //  137    *  Master infinite loop.
@@ -684,30 +689,15 @@ halAssertHazardLights:
 //  271         else
 //  272         {
 //  273           HAL_TURN_OFF_LED1();
-??halAssertHazardLights_4:
-        CLR       0x90.0
 //  274         }
 //  275 
 //  276         /* advance to next bit */
 //  277         iBit++;
-??halAssertHazardLights_5:
-        INC       R1
 //  278         if (iBit == 8)
-        MOV       A,#0x8
-        XRL       A,R1
-        JZ        $+5
-        LJMP      ??halAssertHazardLights_6 & 0xFFFF
 //  279         {
 //  280           iBit = 0;
-        MOV       R1,#0x0
 //  281           iByte++;
-        INC       R4
 //  282         }
-        MOV       A,R4
-        CLR       C
-        SUBB      A,#0x6
-        JNC       $+5
-        LJMP      ??halAssertHazardLights_6 & 0xFFFF
 //  283       }
 //  284     }
 //  285 
@@ -717,10 +707,11 @@ halAssertHazardLights:
 //  289      *  the flashing loop which uses a toggle operation to change LED states.
 //  290      */
 //  291     HAL_TURN_OFF_LED1();
+??halAssertHazardLights_5:
         CLR       0x90.0
-??halAssertHazardLights_3:
+??halAssertHazardLights_4:
         MOV       R1,#0x0
-??halAssertHazardLights_7:
+??halAssertHazardLights_6:
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
         CLR       A
@@ -731,8 +722,8 @@ halAssertHazardLights:
         MOVX      @DPTR,A
         INC       DPTR
         MOVX      @DPTR,A
-        SJMP      ??halAssertHazardLights_8
-??halAssertHazardLights_9:
+        SJMP      ??halAssertHazardLights_7
+??halAssertHazardLights_8:
         MOV       DPTR,#__Constant_1
         MOV       R0,#?V0
         LCALL     ?L_MOV_X
@@ -740,7 +731,7 @@ halAssertHazardLights:
         LCALL     ?XSTACK_DISP0_8
         MOV       R0,#?V0
         LCALL     ?L_ADD_TO_X
-??halAssertHazardLights_8:
+??halAssertHazardLights_7:
         MOV       DPTR,#__Constant_5800
         MOV       R0,#?V0
         LCALL     ?L_MOV_X
@@ -748,31 +739,31 @@ halAssertHazardLights:
         LCALL     ?XSTACK_DISP0_8
         MOV       R0,#?V0
         LCALL     ?UL_GT_X
-        JC        ??halAssertHazardLights_9
+        JC        ??halAssertHazardLights_8
         MOV       C,0x90.0
-        JNC       ??halAssertHazardLights_10
+        JNC       ??halAssertHazardLights_9
         CLR       0x90.0
-        SJMP      ??halAssertHazardLights_11
-??halAssertHazardLights_10:
+        SJMP      ??halAssertHazardLights_10
+??halAssertHazardLights_9:
         SETB      0x90.0
-??halAssertHazardLights_11:
+??halAssertHazardLights_10:
         MOV       C,0x90.1
-        JNC       ??halAssertHazardLights_12
+        JNC       ??halAssertHazardLights_11
         CLR       0x90.1
-        SJMP      ??halAssertHazardLights_13
-??halAssertHazardLights_12:
+        SJMP      ??halAssertHazardLights_12
+??halAssertHazardLights_11:
         SETB      0x90.1
-??halAssertHazardLights_13:
+??halAssertHazardLights_12:
         MOV       C,0x90.4
-        JNC       ??halAssertHazardLights_14
+        JNC       ??halAssertHazardLights_13
         CLR       0x90.4
-        SJMP      ??halAssertHazardLights_15
-??halAssertHazardLights_14:
+        SJMP      ??halAssertHazardLights_14
+??halAssertHazardLights_13:
         SETB      0x90.4
-??halAssertHazardLights_15:
+??halAssertHazardLights_14:
         MOV       DPTR,#??escape
         MOVX      A,@DPTR
-        JZ        ??halAssertHazardLights_16
+        JZ        ??halAssertHazardLights_15
         CLR       A
         MOVX      @DPTR,A
         MOV       A,#0xa
@@ -781,38 +772,44 @@ halAssertHazardLights:
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
           CFI CFA_XSP16 add(XSP16, 22)
-??halAssertHazardLights_16:
+??halAssertHazardLights_15:
         MOV       C,0x80.1
-        JC        ??halAssertHazardLights_3
+        JC        ??halAssertHazardLights_16
         INC       R1
+        SJMP      ??halAssertHazardLights_17
+??halAssertHazardLights_16:
+        MOV       R1,#0x0
+??halAssertHazardLights_17:
         MOV       A,#0xa
         XRL       A,R1
-        JNZ       ??halAssertHazardLights_7
+        JNZ       ??halAssertHazardLights_6
         CLR       0x90.0
         CLR       0x90.1
         CLR       0x90.4
         CLR       0x80.1
         MOV       R0,#0x0
         MOV       R1,#0x0
-??halAssertHazardLights_17:
+        SJMP      ??halAssertHazardLights_18
+??halAssertHazardLights_19:
         MOV       C,0x80.1
-        JC        ??halAssertHazardLights_18
+        JC        ??halAssertHazardLights_20
         MOV       R0,#0x0
         MOV       R1,#0x0
-??halAssertHazardLights_18:
+??halAssertHazardLights_20:
         INC       R0
         MOV       A,R0
-        JNZ       ??halAssertHazardLights_19
+        JNZ       ??halAssertHazardLights_18
         INC       R1
-??halAssertHazardLights_19:
+??halAssertHazardLights_18:
         CLR       C
+        MOV       A,R0
         SUBB      A,#-0xc
         MOV       A,R1
         SUBB      A,#0x1
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
-        JC        ??halAssertHazardLights_17
+        JC        ??halAssertHazardLights_19
         MOV       DPTR,#0x61a3
         MOVX      A,@DPTR
         PUSH      A
@@ -851,40 +848,58 @@ halAssertHazardLights:
         MOVX      @DPTR,A
         MOV       R1,#0x0
         MOV       R4,#0x0
-??halAssertHazardLights_6:
+        SJMP      ??halAssertHazardLights_21
+??halAssertHazardLights_22:
+        CLR       0x90.0
+??halAssertHazardLights_23:
+        INC       R1
+        MOV       A,#0x8
+        XRL       A,R1
+        JNZ       ??halAssertHazardLights_21
+        MOV       R1,#0x0
+        INC       R4
+??halAssertHazardLights_21:
+        MOV       A,R4
+        CLR       C
+        SUBB      A,#0x6
+        JC        $+5
+        LJMP      ??halAssertHazardLights_5 & 0xFFFF
+??halAssertHazardLights_24:
         MOV       C,0x80.1
-        JC        ??halAssertHazardLights_6
+        JC        ??halAssertHazardLights_24
         SETB      0x90.0
         SETB      0x90.1
         SETB      0x90.4
         MOV       A,R1
-        JNZ       ??halAssertHazardLights_20
+        JNZ       ??halAssertHazardLights_25
         SETB      0x80.1
-        SJMP      ??halAssertHazardLights_21
-??halAssertHazardLights_20:
+        SJMP      ??halAssertHazardLights_26
+??halAssertHazardLights_25:
         CLR       0x80.1
-??halAssertHazardLights_21:
+??halAssertHazardLights_26:
         MOV       R2,#0x0
         MOV       R3,#0x0
-??halAssertHazardLights_22:
+        SJMP      ??halAssertHazardLights_27
+??halAssertHazardLights_28:
         MOV       C,0x80.1
-        JC        ??halAssertHazardLights_23
+        JC        ??halAssertHazardLights_29
         MOV       R2,#0x0
         MOV       R3,#0x0
-??halAssertHazardLights_23:
+??halAssertHazardLights_29:
         INC       R2
         MOV       A,R2
-        JNZ       ??halAssertHazardLights_24
+        JNZ       ??halAssertHazardLights_27
         INC       R3
-??halAssertHazardLights_24:
+??halAssertHazardLights_27:
         CLR       C
+        MOV       A,R2
         SUBB      A,#-0xc
         MOV       A,R3
         SUBB      A,#0x1
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
-        JC        ??halAssertHazardLights_22
+        JC        ??halAssertHazardLights_28
         CLR       0x90.0
         CLR       0x90.1
         CLR       0x90.4
@@ -908,10 +923,9 @@ halAssertHazardLights:
         MOV       DPH,A
         MOVX      A,@DPTR
         ANL       A,?V0
-        JNZ       $+5
-        LJMP      ??halAssertHazardLights_4 & 0xFFFF
+        JZ        ??halAssertHazardLights_22
         SETB      0x90.0
-        LJMP      ??halAssertHazardLights_5 & 0xFFFF
+        SJMP      ??halAssertHazardLights_23
           CFI EndBlock cfiBlock1
         REQUIRE _A_IEN0
         REQUIRE SLEEPCMD
@@ -976,7 +990,7 @@ __Constant_5800:
 //  310 /**************************************************************************************************
 //  311 */
 // 
-// 430 bytes in segment BANKED_CODE
+// 439 bytes in segment BANKED_CODE
 //  12 bytes in segment BANK_RELAYS
 //  10 bytes in segment SFR_AN
 //   8 bytes in segment XDATA_ROM_C
@@ -985,7 +999,7 @@ __Constant_5800:
 //  12 bytes of CODE     memory
 //   0 bytes of CONST    memory (+  8 bytes shared)
 //   0 bytes of DATA     memory (+ 10 bytes shared)
-// 430 bytes of HUGECODE memory
+// 439 bytes of HUGECODE memory
 //   1 byte  of XDATA    memory
 //
 //Errors: none

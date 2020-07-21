@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              14/Jul/2020  01:19:58
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              21/Jul/2020  23:54:58
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_samplesw.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWE858.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW4B20.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_samplesw.c"
-//        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1
-//        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
-//        xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
-//        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
-//        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_GROUPS -D
-//        ZCL_REPORTING_DEVICE -lC "D:\AA\Z-Stack
+//        -D BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
+//        xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
+//        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
+//        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
+//        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
+//        -D ZCL_GROUPS -D ZCL_REPORT -D ZCL_REPORTING_DEVICE -D
+//        ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
@@ -134,8 +135,6 @@
         EXTERN ?V1
         EXTERN ?V2
         EXTERN ?V3
-        EXTERN ?V4
-        EXTERN ?V5
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
@@ -149,6 +148,7 @@
 
         FUNCTION `??zclSampleApp_BatteryWarningCB::?relay`,0203H
         FUNCTION `??zclSampleSw_BasicResetCB::?relay`,0203H
+        FUNCTION `??zclSampleSw_HandleKeys::?relay`,0203H
         PUBLIC `??zclSampleSw_Init::?relay`
         FUNCTION `??zclSampleSw_Init::?relay`,0203H
         FUNCTION `??zclSampleSw_ProcessCommissioningStatus::?rela`,0203H
@@ -156,6 +156,8 @@
         FUNCTION `??zclSampleSw_ProcessIncomingMsg::?relay`,0203H
         PUBLIC `??zclSampleSw_event_loop::?relay`
         FUNCTION `??zclSampleSw_event_loop::?relay`,0203H
+        PUBLIC SW_DstAddr
+        PUBLIC SourceAddr
         PUBWEAK __Constant_1f4
         FUNCTION zclSampleApp_BatteryWarningCB,0603H
         ARGFRAME XSTACK, 0, STACK
@@ -164,6 +166,11 @@
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
         PUBLIC zclSampleSw_DstAddr
+        FUNCTION zclSampleSw_HandleKeys,0a1203H
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 21, STACK
         PUBLIC zclSampleSw_Init
         FUNCTION zclSampleSw_Init,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -175,20 +182,20 @@
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME XSTACK, 9, STACK
         FUNCTION zclSampleSw_ProcessInDiscCmdsRspCmd,0203H
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
-        FUNCTION zclSampleSw_ProcessIncomingMsg,021203H
-        ARGFRAME XSTACK, 14, STACK
+        FUNCTION zclSampleSw_ProcessIncomingMsg,0a1203H
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 14, STACK
         PUBLIC zclSampleSw_TaskID
         PUBLIC zclSampleSw_event_loop
         FUNCTION zclSampleSw_event_loop,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 25, STACK
+        LOCFRAME XSTACK, 23, STACK
         
           CFI Names cfiNames0
           CFI StackFrame CFA_SP SP IDATA
@@ -351,18 +358,18 @@ NLME_PermitJoiningRequest SYMBOL "NLME_PermitJoiningRequest"
 `??NLME_PermitJoiningRequest::?relay` SYMBOL "?relay", NLME_PermitJoiningRequest
 RegisterForKeys     SYMBOL "RegisterForKeys"
 `??RegisterForKeys::?relay` SYMBOL "?relay", RegisterForKeys
+RegisterForUart0    SYMBOL "RegisterForUart0"
+`??RegisterForUart0::?relay` SYMBOL "?relay", RegisterForUart0
 RegisterVoltageWarningCB SYMBOL "RegisterVoltageWarningCB"
 `??RegisterVoltageWarningCB::?relay` SYMBOL "?relay", RegisterVoltageWarningCB
-afRegister          SYMBOL "afRegister"
-`??afRegister::?relay` SYMBOL "?relay", afRegister
+Uart0_Init          SYMBOL "Uart0_Init"
+`??Uart0_Init::?relay` SYMBOL "?relay", Uart0_Init
 bdb_RegisterCommissioningStatusCB SYMBOL "bdb_RegisterCommissioningStatusCB"
 `??bdb_RegisterCommissioningStatusCB::?relay` SYMBOL "?relay", bdb_RegisterCommissioningStatusCB
 bdb_RegisterSimpleDescriptor SYMBOL "bdb_RegisterSimpleDescriptor"
 `??bdb_RegisterSimpleDescriptor::?relay` SYMBOL "?relay", bdb_RegisterSimpleDescriptor
 bdb_StartCommissioning SYMBOL "bdb_StartCommissioning"
 `??bdb_StartCommissioning::?relay` SYMBOL "?relay", bdb_StartCommissioning
-osal_mem_alloc      SYMBOL "osal_mem_alloc"
-`??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
 osal_mem_free       SYMBOL "osal_mem_free"
 `??osal_mem_free::?relay` SYMBOL "?relay", osal_mem_free
 osal_msg_deallocate SYMBOL "osal_msg_deallocate"
@@ -371,14 +378,14 @@ osal_msg_receive    SYMBOL "osal_msg_receive"
 `??osal_msg_receive::?relay` SYMBOL "?relay", osal_msg_receive
 osal_start_timerEx  SYMBOL "osal_start_timerEx"
 `??osal_start_timerEx::?relay` SYMBOL "?relay", osal_start_timerEx
+printf              SYMBOL "printf"
+`??printf::?relay`  SYMBOL "?relay", printf
 zclGeneral_RegisterCmdCallbacks SYMBOL "zclGeneral_RegisterCmdCallbacks"
 `??zclGeneral_RegisterCmdCallbacks::?relay` SYMBOL "?relay", zclGeneral_RegisterCmdCallbacks
 zclSampleSw_ResetAttributesToDefaultValues SYMBOL "zclSampleSw_ResetAttributesToDefaultValues"
 `??zclSampleSw_ResetAttributesToDefaultValues::?` SYMBOL "?relay", zclSampleSw_ResetAttributesToDefaultValues
 zcl_SendCommand     SYMBOL "zcl_SendCommand"
 `??zcl_SendCommand::?relay` SYMBOL "?relay", zcl_SendCommand
-zcl_SendReportCmd   SYMBOL "zcl_SendReportCmd"
-`??zcl_SendReportCmd::?relay` SYMBOL "?relay", zcl_SendReportCmd
 zcl_registerAttrList SYMBOL "zcl_registerAttrList"
 `??zcl_registerAttrList::?relay` SYMBOL "?relay", zcl_registerAttrList
 zcl_registerForMsg  SYMBOL "zcl_registerForMsg"
@@ -394,18 +401,18 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         FUNCTION `??NLME_PermitJoiningRequest::?relay`,00H
         EXTERN `??RegisterForKeys::?relay`
         FUNCTION `??RegisterForKeys::?relay`,00H
+        EXTERN `??RegisterForUart0::?relay`
+        FUNCTION `??RegisterForUart0::?relay`,00H
         EXTERN `??RegisterVoltageWarningCB::?relay`
         FUNCTION `??RegisterVoltageWarningCB::?relay`,00H
-        EXTERN `??afRegister::?relay`
-        FUNCTION `??afRegister::?relay`,00H
+        EXTERN `??Uart0_Init::?relay`
+        FUNCTION `??Uart0_Init::?relay`,00H
         EXTERN `??bdb_RegisterCommissioningStatusCB::?relay`
         FUNCTION `??bdb_RegisterCommissioningStatusCB::?relay`,00H
         EXTERN `??bdb_RegisterSimpleDescriptor::?relay`
         FUNCTION `??bdb_RegisterSimpleDescriptor::?relay`,00H
         EXTERN `??bdb_StartCommissioning::?relay`
         FUNCTION `??bdb_StartCommissioning::?relay`,00H
-        EXTERN `??osal_mem_alloc::?relay`
-        FUNCTION `??osal_mem_alloc::?relay`,00H
         EXTERN `??osal_mem_free::?relay`
         FUNCTION `??osal_mem_free::?relay`,00H
         EXTERN `??osal_msg_deallocate::?relay`
@@ -414,14 +421,14 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         FUNCTION `??osal_msg_receive::?relay`,00H
         EXTERN `??osal_start_timerEx::?relay`
         FUNCTION `??osal_start_timerEx::?relay`,00H
+        EXTERN `??printf::?relay`
+        FUNCTION `??printf::?relay`,00H
         EXTERN `??zclGeneral_RegisterCmdCallbacks::?relay`
         FUNCTION `??zclGeneral_RegisterCmdCallbacks::?relay`,00H
         EXTERN `??zclSampleSw_ResetAttributesToDefaultValues::?`
         FUNCTION `??zclSampleSw_ResetAttributesToDefaultValues::?`,00H
         EXTERN `??zcl_SendCommand::?relay`
         FUNCTION `??zcl_SendCommand::?relay`,00H
-        EXTERN `??zcl_SendReportCmd::?relay`
-        FUNCTION `??zcl_SendReportCmd::?relay`,00H
         EXTERN `??zcl_registerAttrList::?relay`
         FUNCTION `??zcl_registerAttrList::?relay`,00H
         EXTERN `??zcl_registerForMsg::?relay`
@@ -430,18 +437,25 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         FUNCTION HalLedSet,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN NLME_PermitJoiningRequest
         FUNCTION NLME_PermitJoiningRequest,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN RegisterForKeys
         FUNCTION RegisterForKeys,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN RegisterForUart0
+        FUNCTION RegisterForUart0,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 9, STACK
@@ -454,8 +468,8 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN afRegister
-        FUNCTION afRegister,0202H
+        EXTERN Uart0_Init
+        FUNCTION Uart0_Init,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 9, STACK
@@ -479,42 +493,42 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         FUNCTION bdb_StartCommissioning,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN osal_mem_alloc
-        FUNCTION osal_mem_alloc,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_mem_free
         FUNCTION osal_mem_free,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_msg_deallocate
         FUNCTION osal_msg_deallocate,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_msg_receive
         FUNCTION osal_msg_receive,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_start_timerEx
         FUNCTION osal_start_timerEx,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN printf
+        FUNCTION printf,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclGeneral_RegisterCmdCallbacks
@@ -534,19 +548,11 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclSampleSw_SimpleDesc
-        EXTERN zclSampleSw_clusterRevision_all
         EXTERN zcl_SendCommand
         FUNCTION zcl_SendCommand,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 25, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN zcl_SendReportCmd
-        FUNCTION zcl_SendReportCmd,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME XSTACK, 23, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zcl_registerAttrList
@@ -655,113 +661,118 @@ zclSampleSw_event_loop SYMBOL "zclSampleSw_event_loop"
 //   87 #include "hal_led.h"
 //   88 #include "hal_key.h"
 //   89 
-//   90 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//   91 #include "zcl_ota.h"
-//   92 #include "hal_ota.h"
-//   93 #endif
-//   94 
-//   95 #include "bdb.h"
-//   96 #include "bdb_interface.h"
-//   97 
+//   90 /* UART */
+//   91 #include "uart0.h"
+//   92 #include "user_printf.h"
+//   93 
+//   94 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//   95 #include "zcl_ota.h"
+//   96 #include "hal_ota.h"
+//   97 #endif
 //   98 
-//   99 /*********************************************************************
-//  100  * MACROS
-//  101  */
+//   99 #include "bdb.h"
+//  100 #include "bdb_interface.h"
+//  101 
 //  102 
-//  103 #define APP_TITLE "TI Sample Switch"
-//  104 
-//  105 /*********************************************************************
-//  106  * TYPEDEFS
-//  107  */
+//  103 /*********************************************************************
+//  104  * MACROS
+//  105  */
+//  106 
+//  107 #define APP_TITLE "TI Sample Switch"
 //  108 
 //  109 /*********************************************************************
-//  110  * GLOBAL VARIABLES
+//  110  * TYPEDEFS
 //  111  */
+//  112 
+//  113 /*********************************************************************
+//  114  * GLOBAL VARIABLES
+//  115  */
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  112 byte zclSampleSw_TaskID;
+//  116 byte zclSampleSw_TaskID;
 zclSampleSw_TaskID:
         DS 1
         REQUIRE __INIT_XDATA_Z
-//  113 
+//  117 
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  114 uint8 zclSampleSwSeqNum;
+//  118 uint8 zclSampleSwSeqNum;
 zclSampleSwSeqNum:
         DS 1
         REQUIRE __INIT_XDATA_Z
-//  115 
+//  119 
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  116 uint8 zclSampleSw_OnOffSwitchType = ON_OFF_SWITCH_TYPE_MOMENTARY;
+//  120 uint8 zclSampleSw_OnOffSwitchType = ON_OFF_SWITCH_TYPE_MOMENTARY;
 zclSampleSw_OnOffSwitchType:
         DATA8
         DS 1
         REQUIRE `?<Initializer for zclSampleSw_OnOffSwitchType>`
         REQUIRE __INIT_XDATA_I
-//  117 
+//  121 
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  118 uint8 zclSampleSw_OnOffSwitchActions;
+//  122 uint8 zclSampleSw_OnOffSwitchActions;
 zclSampleSw_OnOffSwitchActions:
         DS 1
         REQUIRE __INIT_XDATA_Z
-//  119 
-//  120 /*********************************************************************
-//  121  * GLOBAL FUNCTIONS
-//  122  */
 //  123 
 //  124 /*********************************************************************
-//  125  * LOCAL VARIABLES
+//  125  * GLOBAL FUNCTIONS
 //  126  */
+//  127 
+//  128 /*********************************************************************
+//  129  * LOCAL VARIABLES
+//  130  */
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  127 afAddrType_t zclSampleSw_DstAddr;
+//  131 afAddrType_t zclSampleSw_DstAddr;
 zclSampleSw_DstAddr:
         DS 12
         REQUIRE __INIT_XDATA_Z
-//  128 
-//  129 // Endpoint to allow SYS_APP_MSGs
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
-//  130 static endPointDesc_t sampleSw_TestEp =
-sampleSw_TestEp:
+        RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-        DS 7
-        REQUIRE `?<Initializer for sampleSw_TestEp>`
-        REQUIRE __INIT_XDATA_I
-//  131 {
-//  132   SAMPLESW_ENDPOINT,                  // endpoint
-//  133   0,
-//  134   &zclSampleSw_TaskID,
-//  135   (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
-//  136   (afNetworkLatencyReq_t)0            // No Network Latency req
-//  137 };
+//  132 afAddrType_t SW_DstAddr;
+SW_DstAddr:
+        DS 12
+        REQUIRE __INIT_XDATA_Z
+//  133 
+
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA16
+//  134 uint16 SourceAddr;
+SourceAddr:
+        DS 2
+        REQUIRE __INIT_XDATA_Z
+//  135 // Endpoint to allow SYS_APP_MSGs
+//  136 
+//  137 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
 //  138 
-//  139 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
-//  140 
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  141 devStates_t zclSampleSw_NwkState = DEV_INIT;
+//  139 devStates_t zclSampleSw_NwkState = DEV_INIT;
 zclSampleSw_NwkState:
         DATA8
         DS 1
         REQUIRE `?<Initializer for zclSampleSw_NwkState>`
         REQUIRE __INIT_XDATA_I
-//  142 
-//  143 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//  144 #define DEVICE_POLL_RATE                 8000   // Poll rate for end device
-//  145 #endif
-//  146 
-//  147 #define SAMPLESW_TOGGLE_TEST_EVT   0x1000
-//  148 /*********************************************************************
-//  149  * LOCAL FUNCTIONS
-//  150  */
-//  151 static void Send_Test( void );
+//  140 
+//  141 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  142 #define DEVICE_POLL_RATE                 8000   // Poll rate for end device
+//  143 #endif
+//  144 
+//  145 #define SAMPLESW_TOGGLE_TEST_EVT   0x1000
+//  146 /*********************************************************************
+//  147  * LOCAL FUNCTIONS
+//  148  */
+//  149 static void Send_To_SW1( void );
+//  150 static void Send_To_SW2( void );
+//  151 static void Send_To_SW3( void );
 //  152 
 //  153 static void zclSampleSw_HandleKeys( byte shift, byte keys );
 //  154 static void zclSampleSw_BasicResetCB( void );
@@ -770,98 +781,122 @@ zclSampleSw_NwkState:
 //  157 
 //  158 
 //  159 // Functions to process ZCL Foundation incoming Command/Response messages
-//  160 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *msg );
-//  161 #ifdef ZCL_READ
-//  162 static uint8 zclSampleSw_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
-//  163 #endif
-//  164 #ifdef ZCL_WRITE
-//  165 static uint8 zclSampleSw_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
-//  166 #endif
-//  167 static uint8 zclSampleSw_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
-//  168 #ifdef ZCL_DISCOVER
-//  169 static uint8 zclSampleSw_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg );
-//  170 static uint8 zclSampleSw_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg );
-//  171 static uint8 zclSampleSw_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg );
-//  172 #endif
-//  173 
-//  174 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//  175 static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg );
-//  176 #endif
-//  177 
-//  178 
-//  179 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
+//  160 static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg );
+//  161 
+//  162 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *msg );
+//  163 #ifdef ZCL_READ
+//  164 static uint8 zclSampleSw_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
+//  165 #endif
+//  166 #ifdef ZCL_WRITE
+//  167 static uint8 zclSampleSw_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
+//  168 #endif
+//  169 static uint8 zclSampleSw_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
+//  170 #ifdef ZCL_DISCOVER
+//  171 static uint8 zclSampleSw_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg );
+//  172 static uint8 zclSampleSw_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg );
+//  173 static uint8 zclSampleSw_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg );
+//  174 #endif
+//  175 
+//  176 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  177 static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg );
+//  178 #endif
+//  179 
 //  180 
-//  181 
-//  182 /*********************************************************************
-//  183  * CONSTANTS
-//  184  */
-//  185 
-//  186   
-//  187 /*********************************************************************
-//  188  * REFERENCED EXTERNALS
-//  189  */
-//  190 extern int16 zdpExternalStateTaskID;
-//  191 
-//  192 /*********************************************************************
-//  193  * ZCL General Profile Callback table
-//  194  */
+//  181 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
+//  182 
+//  183 
+//  184 /*********************************************************************
+//  185  * CONSTANTS
+//  186  */
+//  187 
+//  188   
+//  189 /*********************************************************************
+//  190  * REFERENCED EXTERNALS
+//  191  */
+//  192 extern int16 zdpExternalStateTaskID;
+//  193 
+//  194 /*********************************************************************
+//  195  * ZCL General Profile Callback table
+//  196  */
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  195 static zclGeneral_AppCallbacks_t zclSampleSw_CmdCallbacks =
+//  197 static zclGeneral_AppCallbacks_t zclSampleSw_CmdCallbacks =
 zclSampleSw_CmdCallbacks:
         DATA8
         DS 18
         REQUIRE `?<Initializer for zclSampleSw_CmdCallbacks>`
         REQUIRE __INIT_XDATA_I
-//  196 {
-//  197   zclSampleSw_BasicResetCB,               // Basic Cluster Reset command
-//  198   NULL,                                   // Identify Trigger Effect command
-//  199   NULL,                                   // On/Off cluster commands
-//  200   NULL,                                   // On/Off cluster enhanced command Off with Effect
-//  201   NULL,                                   // On/Off cluster enhanced command On with Recall Global Scene
-//  202   NULL,                                   // On/Off cluster enhanced command On with Timed Off
-//  203 #ifdef ZCL_LEVEL_CTRL
-//  204   NULL,                                   // Level Control Move to Level command
-//  205   NULL,                                   // Level Control Move command
-//  206   NULL,                                   // Level Control Step command
-//  207   NULL,                                   // Level Control Stop command
-//  208 #endif
-//  209 #ifdef ZCL_GROUPS
-//  210   NULL,                                   // Group Response commands
-//  211 #endif
-//  212 #ifdef ZCL_SCENES
-//  213   NULL,                                   // Scene Store Request command
-//  214   NULL,                                   // Scene Recall Request command
-//  215   NULL,                                   // Scene Response command
-//  216 #endif
-//  217 #ifdef ZCL_ALARMS
-//  218   NULL,                                   // Alarm (Response) commands
-//  219 #endif
-//  220 #ifdef SE_UK_EXT
-//  221   NULL,                                   // Get Event Log command
-//  222   NULL,                                   // Publish Event Log command
-//  223 #endif
-//  224   NULL,                                   // RSSI Location command
-//  225   NULL                                    // RSSI Location Response command
-//  226 };
-//  227 
-//  228 /*********************************************************************
-//  229  * @fn          zclSampleSw_Init
-//  230  *
-//  231  * @brief       Initialization function for the zclGeneral layer.
+//  198 {
+//  199   zclSampleSw_BasicResetCB,               // Basic Cluster Reset command
+//  200   NULL,                                   // Identify Trigger Effect command
+//  201   NULL,                                   // On/Off cluster commands
+//  202   NULL,                                   // On/Off cluster enhanced command Off with Effect
+//  203   NULL,                                   // On/Off cluster enhanced command On with Recall Global Scene
+//  204   NULL,                                   // On/Off cluster enhanced command On with Timed Off
+//  205 #ifdef ZCL_LEVEL_CTRL
+//  206   NULL,                                   // Level Control Move to Level command
+//  207   NULL,                                   // Level Control Move command
+//  208   NULL,                                   // Level Control Step command
+//  209   NULL,                                   // Level Control Stop command
+//  210 #endif
+//  211 #ifdef ZCL_GROUPS
+//  212   NULL,                                   // Group Response commands
+//  213 #endif
+//  214 #ifdef ZCL_SCENES
+//  215   NULL,                                   // Scene Store Request command
+//  216   NULL,                                   // Scene Recall Request command
+//  217   NULL,                                   // Scene Response command
+//  218 #endif
+//  219 #ifdef ZCL_ALARMS
+//  220   NULL,                                   // Alarm (Response) commands
+//  221 #endif
+//  222 #ifdef SE_UK_EXT
+//  223   NULL,                                   // Get Event Log command
+//  224   NULL,                                   // Publish Event Log command
+//  225 #endif
+//  226   NULL,                                   // RSSI Location command
+//  227   NULL                                    // RSSI Location Response command
+//  228 };
+//  229 
+//  230 /*********************************************************************
+//  231  * @fn          zclSampleSw_Init
 //  232  *
-//  233  * @param       none
+//  233  * @brief       Initialization function for the zclGeneral layer.
 //  234  *
-//  235  * @return      none
-//  236  */
+//  235  * @param       none
+//  236  *
+//  237  * @return      none
+//  238  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  237 void zclSampleSw_Init( byte task_id )
+//  239 void zclSampleSw_Init( byte task_id )
 zclSampleSw_Init:
           CFI Block cfiBlock0 Using cfiCommon0
           CFI Function zclSampleSw_Init
         CODE
-//  238 {
+//  240 {
+        FUNCALL zclSampleSw_Init, Uart0_Init
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_Init, RegisterForUart0
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_Init, bdb_RegisterSimpleDescriptor
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -950,7 +985,7 @@ zclSampleSw_Init:
         ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_Init, afRegister
+        FUNCALL zclSampleSw_Init, printf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 9, STACK
@@ -977,45 +1012,59 @@ zclSampleSw_Init:
         ; Saved register size: 9
         ; Auto size: 0
         MOV       A,R1
-//  239   zclSampleSw_TaskID = task_id;
+//  241   zclSampleSw_TaskID = task_id;
         MOV       DPTR,#zclSampleSw_TaskID
         MOVX      @DPTR,A
-//  240 
-//  241   // Set destination address to indirect
-//  242   zclSampleSw_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+//  242 
+//  243   // Set destination address to indirect
+//  244   zclSampleSw_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
         MOV       DPTR,#zclSampleSw_DstAddr + 8
         CLR       A
         MOVX      @DPTR,A
-//  243   zclSampleSw_DstAddr.endPoint = 0;
+//  245   zclSampleSw_DstAddr.endPoint = 0;
         INC       DPTR
         MOVX      @DPTR,A
-//  244   zclSampleSw_DstAddr.addr.shortAddr = 0;
+//  246   zclSampleSw_DstAddr.addr.shortAddr = 0;
         MOV       DPTR,#zclSampleSw_DstAddr
         MOVX      @DPTR,A
         INC       DPTR
         MOVX      @DPTR,A
-//  245 
-//  246   // Register the Simple Descriptor for this application
-//  247   bdb_RegisterSimpleDescriptor( &zclSampleSw_SimpleDesc );
+//  247 
+//  248   //Initialize the Uart0
+//  249   Uart0_Init(HAL_UART_BR_115200);
+        ; Setup parameters for call to function Uart0_Init
+        MOV       R1,#0x4
+        LCALL     `??Uart0_Init::?relay`; Banked call to: Uart0_Init
+//  250 
+//  251   // Register the Uart0
+//  252   RegisterForUart0( zclSampleSw_TaskID );
+        ; Setup parameters for call to function RegisterForUart0
+        MOV       DPTR,#zclSampleSw_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??RegisterForUart0::?relay`; Banked call to: RegisterForUart0
+//  253 
+//  254   // Register the Simple Descriptor for this application
+//  255   bdb_RegisterSimpleDescriptor( &zclSampleSw_SimpleDesc );
         ; Setup parameters for call to function bdb_RegisterSimpleDescriptor
         MOV       R2,#zclSampleSw_SimpleDesc & 0xff
         MOV       R3,#(zclSampleSw_SimpleDesc >> 8) & 0xff
         LCALL     `??bdb_RegisterSimpleDescriptor::?relay`; Banked call to: bdb_RegisterSimpleDescriptor
-//  248 
-//  249   // Register the ZCL General Cluster Library callback functions
-//  250   zclGeneral_RegisterCmdCallbacks( SAMPLESW_ENDPOINT, &zclSampleSw_CmdCallbacks );
+//  256 
+//  257   // Register the ZCL General Cluster Library callback functions
+//  258   zclGeneral_RegisterCmdCallbacks( SW1_ENDPOINT, &zclSampleSw_CmdCallbacks );
         ; Setup parameters for call to function zclGeneral_RegisterCmdCallbacks
         MOV       R2,#zclSampleSw_CmdCallbacks & 0xff
         MOV       R3,#(zclSampleSw_CmdCallbacks >> 8) & 0xff
         MOV       R1,#0x8
         LCALL     `??zclGeneral_RegisterCmdCallbacks::?relay`; Banked call to: zclGeneral_RegisterCmdCallbacks
-//  251 
-//  252   zclSampleSw_ResetAttributesToDefaultValues();
+//  259 
+//  260   zclSampleSw_ResetAttributesToDefaultValues();
         ; Setup parameters for call to function zclSampleSw_ResetAttributesToDefaultValues
         LCALL     `??zclSampleSw_ResetAttributesToDefaultValues::?`; Banked call to: zclSampleSw_ResetAttributesToDefaultValues
-//  253   
-//  254   // Register the application's attribute list
-//  255   zcl_registerAttrList( SAMPLESW_ENDPOINT, zclSampleSw_NumAttributes, zclSampleSw_Attrs );
+//  261   
+//  262   // Register the application's attribute list
+//  263   zcl_registerAttrList( SW1_ENDPOINT, zclSampleSw_NumAttributes, zclSampleSw_Attrs );
         ; Setup parameters for call to function zcl_registerAttrList
         MOV       R4,#zclSampleSw_Attrs & 0xff
         MOV       R5,#(zclSampleSw_Attrs >> 8) & 0xff
@@ -1025,60 +1074,53 @@ zclSampleSw_Init:
         MOV       R2,A
         MOV       R1,#0x8
         LCALL     `??zcl_registerAttrList::?relay`; Banked call to: zcl_registerAttrList
-//  256 
-//  257   // Register the Application to receive the unprocessed Foundation command/response messages
-//  258   zcl_registerForMsg( zclSampleSw_TaskID );
+//  264   
+//  265   // Register the Application to receive the unprocessed Foundation command/response messages
+//  266   zcl_registerForMsg( zclSampleSw_TaskID );
         ; Setup parameters for call to function zcl_registerForMsg
         MOV       DPTR,#zclSampleSw_TaskID
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??zcl_registerForMsg::?relay`; Banked call to: zcl_registerForMsg
-//  259   
-//  260   // Register low voltage NV memory protection application callback
-//  261   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
+//  267   
+//  268   // Register low voltage NV memory protection application callback
+//  269   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
         ; Setup parameters for call to function RegisterVoltageWarningCB
         MOV       R2,#`??zclSampleApp_BatteryWarningCB::?relay` & 0xff
         MOV       R3,#(`??zclSampleApp_BatteryWarningCB::?relay` >> 8) & 0xff
         LCALL     `??RegisterVoltageWarningCB::?relay`; Banked call to: RegisterVoltageWarningCB
-//  262 
-//  263   // Register for all key events - This app will handle all key events
-//  264   RegisterForKeys( zclSampleSw_TaskID );
+//  270 
+//  271   // Register for all key events - This app will handle all key events
+//  272   RegisterForKeys( zclSampleSw_TaskID );
         ; Setup parameters for call to function RegisterForKeys
         MOV       DPTR,#zclSampleSw_TaskID
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??RegisterForKeys::?relay`; Banked call to: RegisterForKeys
-//  265   
-//  266   bdb_RegisterCommissioningStatusCB( zclSampleSw_ProcessCommissioningStatus );
+//  273   
+//  274   bdb_RegisterCommissioningStatusCB( zclSampleSw_ProcessCommissioningStatus );
         ; Setup parameters for call to function bdb_RegisterCommissioningStatusCB
         MOV       R2,#`??zclSampleSw_ProcessCommissioningStatus::?rela` & 0xff
         MOV       R3,#(`??zclSampleSw_ProcessCommissioningStatus::?rela` >> 8) & 0xff
         LCALL     `??bdb_RegisterCommissioningStatusCB::?relay`; Banked call to: bdb_RegisterCommissioningStatusCB
-//  267 
-//  268   // Register for a test endpoint
-//  269   afRegister( &sampleSw_TestEp );
-        ; Setup parameters for call to function afRegister
-        MOV       R2,#sampleSw_TestEp & 0xff
-        MOV       R3,#(sampleSw_TestEp >> 8) & 0xff
-        LCALL     `??afRegister::?relay`; Banked call to: afRegister
-//  270   
-//  271 #ifdef ZCL_DIAGNOSTIC
-//  272   // Register the application's callback function to read/write attribute data.
-//  273   // This is only required when the attribute data format is unknown to ZCL.
-//  274   zcl_registerReadWriteCB( SAMPLESW_ENDPOINT, zclDiagnostic_ReadWriteAttrCB, NULL );
-//  275 
-//  276   if ( zclDiagnostic_InitStats() == ZSuccess )
-//  277   {
-//  278     // Here the user could start the timer to save Diagnostics to NV
-//  279   }
-//  280 #endif
-//  281 
-//  282 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//  283   // Register for callback events from the ZCL OTA
-//  284   zclOTA_Register(zclSampleSw_TaskID);
+//  275   
+//  276 #ifdef ZCL_DIAGNOSTIC
+//  277   // Register the application's callback function to read/write attribute data.
+//  278   // This is only required when the attribute data format is unknown to ZCL.
+//  279   zcl_registerReadWriteCB( SAMPLESW_ENDPOINT, zclDiagnostic_ReadWriteAttrCB, NULL );
+//  280 
+//  281   if ( zclDiagnostic_InitStats() == ZSuccess )
+//  282   {
+//  283     // Here the user could start the timer to save Diagnostics to NV
+//  284   }
 //  285 #endif
 //  286 
-//  287   zdpExternalStateTaskID = zclSampleSw_TaskID;
+//  287 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  288   // Register for callback events from the ZCL OTA
+//  289   zclOTA_Register(zclSampleSw_TaskID);
+//  290 #endif
+//  291 
+//  292   zdpExternalStateTaskID = zclSampleSw_TaskID;
         MOV       DPTR,#zclSampleSw_TaskID
         MOVX      A,@DPTR
         MOV       DPTR,#zdpExternalStateTaskID
@@ -1086,8 +1128,13 @@ zclSampleSw_Init:
         INC       DPTR
         CLR       A
         MOVX      @DPTR,A
-//  288 
-//  289 }
+//  293 
+//  294   printf("init successful\r\n");
+        ; Setup parameters for call to function printf
+        MOV       R2,#`?<Constant "init successful\\r\\n">` & 0xff
+        MOV       R3,#(`?<Constant "init successful\\r\\n">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+//  295 }
           CFI EndBlock cfiBlock0
         REQUIRE ?Subroutine0
         ; // Fall through to label ?Subroutine0
@@ -1110,163 +1157,95 @@ zclSampleSw_Init:
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock1
-//  290 
-//  291 /*********************************************************************
-//  292  * @fn          zclSample_event_loop
-//  293  *
-//  294  * @brief       Event Loop Processor for zclGeneral.
-//  295  *
-//  296  * @param       none
-//  297  *
-//  298  * @return      none
-//  299  */
+//  296 
+//  297 /*********************************************************************
+//  298  * @fn          zclSample_event_loop
+//  299  *
+//  300  * @brief       Event Loop Processor for zclGeneral.
+//  301  *
+//  302  * @param       none
+//  303  *
+//  304  * @return      none
+//  305  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  300 uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
+//  306 uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
 zclSampleSw_event_loop:
           CFI Block cfiBlock2 Using cfiCommon0
           CFI Function zclSampleSw_event_loop
         CODE
-//  301 {
+//  307 {
         FUNCALL zclSampleSw_event_loop, osal_start_timerEx
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 18, STACK
+        LOCFRAME XSTACK, 16, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 18, STACK
+        ARGFRAME XSTACK, 16, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_event_loop, zcl_SendCommand
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 25, STACK
+        LOCFRAME XSTACK, 23, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 25, STACK
+        ARGFRAME XSTACK, 23, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, HalLedSet
+        FUNCALL zclSampleSw_event_loop, zclSampleSw_HandleKeys
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, bdb_StartCommissioning
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, NLME_PermitJoiningRequest
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, HalLedSet
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, osal_mem_alloc
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, zcl_SendReportCmd
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 19, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 19, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleSw_event_loop, osal_mem_free
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_event_loop, osal_msg_deallocate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_event_loop, osal_msg_receive
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_event_loop, zclSampleSw_ProcessIncomingMsg
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
         REQUIRE ?V3
-        REQUIRE ?V4
-        REQUIRE ?V5
-        MOV       A,#-0xe
+        MOV       A,#-0xc
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1274,35 +1253,33 @@ zclSampleSw_event_loop:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 14)
-        ; Saved register size: 14
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
         ; Auto size: 0
         MOV       A,R2
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-//  302   afIncomingMSGPacket_t *MSGpkt;
-//  303   (void)task_id;  // Intentionally unreferenced parameter
-//  304 
-//  305   //Send toggle every 500ms
-//  306   if( events & SAMPLESW_TOGGLE_TEST_EVT )
+//  308   afIncomingMSGPacket_t *MSGpkt;
+//  309   (void)task_id;  // Intentionally unreferenced parameter
+//  310 
+//  311   //Send toggle every 500ms
+//  312   if( events & SAMPLESW_TOGGLE_TEST_EVT )
         ANL       A,#0x10
         JZ        ??zclSampleSw_event_loop_0
-//  307   {
-//  308     osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
+//  313   {
+//  314     osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_1f4
         LCALL     ?PUSH_XSTACK8_X_FOUR
-          CFI CFA_XSP16 add(XSP16, 18)
+          CFI CFA_XSP16 add(XSP16, 16)
         MOV       R2,#0x0
         MOV       R3,#0x10
         MOV       DPTR,#zclSampleSw_TaskID
@@ -1311,38 +1288,38 @@ zclSampleSw_event_loop:
         LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
-//  309     zclGeneral_SendOnOff_CmdToggle( SAMPLESW_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
+          CFI CFA_XSP16 add(XSP16, 12)
+//  315     zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
         ; Setup parameters for call to function zcl_SendCommand
         CLR       A
         MOV       ?V0,A
         MOV       ?V1,A
         MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 16)
         MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 18)
-        MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
           CFI CFA_XSP16 add(XSP16, 19)
         MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_TWO
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 20)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
           CFI CFA_XSP16 add(XSP16, 21)
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 22)
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 23)
         MOV       ?V0,#0x1
         MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 24)
+          CFI CFA_XSP16 add(XSP16, 22)
         MOV       ?V0,#0x2
         MOV       R0,#?V0
         LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 25)
+          CFI CFA_XSP16 add(XSP16, 23)
         MOV       R4,#0x6
         MOV       R5,#0x0
         MOV       R2,#zclSampleSw_DstAddr & 0xff
@@ -1351,170 +1328,91 @@ zclSampleSw_event_loop:
         LCALL     `??zcl_SendCommand::?relay`; Banked call to: zcl_SendCommand
         MOV       A,#0xb
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
-//  310     
-//  311     // return unprocessed events
-//  312     return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
+          CFI CFA_XSP16 add(XSP16, 12)
+//  316     
+//  317     // return unprocessed events
+//  318     return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
         MOV       A,R6
         MOV       R2,A
         MOV       A,R7
         XRL       A,#0x10
-        LJMP      ??zclSampleSw_event_loop_1 & 0xFFFF
-//  313   }
-//  314   
-//  315   
-//  316   if ( events & SYS_EVENT_MSG )
+        SJMP      ??zclSampleSw_event_loop_1
+//  319   }
+//  320   
+//  321 
+//  322   if ( events & SYS_EVENT_MSG )
 ??zclSampleSw_event_loop_0:
         MOV       A,R3
         ANL       A,#0x80
-        JZ        $+5
-        LJMP      ??zclSampleSw_event_loop_2 & 0xFFFF
-//  317   {
-//  318     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleSw_TaskID )) )
-//  319     {
-//  320       switch ( MSGpkt->hdr.event )
-//  321       {
-//  322         case ZCL_INCOMING_MSG:
-//  323           // Incoming ZCL Foundation command/response messages
-//  324           zclSampleSw_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
-//  325           break;
-//  326 
-//  327         case KEY_CHANGE:
-//  328           zclSampleSw_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
-//  329           break;
-//  330 
-//  331         case ZDO_STATE_CHANGE:
-//  332           break;
-//  333 
-//  334 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//  335         case ZCL_OTA_CALLBACK_IND:
-//  336           zclSampleSw_ProcessOTAMsgs( (zclOTA_CallbackMsg_t*)MSGpkt  );
-//  337           break;
-//  338 #endif
+        JNZ       ??zclSampleSw_event_loop_2
+//  323   {
+//  324     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleSw_TaskID )) )
+//  325     {
+//  326       switch ( MSGpkt->hdr.event )
+//  327       {
+//  328         case ZCL_INCOMING_MSG:
+//  329           // Incoming ZCL Foundation command/response messages
+//  330           zclSampleSw_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
+//  331           break;
+//  332 
+//  333         case KEY_CHANGE:
+//  334           zclSampleSw_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
+//  335           break;
+//  336 
+//  337         case ZDO_STATE_CHANGE:
+//  338           break;
 //  339 
-//  340         default:
-//  341           break;
-//  342       }
-//  343 
-//  344       // Release the memory
-//  345       osal_msg_deallocate( (uint8 *)MSGpkt );
-//  346     }
-//  347 
-//  348     // return unprocessed events
-//  349     return (events ^ SYS_EVENT_MSG);
-//  350   }
-//  351 
-//  352 #if ZG_BUILD_ENDDEVICE_TYPE    
-//  353   if ( events & SAMPLEAPP_END_DEVICE_REJOIN_EVT )
-//  354   {
-//  355     bdb_ZedAttemptRecoverNwk();
-//  356     return ( events ^ SAMPLEAPP_END_DEVICE_REJOIN_EVT );
-//  357   }
-//  358 #endif
-//  359 
-//  360   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
+//  340 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  341         case ZCL_OTA_CALLBACK_IND:
+//  342           zclSampleSw_ProcessOTAMsgs( (zclOTA_CallbackMsg_t*)MSGpkt  );
+//  343           break;
+//  344 #endif
+//  345 
+//  346         default:
+//  347           break;
+//  348       }
+//  349 
+//  350       // Release the memory
+//  351       osal_msg_deallocate( (uint8 *)MSGpkt );
+//  352     }
+//  353 
+//  354     // return unprocessed events
+//  355     return (events ^ SYS_EVENT_MSG);
+//  356   }
+//  357 
+//  358 #if ZG_BUILD_ENDDEVICE_TYPE    
+//  359   if ( events & SAMPLEAPP_END_DEVICE_REJOIN_EVT )
+//  360   {
+//  361     bdb_ZedAttemptRecoverNwk();
+//  362     return ( events ^ SAMPLEAPP_END_DEVICE_REJOIN_EVT );
+//  363   }
+//  364 #endif
+//  365 
+//  366   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
         MOV       A,R2
         ANL       A,#0x10
-        JNZ       $+5
-        LJMP      ??zclSampleSw_event_loop_3 & 0xFFFF
-//  361   {
-//  362     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
+        JZ        ??zclSampleSw_event_loop_3
+//  367   {
+//  368     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
         MOV       A,R2
         XRL       A,#0x10
-        LJMP      ??zclSampleSw_event_loop_4 & 0xFFFF
-//  363   }
+        SJMP      ??zclSampleSw_event_loop_4
+//  369   }
 ??zclSampleSw_event_loop_5:
+        ; Setup parameters for call to function zclSampleSw_HandleKeys
         INC       DPTR
         INC       DPTR
         INC       DPTR
         MOVX      A,@DPTR
-        MOV       ?V2,A
-        MOV       C,0xE0 /* A   */.5
-        JNC       ??zclSampleSw_event_loop_6
-        ; Setup parameters for call to function HalLedSet
-        MOV       R2,#0x1
-        MOV       R1,#0x2
-        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-        ; Setup parameters for call to function bdb_StartCommissioning
-        MOV       R1,#0xc
-        LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
-        ; Setup parameters for call to function NLME_PermitJoiningRequest
-        MOV       R1,#-0x1
-        LCALL     `??NLME_PermitJoiningRequest::?relay`; Banked call to: NLME_PermitJoiningRequest
-??zclSampleSw_event_loop_6:
-        MOV       A,?V2
-        MOV       C,0xE0 /* A   */.2
-        JNC       ??zclSampleSw_event_loop_7
-        ; Setup parameters for call to function HalLedSet
-        MOV       R2,#0x8
-        MOV       R1,#0x2
-        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-        ; Setup parameters for call to function osal_mem_alloc
-        MOV       R2,#0x6
-        MOV       R3,#0x0
-        LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
-        MOV       ?V2,R2
-        MOV       ?V3,R3
-        MOV       A,R2
-        ORL       A,R3
-        JZ        ??zclSampleSw_event_loop_8
-        MOV       DPL,R2
+        MOV       R2,A
+        MOV       DPL,?V0
         MOV       DPH,R3
-        MOV       A,#0x1
-        MOVX      @DPTR,A
         INC       DPTR
-        MOV       A,#-0x3
-        MOVX      @DPTR,A
         INC       DPTR
-        MOV       A,#-0x1
-        LCALL     ?Subroutine4 & 0xFFFF
-??CrossCallReturnLabel_2:
-        MOV       A,#0x21
-        LCALL     ?Subroutine4 & 0xFFFF
-??CrossCallReturnLabel_3:
-        INC       DPTR
-        MOV       A,#zclSampleSw_clusterRevision_all & 0xff
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOV       A,#(zclSampleSw_clusterRevision_all >> 8) & 0xff
-        MOVX      @DPTR,A
-        MOV       DPTR,#zclSampleSwSeqNum
         MOVX      A,@DPTR
-        MOV       R0,A
-        MOV       A,#0x1
-        ADD       A,R0
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function zcl_SendReportCmd
-        MOV       A,R0
-        MOV       ?V4,A
-        MOV       R0,#?V4
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 15)
-        MOV       ?V4,#0x1
-        MOV       R0,#?V4
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 16)
-        MOV       R0,#?V4
-        LCALL     ?PUSH_XSTACK_I_ONE
-          CFI CFA_XSP16 add(XSP16, 17)
-        MOV       R0,#?V2
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 19)
-        MOV       R4,#0x6
-        MOV       R5,#0x0
-        MOV       R2,#zclSampleSw_DstAddr & 0xff
-        MOV       R3,#(zclSampleSw_DstAddr >> 8) & 0xff
-        MOV       R1,#0x8
-        LCALL     `??zcl_SendReportCmd::?relay`; Banked call to: zcl_SendReportCmd
-        MOV       A,#0x5
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 14)
-??zclSampleSw_event_loop_8:
-        ; Setup parameters for call to function osal_mem_free
-        MOV       R2,?V2
-        MOV       R3,?V3
-        LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
-??zclSampleSw_event_loop_7:
+        MOV       R1,A
+        LCALL     `??zclSampleSw_HandleKeys::?relay`; Banked call to: zclSampleSw_HandleKeys
+??zclSampleSw_event_loop_6:
         ; Setup parameters for call to function osal_msg_deallocate
         MOV       R2,?V0
         MOV       R3,?V1
@@ -1529,66 +1427,315 @@ zclSampleSw_event_loop:
         MOV       ?V1,R3
         MOV       A,R2
         ORL       A,R3
-        JZ        ??zclSampleSw_event_loop_9
+        JZ        ??zclSampleSw_event_loop_7
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         ADD       A,#-0x34
-        JZ        ??zclSampleSw_event_loop_10
+        JZ        ??zclSampleSw_event_loop_8
         ADD       A,#0x74
-        JNZ       $+5
-        LJMP      ??zclSampleSw_event_loop_5 & 0xFFFF
-        SJMP      ??zclSampleSw_event_loop_7
-??zclSampleSw_event_loop_10:
+        JZ        ??zclSampleSw_event_loop_5
+        SJMP      ??zclSampleSw_event_loop_6
+??zclSampleSw_event_loop_8:
         ; Setup parameters for call to function zclSampleSw_ProcessIncomingMsg
         LCALL     `??zclSampleSw_ProcessIncomingMsg::?relay`; Banked call to: zclSampleSw_ProcessIncomingMsg
-        SJMP      ??zclSampleSw_event_loop_7
-??zclSampleSw_event_loop_9:
+        SJMP      ??zclSampleSw_event_loop_6
+??zclSampleSw_event_loop_7:
         MOV       A,R6
         MOV       R2,A
         MOV       A,R7
         XRL       A,#0x80
 ??zclSampleSw_event_loop_1:
         MOV       R3,A
-        SJMP      ??zclSampleSw_event_loop_11
-//  364 
-//  365   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
+        SJMP      ??zclSampleSw_event_loop_9
+//  370 
+//  371   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
 ??zclSampleSw_event_loop_3:
         MOV       A,R2
         ANL       A,#0x20
-        JZ        ??zclSampleSw_event_loop_12
-//  366   {
-//  367     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
+        JZ        ??zclSampleSw_event_loop_10
+//  372   {
+//  373     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
         MOV       A,R2
         XRL       A,#0x20
 ??zclSampleSw_event_loop_4:
         MOV       R2,A
-        SJMP      ??zclSampleSw_event_loop_11
-//  368   }
-//  369   // Discard unknown events
-//  370   return 0;
-??zclSampleSw_event_loop_12:
+        SJMP      ??zclSampleSw_event_loop_9
+//  374   }
+//  375   // Discard unknown events
+//  376   return 0;
+??zclSampleSw_event_loop_10:
         MOV       R2,#0x0
         MOV       R3,#0x0
-??zclSampleSw_event_loop_11:
-        MOV       R7,#0x6
-        LJMP      ?BANKED_LEAVE_XDATA
-//  371 }
+??zclSampleSw_event_loop_9:
           CFI EndBlock cfiBlock2
+        REQUIRE ?Subroutine1
+        ; // Fall through to label ?Subroutine1
+//  377 }
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI Function zclSampleSw_event_loop
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+?Subroutine1:
+          CFI Block cfiBlock3 Using cfiCommon0
+          CFI NoFunction
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+        MOV       R7,#0x4
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock3
+//  378 
+//  379 /*********************************************************************
+//  380  * @fn      zclSampleSw_HandleKeys
+//  381  *
+//  382  * @brief   Handles all key events for this device.
+//  383  *
+//  384  * @param   shift - true if in shift/alt.
+//  385  * @param   keys - bit field for key events. Valid entries:
+//  386  *                 HAL_KEY_SW_5
+//  387  *                 HAL_KEY_SW_4
+//  388  *                 HAL_KEY_SW_2
+//  389  *                 HAL_KEY_SW_1
+//  390  *
+//  391  * @return  none
+//  392  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  393 static void zclSampleSw_HandleKeys( byte shift, byte keys )
+zclSampleSw_HandleKeys:
+          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Function zclSampleSw_HandleKeys
+        CODE
+//  394 {
+        FUNCALL zclSampleSw_HandleKeys, HalLedSet
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_HandleKeys, bdb_StartCommissioning
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_HandleKeys, NLME_PermitJoiningRequest
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_HandleKeys, zcl_SendCommand
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 21, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 21, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_HandleKeys, HalLedSet
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_HandleKeys, zcl_SendCommand
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 21, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 21, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 0
+        MOV       A,R2
+        MOV       R6,A
+//  395   if ( keys & HAL_KEY_SW_6 ) //key1
+        MOV       C,0xE0 /* A   */.5
+        JNC       ??zclSampleSw_HandleKeys_0
+//  396   {
+//  397     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x1
+        MOV       R1,#0x2
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+//  398     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
+        ; Setup parameters for call to function bdb_StartCommissioning
+        MOV       R1,#0xc
+        LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
+//  399     NLME_PermitJoiningRequest( 0xff );
+        ; Setup parameters for call to function NLME_PermitJoiningRequest
+        MOV       R1,#-0x1
+        LCALL     `??NLME_PermitJoiningRequest::?relay`; Banked call to: NLME_PermitJoiningRequest
+//  400   }    
+//  401   if ( keys & HAL_KEY_SW_5 ) //key2
+??zclSampleSw_HandleKeys_0:
+        MOV       A,R6
+        MOV       C,0xE0 /* A   */.2
+        JC        $+5
+        LJMP      ??zclSampleSw_HandleKeys_1 & 0xFFFF
+//  402   {
+//  403     Send_To_SW1();
+        MOV       DPTR,#SW_DstAddr + 8
+        MOV       A,#0x2
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,#0x8
+        LCALL     ?Subroutine3 & 0xFFFF
+??CrossCallReturnLabel_0:
+        MOV       ?V1,A
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 12)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 18)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 19)
+        MOV       ?V0,#0x1
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 20)
+        MOV       ?V0,#0x2
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 21)
+        MOV       R4,#0x6
+        MOV       R5,#0x0
+        MOV       R2,#SW_DstAddr & 0xff
+        MOV       R3,#(SW_DstAddr >> 8) & 0xff
+        MOV       R1,#0x8
+        LCALL     `??zcl_SendCommand::?relay`; Banked call to: zcl_SendCommand
+        MOV       A,#0xb
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 10)
+//  404     HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x4
+        MOV       R1,#0x4
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+//  405     Send_To_SW2();
+        MOV       DPTR,#SW_DstAddr + 8
+        MOV       A,#0x2
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,#0x9
+        LCALL     ?Subroutine3 & 0xFFFF
+??CrossCallReturnLabel_1:
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 12)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 18)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 19)
+        MOV       ?V0,#0x1
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 20)
+        MOV       ?V0,#0x2
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 21)
+        MOV       R4,#0x6
+        MOV       R5,#0x0
+        MOV       R2,#SW_DstAddr & 0xff
+        MOV       R3,#(SW_DstAddr >> 8) & 0xff
+        MOV       R1,#0x8
+        LCALL     `??zcl_SendCommand::?relay`; Banked call to: zcl_SendCommand
+        MOV       A,#0xb
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 10)
+//  406   }
+//  407 }
+??zclSampleSw_HandleKeys_1:
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock4
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine3:
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI Function zclSampleSw_HandleKeys
+          CFI Conditional ??CrossCallReturnLabel_0
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
@@ -1596,88 +1743,65 @@ zclSampleSw_event_loop:
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI (cfiCond4) Function zclSampleSw_event_loop
-          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond4) R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond4) VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond4) V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond4) V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond4) V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond4) V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond4) V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond4) V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond4) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond4) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond4) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond4) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond4) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond4) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond4) CFA_SP SP+-2
-          CFI (cfiCond4) CFA_XSP16 add(XSP16, 14)
-          CFI Block cfiPicker5 Using cfiCommon1
-          CFI (cfiPicker5) NoFunction
-          CFI (cfiPicker5) Picker
+          CFI CFA_XSP16 add(XSP16, 10)
+          CFI Block cfiCond6 Using cfiCommon0
+          CFI (cfiCond6) Function zclSampleSw_HandleKeys
+          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond6) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond6) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond6) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond6) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond6) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond6) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond6) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond6) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond6) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond6) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond6) CFA_SP SP+-2
+          CFI (cfiCond6) CFA_XSP16 add(XSP16, 10)
+          CFI Block cfiPicker7 Using cfiCommon1
+          CFI (cfiPicker7) NoFunction
+          CFI (cfiPicker7) Picker
         MOVX      @DPTR,A
-        MOV       DPL,R2
-        MOV       DPH,R3
+        MOV       DPTR,#SourceAddr
+        MOVX      A,@DPTR
+        MOV       R0,A
         INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPTR,#SW_DstAddr
+        MOV       A,R0
+        MOVX      @DPTR,A
         INC       DPTR
-        INC       DPTR
+        MOV       A,R1
+        MOVX      @DPTR,A
+        ; Setup parameters for call to function zcl_SendCommand
+        ; Setup parameters for call to function zcl_SendCommand
+        CLR       A
+        MOV       ?V0,A
         RET
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiPicker5
-//  372 
-//  373 /*********************************************************************
-//  374  * @fn      zclSampleSw_HandleKeys
-//  375  *
-//  376  * @brief   Handles all key events for this device.
-//  377  *
-//  378  * @param   shift - true if in shift/alt.
-//  379  * @param   keys - bit field for key events. Valid entries:
-//  380  *                 HAL_KEY_SW_5
-//  381  *                 HAL_KEY_SW_4
-//  382  *                 HAL_KEY_SW_2
-//  383  *                 HAL_KEY_SW_1
-//  384  *
-//  385  * @return  none
-//  386  */
-//  387 static void zclSampleSw_HandleKeys( byte shift, byte keys )
-//  388 {
-//  389   if ( keys & HAL_KEY_SW_6 ) //key1
-//  390   {
-//  391     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
-//  392     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
-//  393     NLME_PermitJoiningRequest( 0xff );
-//  394   }    
-//  395   if ( keys & HAL_KEY_SW_5 ) //key2
-//  396   {
-//  397     HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
-//  398     //zclGeneral_SendOnOff_CmdToggle( SAMPLESW_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
-//  399     Send_Test();
-//  400   }
-//  401 }
-//  402 
-//  403 
-//  404 /*********************************************************************
-//  405  * @fn      zclSampleSw_ProcessCommissioningStatus
-//  406  *
-//  407  * @brief   Callback in which the status of the commissioning process are reported
-//  408  *
-//  409  * @param   bdbCommissioningModeMsg - Context message of the status of a commissioning process
-//  410  *
-//  411  * @return  none
-//  412  */
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiCond6
+          CFI EndBlock cfiPicker7
+//  408 
+//  409 
+//  410 /*********************************************************************
+//  411  * @fn      zclSampleSw_ProcessCommissioningStatus
+//  412  *
+//  413  * @brief   Callback in which the status of the commissioning process are reported
+//  414  *
+//  415  * @param   bdbCommissioningModeMsg - Context message of the status of a commissioning process
+//  416  *
+//  417  * @return  none
+//  418  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  413 static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
+//  419 static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
 zclSampleSw_ProcessCommissioningStatus:
-          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function zclSampleSw_ProcessCommissioningStatus
         CODE
-//  414 {
+//  420 {
         FUNCALL zclSampleSw_ProcessCommissioningStatus, HalLedSet
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1719,28 +1843,28 @@ zclSampleSw_ProcessCommissioningStatus:
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-//  415   switch(bdbCommissioningModeMsg->bdbCommissioningMode)
+//  421   switch(bdbCommissioningModeMsg->bdbCommissioningMode)
         MOV       DPL,R2
         MOV       DPH,A
         INC       DPTR
         MOVX      A,@DPTR
         XRL       A,#0x2
         JNZ       ??zclSampleSw_ProcessCommissioningStatus_0
-//  416   {
-//  417     case BDB_COMMISSIONING_FORMATION:
-//  418       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  422   {
+//  423     case BDB_COMMISSIONING_FORMATION:
+//  424       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         JNZ       ??zclSampleSw_ProcessCommissioningStatus_0
-//  419       {
-//  420         //After formation, perform nwk steering again plus the remaining commissioning modes that has not been processed yet
-//  421         HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+//  425       {
+//  426         //After formation, perform nwk steering again plus the remaining commissioning modes that has not been processed yet
+//  427         HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
         ; Setup parameters for call to function HalLedSet
         MOV       R2,#0x1
         MOV       R1,#0x1
         LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-//  422         bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+//  428         bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
         ; Setup parameters for call to function bdb_StartCommissioning
         MOV       DPL,R6
         MOV       DPH,R7
@@ -1750,84 +1874,84 @@ zclSampleSw_ProcessCommissioningStatus:
         ORL       A,#0x2
         MOV       R1,A
         LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
-//  423       }
-//  424       else
-//  425       {
-//  426         //Want to try other channels?
-//  427         //try with bdb_setChannelAttribute
-//  428       }
-//  429     break;
-//  430     case BDB_COMMISSIONING_NWK_STEERING:
-//  431       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-//  432       {
-//  433         //YOUR JOB:
-//  434         //We are on the nwk, what now?
-//  435       }
-//  436       else
-//  437       {
-//  438         //See the possible errors for nwk steering procedure
-//  439         //No suitable networks found
-//  440         //Want to try other channels?
-//  441         //try with bdb_setChannelAttribute
-//  442       }
-//  443     break;
-//  444     case BDB_COMMISSIONING_FINDING_BINDING:
-//  445       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-//  446       {
-//  447         //YOUR JOB:
+//  429       }
+//  430       else
+//  431       {
+//  432         //Want to try other channels?
+//  433         //try with bdb_setChannelAttribute
+//  434       }
+//  435     break;
+//  436     case BDB_COMMISSIONING_NWK_STEERING:
+//  437       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  438       {
+//  439         //YOUR JOB:
+//  440         //We are on the nwk, what now?
+//  441       }
+//  442       else
+//  443       {
+//  444         //See the possible errors for nwk steering procedure
+//  445         //No suitable networks found
+//  446         //Want to try other channels?
+//  447         //try with bdb_setChannelAttribute
 //  448       }
-//  449       else
-//  450       {
-//  451         //YOUR JOB:
-//  452         //retry?, wait for user interaction?
-//  453       }
-//  454     break;
-//  455     case BDB_COMMISSIONING_INITIALIZATION:
-//  456       //Initialization notification can only be successful. Failure on initialization 
-//  457       //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
-//  458       
-//  459       //YOUR JOB:
-//  460       //We are on a network, what now?
-//  461       
-//  462     break;
-//  463 #if ZG_BUILD_ENDDEVICE_TYPE    
-//  464     case BDB_COMMISSIONING_PARENT_LOST:
-//  465       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
-//  466       {
-//  467         //We did recover from losing parent
-//  468       }
-//  469       else
-//  470       {
-//  471         //Parent not found, attempt to rejoin again after a fixed delay
-//  472         osal_start_timerEx(zclSampleSw_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
-//  473       }
-//  474     break;
-//  475 #endif 
-//  476   }
-//  477   
-//  478 }
+//  449     break;
+//  450     case BDB_COMMISSIONING_FINDING_BINDING:
+//  451       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  452       {
+//  453         //YOUR JOB:
+//  454       }
+//  455       else
+//  456       {
+//  457         //YOUR JOB:
+//  458         //retry?, wait for user interaction?
+//  459       }
+//  460     break;
+//  461     case BDB_COMMISSIONING_INITIALIZATION:
+//  462       //Initialization notification can only be successful. Failure on initialization 
+//  463       //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
+//  464       
+//  465       //YOUR JOB:
+//  466       //We are on a network, what now?
+//  467       
+//  468     break;
+//  469 #if ZG_BUILD_ENDDEVICE_TYPE    
+//  470     case BDB_COMMISSIONING_PARENT_LOST:
+//  471       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
+//  472       {
+//  473         //We did recover from losing parent
+//  474       }
+//  475       else
+//  476       {
+//  477         //Parent not found, attempt to rejoin again after a fixed delay
+//  478         osal_start_timerEx(zclSampleSw_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+//  479       }
+//  480     break;
+//  481 #endif 
+//  482   }
+//  483   
+//  484 }
 ??zclSampleSw_ProcessCommissioningStatus_0:
         LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock6
-//  479 
-//  480 /*********************************************************************
-//  481  * @fn      zclSampleSw_BasicResetCB
-//  482  *
-//  483  * @brief   Callback from the ZCL General Cluster Library
-//  484  *          to set all the Basic Cluster attributes to  default values.
-//  485  *
-//  486  * @param   none
-//  487  *
-//  488  * @return  none
-//  489  */
+          CFI EndBlock cfiBlock8
+//  485 
+//  486 /*********************************************************************
+//  487  * @fn      zclSampleSw_BasicResetCB
+//  488  *
+//  489  * @brief   Callback from the ZCL General Cluster Library
+//  490  *          to set all the Basic Cluster attributes to  default values.
+//  491  *
+//  492  * @param   none
+//  493  *
+//  494  * @return  none
+//  495  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  490 static void zclSampleSw_BasicResetCB( void )
+//  496 static void zclSampleSw_BasicResetCB( void )
 zclSampleSw_BasicResetCB:
-          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function zclSampleSw_BasicResetCB
         CODE
-//  491 {
+//  497 {
         FUNCALL zclSampleSw_BasicResetCB, zclSampleSw_ResetAttributesToDefaultValues
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1847,17 +1971,17 @@ zclSampleSw_BasicResetCB:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  492   zclSampleSw_ResetAttributesToDefaultValues();
+//  498   zclSampleSw_ResetAttributesToDefaultValues();
         ; Setup parameters for call to function zclSampleSw_ResetAttributesToDefaultValues
         LCALL     `??zclSampleSw_ResetAttributesToDefaultValues::?`; Banked call to: zclSampleSw_ResetAttributesToDefaultValues
-//  493 }
-          CFI EndBlock cfiBlock7
-        REQUIRE ?Subroutine1
-        ; // Fall through to label ?Subroutine1
+//  499 }
+          CFI EndBlock cfiBlock9
+        REQUIRE ?Subroutine2
+        ; // Fall through to label ?Subroutine2
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock8 Using cfiCommon0
+?Subroutine2:
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI NoFunction
           CFI CFA_SP SP+-5
           CFI DPL0 Frame(CFA_SP, 4)
@@ -1869,96 +1993,133 @@ zclSampleSw_BasicResetCB:
           CFI CFA_SP SP+-3
           CFI DPL0 SameValue
         LJMP      ?BRET
-          CFI EndBlock cfiBlock8
-//  494 
-//  495 /*********************************************************************
-//  496  * @fn      zclSampleApp_BatteryWarningCB
-//  497  *
-//  498  * @brief   Called to handle battery-low situation.
-//  499  *
-//  500  * @param   voltLevel - level of severity
-//  501  *
-//  502  * @return  none
-//  503  */
+          CFI EndBlock cfiBlock10
+//  500 
+//  501 /*********************************************************************
+//  502  * @fn      zclSampleApp_BatteryWarningCB
+//  503  *
+//  504  * @brief   Called to handle battery-low situation.
+//  505  *
+//  506  * @param   voltLevel - level of severity
+//  507  *
+//  508  * @return  none
+//  509  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  504 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
+//  510 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
 zclSampleApp_BatteryWarningCB:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock11 Using cfiCommon0
           CFI Function zclSampleApp_BatteryWarningCB
         CODE
-//  505 {
+//  511 {
         ; Saved register size: 0
         ; Auto size: 0
-//  506   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
-//  507   {
-//  508     // Send warning message to the gateway and blink LED
-//  509   }
-//  510   else if ( voltLevel == VOLT_LEVEL_BAD )
-//  511   {
-//  512     // Shut down the system
-//  513   }
-//  514 }
+//  512   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
+//  513   {
+//  514     // Send warning message to the gateway and blink LED
+//  515   }
+//  516   else if ( voltLevel == VOLT_LEVEL_BAD )
+//  517   {
+//  518     // Shut down the system
+//  519   }
+//  520 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock9
-//  515 
-//  516 /******************************************************************************
-//  517  *
-//  518  *  Functions for processing ZCL Foundation incoming Command/Response messages
-//  519  *
-//  520  *****************************************************************************/
+          CFI EndBlock cfiBlock11
 //  521 
-//  522 /*********************************************************************
-//  523  * @fn      zclSampleSw_ProcessIncomingMsg
-//  524  *
-//  525  * @brief   Process ZCL Foundation incoming message
-//  526  *
-//  527  * @param   pInMsg - pointer to the received message
-//  528  *
-//  529  * @return  none
-//  530  */
+//  522 /******************************************************************************
+//  523  *
+//  524  *  Functions for processing ZCL Foundation incoming Command/Response messages
+//  525  *
+//  526  *****************************************************************************/
+//  527 
+//  528 /*********************************************************************
+//  529  * @fn      zclSampleSw_ProcessIncomingMsg
+//  530  *
+//  531  * @brief   Process ZCL Foundation incoming message
+//  532  *
+//  533  * @param   pInMsg - pointer to the received message
+//  534  *
+//  535  * @return  none
+//  536  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  531 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
+//  537 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
 zclSampleSw_ProcessIncomingMsg:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function zclSampleSw_ProcessIncomingMsg
         CODE
-//  532 {
-        FUNCALL zclSampleSw_ProcessIncomingMsg, zclSampleSw_ProcessInDiscCmdsRspCmd
+//  538 {
+        FUNCALL zclSampleSw_ProcessIncomingMsg, printf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 14, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_ProcessIncomingMsg, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_ProcessIncomingMsg, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_ProcessIncomingMsg, zclSampleSw_ProcessInDiscCmdsRspCmd
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleSw_ProcessIncomingMsg, zclSampleSw_ProcessInDiscCmdsRspCmd
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleSw_ProcessIncomingMsg, osal_mem_free
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        MOV       A,#-0x9
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        MOV       A,#-0xc
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1966,14 +2127,17 @@ zclSampleSw_ProcessIncomingMsg:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-        ; Saved register size: 9
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
         ; Auto size: 0
-//  533   switch ( pInMsg->zclHdr.commandID )
+//  539   switch ( pInMsg->zclHdr.commandID )
         MOV       A,R2
         ADD       A,#0x17
         MOV       R0,A
@@ -1998,119 +2162,179 @@ zclSampleSw_ProcessIncomingMsg:
         JZ        ??zclSampleSw_ProcessIncomingMsg_0
         ADD       A,#-0x3
         JZ        ??zclSampleSw_ProcessIncomingMsg_1
-        ADD       A,#-0x9
+        ADD       A,#-0x6
         JZ        ??zclSampleSw_ProcessIncomingMsg_2
+        ADD       A,#-0x3
+        JNZ       $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_3 & 0xFFFF
         ADD       A,#-0x5
-        JZ        ??zclSampleSw_ProcessIncomingMsg_3
+        JNZ       $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_4 & 0xFFFF
         ADD       A,#-0x2
-        JZ        ??zclSampleSw_ProcessIncomingMsg_3
+        JNZ       $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_4 & 0xFFFF
         ADD       A,#-0x2
-        JZ        ??zclSampleSw_ProcessIncomingMsg_4
-        SJMP      ??zclSampleSw_ProcessIncomingMsg_5
-//  534   {
-//  535 #ifdef ZCL_READ
-//  536     case ZCL_CMD_READ_RSP:
-//  537       zclSampleSw_ProcessInReadRspCmd( pInMsg );
+        JNZ       $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_5 & 0xFFFF
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_6 & 0xFFFF
+//  540   {
+//  541 #ifdef ZCL_READ
+//  542     case ZCL_CMD_READ_RSP:
+//  543       zclSampleSw_ProcessInReadRspCmd( pInMsg );
 ??zclSampleSw_ProcessIncomingMsg_0:
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_0:
+        LCALL     ?Subroutine5 & 0xFFFF
+??CrossCallReturnLabel_2:
         MOVX      A,@DPTR
         MOV       R1,A
         MOV       A,R0
         CLR       C
         SUBB      A,R1
-        JNC       ??zclSampleSw_ProcessIncomingMsg_5
+        JC        $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_6 & 0xFFFF
         INC       R0
-        SJMP      ??CrossCallReturnLabel_0
-//  538       break;
-//  539 #endif
-//  540 #ifdef ZCL_WRITE
-//  541     case ZCL_CMD_WRITE_RSP:
-//  542       zclSampleSw_ProcessInWriteRspCmd( pInMsg );
+        SJMP      ??CrossCallReturnLabel_2
+//  544       break;
+//  545 #endif
+//  546 #ifdef ZCL_WRITE
+//  547     case ZCL_CMD_WRITE_RSP:
+//  548       zclSampleSw_ProcessInWriteRspCmd( pInMsg );
 ??zclSampleSw_ProcessIncomingMsg_1:
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_1:
+        LCALL     ?Subroutine5 & 0xFFFF
+??CrossCallReturnLabel_3:
         MOVX      A,@DPTR
         MOV       R1,A
         MOV       A,R0
         CLR       C
         SUBB      A,R1
-        JNC       ??zclSampleSw_ProcessIncomingMsg_5
+        JC        $+5
+        LJMP      ??zclSampleSw_ProcessIncomingMsg_6 & 0xFFFF
         INC       R0
-        SJMP      ??CrossCallReturnLabel_1
-//  543       break;
-//  544 #endif
-//  545 #ifdef ZCL_REPORT
-//  546     // See ZCL Test Applicaiton (zcl_testapp.c) for sample code on Attribute Reporting
-//  547     case ZCL_CMD_CONFIG_REPORT:
-//  548       //zclSampleSw_ProcessInConfigReportCmd( pInMsg );
+        SJMP      ??CrossCallReturnLabel_3
 //  549       break;
-//  550 
-//  551     case ZCL_CMD_CONFIG_REPORT_RSP:
-//  552       //zclSampleSw_ProcessInConfigReportRspCmd( pInMsg );
-//  553       break;
-//  554 
-//  555     case ZCL_CMD_READ_REPORT_CFG:
-//  556       //zclSampleSw_ProcessInReadReportCfgCmd( pInMsg );
-//  557       break;
-//  558 
-//  559     case ZCL_CMD_READ_REPORT_CFG_RSP:
-//  560       //zclSampleSw_ProcessInReadReportCfgRspCmd( pInMsg );
-//  561       break;
-//  562 
-//  563     case ZCL_CMD_REPORT:
-//  564       //zclSampleSw_ProcessInReportCmd( pInMsg );
-//  565       break;
-//  566 #endif
-//  567     case ZCL_CMD_DEFAULT_RSP:
-//  568       zclSampleSw_ProcessInDefaultRspCmd( pInMsg );
-//  569       break;
-//  570 #ifdef ZCL_DISCOVER
-//  571     case ZCL_CMD_DISCOVER_CMDS_RECEIVED_RSP:
-//  572       zclSampleSw_ProcessInDiscCmdsRspCmd( pInMsg );
-??zclSampleSw_ProcessIncomingMsg_3:
+//  550 #endif
+//  551 #ifdef ZCL_REPORT
+//  552     // See ZCL Test Applicaiton (zcl_testapp.c) for sample code on Attribute Reporting
+//  553     case ZCL_CMD_CONFIG_REPORT:
+//  554       //zclSampleSw_ProcessInConfigReportCmd( pInMsg );
+//  555       break;
+//  556 
+//  557     case ZCL_CMD_CONFIG_REPORT_RSP:
+//  558       //zclSampleSw_ProcessInConfigReportRspCmd( pInMsg );
+//  559       break;
+//  560 
+//  561     case ZCL_CMD_READ_REPORT_CFG:
+//  562       //zclSampleSw_ProcessInReadReportCfgCmd( pInMsg );
+//  563       break;
+//  564 
+//  565     case ZCL_CMD_READ_REPORT_CFG_RSP:
+//  566       //zclSampleSw_ProcessInReadReportCfgRspCmd( pInMsg );
+//  567       break;
+//  568 
+//  569     case ZCL_CMD_REPORT:
+//  570       zclSampleSw_ProcessInReportCmd( pInMsg );
+??zclSampleSw_ProcessIncomingMsg_2:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V3,A
+        MOV       A,R2
+        ADD       A,#0x13
+        MOV       DPL,A
+        CLR       A
+        ADDC      A,R3
+        MOV       DPH,A
+        MOVX      A,@DPTR
+        MOV       ?V1,A
+        MOV       DPTR,#SourceAddr
+        MOV       A,?V2
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,?V3
+        MOVX      @DPTR,A
+        MOV       DPL,R0
+        MOV       DPH,R1
+        LCALL     ?Subroutine6 & 0xFFFF
+??CrossCallReturnLabel_4:
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        LCALL     ?Subroutine6 & 0xFFFF
+??CrossCallReturnLabel_5:
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        ; Setup parameters for call to function printf
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant "0x%04X">` & 0xff
+        MOV       R3,#(`?<Constant "0x%04X">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Setup parameters for call to function printf
+        MOV       A,?V1
+        MOV       ?V2,A
+        MOV       ?V3,#0x0
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant " %d">` & 0xff
+        MOV       R3,#(`?<Constant " %d">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Setup parameters for call to function printf
+        MOV       ?V1,#0x0
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant " %d\\n">` & 0xff
+        MOV       R3,#(`?<Constant " %d\\n">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  571       break;
+        SJMP      ??zclSampleSw_ProcessIncomingMsg_6
+//  572 #endif
+//  573     case ZCL_CMD_DEFAULT_RSP:
+//  574       zclSampleSw_ProcessInDefaultRspCmd( pInMsg );
+//  575       break;
+//  576 #ifdef ZCL_DISCOVER
+//  577     case ZCL_CMD_DISCOVER_CMDS_RECEIVED_RSP:
+//  578       zclSampleSw_ProcessInDiscCmdsRspCmd( pInMsg );
+??zclSampleSw_ProcessIncomingMsg_4:
         ; Setup parameters for call to function zclSampleSw_ProcessInDiscCmdsRspCmd
-//  573       break;
-//  574 
-//  575     case ZCL_CMD_DISCOVER_CMDS_GEN_RSP:
-//  576       zclSampleSw_ProcessInDiscCmdsRspCmd( pInMsg );
+//  579       break;
+//  580 
+//  581     case ZCL_CMD_DISCOVER_CMDS_GEN_RSP:
+//  582       zclSampleSw_ProcessInDiscCmdsRspCmd( pInMsg );
         ; Setup parameters for call to function zclSampleSw_ProcessInDiscCmdsRspCmd
         LCALL     `??zclSampleSw_ProcessInDiscCmdsRspCmd::?relay`; Banked call to: zclSampleSw_ProcessInDiscCmdsRspCmd
-//  577       break;
-        SJMP      ??zclSampleSw_ProcessIncomingMsg_5
-//  578 
-//  579     case ZCL_CMD_DISCOVER_ATTRS_RSP:
-//  580       zclSampleSw_ProcessInDiscAttrsRspCmd( pInMsg );
-??zclSampleSw_ProcessIncomingMsg_2:
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_5:
-        MOV       DPL,R0
-        MOV       DPH,R1
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R3,A
-        MOV       A,R2
-        CLR       C
-        SUBB      A,R3
-        JNC       ??zclSampleSw_ProcessIncomingMsg_5
-        INC       R2
-        SJMP      ??CrossCallReturnLabel_5
-//  581       break;
-//  582 
-//  583     case ZCL_CMD_DISCOVER_ATTRS_EXT_RSP:
-//  584       zclSampleSw_ProcessInDiscAttrsExtRspCmd( pInMsg );
-??zclSampleSw_ProcessIncomingMsg_4:
-        LCALL     ?Subroutine2 & 0xFFFF
-//  585       break;
-//  586 #endif
-//  587     default:
-//  588       break;
-//  589   }
-??CrossCallReturnLabel_6:
+//  583       break;
         SJMP      ??zclSampleSw_ProcessIncomingMsg_6
-??zclSampleSw_ProcessIncomingMsg_7:
-        INC       R2
-??zclSampleSw_ProcessIncomingMsg_6:
+//  584 
+//  585     case ZCL_CMD_DISCOVER_ATTRS_RSP:
+//  586       zclSampleSw_ProcessInDiscAttrsRspCmd( pInMsg );
+??zclSampleSw_ProcessIncomingMsg_3:
+        LCALL     ?Subroutine4 & 0xFFFF
+??CrossCallReturnLabel_7:
         MOV       DPL,R0
         MOV       DPH,R1
         INC       DPTR
@@ -2119,10 +2343,37 @@ zclSampleSw_ProcessIncomingMsg:
         MOV       A,R2
         CLR       C
         SUBB      A,R3
-        JC        ??zclSampleSw_ProcessIncomingMsg_7
-//  590 
-//  591   if ( pInMsg->attrCmd )
+        JNC       ??zclSampleSw_ProcessIncomingMsg_6
+        INC       R2
+        SJMP      ??CrossCallReturnLabel_7
+//  587       break;
+//  588 
+//  589     case ZCL_CMD_DISCOVER_ATTRS_EXT_RSP:
+//  590       zclSampleSw_ProcessInDiscAttrsExtRspCmd( pInMsg );
 ??zclSampleSw_ProcessIncomingMsg_5:
+        LCALL     ?Subroutine4 & 0xFFFF
+//  591       break;
+//  592 #endif
+//  593     default:
+//  594       break;
+//  595   }
+??CrossCallReturnLabel_8:
+        SJMP      ??zclSampleSw_ProcessIncomingMsg_7
+??zclSampleSw_ProcessIncomingMsg_8:
+        INC       R2
+??zclSampleSw_ProcessIncomingMsg_7:
+        MOV       DPL,R0
+        MOV       DPH,R1
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        MOV       A,R2
+        CLR       C
+        SUBB      A,R3
+        JC        ??zclSampleSw_ProcessIncomingMsg_8
+//  596 
+//  597   if ( pInMsg->attrCmd )
+??zclSampleSw_ProcessIncomingMsg_6:
         MOV       DPL,R6
         MOV       DPH,R7
         MOVX      A,@DPTR
@@ -2132,23 +2383,26 @@ zclSampleSw_ProcessIncomingMsg:
         MOV       R3,A
         MOV       A,R2
         ORL       A,R3
-        JZ        ??zclSampleSw_ProcessIncomingMsg_8
-//  592     osal_mem_free( pInMsg->attrCmd );
+        JZ        ??zclSampleSw_ProcessIncomingMsg_9
+//  598     osal_mem_free( pInMsg->attrCmd );
         ; Setup parameters for call to function osal_mem_free
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
-//  593 }
-??zclSampleSw_ProcessIncomingMsg_8:
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock10
+//  599 }
+??zclSampleSw_ProcessIncomingMsg_9:
+        LJMP      ?Subroutine1 & 0xFFFF
+          CFI EndBlock cfiBlock12
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiCond11 Using cfiCommon0
+?Subroutine6:
+          CFI Block cfiCond13 Using cfiCommon0
           CFI Function zclSampleSw_ProcessIncomingMsg
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI Conditional ??CrossCallReturnLabel_4
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
@@ -2156,24 +2410,77 @@ zclSampleSw_ProcessIncomingMsg:
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond12 Using cfiCommon0
-          CFI (cfiCond12) Function zclSampleSw_ProcessIncomingMsg
-          CFI (cfiCond12) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond12) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond12) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond12) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond12) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond12) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond12) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond12) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond12) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond12) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond12) CFA_SP SP+-2
-          CFI (cfiCond12) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker13 Using cfiCommon1
-          CFI (cfiPicker13) NoFunction
-          CFI (cfiPicker13) Picker
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond14 Using cfiCommon0
+          CFI (cfiCond14) Function zclSampleSw_ProcessIncomingMsg
+          CFI (cfiCond14) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond14) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond14) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond14) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond14) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond14) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond14) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond14) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond14) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond14) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond14) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond14) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond14) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond14) CFA_SP SP+-2
+          CFI (cfiCond14) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiPicker15 Using cfiCommon1
+          CFI (cfiPicker15) NoFunction
+          CFI (cfiPicker15) Picker
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPH,A
+        MOV       DPL,R0
+        RET
+          CFI EndBlock cfiCond13
+          CFI EndBlock cfiCond14
+          CFI EndBlock cfiPicker15
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine5:
+          CFI Block cfiCond16 Using cfiCommon0
+          CFI Function zclSampleSw_ProcessIncomingMsg
+          CFI Conditional ??CrossCallReturnLabel_2
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI CFA_SP SP+-2
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond17 Using cfiCommon0
+          CFI (cfiCond17) Function zclSampleSw_ProcessIncomingMsg
+          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond17) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond17) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond17) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond17) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond17) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond17) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond17) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond17) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond17) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond17) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond17) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond17) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond17) CFA_SP SP+-2
+          CFI (cfiCond17) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiPicker18 Using cfiCommon1
+          CFI (cfiPicker18) NoFunction
+          CFI (cfiPicker18) Picker
         MOV       DPL,R0
         MOV       DPH,R1
         MOVX      A,@DPTR
@@ -2184,18 +2491,21 @@ zclSampleSw_ProcessIncomingMsg:
         MOV       DPH,A
         MOV       R0,#0x0
         RET
-          CFI EndBlock cfiCond11
-          CFI EndBlock cfiCond12
-          CFI EndBlock cfiPicker13
+          CFI EndBlock cfiCond16
+          CFI EndBlock cfiCond17
+          CFI EndBlock cfiPicker18
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond14 Using cfiCommon0
+?Subroutine4:
+          CFI Block cfiCond19 Using cfiCommon0
           CFI Function zclSampleSw_ProcessIncomingMsg
-          CFI Conditional ??CrossCallReturnLabel_5
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI Conditional ??CrossCallReturnLabel_7
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
@@ -2203,71 +2513,80 @@ zclSampleSw_ProcessIncomingMsg:
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond15 Using cfiCommon0
-          CFI (cfiCond15) Function zclSampleSw_ProcessIncomingMsg
-          CFI (cfiCond15) Conditional ??CrossCallReturnLabel_6
-          CFI (cfiCond15) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond15) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond15) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond15) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond15) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond15) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond15) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond15) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond15) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond15) CFA_SP SP+-2
-          CFI (cfiCond15) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker16 Using cfiCommon1
-          CFI (cfiPicker16) NoFunction
-          CFI (cfiPicker16) Picker
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond20 Using cfiCommon0
+          CFI (cfiCond20) Function zclSampleSw_ProcessIncomingMsg
+          CFI (cfiCond20) Conditional ??CrossCallReturnLabel_8
+          CFI (cfiCond20) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond20) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond20) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond20) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond20) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond20) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond20) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond20) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond20) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond20) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond20) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond20) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond20) CFA_SP SP+-2
+          CFI (cfiCond20) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiPicker21 Using cfiCommon1
+          CFI (cfiPicker21) NoFunction
+          CFI (cfiPicker21) Picker
         MOV       DPL,R0
         MOV       DPH,R1
-          CFI EndBlock cfiCond14
-          CFI EndBlock cfiCond15
-          CFI EndBlock cfiPicker16
-        REQUIRE ??Subroutine5_0
-        ; // Fall through to label ??Subroutine5_0
+          CFI EndBlock cfiCond19
+          CFI EndBlock cfiCond20
+          CFI EndBlock cfiPicker21
+        REQUIRE ??Subroutine7_0
+        ; // Fall through to label ??Subroutine7_0
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine5_0:
-          CFI Block cfiCond17 Using cfiCommon0
+??Subroutine7_0:
+          CFI Block cfiCond22 Using cfiCommon0
           CFI Function zclSampleSw_ProcessInDiscCmdsRspCmd
-          CFI Conditional ??CrossCallReturnLabel_4
+          CFI Conditional ??CrossCallReturnLabel_6
           CFI DPL0 Frame(CFA_SP, 4)
           CFI DPH0 Frame(CFA_SP, 5)
           CFI CFA_SP SP+-7
-          CFI Block cfiCond18 Using cfiCommon0
-          CFI (cfiCond18) Function zclSampleSw_ProcessIncomingMsg
-          CFI (cfiCond18) Conditional ??CrossCallReturnLabel_5
-          CFI (cfiCond18) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond18) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond18) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond18) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond18) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond18) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond18) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond18) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond18) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond18) CFA_SP SP+-2
-          CFI (cfiCond18) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond19 Using cfiCommon0
-          CFI (cfiCond19) Function zclSampleSw_ProcessIncomingMsg
-          CFI (cfiCond19) Conditional ??CrossCallReturnLabel_6
-          CFI (cfiCond19) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond19) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond19) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond19) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond19) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond19) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond19) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond19) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond19) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond19) CFA_SP SP+-2
-          CFI (cfiCond19) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker20 Using cfiCommon1
-          CFI (cfiPicker20) NoFunction
-          CFI (cfiPicker20) Picker
+          CFI Block cfiCond23 Using cfiCommon0
+          CFI (cfiCond23) Function zclSampleSw_ProcessIncomingMsg
+          CFI (cfiCond23) Conditional ??CrossCallReturnLabel_7
+          CFI (cfiCond23) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond23) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond23) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond23) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond23) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond23) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond23) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond23) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond23) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond23) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond23) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond23) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond23) CFA_SP SP+-2
+          CFI (cfiCond23) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond24 Using cfiCommon0
+          CFI (cfiCond24) Function zclSampleSw_ProcessIncomingMsg
+          CFI (cfiCond24) Conditional ??CrossCallReturnLabel_8
+          CFI (cfiCond24) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond24) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond24) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond24) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond24) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond24) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond24) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond24) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond24) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond24) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond24) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond24) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond24) CFA_SP SP+-2
+          CFI (cfiCond24) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiPicker25 Using cfiCommon1
+          CFI (cfiPicker25) NoFunction
+          CFI (cfiPicker25) Picker
         MOVX      A,@DPTR
         MOV       R0,A
         INC       DPTR
@@ -2275,99 +2594,99 @@ zclSampleSw_ProcessIncomingMsg:
         MOV       R1,A
         MOV       R2,#0x0
         RET
-          CFI EndBlock cfiCond17
-          CFI EndBlock cfiCond18
-          CFI EndBlock cfiCond19
-          CFI EndBlock cfiPicker20
-//  594 
-//  595 #ifdef ZCL_READ
-//  596 /*********************************************************************
-//  597  * @fn      zclSampleSw_ProcessInReadRspCmd
-//  598  *
-//  599  * @brief   Process the "Profile" Read Response Command
-//  600  *
-//  601  * @param   pInMsg - incoming message to process
-//  602  *
-//  603  * @return  none
-//  604  */
-//  605 static uint8 zclSampleSw_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
-//  606 {
-//  607   zclReadRspCmd_t *readRspCmd;
-//  608   uint8 i;
-//  609 
-//  610   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
-//  611   for (i = 0; i < readRspCmd->numAttr; i++)
-//  612   {
-//  613     // Notify the originator of the results of the original read attributes
-//  614     // attempt and, for each successfull request, the value of the requested
-//  615     // attribute
-//  616   }
-//  617 
-//  618   return TRUE;
-//  619 }
-//  620 #endif // ZCL_READ
-//  621 
-//  622 #ifdef ZCL_WRITE
-//  623 /*********************************************************************
-//  624  * @fn      zclSampleSw_ProcessInWriteRspCmd
-//  625  *
-//  626  * @brief   Process the "Profile" Write Response Command
-//  627  *
-//  628  * @param   pInMsg - incoming message to process
-//  629  *
-//  630  * @return  none
-//  631  */
-//  632 static uint8 zclSampleSw_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
-//  633 {
-//  634   zclWriteRspCmd_t *writeRspCmd;
-//  635   uint8 i;
-//  636 
-//  637   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
-//  638   for (i = 0; i < writeRspCmd->numAttr; i++)
-//  639   {
-//  640     // Notify the device of the results of the its original write attributes
-//  641     // command.
-//  642   }
-//  643 
-//  644   return TRUE;
-//  645 }
-//  646 #endif // ZCL_WRITE
-//  647 
-//  648 /*********************************************************************
-//  649  * @fn      zclSampleSw_ProcessInDefaultRspCmd
-//  650  *
-//  651  * @brief   Process the "Profile" Default Response Command
-//  652  *
-//  653  * @param   pInMsg - incoming message to process
-//  654  *
-//  655  * @return  none
-//  656  */
-//  657 static uint8 zclSampleSw_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
-//  658 {
-//  659   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
-//  660   // Device is notified of the Default Response command.
-//  661   (void)pInMsg;
-//  662   return TRUE;
-//  663 }
-//  664 
-//  665 #ifdef ZCL_DISCOVER
-//  666 /*********************************************************************
-//  667  * @fn      zclSampleSw_ProcessInDiscCmdsRspCmd
-//  668  *
-//  669  * @brief   Process the Discover Commands Response Command
-//  670  *
-//  671  * @param   pInMsg - incoming message to process
-//  672  *
-//  673  * @return  none
-//  674  */
+          CFI EndBlock cfiCond22
+          CFI EndBlock cfiCond23
+          CFI EndBlock cfiCond24
+          CFI EndBlock cfiPicker25
+//  600 
+//  601 #ifdef ZCL_READ
+//  602 /*********************************************************************
+//  603  * @fn      zclSampleSw_ProcessInReadRspCmd
+//  604  *
+//  605  * @brief   Process the "Profile" Read Response Command
+//  606  *
+//  607  * @param   pInMsg - incoming message to process
+//  608  *
+//  609  * @return  none
+//  610  */
+//  611 static uint8 zclSampleSw_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
+//  612 {
+//  613   zclReadRspCmd_t *readRspCmd;
+//  614   uint8 i;
+//  615 
+//  616   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
+//  617   for (i = 0; i < readRspCmd->numAttr; i++)
+//  618   {
+//  619     // Notify the originator of the results of the original read attributes
+//  620     // attempt and, for each successfull request, the value of the requested
+//  621     // attribute
+//  622   }
+//  623 
+//  624   return TRUE;
+//  625 }
+//  626 #endif // ZCL_READ
+//  627 
+//  628 #ifdef ZCL_WRITE
+//  629 /*********************************************************************
+//  630  * @fn      zclSampleSw_ProcessInWriteRspCmd
+//  631  *
+//  632  * @brief   Process the "Profile" Write Response Command
+//  633  *
+//  634  * @param   pInMsg - incoming message to process
+//  635  *
+//  636  * @return  none
+//  637  */
+//  638 static uint8 zclSampleSw_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
+//  639 {
+//  640   zclWriteRspCmd_t *writeRspCmd;
+//  641   uint8 i;
+//  642 
+//  643   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
+//  644   for (i = 0; i < writeRspCmd->numAttr; i++)
+//  645   {
+//  646     // Notify the device of the results of the its original write attributes
+//  647     // command.
+//  648   }
+//  649 
+//  650   return TRUE;
+//  651 }
+//  652 #endif // ZCL_WRITE
+//  653 
+//  654 /*********************************************************************
+//  655  * @fn      zclSampleSw_ProcessInDefaultRspCmd
+//  656  *
+//  657  * @brief   Process the "Profile" Default Response Command
+//  658  *
+//  659  * @param   pInMsg - incoming message to process
+//  660  *
+//  661  * @return  none
+//  662  */
+//  663 static uint8 zclSampleSw_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
+//  664 {
+//  665   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
+//  666   // Device is notified of the Default Response command.
+//  667   (void)pInMsg;
+//  668   return TRUE;
+//  669 }
+//  670 
+//  671 #ifdef ZCL_DISCOVER
+//  672 /*********************************************************************
+//  673  * @fn      zclSampleSw_ProcessInDiscCmdsRspCmd
+//  674  *
+//  675  * @brief   Process the Discover Commands Response Command
+//  676  *
+//  677  * @param   pInMsg - incoming message to process
+//  678  *
+//  679  * @return  none
+//  680  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  675 static uint8 zclSampleSw_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
+//  681 static uint8 zclSampleSw_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
 zclSampleSw_ProcessInDiscCmdsRspCmd:
-          CFI Block cfiBlock21 Using cfiCommon0
+          CFI Block cfiBlock26 Using cfiCommon0
           CFI Function zclSampleSw_ProcessInDiscCmdsRspCmd
         CODE
-//  676 {
+//  682 {
         PUSH      DPL
           CFI DPL0 Frame(CFA_SP, 4)
           CFI CFA_SP SP+-4
@@ -2376,19 +2695,19 @@ zclSampleSw_ProcessInDiscCmdsRspCmd:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  677   zclDiscoverCmdsCmdRsp_t *discoverRspCmd;
-//  678   uint8 i;
-//  679 
-//  680   discoverRspCmd = (zclDiscoverCmdsCmdRsp_t *)pInMsg->attrCmd;
+//  683   zclDiscoverCmdsCmdRsp_t *discoverRspCmd;
+//  684   uint8 i;
+//  685 
+//  686   discoverRspCmd = (zclDiscoverCmdsCmdRsp_t *)pInMsg->attrCmd;
         MOV       A,R2
         ADD       A,#0x17
         MOV       DPL,A
         CLR       A
         ADDC      A,R3
         MOV       DPH,A
-        LCALL     ??Subroutine5_0 & 0xFFFF
-//  681   for ( i = 0; i < discoverRspCmd->numCmd; i++ )
-??CrossCallReturnLabel_4:
+        LCALL     ??Subroutine7_0 & 0xFFFF
+//  687   for ( i = 0; i < discoverRspCmd->numCmd; i++ )
+??CrossCallReturnLabel_6:
         SJMP      ??zclSampleSw_ProcessInDiscCmdsRspCmd_0
 ??zclSampleSw_ProcessInDiscCmdsRspCmd_1:
         INC       R2
@@ -2403,31 +2722,20 @@ zclSampleSw_ProcessInDiscCmdsRspCmd:
         CLR       C
         SUBB      A,R3
         JC        ??zclSampleSw_ProcessInDiscCmdsRspCmd_1
-//  682   {
-//  683     // Device is notified of the result of its attribute discovery command.
-//  684   }
-//  685 
-//  686   return TRUE;
+//  688   {
+//  689     // Device is notified of the result of its attribute discovery command.
+//  690   }
+//  691 
+//  692   return TRUE;
         MOV       R1,#0x1
-        LJMP      ?Subroutine1 & 0xFFFF
-//  687 }
-          CFI EndBlock cfiBlock21
+        LJMP      ?Subroutine2 & 0xFFFF
+//  693 }
+          CFI EndBlock cfiBlock26
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for zclSampleSw_OnOffSwitchType>`:
         DATA8
         DB 1
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for sampleSw_TestEp>`:
-        DATA8
-        DB 8
-        DB 0
-        DATA16
-        DW zclSampleSw_TaskID
-        DW 0H
-        DATA8
-        DB 0
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for zclSampleSw_NwkState>`:
@@ -2447,11 +2755,6 @@ zclSampleSw_ProcessInDiscCmdsRspCmd:
         DW 0H
         DW 0H
 
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA32
-__Constant_1f4:
-        DD 500
-
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??zclSampleSw_Init::?relay`:
         CODE
@@ -2465,6 +2768,13 @@ __Constant_1f4:
         LCALL   ?BDISPATCH
         DATA24
         DC24    zclSampleSw_event_loop
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclSampleSw_HandleKeys::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclSampleSw_HandleKeys
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??zclSampleSw_ProcessCommissioningStatus::?rela`:
@@ -2501,144 +2811,192 @@ __Constant_1f4:
         DATA24
         DC24    zclSampleSw_ProcessInDiscCmdsRspCmd
 
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "init successful\\r\\n">`:
+        DB "init successful\015\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "0x%04X">`:
+        DB "0x%04X"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA32
+`?<Constant " %d">`:
+        DB " %d"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant " %d\\n">`:
+        DB " %d\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA32
+__Constant_1f4:
+        DD 500
+
         END
-//  688 
-//  689 /*********************************************************************
-//  690  * @fn      zclSampleSw_ProcessInDiscAttrsRspCmd
-//  691  *
-//  692  * @brief   Process the "Profile" Discover Attributes Response Command
-//  693  *
-//  694  * @param   pInMsg - incoming message to process
-//  695  *
-//  696  * @return  none
-//  697  */
-//  698 static uint8 zclSampleSw_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
-//  699 {
-//  700   zclDiscoverAttrsRspCmd_t *discoverRspCmd;
-//  701   uint8 i;
-//  702 
-//  703   discoverRspCmd = (zclDiscoverAttrsRspCmd_t *)pInMsg->attrCmd;
-//  704   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
-//  705   {
-//  706     // Device is notified of the result of its attribute discovery command.
-//  707   }
+//  694 
+//  695 /*********************************************************************
+//  696  * @fn      zclSampleSw_ProcessInDiscAttrsRspCmd
+//  697  *
+//  698  * @brief   Process the "Profile" Discover Attributes Response Command
+//  699  *
+//  700  * @param   pInMsg - incoming message to process
+//  701  *
+//  702  * @return  none
+//  703  */
+//  704 static uint8 zclSampleSw_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
+//  705 {
+//  706   zclDiscoverAttrsRspCmd_t *discoverRspCmd;
+//  707   uint8 i;
 //  708 
-//  709   return TRUE;
-//  710 }
-//  711 
-//  712 /*********************************************************************
-//  713  * @fn      zclSampleSw_ProcessInDiscAttrsExtRspCmd
-//  714  *
-//  715  * @brief   Process the "Profile" Discover Attributes Extended Response Command
-//  716  *
-//  717  * @param   pInMsg - incoming message to process
-//  718  *
-//  719  * @return  none
-//  720  */
-//  721 static uint8 zclSampleSw_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
-//  722 {
-//  723   zclDiscoverAttrsExtRsp_t *discoverRspCmd;
-//  724   uint8 i;
-//  725 
-//  726   discoverRspCmd = (zclDiscoverAttrsExtRsp_t *)pInMsg->attrCmd;
-//  727   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
-//  728   {
-//  729     // Device is notified of the result of its attribute discovery command.
-//  730   }
+//  709   discoverRspCmd = (zclDiscoverAttrsRspCmd_t *)pInMsg->attrCmd;
+//  710   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
+//  711   {
+//  712     // Device is notified of the result of its attribute discovery command.
+//  713   }
+//  714 
+//  715   return TRUE;
+//  716 }
+//  717 
+//  718 /*********************************************************************
+//  719  * @fn      zclSampleSw_ProcessInDiscAttrsExtRspCmd
+//  720  *
+//  721  * @brief   Process the "Profile" Discover Attributes Extended Response Command
+//  722  *
+//  723  * @param   pInMsg - incoming message to process
+//  724  *
+//  725  * @return  none
+//  726  */
+//  727 static uint8 zclSampleSw_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
+//  728 {
+//  729   zclDiscoverAttrsExtRsp_t *discoverRspCmd;
+//  730   uint8 i;
 //  731 
-//  732   return TRUE;
-//  733 }
-//  734 #endif // ZCL_DISCOVER
-//  735 
-//  736 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
-//  737 /*********************************************************************
-//  738  * @fn      zclSampleSw_ProcessOTAMsgs
-//  739  *
-//  740  * @brief   Called to process callbacks from the ZCL OTA.
-//  741  *
-//  742  * @param   none
-//  743  *
-//  744  * @return  none
-//  745  */
-//  746 static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg )
-//  747 {
-//  748   uint8 RxOnIdle;
-//  749 
-//  750   switch(pMsg->ota_event)
-//  751   {
-//  752   case ZCL_OTA_START_CALLBACK:
-//  753     if (pMsg->hdr.status == ZSuccess)
-//  754     {
-//  755       // Speed up the poll rate
-//  756       RxOnIdle = TRUE;
-//  757       ZMacSetReq( ZMacRxOnIdle, &RxOnIdle );
-//  758       NLME_SetPollRate( 2000 );
-//  759     }
-//  760     break;
-//  761 
-//  762   case ZCL_OTA_DL_COMPLETE_CALLBACK:
-//  763     if (pMsg->hdr.status == ZSuccess)
-//  764     {
-//  765       // Reset the CRC Shadow and reboot.  The bootloader will see the
-//  766       // CRC shadow has been cleared and switch to the new image
-//  767       HalOTAInvRC();
-//  768       SystemReset();
-//  769     }
-//  770     else
-//  771     {
-//  772 #if (ZG_BUILD_ENDDEVICE_TYPE)    
-//  773       // slow the poll rate back down.
-//  774       RxOnIdle = FALSE;
-//  775       ZMacSetReq( ZMacRxOnIdle, &RxOnIdle );
-//  776       NLME_SetPollRate(DEVICE_POLL_RATE);
-//  777 #endif
-//  778     }
-//  779     break;
-//  780 
-//  781   default:
-//  782     break;
-//  783   }
-//  784 }
-//  785 #endif // defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  732   discoverRspCmd = (zclDiscoverAttrsExtRsp_t *)pInMsg->attrCmd;
+//  733   for ( i = 0; i < discoverRspCmd->numAttr; i++ )
+//  734   {
+//  735     // Device is notified of the result of its attribute discovery command.
+//  736   }
+//  737 
+//  738   return TRUE;
+//  739 }
+//  740 #endif // ZCL_DISCOVER
+//  741 
+//  742 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  743 /*********************************************************************
+//  744  * @fn      zclSampleSw_ProcessOTAMsgs
+//  745  *
+//  746  * @brief   Called to process callbacks from the ZCL OTA.
+//  747  *
+//  748  * @param   none
+//  749  *
+//  750  * @return  none
+//  751  */
+//  752 static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg )
+//  753 {
+//  754   uint8 RxOnIdle;
+//  755 
+//  756   switch(pMsg->ota_event)
+//  757   {
+//  758   case ZCL_OTA_START_CALLBACK:
+//  759     if (pMsg->hdr.status == ZSuccess)
+//  760     {
+//  761       // Speed up the poll rate
+//  762       RxOnIdle = TRUE;
+//  763       ZMacSetReq( ZMacRxOnIdle, &RxOnIdle );
+//  764       NLME_SetPollRate( 2000 );
+//  765     }
+//  766     break;
+//  767 
+//  768   case ZCL_OTA_DL_COMPLETE_CALLBACK:
+//  769     if (pMsg->hdr.status == ZSuccess)
+//  770     {
+//  771       // Reset the CRC Shadow and reboot.  The bootloader will see the
+//  772       // CRC shadow has been cleared and switch to the new image
+//  773       HalOTAInvRC();
+//  774       SystemReset();
+//  775     }
+//  776     else
+//  777     {
+//  778 #if (ZG_BUILD_ENDDEVICE_TYPE)    
+//  779       // slow the poll rate back down.
+//  780       RxOnIdle = FALSE;
+//  781       ZMacSetReq( ZMacRxOnIdle, &RxOnIdle );
+//  782       NLME_SetPollRate(DEVICE_POLL_RATE);
+//  783 #endif
+//  784     }
+//  785     break;
 //  786 
-//  787 /****************************************************************************
-//  788 ****************************************************************************/
-//  789 static void Send_Test( void )
-//  790 {
-//  791   zclReportCmd_t *pReportCmd;
-//  792   
-//  793   pReportCmd = osal_mem_alloc( sizeof(zclReportCmd_t) + sizeof(zclReport_t) );
-//  794   
-//  795   if ( pReportCmd != NULL )
-//  796   {
-//  797     pReportCmd->numAttr = 1;
-//  798     pReportCmd->attrList[0].attrID = ATTRID_CLUSTER_REVISION;
-//  799     pReportCmd->attrList[0].dataType = ZCL_DATATYPE_UINT16;
-//  800     pReportCmd->attrList[0].attrData = (void *)(&zclSampleSw_clusterRevision_all);
-//  801     zcl_SendReportCmd(SAMPLESW_ENDPOINT, 
-//  802                       &zclSampleSw_DstAddr,
-//  803                       ZCL_CLUSTER_ID_GEN_ON_OFF,
-//  804                       pReportCmd, ZCL_FRAME_SERVER_CLIENT_DIR, TRUE, zclSampleSwSeqNum++);
-//  805   }
-//  806 
-//  807   osal_mem_free( pReportCmd );  
-//  808 
-//  809 }
-//  810 
-//  811 
-//  812 
+//  787   default:
+//  788     break;
+//  789   }
+//  790 }
+//  791 #endif // defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
+//  792 
+//  793 /****************************************************************************
+//  794 ****************************************************************************/
+//  795 static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
+//  796 {
+//  797 //  HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
+//  798   
+//  799   zclReportCmd_t *pInTempSensorReport;
+//  800 
+//  801   uint8 On_Off_State;
+//  802   uint16 Dev_Nwk_ID;
+//  803   uint8 End_Point;
+//  804   
+//  805   Dev_Nwk_ID = pInMsg->srcAddr.addr.shortAddr;
+//  806   End_Point = pInMsg->srcAddr.endPoint;
+//  807   SourceAddr = Dev_Nwk_ID;
+//  808     
+//  809   pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
+//  810   
+//  811   On_Off_State = pInTempSensorReport->attrList[0].attrData[0];
+//  812 //  zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[1], pInTempSensorReport->attrList[0].attrData[2]);
+//  813 
+//  814   printf( "0x%04X", Dev_Nwk_ID );
+//  815   printf( " %d", End_Point);
+//  816   printf( " %d\n", On_Off_State );
+//  817 }
+//  818 
+//  819 static void Send_To_SW1( void )
+//  820 {
+//  821   SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+//  822   SW_DstAddr.endPoint = SW1_ENDPOINT;
+//  823   SW_DstAddr.addr.shortAddr = SourceAddr; 
+//  824   zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+//  825 }
+//  826 
+//  827 static void Send_To_SW2( void )
+//  828 {
+//  829   SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+//  830   SW_DstAddr.endPoint = SW2_ENDPOINT;
+//  831   SW_DstAddr.addr.shortAddr = SourceAddr; 
+//  832   zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+//  833 }
+//  834 
+//  835 static void Send_To_SW3( void )
+//  836 {
+//  837   SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+//  838   SW_DstAddr.endPoint = SW3_ENDPOINT;
+//  839   SW_DstAddr.addr.shortAddr = SourceAddr; 
+//  840   zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+//  841 }
 // 
-// 742 bytes in segment BANKED_CODE
-//  42 bytes in segment BANK_RELAYS
-//  27 bytes in segment XDATA_I
-//  27 bytes in segment XDATA_ID
-//   4 bytes in segment XDATA_ROM_C
-//  15 bytes in segment XDATA_Z
+// 985 bytes in segment BANKED_CODE
+//  48 bytes in segment BANK_RELAYS
+//  20 bytes in segment XDATA_I
+//  20 bytes in segment XDATA_ID
+//  38 bytes in segment XDATA_ROM_C
+//  29 bytes in segment XDATA_Z
 // 
-//  69 bytes of CODE     memory
-//   0 bytes of CONST    memory (+ 4 bytes shared)
-// 742 bytes of HUGECODE memory
-//  42 bytes of XDATA    memory
+//  68 bytes of CODE     memory
+//  34 bytes of CONST    memory (+ 4 bytes shared)
+// 985 bytes of HUGECODE memory
+//  49 bytes of XDATA    memory
 //
 //Errors: none
-//Warnings: none
+//Warnings: 1

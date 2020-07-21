@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:21
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:41
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWC135.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW5F89.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_sleep.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -1133,43 +1135,21 @@ halSleep:
         MOV       R0,#?V4
         LCALL     ?UL_SHR
 //  294   if (timeout == 0)
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_0:
+        MOV       A,?V4
+        ORL       A,?V5
+        ORL       A,?V6
+        ORL       A,?V7
         JNZ       ??halSleep_0
 //  295   {
 //  296     timeout = MAC_PwrNextTimeout();
         ; Setup parameters for call to function MAC_PwrNextTimeout
         LCALL     `??MAC_PwrNextTimeout::?relay`; Banked call to: MAC_PwrNextTimeout
-        MOV       ?V4,R2
-        MOV       ?V5,R3
-        MOV       ?V6,R4
-        MOV       ?V7,R5
+        SJMP      ??halSleep_1
 //  297   }
 //  298   else
 //  299   {
 //  300     /* get next MAC timer expiration */
 //  301     macTimeout = MAC_PwrNextTimeout();
-//  302 
-//  303     /* get lesser of two timeouts */
-//  304     if ((macTimeout != 0) && (macTimeout < timeout))
-//  305     {
-//  306       timeout = macTimeout;
-//  307     }
-//  308   }
-//  309 
-//  310   /* HAL_SLEEP_PM2 is entered only if the timeout is zero and
-//  311    * the device is a stimulated device.
-//  312    */
-//  313   halPwrMgtMode = (timeout == 0) ? HAL_SLEEP_DEEP : HAL_SLEEP_TIMER;
-        MOV       A,R2
-        ORL       A,R3
-        ORL       A,R4
-        ORL       A,R5
-        JNZ       ??halSleep_1
-        MOV       DPTR,#halPwrMgtMode
-        MOV       A,#0x3
-        MOVX      @DPTR,A
-        SJMP      ??halSleep_2
 ??halSleep_0:
         ; Setup parameters for call to function MAC_PwrNextTimeout
         LCALL     `??MAC_PwrNextTimeout::?relay`; Banked call to: MAC_PwrNextTimeout
@@ -1177,22 +1157,44 @@ halSleep:
         MOV       ?V1,R3
         MOV       ?V2,R4
         MOV       ?V3,R5
+//  302 
+//  303     /* get lesser of two timeouts */
+//  304     if ((macTimeout != 0) && (macTimeout < timeout))
         MOV       A,R2
         ORL       A,R3
         ORL       A,R4
         ORL       A,R5
-        JZ        ??halSleep_1
+        JZ        ??halSleep_2
         MOV       R0,#?V4
         MOV       R1,#?V0
         LCALL     ?UL_GT
-        JNC       ??halSleep_1
+        JNC       ??halSleep_2
+//  305     {
+//  306       timeout = macTimeout;
+??halSleep_1:
         MOV       ?V4,R2
         MOV       ?V5,R3
         MOV       ?V6,R4
         MOV       ?V7,R5
-??halSleep_1:
+//  307     }
+//  308   }
+//  309 
+//  310   /* HAL_SLEEP_PM2 is entered only if the timeout is zero and
+//  311    * the device is a stimulated device.
+//  312    */
+//  313   halPwrMgtMode = (timeout == 0) ? HAL_SLEEP_DEEP : HAL_SLEEP_TIMER;
+??halSleep_2:
+        MOV       A,?V4
+        ORL       A,?V5
+        ORL       A,?V6
+        ORL       A,?V7
         MOV       DPTR,#halPwrMgtMode
+        JNZ       ??halSleep_3
+        MOV       A,#0x3
+        SJMP      ??halSleep_4
+??halSleep_3:
         MOV       A,#0x2
+??halSleep_4:
         MOVX      @DPTR,A
 //  314 
 //  315   /* DEEP sleep can only be entered when zgPollRate == 0.
@@ -1208,36 +1210,38 @@ halSleep:
         MOV       DPTR,#__Constant_8
         MOV       R0,#?V4
         LCALL     ?UL_GE_X
-        JC        ??halSleep_2
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_1:
+        JC        ??halSleep_5
+        MOV       A,?V4
+        ORL       A,?V5
+        ORL       A,?V6
+        ORL       A,?V7
         JZ        $+5
-        LJMP      ??halSleep_3 & 0xFFFF
+        LJMP      ??halSleep_6 & 0xFFFF
 //  325 #endif
 //  326   {
 //  327     halIntState_t ien0, ien1, ien2;
 //  328 
 //  329     HAL_ASSERT(HAL_INTERRUPTS_ARE_ENABLED());
-??halSleep_2:
+??halSleep_5:
         MOV       C,0xa8.7
-        JC        ??halSleep_4
+        JC        ??halSleep_7
         ; Setup parameters for call to function halAssertHandler
         LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
 //  330     HAL_DISABLE_INTERRUPTS();
-??halSleep_4:
+??halSleep_7:
         CLR       0xa8.7
 //  331 
 //  332     /* always use "deep sleep" to turn off radio VREG on CC2530 */
 //  333     if (halSleepPconValue != 0 && MAC_PwrOffReq(MAC_PWR_SLEEP_DEEP) == MAC_SUCCESS)
         MOV       A,halSleepPconValue
         JNZ       $+5
-        LJMP      ??halSleep_5 & 0xFFFF
+        LJMP      ??halSleep_8 & 0xFFFF
         ; Setup parameters for call to function MAC_PwrOffReq
         MOV       R1,#0x2
         LCALL     `??MAC_PwrOffReq::?relay`; Banked call to: MAC_PwrOffReq
         MOV       A,R1
         JZ        $+5
-        LJMP      ??halSleep_5 & 0xFFFF
+        LJMP      ??halSleep_8 & 0xFFFF
 //  334     {
 //  335       /* The PCON value is not zero. There is no interrupt overriding the 
 //  336        * sleep decision. Also, the radio granted the sleep request.
@@ -1263,7 +1267,7 @@ halSleep:
         MOV       DPTR,#maxSleepLoopTime
         MOV       R0,#?V4
         LCALL     ?UL_GT_X
-        JNC       ??halSleep_6
+        JNC       ??halSleep_9
 //  352       {
 //  353         timeout = maxSleepLoopTime;
         MOV       DPTR,#maxSleepLoopTime
@@ -1275,16 +1279,18 @@ halSleep:
 //  357       {
 //  358         /* enable sleep timer interrupt */
 //  359         if(timeout != 0)
-??halSleep_6:
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_2:
-        JZ        ??halSleep_7
+??halSleep_9:
+        MOV       A,?V4
+        ORL       A,?V5
+        ORL       A,?V6
+        ORL       A,?V7
+        JZ        ??halSleep_10
 //  360         { 
 //  361           if (timeout > HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME ))
         MOV       DPTR,#__Constant_185197
         MOV       R0,#?V4
         LCALL     ?UL_GE_X
-        JNC       ??halSleep_8
+        JNC       ??halSleep_11
 //  362           {
 //  363             timeout -= HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME );
         MOV       DPTR,#__Constant_ffe7ae6a
@@ -1295,13 +1301,13 @@ halSleep:
         MOV       DPTR,#__Constant_185196
         LCALL     ?XLOAD_R2345
         LCALL     `??halSleepSetTimer::?relay`; Banked call to: halSleepSetTimer
-        SJMP      ??halSleep_9
+        SJMP      ??halSleep_12
 //  365           }
 //  366           else
 //  367           {
 //  368             /* set sleep timer */
 //  369             halSleepSetTimer(timeout);
-??halSleep_8:
+??halSleep_11:
         ; Setup parameters for call to function halSleepSetTimer
         MOV       R2,?V4
         MOV       R3,?V5
@@ -1317,7 +1323,7 @@ halSleep:
 //  372           
 //  373           /* set up sleep timer interrupt */
 //  374           HAL_SLEEP_TIMER_CLEAR_INT();
-??halSleep_9:
+??halSleep_12:
         CLR       0xc0.7
 //  375           HAL_SLEEP_TIMER_ENABLE_INT();
         SETB      0xa8.5
@@ -1335,15 +1341,15 @@ halSleep:
 //  387 #endif
 //  388         /* Prep CC2530 power mode */
 //  389         HAL_SLEEP_PREP_POWER_MODE(halPwrMgtMode);
-??halSleep_7:
+??halSleep_10:
         ANL       0xbe,#0xfc
         MOV       DPTR,#halPwrMgtMode
         MOVX      A,@DPTR
         ORL       0xbe,A
-??halSleep_10:
+??halSleep_13:
         MOV       A,0xad
         MOV       C,0xE0 /* A   */.0
-        JNC       ??halSleep_10
+        JNC       ??halSleep_13
         MOV       halSleepPconValue,#0x1
 //  390 
 //  391         /* save interrupt enable registers and disable all interrupts */
@@ -1395,20 +1401,23 @@ halSleep:
         ; Setup parameters for call to function HalKeyExitSleep
         LCALL     `??HalKeyExitSleep::?relay`; Banked call to: HalKeyExitSleep
         MOV       A,R1
-        JNZ       ??halSleep_11
+        JNZ       ??halSleep_14
 //  422         {
 //  423           break; 
 //  424         }
 //  425 #endif
 //  426 
 //  427       } while(timeout != 0);
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_3:
-        JNZ       ??halSleep_6
+        MOV       A,?V4
+        ORL       A,?V5
+        ORL       A,?V6
+        ORL       A,?V7
+        JZ        $+5
+        LJMP      ??halSleep_9 & 0xFFFF
 //  428 
 //  429       /* power on the MAC; blocks until completion */
 //  430       MAC_PwrOnReq();
-??halSleep_11:
+??halSleep_14:
         ; Setup parameters for call to function MAC_PwrOnReq
         LCALL     `??MAC_PwrOnReq::?relay`; Banked call to: MAC_PwrOnReq
 //  431 
@@ -1426,7 +1435,7 @@ halSleep:
 //  442       macMcuTimer2OverflowWorkaround();
         ; Setup parameters for call to function macMcuTimer2OverflowWorkaround
         LCALL     `??macMcuTimer2OverflowWorkaround::?relay`; Banked call to: macMcuTimer2OverflowWorkaround
-        SJMP      ??halSleep_3
+        SJMP      ??halSleep_6
 //  443     }
 //  444     else
 //  445     {
@@ -1434,147 +1443,21 @@ halSleep:
 //  447        * the interrupt, exit normally, and the next sleep will be allowed.
 //  448        */
 //  449       HAL_ENABLE_INTERRUPTS();
-??halSleep_5:
+??halSleep_8:
         SETB      0xa8.7
 //  450     }
 //  451   }
 //  452 }
-??halSleep_3:
+??halSleep_6:
+        MOV       R7,#0x8
+        LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock2
-        REQUIRE ?Subroutine0
         REQUIRE _A_IEN0
         REQUIRE _A_IRCON
         REQUIRE SLEEPCMD
         REQUIRE STLOAD
         REQUIRE _A_IEN1
         REQUIRE IEN2
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 16)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        MOV       R7,#0x8
-        LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock3
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI Function halSleep
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 16)
-          CFI Block cfiCond5 Using cfiCommon0
-          CFI (cfiCond5) Function halSleep
-          CFI (cfiCond5) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond5) R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond5) VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond5) V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond5) V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond5) V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond5) V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond5) V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond5) V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond5) V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond5) V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond5) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond5) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond5) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond5) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond5) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond5) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond5) CFA_SP SP+-2
-          CFI (cfiCond5) CFA_XSP16 add(XSP16, 16)
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI (cfiCond6) Function halSleep
-          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_2
-          CFI (cfiCond6) R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond6) VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond6) V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond6) V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond6) V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond6) V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond6) V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond6) V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond6) V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond6) V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond6) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond6) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond6) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond6) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond6) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond6) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond6) CFA_SP SP+-2
-          CFI (cfiCond6) CFA_XSP16 add(XSP16, 16)
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function halSleep
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond7) R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond7) VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond7) V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond7) V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond7) V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond7) V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond7) V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond7) V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond7) V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond7) V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond7) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond7) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond7) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond7) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond7) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond7) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond7) CFA_SP SP+-2
-          CFI (cfiCond7) CFA_XSP16 add(XSP16, 16)
-          CFI Block cfiPicker8 Using cfiCommon1
-          CFI (cfiPicker8) NoFunction
-          CFI (cfiPicker8) Picker
-        MOV       A,?V4
-        ORL       A,?V5
-        ORL       A,?V6
-        ORL       A,?V7
-        RET
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiCond5
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiPicker8
 //  453 
 //  454 /**************************************************************************************************
 //  455  * @fn          halSleepSetTimer
@@ -1600,7 +1483,7 @@ halSleep:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  474 void halSleepSetTimer(uint32 timeout)
 halSleepSetTimer:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function halSleepSetTimer
         CODE
 //  475 {
@@ -1717,8 +1600,9 @@ halSleepSetTimer:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 16)
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock9
+        MOV       R7,#0x8
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock3
         REQUIRE ST0
         REQUIRE ST1
         REQUIRE ST2
@@ -1744,7 +1628,7 @@ halSleepSetTimer:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  515 uint32 TimerElapsed( void )
 TimerElapsed:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function TimerElapsed
         CODE
 //  516 {
@@ -1758,7 +1642,7 @@ TimerElapsed:
         MOV       R5,#0x0
         LJMP      ?BRET
 //  519 }
-          CFI EndBlock cfiBlock10
+          CFI EndBlock cfiBlock4
 //  520 
 //  521 /**************************************************************************************************
 //  522  * @fn          halRestoreSleepLevel
@@ -1780,7 +1664,7 @@ TimerElapsed:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  537 void halRestoreSleepLevel( void )
 halRestoreSleepLevel:
-          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function halRestoreSleepLevel
         CODE
 //  538 {
@@ -1789,7 +1673,7 @@ halRestoreSleepLevel:
 //  539   /* Stubs */
 //  540 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock11
+          CFI EndBlock cfiBlock5
 //  541 
 //  542 /**************************************************************************************************
 //  543  * @fn          halSleepTimerIsr
@@ -1811,7 +1695,7 @@ halRestoreSleepLevel:
         RSEG NEAR_CODE:CODE:NOROOT(0)
 //  558 HAL_ISR_FUNCTION(halSleepTimerIsr, ST_VECTOR)
 halSleepTimerIsr:
-          CFI Block cfiBlock12 Using cfiCommon1
+          CFI Block cfiBlock6 Using cfiCommon1
           CFI Function halSleepTimerIsr
         CODE
 //  559 {
@@ -1829,7 +1713,10 @@ halSleepTimerIsr:
         ; Saved register size: 3
         ; Auto size: 0
 //  560   HAL_ENTER_ISR();
-        MOV       R0,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R0,A
         SETB      0xa8.7
 //  561   HAL_SLEEP_TIMER_CLEAR_INT();
         CLR       0xc0.7
@@ -1840,8 +1727,7 @@ halSleepTimerIsr:
 //  566   
 //  567   CLEAR_SLEEP_MODE();
 //  568   HAL_EXIT_ISR();
-        MOV       A,R0
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  569 }
         POP       A
@@ -1856,7 +1742,7 @@ halSleepTimerIsr:
           CFI A SameValue
           CFI CFA_SP SP+-2
         RETI
-          CFI EndBlock cfiBlock12
+          CFI EndBlock cfiBlock6
         REQUIRE _A_IEN0
         REQUIRE _A_IRCON
 //  570 
@@ -1884,7 +1770,7 @@ halSleepTimerIsr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  591 void halSleepWait(uint16 duration)
 halSleepWait:
-          CFI Block cfiBlock13 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function halSleepWait
         CODE
 //  592 {
@@ -1946,7 +1832,7 @@ halSleepWait:
 //  600 }
 ??halSleepWait_1:
         LJMP      ?BRET
-          CFI EndBlock cfiBlock13
+          CFI EndBlock cfiBlock7
 
         COMMON INTVEC:CODE:ROOT(0)
         ORG 43
@@ -2059,12 +1945,12 @@ __Constant_ffffffe9:
 
         END
 // 
-// 585 bytes in segment BANKED_CODE
+// 595 bytes in segment BANKED_CODE
 //  42 bytes in segment BANK_RELAYS
 //   1 byte  in segment DATA_I
 //   1 byte  in segment DATA_ID
 //   3 bytes in segment INTVEC
-//  26 bytes in segment NEAR_CODE
+//  28 bytes in segment NEAR_CODE
 //  10 bytes in segment SFR_AN
 //   8 bytes in segment SLEEP_CODE
 //   4 bytes in segment XDATA_I
@@ -2072,10 +1958,10 @@ __Constant_ffffffe9:
 //  36 bytes in segment XDATA_ROM_C
 //   1 byte  in segment XDATA_Z
 // 
-//  73 bytes of CODE     memory (+  3 bytes shared)
+//  75 bytes of CODE     memory (+  3 bytes shared)
 //   0 bytes of CONST    memory (+ 36 bytes shared)
 //   1 byte  of DATA     memory (+ 10 bytes shared)
-// 593 bytes of HUGECODE memory
+// 603 bytes of HUGECODE memory
 //   5 bytes of XDATA    memory
 //
 //Errors: none

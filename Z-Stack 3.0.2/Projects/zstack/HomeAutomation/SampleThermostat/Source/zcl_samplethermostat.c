@@ -131,6 +131,8 @@ uint8 zclSampleThermostat_TaskID;
 
 extern int16 zdpExternalStateTaskID;
 
+uint8 TestSeqNum;
+
 /*********************************************************************
  * GLOBAL FUNCTIONS
  */
@@ -141,6 +143,8 @@ extern int16 zdpExternalStateTaskID;
 
 devStates_t zclSampleThermostat_NwkState = DEV_INIT;
 
+afAddrType_t Test_dstAddr;
+  
 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
 
 // Test Endpoint to allow SYS_APP_MSGs
@@ -170,6 +174,8 @@ static endPointDesc_t sampleThermostat_TestEp =
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
+static void Control_Test( void );
+
 static void zclSampleThermostat_HandleKeys( byte shift, byte keys );
 static void zclSampleThermostat_BasicResetCB( void );
 #ifdef MT_APP_FUNC
@@ -262,9 +268,16 @@ void zclSampleThermostat_Init( byte task_id )
 {
   zclSampleThermostat_TaskID = task_id;
 
+  Test_dstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+  Test_dstAddr.endPoint = 0;
+  Test_dstAddr.addr.shortAddr = 0;
+
   //Initialize the Uart0
   Uart0_Init(HAL_UART_BR_115200);
-  
+
+  // Register the Uart0
+  RegisterForUart0( zclSampleThermostat_TaskID );
+
   // Register the Simple Descriptor for this application
   bdb_RegisterSimpleDescriptor( &zclSampleThermostat_SimpleDesc );
 
@@ -342,6 +355,18 @@ uint16 zclSampleThermostat_event_loop( uint8 task_id, uint16 events )
 
         case ZDO_STATE_CHANGE:
           break;
+          
+        case UART0_MESSAGE_SW1_ON:
+          Contorl[0] = 1;
+          Contorl[1] = 0;
+          Control_Test();
+          break;
+
+        case UART0_MESSAGE_SW1_OFF:
+          Contorl[0] = 1;
+          Contorl[1] = 1;
+          Control_Test();
+          break;
 
         default:
           break;
@@ -399,7 +424,14 @@ static void zclSampleThermostat_HandleKeys( byte shift, byte keys )
     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
     NLME_PermitJoiningRequest( 0xff );
-  }    
+  }
+  if ( keys & HAL_KEY_SW_5 ) //key2
+  {
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+    Contorl[0] = 1;
+    Contorl[1] = 2;
+    Control_Test();
+  }
 }
 
 #ifdef MT_APP_FUNC
@@ -837,21 +869,50 @@ static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
   
   zclReportCmd_t *pInTempSensorReport;
   
+  uint16 zclSampleThermostat_LocalTemperature2;
+  
   pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
 
-  if ( pInTempSensorReport->attrList[0].attrID != ATTRID_MS_TEMPERATURE_MEASURED_VALUE )
-  {
-    return;
-  }
+//  if ( pInTempSensorReport->attrList[0].attrID != ATTRID_MS_TEMPERATURE_MEASURED_VALUE )
+//  {
+//    return;
+//  }
   
   // store the current temperature value sent over the air from temperature sensor
-  zclSampleThermostat_LocalTemperature = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[0], pInTempSensorReport->attrList[0].attrData[1]);
-
-  printf("data: %d", zclSampleThermostat_LocalTemperature);
+  //zclSampleThermostat_LocalTemperature = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[0], pInTempSensorReport->attrList[0].attrData[1]);
+  //zclSampleThermostat_LocalTemperature1 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[2], pInTempSensorReport->attrList[0].attrData[3]);
+  //zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[4], pInTempSensorReport->attrList[0].attrData[5]);
+  zclSampleThermostat_LocalTemperature = pInTempSensorReport->attrList[0].attrData[0];
+  zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[1], pInTempSensorReport->attrList[0].attrData[2]);
+  zclSampleThermostat_LocalTemperature1 = pInTempSensorReport->attrList[0].attrData[3];
   
+  printf("%d", zclSampleThermostat_LocalTemperature);
+//  printf("data: %d", zclSampleThermostat_LocalTemperature1);
+  printf(" %04x", zclSampleThermostat_LocalTemperature2);
+  printf(" %d\n", zclSampleThermostat_LocalTemperature1);
   zclSampleThermostat_UpdateLedState();
 }
 #endif  // ZCL_REPORT_DESTINATION_DEVICE
+
+static void Control_Test( void )
+{
+  zclReportCmd_t *pReportCmd;
+
+  pReportCmd = osal_mem_alloc( sizeof(zclReportCmd_t) + sizeof(zclReport_t) );
+  if ( pReportCmd != NULL )
+  {
+    pReportCmd->numAttr = 1;
+    pReportCmd->attrList[0].attrID = TEST_CONTROL;
+    pReportCmd->attrList[0].dataType = ZCL_DATATYPE_UINT16;
+    pReportCmd->attrList[0].attrData = (void *)(&Contorl);
+
+    zcl_SendReportCmd( SAMPLETHERMOSTAT_ENDPOINT, &Test_dstAddr,
+                       ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+                       pReportCmd, /*ZCL_FRAME_SERVER_CLIENT_DIR*/ZCL_FRAME_CLIENT_SERVER_DIR, TRUE, TestSeqNum++ );
+  }
+
+  osal_mem_free( pReportCmd );
+}
 
 /*********************************************************************
  * @fn      zclSampleThermostat_ProcessInDefaultRspCmd

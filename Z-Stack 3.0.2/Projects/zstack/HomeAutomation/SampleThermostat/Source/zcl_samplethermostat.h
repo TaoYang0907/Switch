@@ -83,6 +83,8 @@ extern "C"
 /*********************************************************************
  * VARIABLES
  */
+extern uint8 Contorl[2];
+   
 extern SimpleDescriptionFormat_t zclSampleThermostat_SimpleDesc;
 
 extern CONST zclAttrRec_t zclSampleThermostat_Attrs[];
@@ -95,7 +97,9 @@ extern int16 zclSampleThermostat_OccupiedCoolingSetpoint;
 
 extern int16 zclSampleThermostat_OccupiedHeatingSetpoint;
 
-extern int16 zclSampleThermostat_LocalTemperature;
+extern uint8 zclSampleThermostat_LocalTemperature;
+
+extern uint8 zclSampleThermostat_LocalTemperature1;
 
 extern int16 zclSampleThermostat_MinHeatSetpointLimit;
 

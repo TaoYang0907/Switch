@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:20
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:40
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWBF00.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW5D63.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_key.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -814,7 +816,13 @@ HalKeyInit:
         MOV       DPTR,#HalKeyConfigured
         MOVX      @DPTR,A
 //  204 }
-        LJMP      ?Subroutine0 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
         REQUIRE P0SEL
         REQUIRE P0DIR
@@ -1076,33 +1084,14 @@ HalKeyRead:
 //  311 
 //  312   return keys;
 ??HalKeyRead_1:
-          CFI EndBlock cfiBlock2
-        REQUIRE ?Subroutine1
-        REQUIRE _A_P0
-        REQUIRE _A_P2
-        ; // Fall through to label ?Subroutine1
-//  313 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       A,R6
         MOV       R1,A
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock3
+          CFI EndBlock cfiBlock2
+        REQUIRE _A_P0
+        REQUIRE _A_P2
+//  313 }
 //  314 
 //  315 
 //  316 /**************************************************************************************************
@@ -1118,7 +1107,7 @@ HalKeyRead:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  325 void HalKeyPoll (void)
 HalKeyPoll:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function HalKeyPoll
         CODE
 //  326 {
@@ -1244,8 +1233,14 @@ HalKeyPoll:
 //  374   }
 //  375 }
 ??HalKeyPoll_2:
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock4
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock3
         REQUIRE _A_P2
         REQUIRE _A_P0
 //  376 
@@ -1262,7 +1257,7 @@ HalKeyPoll:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  386 uint8 halGetJoyKeyInput(void)
 halGetJoyKeyInput:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function halGetJoyKeyInput
         CODE
 //  387 {
@@ -1388,9 +1383,12 @@ halGetJoyKeyInput:
         JNZ       ??halGetJoyKeyInput_0
 //  423 
 //  424   return ksave0;
-        LJMP      ?Subroutine1 & 0xFFFF
+        MOV       A,R6
+        MOV       R1,A
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
 //  425 }
-          CFI EndBlock cfiBlock5
+          CFI EndBlock cfiBlock4
 //  426 
 //  427 
 //  428 
@@ -1410,7 +1408,7 @@ halGetJoyKeyInput:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  441 void halProcessKeyInterrupt (void)
 halProcessKeyInterrupt:
-          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function halProcessKeyInterrupt
         CODE
 //  442 {
@@ -1456,17 +1454,15 @@ halProcessKeyInterrupt:
 //  453     HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT); /* Clear Interrupt Flag */
         MOV       0x8b,#-0x2
 //  454     valid = TRUE;
-        SJMP      ??halProcessKeyInterrupt_2
+        MOV       R0,#0x1
 //  455   }
 //  456 
 //  457   if (valid)
 ??halProcessKeyInterrupt_1:
         MOV       A,R0
-        MOV       C,0xE0 /* A   */.0
-        JNC       ??halProcessKeyInterrupt_3
+        JZ        ??halProcessKeyInterrupt_2
 //  458   {
 //  459     osal_start_timerEx (Hal_TaskID, HAL_KEY_EVENT, HAL_KEY_DEBOUNCE_VALUE);
-??halProcessKeyInterrupt_2:
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_19
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -1482,28 +1478,17 @@ halProcessKeyInterrupt:
           CFI CFA_XSP16 XSP16+0
 //  460   }
 //  461 }
-??halProcessKeyInterrupt_3:
-          CFI EndBlock cfiBlock6
-        REQUIRE ?Subroutine0
+??halProcessKeyInterrupt_2:
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock5
         REQUIRE P0IFG
         REQUIRE P2IFG
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock7 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        POP       DPH
-          CFI CFA_SP SP+-4
-          CFI DPH0 SameValue
-        POP       DPL
-          CFI CFA_SP SP+-3
-          CFI DPL0 SameValue
-        LJMP      ?BRET
-          CFI EndBlock cfiBlock7
 //  462 
 //  463 /**************************************************************************************************
 //  464  * @fn      HalKeyEnterSleep
@@ -1518,7 +1503,7 @@ halProcessKeyInterrupt:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  472 void HalKeyEnterSleep ( void )
 HalKeyEnterSleep:
-          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function HalKeyEnterSleep
         CODE
 //  473 {
@@ -1526,7 +1511,7 @@ HalKeyEnterSleep:
         ; Auto size: 0
 //  474 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock8
+          CFI EndBlock cfiBlock6
 //  475 
 //  476 /**************************************************************************************************
 //  477  * @fn      HalKeyExitSleep
@@ -1541,7 +1526,7 @@ HalKeyEnterSleep:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  485 uint8 HalKeyExitSleep ( void )
 HalKeyExitSleep:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function HalKeyExitSleep
         CODE
 //  486 {
@@ -1568,9 +1553,15 @@ HalKeyExitSleep:
 //  488   return ( HalKeyRead () );
         ; Setup parameters for call to function HalKeyRead
         LCALL     `??HalKeyRead::?relay`; Banked call to: HalKeyRead
-        SJMP      ?Subroutine0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  489 }
-          CFI EndBlock cfiBlock9
+          CFI EndBlock cfiBlock7
 //  490 
 //  491 /***************************************************************************************************
 //  492  *                                    INTERRUPT SERVICE ROUTINE
@@ -1589,7 +1580,7 @@ HalKeyExitSleep:
         RSEG NEAR_CODE:CODE:NOROOT(0)
 //  504 HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
 halKeyPort0Isr:
-          CFI Block cfiBlock10 Using cfiCommon1
+          CFI Block cfiBlock8 Using cfiCommon1
           CFI Function halKeyPort0Isr
         CODE
 //  505 {
@@ -1655,41 +1646,16 @@ halKeyPort0Isr:
 //  519   
 //  520   CLEAR_SLEEP_MODE();
 //  521   HAL_EXIT_ISR();
-          CFI EndBlock cfiBlock10
-        REQUIRE ?Subroutine2
-        REQUIRE _A_IEN0
-        REQUIRE P0IFG
-        REQUIRE _A_IRCON
-        ; // Fall through to label ?Subroutine2
-//  522 }
-
-        RSEG NEAR_CODE:CODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiBlock11 Using cfiCommon1
-          CFI NoFunction
-          CFI CFA_SP SP+-3
-          CFI CFA_XSP16 add(XSP16, 14)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI B load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI A Frame(CFA_SP, 3)
-          CFI PSW load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI R0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI R1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI R2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI R3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI R4 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R5 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
         MOV       A,R6
         MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
+//  522 }
         MOV       R7,#0x1
         LJMP      ?INTERRUPT_LEAVE_XSP
-          CFI EndBlock cfiBlock11
+          CFI EndBlock cfiBlock8
+        REQUIRE _A_IEN0
+        REQUIRE P0IFG
+        REQUIRE _A_IRCON
 //  523 
 //  524 
 //  525 /**************************************************************************************************
@@ -1705,7 +1671,7 @@ halKeyPort0Isr:
         RSEG NEAR_CODE:CODE:NOROOT(0)
 //  534 HAL_ISR_FUNCTION( halKeyPort2Isr, P2INT_VECTOR )
 halKeyPort2Isr:
-          CFI Block cfiBlock12 Using cfiCommon1
+          CFI Block cfiBlock9 Using cfiCommon1
           CFI Function halKeyPort2Isr
         CODE
 //  535 {
@@ -1772,12 +1738,16 @@ halKeyPort2Isr:
 //  550 
 //  551   CLEAR_SLEEP_MODE();
 //  552   HAL_EXIT_ISR();
-        SJMP      ?Subroutine2
-          CFI EndBlock cfiBlock12
+        MOV       A,R6
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
+//  553 }
+        MOV       R7,#0x1
+        LJMP      ?INTERRUPT_LEAVE_XSP
+          CFI EndBlock cfiBlock9
         REQUIRE _A_IEN0
         REQUIRE P2IFG
         REQUIRE _A_IRCON2
-//  553 }
 
         COMMON INTVEC:CODE:ROOT(0)
         ORG 51
@@ -1872,18 +1842,18 @@ __Constant_19:
 //  572 
 //  573 
 // 
-// 423 bytes in segment BANKED_CODE
+// 438 bytes in segment BANKED_CODE
 //  48 bytes in segment BANK_RELAYS
 //   6 bytes in segment INTVEC
-//  68 bytes in segment NEAR_CODE
+//  76 bytes in segment NEAR_CODE
 //  18 bytes in segment SFR_AN
 //   4 bytes in segment XDATA_ROM_C
 //   5 bytes in segment XDATA_Z
 // 
-// 116 bytes of CODE     memory (+  6 bytes shared)
+// 124 bytes of CODE     memory (+  6 bytes shared)
 //   0 bytes of CONST    memory (+  4 bytes shared)
 //   0 bytes of DATA     memory (+ 18 bytes shared)
-// 423 bytes of HUGECODE memory
+// 438 bytes of HUGECODE memory
 //   5 bytes of XDATA    memory
 //
 //Errors: none

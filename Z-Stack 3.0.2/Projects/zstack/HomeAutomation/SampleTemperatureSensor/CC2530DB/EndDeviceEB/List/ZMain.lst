@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:33
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:13
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWF34E.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWA72E.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -240,94 +242,87 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
      79          int main( void )
    \                     main:
      80          {
-   \   000000                ; Auto size: 17
-   \   000000   74EF         MOV       A,#-0x11
-   \   000002   12....       LCALL     ?ALLOC_XSTACK8
+   \   000000                ; Auto size: 0
      81            // Turn off interrupts
      82            osal_int_disable( INTS_ALL );
-   \   000005                ; Setup parameters for call to function osal_int_disable
-   \   000005   79FF         MOV       R1,#-0x1
-   \   000007   12....       LCALL     `??osal_int_disable::?relay`; Banked call to: osal_int_disable
+   \   000000                ; Setup parameters for call to function osal_int_disable
+   \   000000   79FF         MOV       R1,#-0x1
+   \   000002   12....       LCALL     `??osal_int_disable::?relay`; Banked call to: osal_int_disable
      83          
      84            // Initialization for board related stuff such as LEDs
      85            HAL_BOARD_INIT();
-   \   00000A   53BEFB       ANL       0xbe,#0xfb
+   \   000005   53BEFB       ANL       0xbe,#0xfb
    \                     ??main_0:
-   \   00000D   E59D         MOV       A,0x9d
-   \   00000F   A2E6         MOV       C,0xE0 /* A   */.6
-   \   000011   50FA         JNC       ??main_0
-   \   000013   00           NOP
-   \   000014   78F8         MOV       R0,#-0x8
-   \   000016   7901         MOV       R1,#0x1
-   \                     ??main_1:
-   \   000018   00           NOP
-   \   000019   E8           MOV       A,R0
-   \   00001A   24FF         ADD       A,#-0x1
-   \   00001C   18           DEC       R0
-   \   00001D   E9           MOV       A,R1
-   \   00001E   34FF         ADDC      A,#-0x1
-   \   000020   F9           MOV       R1,A
-   \   000021   E8           MOV       A,R0
-   \   000022   49           ORL       A,R1
-   \   000023   70F3         JNZ       ??main_1
-   \   000025   75C600       MOV       0xc6,#0x0
+   \   000008   E59D         MOV       A,0x9d
+   \   00000A   A2E6         MOV       C,0xE0 /* A   */.6
+   \   00000C   50FA         JNC       ??main_0
+   \   00000E   00           NOP
+   \   00000F   7800         MOV       R0,#0x0
+   \   000011   7900         MOV       R1,#0x0
+   \   000013   8006         SJMP      ??main_1
    \                     ??main_2:
-   \   000028   E59E         MOV       A,0x9e
-   \   00002A   70FC         JNZ       ??main_2
-   \   00002C   43BE04       ORL       0xbe,#0x4
-   \   00002F   906270       MOV       DPTR,#0x6270
-   \   000032   7408         MOV       A,#0x8
-   \   000034   F0           MOVX      @DPTR,A
-   \   000035   C290         CLR       0x90.0
-   \   000037   43FE01       ORL       0xfe,#0x1
-   \   00003A   C291         CLR       0x90.1
-   \   00003C   43FE02       ORL       0xfe,#0x2
-   \   00003F   C294         CLR       0x90.4
-   \   000041   43FE10       ORL       0xfe,#0x10
-   \   000044   C281         CLR       0x80.1
-   \   000046   43FD02       ORL       0xfd,#0x2
-   \   000049   438F01       ORL       0x8f,#0x1
+   \   000015   00           NOP
+   \   000016   08           INC       R0
+   \   000017   E8           MOV       A,R0
+   \   000018   7001         JNZ       ??main_1
+   \   00001A   09           INC       R1
+   \                     ??main_1:
+   \   00001B   C3           CLR       C
+   \   00001C   E8           MOV       A,R0
+   \   00001D   94F8         SUBB      A,#-0x8
+   \   00001F   E9           MOV       A,R1
+   \   000020   9401         SUBB      A,#0x1
+   \   000022   40F1         JC        ??main_2
+   \   000024   75C600       MOV       0xc6,#0x0
+   \                     ??main_3:
+   \   000027   E59E         MOV       A,0x9e
+   \   000029   70FC         JNZ       ??main_3
+   \   00002B   43BE04       ORL       0xbe,#0x4
+   \   00002E   906270       MOV       DPTR,#0x6270
+   \   000031   7408         MOV       A,#0x8
+   \   000033   F0           MOVX      @DPTR,A
+   \   000034   C290         CLR       0x90.0
+   \   000036   43FE01       ORL       0xfe,#0x1
+   \   000039   C291         CLR       0x90.1
+   \   00003B   43FE02       ORL       0xfe,#0x2
+   \   00003E   C294         CLR       0x90.4
+   \   000040   43FE10       ORL       0xfe,#0x10
+   \   000043   C281         CLR       0x80.1
+   \   000045   43FD02       ORL       0xfd,#0x2
+   \   000048   438F01       ORL       0x8f,#0x1
      86           
      87            // Make sure supply voltage is high enough to run
      88            zmain_vdd_check();
-   \   00004C   7E10         MOV       R6,#0x10
-   \                     ??main_3:
-   \   00004E                ; Setup parameters for call to function HalAdcCheckVdd
-   \   00004E   794E         MOV       R1,#0x4e
-   \   000050   12....       LCALL     `??HalAdcCheckVdd::?relay`; Banked call to: HalAdcCheckVdd
-   \   000053   E9           MOV       A,R1
-   \   000054   60F8         JZ        ??main_3
-   \   000056   1E           DEC       R6
-   \   000057   EE           MOV       A,R6
-   \   000058   70F4         JNZ       ??main_3
+   \   00004B                ; Setup parameters for call to function zmain_vdd_check
+   \   00004B   12....       LCALL     `??zmain_vdd_check::?relay`; Banked call to: zmain_vdd_check
      89          
      90            // Initialize board I/O
      91            InitBoard( OB_COLD );
-   \   00005A                ; Setup parameters for call to function InitBoard
-   \   00005A   7900         MOV       R1,#0x0
-   \   00005C   12....       LCALL     `??InitBoard::?relay`; Banked call to: InitBoard
+   \   00004E                ; Setup parameters for call to function InitBoard
+   \   00004E   7900         MOV       R1,#0x0
+   \   000050   12....       LCALL     `??InitBoard::?relay`; Banked call to: InitBoard
      92          
      93            // Initialze HAL drivers
      94            HalDriverInit();
-   \   00005F                ; Setup parameters for call to function HalDriverInit
-   \   00005F   12....       LCALL     `??HalDriverInit::?relay`; Banked call to: HalDriverInit
+   \   000053                ; Setup parameters for call to function HalDriverInit
+   \   000053   12....       LCALL     `??HalDriverInit::?relay`; Banked call to: HalDriverInit
      95          
      96            // Initialize NV System
      97            osal_nv_init( NULL );
-   \   000062                ; Setup parameters for call to function osal_nv_init
-   \   000062   7A00         MOV       R2,#0x0
-   \   000064   7B00         MOV       R3,#0x0
-   \   000066   12....       LCALL     `??osal_nv_init::?relay`; Banked call to: osal_nv_init
+   \   000056                ; Setup parameters for call to function osal_nv_init
+   \   000056   7A00         MOV       R2,#0x0
+   \   000058   7B00         MOV       R3,#0x0
+   \   00005A   12....       LCALL     `??osal_nv_init::?relay`; Banked call to: osal_nv_init
      98          
      99            // Initialize the MAC
     100            ZMacInit();
-   \   000069                ; Setup parameters for call to function ZMacInit
-   \   000069   12....       LCALL     `??ZMacInit::?relay`; Banked call to: ZMacInit
+   \   00005D                ; Setup parameters for call to function ZMacInit
+   \   00005D   12....       LCALL     `??ZMacInit::?relay`; Banked call to: ZMacInit
     101          
     102            // Determine the extended address
     103            zmain_ext_addr();
-   \   00006C                ; Setup parameters for call to function zmain_ext_addr
-   \   00006C   12....       LCALL     `??zmain_ext_addr::?relay`; Banked call to: zmain_ext_addr
+   \   000060                ; Setup parameters for call to function zmain_ext_addr
+   \   000060   12....       LCALL     `??zmain_ext_addr::?relay`; Banked call to: zmain_ext_addr
     104          
     105          #if defined ZCL_KEY_ESTABLISH
     106            // Initialize the Certicom certificate information.
@@ -336,8 +331,8 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     109          
     110            // Initialize basic NV items
     111            zgInit();
-   \   00006F                ; Setup parameters for call to function zgInit
-   \   00006F   12....       LCALL     `??zgInit::?relay`; Banked call to: zgInit
+   \   000063                ; Setup parameters for call to function zgInit
+   \   000063   12....       LCALL     `??zgInit::?relay`; Banked call to: zgInit
     112          
     113          #ifndef NONWK
     114            // Since the AF isn't a task, call it's initialization routine
@@ -346,125 +341,31 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     117          
     118            // Initialize the operating system
     119            osal_init_system();
-   \   000072                ; Setup parameters for call to function osal_init_system
-   \   000072   12....       LCALL     `??osal_init_system::?relay`; Banked call to: osal_init_system
+   \   000066                ; Setup parameters for call to function osal_init_system
+   \   000066   12....       LCALL     `??osal_init_system::?relay`; Banked call to: osal_init_system
     120          
     121            // Allow interrupts
     122            osal_int_enable( INTS_ALL );
-   \   000075                ; Setup parameters for call to function osal_int_enable
-   \   000075   79FF         MOV       R1,#-0x1
-   \   000077   12....       LCALL     `??osal_int_enable::?relay`; Banked call to: osal_int_enable
+   \   000069                ; Setup parameters for call to function osal_int_enable
+   \   000069   79FF         MOV       R1,#-0x1
+   \   00006B   12....       LCALL     `??osal_int_enable::?relay`; Banked call to: osal_int_enable
     123          
     124            // Final board initialization
     125            InitBoard( OB_READY );
-   \   00007A                ; Setup parameters for call to function InitBoard
-   \   00007A   7902         MOV       R1,#0x2
-   \   00007C   12....       LCALL     `??InitBoard::?relay`; Banked call to: InitBoard
+   \   00006E                ; Setup parameters for call to function InitBoard
+   \   00006E   7902         MOV       R1,#0x2
+   \   000070   12....       LCALL     `??InitBoard::?relay`; Banked call to: InitBoard
     126          
     127            // Display information about this device
     128            zmain_dev_info();
-   \   00007F   78..         MOV       R0,#(aExtendedAddress + 7) & 0xff
-   \   000081   79..         MOV       R1,#((aExtendedAddress + 7) >> 8) & 0xff
-   \   000083   7A00         MOV       R2,#0x0
-   \                     ??main_4:
-   \   000085   8882         MOV       DPL,R0
-   \   000087   8983         MOV       DPH,R1
-   \   000089   E0           MOVX      A,@DPTR
-   \   00008A   C4           SWAP      A
-   \   00008B   540F         ANL       A,#0xf
-   \   00008D   FC           MOV       R4,A
-   \   00008E   EA           MOV       A,R2
-   \   00008F   FE           MOV       R6,A
-   \   000090   7401         MOV       A,#0x1
-   \   000092   2E           ADD       A,R6
-   \   000093   FA           MOV       R2,A
-   \   000094   EC           MOV       A,R4
-   \   000095   C3           CLR       C
-   \   000096   940A         SUBB      A,#0xa
-   \   000098   5004         JNC       ??main_5
-   \   00009A   7B30         MOV       R3,#0x30
-   \   00009C   8002         SJMP      ??main_6
-   \                     ??main_5:
-   \   00009E   7B37         MOV       R3,#0x37
-   \                     ??main_6:
-   \   0000A0   EC           MOV       A,R4
-   \   0000A1   2B           ADD       A,R3
-   \   0000A2   C0E0         PUSH      A
-   \   0000A4   85..82       MOV       DPL,?XSP + 0
-   \   0000A7   85..83       MOV       DPH,?XSP + 1
-   \   0000AA   E582         MOV       A,DPL
-   \   0000AC   2E           ADD       A,R6
-   \   0000AD   F582         MOV       DPL,A
-   \   0000AF   E4           CLR       A
-   \   0000B0   3583         ADDC      A,DPH
-   \   0000B2   F583         MOV       DPH,A
-   \   0000B4   D0E0         POP       A
-   \   0000B6   F0           MOVX      @DPTR,A
-   \   0000B7   8882         MOV       DPL,R0
-   \   0000B9   8983         MOV       DPH,R1
-   \   0000BB   E0           MOVX      A,@DPTR
-   \   0000BC   540F         ANL       A,#0xf
-   \   0000BE   FC           MOV       R4,A
-   \   0000BF   EA           MOV       A,R2
-   \   0000C0   FF           MOV       R7,A
-   \   0000C1   7401         MOV       A,#0x1
-   \   0000C3   2A           ADD       A,R2
-   \   0000C4   FA           MOV       R2,A
-   \   0000C5   EC           MOV       A,R4
-   \   0000C6   C3           CLR       C
-   \   0000C7   940A         SUBB      A,#0xa
-   \   0000C9   5004         JNC       ??main_7
-   \   0000CB   7B30         MOV       R3,#0x30
-   \   0000CD   8002         SJMP      ??main_8
-   \                     ??main_7:
-   \   0000CF   7B37         MOV       R3,#0x37
-   \                     ??main_8:
-   \   0000D1   EC           MOV       A,R4
-   \   0000D2   2B           ADD       A,R3
-   \   0000D3   C0E0         PUSH      A
-   \   0000D5   85..82       MOV       DPL,?XSP + 0
-   \   0000D8   85..83       MOV       DPH,?XSP + 1
-   \   0000DB   E582         MOV       A,DPL
-   \   0000DD   2F           ADD       A,R7
-   \   0000DE   F582         MOV       DPL,A
-   \   0000E0   E4           CLR       A
-   \   0000E1   3583         ADDC      A,DPH
-   \   0000E3   F583         MOV       DPH,A
-   \   0000E5   D0E0         POP       A
-   \   0000E7   F0           MOVX      @DPTR,A
-   \   0000E8   E8           MOV       A,R0
-   \   0000E9   24FF         ADD       A,#-0x1
-   \   0000EB   18           DEC       R0
-   \   0000EC   E9           MOV       A,R1
-   \   0000ED   34FF         ADDC      A,#-0x1
-   \   0000EF   F9           MOV       R1,A
-   \   0000F0   EA           MOV       A,R2
-   \   0000F1   C3           CLR       C
-   \   0000F2   9410         SUBB      A,#0x10
-   \   0000F4   408F         JC        ??main_4
-   \   0000F6   7410         MOV       A,#0x10
-   \   0000F8   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000FB   E4           CLR       A
-   \   0000FC   F0           MOVX      @DPTR,A
-   \   0000FD                ; Setup parameters for call to function HalLcdWriteString
-   \   0000FD   79FF         MOV       R1,#-0x1
-   \   0000FF   7A..         MOV       R2,#`?<Constant "IEEE: ">` & 0xff
-   \   000101   7B..         MOV       R3,#(`?<Constant "IEEE: ">` >> 8) & 0xff
-   \   000103   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
-   \   000106                ; Setup parameters for call to function HalLcdWriteString
-   \   000106   79FF         MOV       R1,#-0x1
-   \   000108   AA..         MOV       R2,?XSP + 0
-   \   00010A   AB..         MOV       R3,?XSP + 1
-   \   00010C   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
+   \   000073                ; Setup parameters for call to function zmain_dev_info
+   \   000073   12....       LCALL     `??zmain_dev_info::?relay`; Banked call to: zmain_dev_info
     129          
     130            /* Display the device info on the LCD */
     131          #ifdef LCD_SUPPORTED
     132            zmain_lcd_init();
-   \   00010F                ; Setup parameters for call to function HalLcdWriteString
-   \   00010F   79FF         MOV       R1,#-0x1
-   \   000111   7A..         MOV       R2,#`?<Constant "TexasInstruments">` & 0xff
-   \   000113   7B..         MOV       R3,#(`?<Constant "TexasInstruments">` >> 8) & 0xff
-   \   000115   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
+   \   000076                ; Setup parameters for call to function zmain_lcd_init
+   \   000076   12....       LCALL     `??zmain_lcd_init::?relay`; Banked call to: zmain_lcd_init
     133          #endif
     134          
     135          #ifdef WDT_IN_PM1
@@ -473,24 +374,22 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     138          #endif
     139          
     140            osal_start_system(); // No Return from here
-   \   000118                ; Setup parameters for call to function osal_start_system
-   \   000118   12....       LCALL     `??osal_start_system::?relay`; Banked call to: osal_start_system
+   \   000079                ; Setup parameters for call to function osal_start_system
+   \   000079   12....       LCALL     `??osal_start_system::?relay`; Banked call to: osal_start_system
     141          
     142            return 0;  // Shouldn't get here.
-   \   00011B   7A00         MOV       R2,#0x0
-   \   00011D   7B00         MOV       R3,#0x0
-   \   00011F   7411         MOV       A,#0x11
-   \   000121   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000124   02....       LJMP      ?BRET
-   \   000127                REQUIRE SLEEPCMD
-   \   000127                REQUIRE SLEEPSTA
-   \   000127                REQUIRE CLKCONCMD
-   \   000127                REQUIRE CLKCONSTA
-   \   000127                REQUIRE _A_P1
-   \   000127                REQUIRE P1DIR
-   \   000127                REQUIRE _A_P0
-   \   000127                REQUIRE P0DIR
-   \   000127                REQUIRE P0INP
+   \   00007C   7A00         MOV       R2,#0x0
+   \   00007E   7B00         MOV       R3,#0x0
+   \   000080   02....       LJMP      ?BRET
+   \   000083                REQUIRE SLEEPCMD
+   \   000083                REQUIRE SLEEPSTA
+   \   000083                REQUIRE CLKCONCMD
+   \   000083                REQUIRE CLKCONSTA
+   \   000083                REQUIRE _A_P1
+   \   000083                REQUIRE P1DIR
+   \   000083                REQUIRE _A_P0
+   \   000083                REQUIRE P0DIR
+   \   000083                REQUIRE P0INP
     143          } // main()
     144          
     145          /*********************************************************************
@@ -498,14 +397,33 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     147           * @brief   Check if the Vdd is OK to run the processor.
     148           * @return  Return if Vdd is ok; otherwise, flash LED, then reset
     149           *********************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     150          static void zmain_vdd_check( void )
+   \                     zmain_vdd_check:
     151          {
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
     152            uint8 cnt = 16;
+   \   000005   7E10         MOV       R6,#0x10
     153            
     154            do {
     155              while (!HalAdcCheckVdd(VDD_MIN_RUN));
+   \                     ??zmain_vdd_check_0:
+   \   000007                ; Setup parameters for call to function HalAdcCheckVdd
+   \   000007   794E         MOV       R1,#0x4e
+   \   000009   12....       LCALL     `??HalAdcCheckVdd::?relay`; Banked call to: HalAdcCheckVdd
+   \   00000C   E9           MOV       A,R1
+   \   00000D   60F8         JZ        ??zmain_vdd_check_0
     156            } while (--cnt);
+   \   00000F   1E           DEC       R6
+   \   000010   EE           MOV       A,R6
+   \   000011   70F4         JNZ       ??zmain_vdd_check_0
     157          }
+   \   000013   7F01         MOV       R7,#0x1
+   \   000015   02....       LJMP      ?BANKED_LEAVE_XDATA
     158          
     159          /**************************************************************************************************
     160           * @fn          zmain_ext_addr
@@ -532,14 +450,13 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
    \   000000                REQUIRE ?V4
    \   000000                REQUIRE ?V5
    \   000000                REQUIRE ?V6
-   \   000000                REQUIRE ?V8
-   \   000000                REQUIRE ?V9
-   \   000000   74EE         MOV       A,#-0x12
+   \   000000   74F1         MOV       A,#-0xf
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 18
+   \   000005                ; Saved register size: 15
    \   000005                ; Auto size: 8
    \   000005   74F8         MOV       A,#-0x8
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
@@ -550,127 +467,131 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
    \   000011   7408         MOV       A,#0x8
    \   000013   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
     179            uint8 writeNV = TRUE;
+   \   000016   75..01       MOV       ?V0,#0x1
     180          
     181            // First check whether a non-erased extended address exists in the OSAL NV.
     182            if ((SUCCESS != osal_nv_item_init(ZCD_NV_EXTADDR, Z_EXTADDR_LEN, NULL))  ||
     183                (SUCCESS != osal_nv_read(ZCD_NV_EXTADDR, 0, Z_EXTADDR_LEN, aExtendedAddress)) ||
     184                (osal_memcmp(aExtendedAddress, nullAddr, Z_EXTADDR_LEN)))
-   \   000016   75....       MOV       ?V0,#aExtendedAddress & 0xff
-   \   000019   75....       MOV       ?V1,#(aExtendedAddress >> 8) & 0xff
-   \   00001C   F5..         MOV       ?V2,A
-   \   00001E   A8..         MOV       R0,?XSP + 0
-   \   000020   A9..         MOV       R1,?XSP + 1
-   \   000022   88..         MOV       ?V4,R0
-   \   000024   89..         MOV       ?V5,R1
-   \   000026   F5..         MOV       ?V6,A
-   \   000028                ; Setup parameters for call to function osal_nv_item_init
-   \   000028   F5..         MOV       ?V8,A
-   \   00002A   F5..         MOV       ?V9,A
-   \   00002C   78..         MOV       R0,#?V8
-   \   00002E   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000031   7C08         MOV       R4,#0x8
-   \   000033   7D00         MOV       R5,#0x0
-   \   000035   7A01         MOV       R2,#0x1
-   \   000037   7B00         MOV       R3,#0x0
-   \   000039   12....       LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
-   \   00003C   7402         MOV       A,#0x2
-   \   00003E   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000041   E9           MOV       A,R1
-   \   000042   7046         JNZ       ??zmain_ext_addr_0
-   \   000044                ; Setup parameters for call to function osal_nv_read
-   \   000044   75....       MOV       ?V8,#aExtendedAddress & 0xff
-   \   000047   75....       MOV       ?V9,#(aExtendedAddress >> 8) & 0xff
-   \   00004A   78..         MOV       R0,#?V8
-   \   00004C   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00004F   75..08       MOV       ?V8,#0x8
-   \   000052   75..00       MOV       ?V9,#0x0
-   \   000055   78..         MOV       R0,#?V8
-   \   000057   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00005A   7C00         MOV       R4,#0x0
-   \   00005C   7D00         MOV       R5,#0x0
-   \   00005E   7A01         MOV       R2,#0x1
-   \   000060   7B00         MOV       R3,#0x0
-   \   000062   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
-   \   000065   7404         MOV       A,#0x4
-   \   000067   12....       LCALL     ?DEALLOC_XSTACK8
-   \   00006A   E9           MOV       A,R1
-   \   00006B   701D         JNZ       ??zmain_ext_addr_0
-   \   00006D                ; Setup parameters for call to function osal_memcmp
-   \   00006D   78..         MOV       R0,#?V4
-   \   00006F   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   000072   7C08         MOV       R4,#0x8
-   \   000074   7D00         MOV       R5,#0x0
-   \   000076   A9..         MOV       R1,?V0
-   \   000078   AA..         MOV       R2,?V1
-   \   00007A   AB..         MOV       R3,?V2
-   \   00007C   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
-   \   00007F   7403         MOV       A,#0x3
-   \   000081   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000084   E9           MOV       A,R1
-   \   000085   7003         JNZ       $+5
-   \   000087   02....       LJMP      ??zmain_ext_addr_1 & 0xFFFF
+   \   000019                ; Setup parameters for call to function osal_nv_item_init
+   \   000019   F5..         MOV       ?V2,A
+   \   00001B   F5..         MOV       ?V3,A
+   \   00001D   78..         MOV       R0,#?V2
+   \   00001F   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000022   7C08         MOV       R4,#0x8
+   \   000024   7D00         MOV       R5,#0x0
+   \   000026   7A01         MOV       R2,#0x1
+   \   000028   7B00         MOV       R3,#0x0
+   \   00002A   12....       LCALL     `??osal_nv_item_init::?relay`; Banked call to: osal_nv_item_init
+   \   00002D   7402         MOV       A,#0x2
+   \   00002F   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000032   E9           MOV       A,R1
+   \   000033   7051         JNZ       ??zmain_ext_addr_0
+   \   000035                ; Setup parameters for call to function osal_nv_read
+   \   000035   75....       MOV       ?V2,#aExtendedAddress & 0xff
+   \   000038   75....       MOV       ?V3,#(aExtendedAddress >> 8) & 0xff
+   \   00003B   78..         MOV       R0,#?V2
+   \   00003D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000040   75..08       MOV       ?V2,#0x8
+   \   000043   75..00       MOV       ?V3,#0x0
+   \   000046   78..         MOV       R0,#?V2
+   \   000048   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00004B   7C00         MOV       R4,#0x0
+   \   00004D   7D00         MOV       R5,#0x0
+   \   00004F   7A01         MOV       R2,#0x1
+   \   000051   7B00         MOV       R3,#0x0
+   \   000053   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
+   \   000056   7404         MOV       A,#0x4
+   \   000058   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00005B   E9           MOV       A,R1
+   \   00005C   7028         JNZ       ??zmain_ext_addr_0
+   \   00005E                ; Setup parameters for call to function osal_memcmp
+   \   00005E   A8..         MOV       R0,?XSP + 0
+   \   000060   A9..         MOV       R1,?XSP + 1
+   \   000062   88..         MOV       ?V4,R0
+   \   000064   89..         MOV       ?V5,R1
+   \   000066   75..00       MOV       ?V6,#0x0
+   \   000069   78..         MOV       R0,#?V4
+   \   00006B   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   00006E   7C08         MOV       R4,#0x8
+   \   000070   7D00         MOV       R5,#0x0
+   \   000072   79..         MOV       R1,#aExtendedAddress & 0xff
+   \   000074   7A..         MOV       R2,#(aExtendedAddress >> 8) & 0xff
+   \   000076   7B00         MOV       R3,#0x0
+   \   000078   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
+   \   00007B   7403         MOV       A,#0x3
+   \   00007D   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000080   E9           MOV       A,R1
+   \   000081   7003         JNZ       $+5
+   \   000083   02....       LJMP      ??zmain_ext_addr_1 & 0xFFFF
     185            {
     186              // Attempt to read the extended address from the location on the lock bits page
     187              // where the programming tools know to reserve it.
     188              HalFlashRead(HAL_FLASH_IEEE_PAGE, HAL_FLASH_IEEE_OSET, aExtendedAddress, Z_EXTADDR_LEN);
    \                     ??zmain_ext_addr_0:
-   \   00008A                ; Setup parameters for call to function HalFlashRead
-   \   00008A   75..08       MOV       ?V8,#0x8
-   \   00008D   78..         MOV       R0,#?V8
-   \   00008F   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000092   7C..         MOV       R4,#aExtendedAddress & 0xff
-   \   000094   7D..         MOV       R5,#(aExtendedAddress >> 8) & 0xff
-   \   000096   7AE8         MOV       R2,#-0x18
-   \   000098   7B07         MOV       R3,#0x7
-   \   00009A   797F         MOV       R1,#0x7f
-   \   00009C   12....       LCALL     `??HalFlashRead::?relay`; Banked call to: HalFlashRead
-   \   00009F   7402         MOV       A,#0x2
-   \   0000A1   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000086                ; Setup parameters for call to function HalFlashRead
+   \   000086   75..08       MOV       ?V2,#0x8
+   \   000089   78..         MOV       R0,#?V2
+   \   00008B   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00008E   7C..         MOV       R4,#aExtendedAddress & 0xff
+   \   000090   7D..         MOV       R5,#(aExtendedAddress >> 8) & 0xff
+   \   000092   7AE8         MOV       R2,#-0x18
+   \   000094   7B07         MOV       R3,#0x7
+   \   000096   797F         MOV       R1,#0x7f
+   \   000098   12....       LCALL     `??HalFlashRead::?relay`; Banked call to: HalFlashRead
+   \   00009B   7402         MOV       A,#0x2
+   \   00009D   12....       LCALL     ?DEALLOC_XSTACK8
     189          
     190              if (osal_memcmp(aExtendedAddress, nullAddr, Z_EXTADDR_LEN))
-   \   0000A4                ; Setup parameters for call to function osal_memcmp
-   \   0000A4   78..         MOV       R0,#?V4
-   \   0000A6   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   0000A9   7C08         MOV       R4,#0x8
-   \   0000AB   7D00         MOV       R5,#0x0
-   \   0000AD   A9..         MOV       R1,?V0
-   \   0000AF   AA..         MOV       R2,?V1
-   \   0000B1   AB..         MOV       R3,?V2
-   \   0000B3   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
-   \   0000B6   7403         MOV       A,#0x3
-   \   0000B8   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000BB   E9           MOV       A,R1
-   \   0000BC   6035         JZ        ??zmain_ext_addr_2
+   \   0000A0   A8..         MOV       R0,?XSP + 0
+   \   0000A2   A9..         MOV       R1,?XSP + 1
+   \   0000A4   88..         MOV       ?V4,R0
+   \   0000A6   89..         MOV       ?V5,R1
+   \   0000A8   75..00       MOV       ?V6,#0x0
+   \   0000AB                ; Setup parameters for call to function osal_memcmp
+   \   0000AB   78..         MOV       R0,#?V4
+   \   0000AD   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   0000B0   7C08         MOV       R4,#0x8
+   \   0000B2   7D00         MOV       R5,#0x0
+   \   0000B4   79..         MOV       R1,#aExtendedAddress & 0xff
+   \   0000B6   7A..         MOV       R2,#(aExtendedAddress >> 8) & 0xff
+   \   0000B8   7B00         MOV       R3,#0x0
+   \   0000BA   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
+   \   0000BD   7403         MOV       A,#0x3
+   \   0000BF   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000C2   E9           MOV       A,R1
+   \   0000C3   607F         JZ        ??zmain_ext_addr_2
     191              {
     192                // Attempt to read the extended address from the designated location in the Info Page.
     193                if (!osal_memcmp((uint8 *)(P_INFOPAGE+HAL_INFOP_IEEE_OSET), nullAddr, Z_EXTADDR_LEN))
-   \   0000BE                ; Setup parameters for call to function osal_memcmp
-   \   0000BE   78..         MOV       R0,#?V4
-   \   0000C0   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   0000C3   7C08         MOV       R4,#0x8
-   \   0000C5   7D00         MOV       R5,#0x0
-   \   0000C7   790C         MOV       R1,#0xc
-   \   0000C9   7A78         MOV       R2,#0x78
-   \   0000CB   7B00         MOV       R3,#0x0
-   \   0000CD   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
-   \   0000D0   7403         MOV       A,#0x3
-   \   0000D2   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000D5   E9           MOV       A,R1
-   \   0000D6   7054         JNZ       ??zmain_ext_addr_3
+   \   0000C5                ; Setup parameters for call to function osal_memcmp
+   \   0000C5   78..         MOV       R0,#?V4
+   \   0000C7   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   0000CA   7C08         MOV       R4,#0x8
+   \   0000CC   7D00         MOV       R5,#0x0
+   \   0000CE   790C         MOV       R1,#0xc
+   \   0000D0   7A78         MOV       R2,#0x78
+   \   0000D2   7B00         MOV       R3,#0x0
+   \   0000D4   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
+   \   0000D7   7403         MOV       A,#0x3
+   \   0000D9   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000DC   E9           MOV       A,R1
+   \   0000DD   701D         JNZ       ??zmain_ext_addr_3
     194                {
     195                  osal_memcpy(aExtendedAddress, (uint8 *)(P_INFOPAGE+HAL_INFOP_IEEE_OSET), Z_EXTADDR_LEN);
-   \   0000D8                ; Setup parameters for call to function osal_memcpy
-   \   0000D8   75..0C       MOV       ?V0,#0xc
-   \   0000DB   75..78       MOV       ?V1,#0x78
-   \   0000DE   78..         MOV       R0,#?V0
-   \   0000E0   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   0000E3   7C08         MOV       R4,#0x8
-   \   0000E5   7D00         MOV       R5,#0x0
-   \   0000E7   7A..         MOV       R2,#aExtendedAddress & 0xff
-   \   0000E9   7B..         MOV       R3,#(aExtendedAddress >> 8) & 0xff
-   \   0000EB   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
-   \   0000EE   7403         MOV       A,#0x3
-   \   0000F0   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000DF                ; Setup parameters for call to function osal_memcpy
+   \   0000DF   75..0C       MOV       ?V4,#0xc
+   \   0000E2   75..78       MOV       ?V5,#0x78
+   \   0000E5   78..         MOV       R0,#?V4
+   \   0000E7   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   0000EA   7C08         MOV       R4,#0x8
+   \   0000EC   7D00         MOV       R5,#0x0
+   \   0000EE   7A..         MOV       R2,#aExtendedAddress & 0xff
+   \   0000F0   7B..         MOV       R3,#(aExtendedAddress >> 8) & 0xff
+   \   0000F2   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
+   \   0000F5   7403         MOV       A,#0x3
+   \   0000F7   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000FA   8048         SJMP      ??zmain_ext_addr_2
     196                }
     197                else  // No valid extended address was found.
     198                {
@@ -678,6 +599,8 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     200                  
     201          #if !defined ( NV_RESTORE )
     202                  writeNV = FALSE;  // Make this a temporary IEEE address
+   \                     ??zmain_ext_addr_3:
+   \   0000FC   75..00       MOV       ?V0,#0x0
     203          #endif
     204          
     205                  /* Attempt to create a sufficiently random extended address for expediency.
@@ -685,11 +608,43 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     207                   *       must never be used for a commercial product.
     208                   */
     209                  for (idx = 0; idx < (Z_EXTADDR_LEN - 2);)
+   \   0000FF   75..00       MOV       ?V1,#0x0
+   \   000102   801B         SJMP      ??zmain_ext_addr_4
     210                  {
     211                    uint16 randy = osal_rand();
+   \                     ??zmain_ext_addr_5:
+   \   000104                ; Setup parameters for call to function osal_rand
+   \   000104   12....       LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
     212                    aExtendedAddress[idx++] = LO_UINT16(randy);
+   \   000107   8E82         MOV       DPL,R6
+   \   000109   8F83         MOV       DPH,R7
+   \   00010B   EA           MOV       A,R2
+   \   00010C   F0           MOVX      @DPTR,A
+   \   00010D   05..         INC       ?V1
     213                    aExtendedAddress[idx++] = HI_UINT16(randy);
+   \   00010F   A8..         MOV       R0,?V1
+   \   000111   74..         MOV       A,#aExtendedAddress & 0xff
+   \   000113   28           ADD       A,R0
+   \   000114   F582         MOV       DPL,A
+   \   000116   E4           CLR       A
+   \   000117   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
+   \   000119   F583         MOV       DPH,A
+   \   00011B   EB           MOV       A,R3
+   \   00011C   F0           MOVX      @DPTR,A
+   \   00011D   05..         INC       ?V1
     214                  }
+   \                     ??zmain_ext_addr_4:
+   \   00011F   A8..         MOV       R0,?V1
+   \   000121   74..         MOV       A,#aExtendedAddress & 0xff
+   \   000123   28           ADD       A,R0
+   \   000124   FE           MOV       R6,A
+   \   000125   E4           CLR       A
+   \   000126   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
+   \   000128   FF           MOV       R7,A
+   \   000129   E8           MOV       A,R0
+   \   00012A   C3           CLR       C
+   \   00012B   9406         SUBB      A,#0x6
+   \   00012D   40D5         JC        ??zmain_ext_addr_5
     215                  // Next-to-MSB identifies ZigBee devicetype.
     216          #if ZG_BUILD_COORDINATOR_TYPE && !ZG_BUILD_JOINING_TYPE
     217                  aExtendedAddress[idx++] = 0x10;
@@ -697,125 +652,63 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     219                  aExtendedAddress[idx++] = 0x20;
     220          #else
     221                  aExtendedAddress[idx++] = 0x30;
+   \   00012F   8E82         MOV       DPL,R6
+   \   000131   8F83         MOV       DPH,R7
+   \   000133   7430         MOV       A,#0x30
+   \   000135   F0           MOVX      @DPTR,A
     222          #endif
     223                  // MSB has historical signficance.
     224                  aExtendedAddress[idx] = 0xF8;
+   \   000136   08           INC       R0
+   \   000137   74..         MOV       A,#aExtendedAddress & 0xff
+   \   000139   28           ADD       A,R0
+   \   00013A   F582         MOV       DPL,A
+   \   00013C   E4           CLR       A
+   \   00013D   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
+   \   00013F   F583         MOV       DPH,A
+   \   000141   74F8         MOV       A,#-0x8
+   \   000143   F0           MOVX      @DPTR,A
     225                }
     226              }
     227          
     228              if (writeNV)
+   \                     ??zmain_ext_addr_2:
+   \   000144   E5..         MOV       A,?V0
+   \   000146   6026         JZ        ??zmain_ext_addr_1
     229              {
     230                (void)osal_nv_write(ZCD_NV_EXTADDR, 0, Z_EXTADDR_LEN, aExtendedAddress);
-   \                     ??zmain_ext_addr_2:
-   \   0000F3                ; Setup parameters for call to function osal_nv_write
-   \   0000F3   75....       MOV       ?V0,#aExtendedAddress & 0xff
-   \   0000F6   75....       MOV       ?V1,#(aExtendedAddress >> 8) & 0xff
-   \   0000F9   78..         MOV       R0,#?V0
-   \   0000FB   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0000FE   75..08       MOV       ?V0,#0x8
-   \   000101   75..00       MOV       ?V1,#0x0
-   \   000104   78..         MOV       R0,#?V0
-   \   000106   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000109   7C00         MOV       R4,#0x0
-   \   00010B   7D00         MOV       R5,#0x0
-   \   00010D   7A01         MOV       R2,#0x1
-   \   00010F   7B00         MOV       R3,#0x0
-   \   000111   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
-   \   000114   7404         MOV       A,#0x4
-   \   000116   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000148                ; Setup parameters for call to function osal_nv_write
+   \   000148   75....       MOV       ?V0,#aExtendedAddress & 0xff
+   \   00014B   75....       MOV       ?V1,#(aExtendedAddress >> 8) & 0xff
+   \   00014E   78..         MOV       R0,#?V0
+   \   000150   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000153   75..08       MOV       ?V0,#0x8
+   \   000156   75..00       MOV       ?V1,#0x0
+   \   000159   78..         MOV       R0,#?V0
+   \   00015B   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00015E   7C00         MOV       R4,#0x0
+   \   000160   7D00         MOV       R5,#0x0
+   \   000162   7A01         MOV       R2,#0x1
+   \   000164   7B00         MOV       R3,#0x0
+   \   000166   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
+   \   000169   7404         MOV       A,#0x4
+   \   00016B   12....       LCALL     ?DEALLOC_XSTACK8
     231              }
     232            }
     233          
     234            // Set the MAC PIB extended address according to results from above.
     235            (void)ZMacSetReq(MAC_EXTENDED_ADDRESS, aExtendedAddress);
    \                     ??zmain_ext_addr_1:
-   \   000119                ; Setup parameters for call to function ZMacSetReq
-   \   000119   7A..         MOV       R2,#aExtendedAddress & 0xff
-   \   00011B   7B..         MOV       R3,#(aExtendedAddress >> 8) & 0xff
-   \   00011D   79E2         MOV       R1,#-0x1e
-   \   00011F   12....       LCALL     `??ZMacSetReq::?relay`; Banked call to: ZMacSetReq
+   \   00016E                ; Setup parameters for call to function ZMacSetReq
+   \   00016E   7A..         MOV       R2,#aExtendedAddress & 0xff
+   \   000170   7B..         MOV       R3,#(aExtendedAddress >> 8) & 0xff
+   \   000172   79E2         MOV       R1,#-0x1e
+   \   000174   12....       LCALL     `??ZMacSetReq::?relay`; Banked call to: ZMacSetReq
     236          }
-   \   000122   7408         MOV       A,#0x8
-   \   000124   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000127   7F0A         MOV       R7,#0xa
-   \   000129   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \                     ??zmain_ext_addr_3:
-   \   00012C   7E00         MOV       R6,#0x0
-   \                     ??zmain_ext_addr_4:
-   \   00012E                ; Setup parameters for call to function osal_rand
-   \   00012E   12....       LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
-   \   000131   8A..         MOV       ?V0,R2
-   \   000133   EE           MOV       A,R6
-   \   000134   FA           MOV       R2,A
-   \   000135   74..         MOV       A,#aExtendedAddress & 0xff
-   \   000137   2A           ADD       A,R2
-   \   000138   F582         MOV       DPL,A
-   \   00013A   E4           CLR       A
-   \   00013B   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
-   \   00013D   F583         MOV       DPH,A
-   \   00013F   E5..         MOV       A,?V0
-   \   000141   F0           MOVX      @DPTR,A
-   \   000142   0E           INC       R6
-   \   000143   EE           MOV       A,R6
-   \   000144   F8           MOV       R0,A
-   \   000145   12....       LCALL     ?Subroutine0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_0:
-   \   000148   EB           MOV       A,R3
-   \   000149   F0           MOVX      @DPTR,A
-   \   00014A   0E           INC       R6
-   \   00014B   EE           MOV       A,R6
-   \   00014C   C3           CLR       C
-   \   00014D   9406         SUBB      A,#0x6
-   \   00014F   40DD         JC        ??zmain_ext_addr_4
-   \   000151   08           INC       R0
-   \   000152   12....       LCALL     ?Subroutine0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_1:
-   \   000155   7430         MOV       A,#0x30
-   \   000157   F0           MOVX      @DPTR,A
-   \   000158   08           INC       R0
-   \   000159   74..         MOV       A,#aExtendedAddress & 0xff
-   \   00015B   28           ADD       A,R0
-   \   00015C   F582         MOV       DPL,A
-   \   00015E   E4           CLR       A
-   \   00015F   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
-   \   000161   F583         MOV       DPH,A
-   \   000163   74F8         MOV       A,#-0x8
-   \   000165   F0           MOVX      @DPTR,A
-   \   000166   80B1         SJMP      ??zmain_ext_addr_1
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   74..         MOV       A,#aExtendedAddress & 0xff
-   \   000002   2E           ADD       A,R6
-   \   000003   F582         MOV       DPL,A
-   \   000005   E4           CLR       A
-   \   000006   34..         ADDC      A,#(aExtendedAddress >> 8) & 0xff
-   \   000008   F583         MOV       DPH,A
-   \   00000A   22           RET
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant {255, 255, 255, 255, 255, 255, 255,`:
-   \   000000   FF           DB 255
-   \   000001   FF           DB 255
-   \   000002   FF           DB 255
-   \   000003   FF           DB 255
-   \   000004   FF           DB 255
-   \   000005   FF           DB 255
-   \   000006   FF           DB 255
-   \   000007   FF           DB 255
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "IEEE: ">`:
-   \   000000   49454545     DB "IEEE: "
-   \            3A2000  
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "TexasInstruments">`:
-   \   000000   54657861     DB "TexasInstruments"
-   \            73496E73
-   \            7472756D
-   \            656E7473
-   \            00      
+   \   000177   7408         MOV       A,#0x8
+   \   000179   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00017C   7F07         MOV       R7,#0x7
+   \   00017E   02....       LJMP      ?BANKED_LEAVE_XDATA
     237          
     238          #if defined ZCL_KEY_ESTABLISH
     239          /**************************************************************************************************
@@ -890,8 +783,17 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     308           * @return      None.
     309           **************************************************************************************************
     310           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     311          static void zmain_dev_info(void)
+   \                     zmain_dev_info:
     312          {
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 17
+   \   000005   74EF         MOV       A,#-0x11
+   \   000007   12....       LCALL     ?ALLOC_XSTACK8
     313          #if defined ( SERIAL_DEBUG_SUPPORTED ) || (defined ( LEGACY_LCD_DEBUG ) && defined (LCD_SUPPORTED))
     314            uint8 i;
     315            uint8 *xad;
@@ -899,20 +801,119 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     317          
     318            // Display the extended address.
     319            xad = aExtendedAddress + Z_EXTADDR_LEN - 1;
+   \   00000A   78..         MOV       R0,#(aExtendedAddress + 7) & 0xff
+   \   00000C   79..         MOV       R1,#((aExtendedAddress + 7) >> 8) & 0xff
     320          
     321            for (i = 0; i < Z_EXTADDR_LEN*2; xad--)
+   \   00000E   7A00         MOV       R2,#0x0
+   \   000010   8021         SJMP      ??zmain_dev_info_0
     322            {
     323              uint8 ch;
     324              ch = (*xad >> 4) & 0x0F;
     325              lcd_buf[i++] = ch + (( ch < 10 ) ? '0' : '7');
     326              ch = *xad & 0x0F;
     327              lcd_buf[i++] = ch + (( ch < 10 ) ? '0' : '7');
+   \                     ??zmain_dev_info_1:
+   \   000012   7C37         MOV       R4,#0x37
+   \                     ??zmain_dev_info_2:
+   \   000014   EC           MOV       A,R4
+   \   000015   2B           ADD       A,R3
+   \   000016   C0E0         PUSH      A
+   \   000018   85..82       MOV       DPL,?XSP + 0
+   \   00001B   85..83       MOV       DPH,?XSP + 1
+   \   00001E   E582         MOV       A,DPL
+   \   000020   2E           ADD       A,R6
+   \   000021   F582         MOV       DPL,A
+   \   000023   E4           CLR       A
+   \   000024   3583         ADDC      A,DPH
+   \   000026   F583         MOV       DPH,A
+   \   000028   D0E0         POP       A
+   \   00002A   F0           MOVX      @DPTR,A
+   \   00002B   E8           MOV       A,R0
+   \   00002C   24FF         ADD       A,#-0x1
+   \   00002E   18           DEC       R0
+   \   00002F   E9           MOV       A,R1
+   \   000030   34FF         ADDC      A,#-0x1
+   \   000032   F9           MOV       R1,A
+   \                     ??zmain_dev_info_0:
+   \   000033   EA           MOV       A,R2
+   \   000034   C3           CLR       C
+   \   000035   9410         SUBB      A,#0x10
+   \   000037   504A         JNC       ??zmain_dev_info_3
+   \   000039   8882         MOV       DPL,R0
+   \   00003B   8983         MOV       DPH,R1
+   \   00003D   E0           MOVX      A,@DPTR
+   \   00003E   C4           SWAP      A
+   \   00003F   540F         ANL       A,#0xf
+   \   000041   FB           MOV       R3,A
+   \   000042   EA           MOV       A,R2
+   \   000043   FF           MOV       R7,A
+   \   000044   7401         MOV       A,#0x1
+   \   000046   2F           ADD       A,R7
+   \   000047   FA           MOV       R2,A
+   \   000048   EB           MOV       A,R3
+   \   000049   C3           CLR       C
+   \   00004A   940A         SUBB      A,#0xa
+   \   00004C   5004         JNC       ??zmain_dev_info_4
+   \   00004E   7C30         MOV       R4,#0x30
+   \   000050   8002         SJMP      ??zmain_dev_info_5
+   \                     ??zmain_dev_info_4:
+   \   000052   7C37         MOV       R4,#0x37
+   \                     ??zmain_dev_info_5:
+   \   000054   EC           MOV       A,R4
+   \   000055   2B           ADD       A,R3
+   \   000056   C0E0         PUSH      A
+   \   000058   85..82       MOV       DPL,?XSP + 0
+   \   00005B   85..83       MOV       DPH,?XSP + 1
+   \   00005E   E582         MOV       A,DPL
+   \   000060   2F           ADD       A,R7
+   \   000061   F582         MOV       DPL,A
+   \   000063   E4           CLR       A
+   \   000064   3583         ADDC      A,DPH
+   \   000066   F583         MOV       DPH,A
+   \   000068   D0E0         POP       A
+   \   00006A   F0           MOVX      @DPTR,A
+   \   00006B   8882         MOV       DPL,R0
+   \   00006D   8983         MOV       DPH,R1
+   \   00006F   E0           MOVX      A,@DPTR
+   \   000070   540F         ANL       A,#0xf
+   \   000072   FB           MOV       R3,A
+   \   000073   EA           MOV       A,R2
+   \   000074   FE           MOV       R6,A
+   \   000075   7401         MOV       A,#0x1
+   \   000077   2A           ADD       A,R2
+   \   000078   FA           MOV       R2,A
+   \   000079   EB           MOV       A,R3
+   \   00007A   C3           CLR       C
+   \   00007B   940A         SUBB      A,#0xa
+   \   00007D   5093         JNC       ??zmain_dev_info_1
+   \   00007F   7C30         MOV       R4,#0x30
+   \   000081   8091         SJMP      ??zmain_dev_info_2
     328            }
     329            lcd_buf[Z_EXTADDR_LEN*2] = '\0';
+   \                     ??zmain_dev_info_3:
+   \   000083   7410         MOV       A,#0x10
+   \   000085   12....       LCALL     ?XSTACK_DISP0_8
+   \   000088   E4           CLR       A
+   \   000089   F0           MOVX      @DPTR,A
     330            HalLcdWriteString( "IEEE: ", HAL_LCD_DEBUG_LINE_1 );
+   \   00008A                ; Setup parameters for call to function HalLcdWriteString
+   \   00008A   79FF         MOV       R1,#-0x1
+   \   00008C   7A..         MOV       R2,#`?<Constant "IEEE: ">` & 0xff
+   \   00008E   7B..         MOV       R3,#(`?<Constant "IEEE: ">` >> 8) & 0xff
+   \   000090   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
     331            HalLcdWriteString( (char*)lcd_buf, HAL_LCD_DEBUG_LINE_2 );
+   \   000093                ; Setup parameters for call to function HalLcdWriteString
+   \   000093   79FF         MOV       R1,#-0x1
+   \   000095   AA..         MOV       R2,?XSP + 0
+   \   000097   AB..         MOV       R3,?XSP + 1
+   \   000099   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
     332          #endif
     333          }
+   \   00009C   7411         MOV       A,#0x11
+   \   00009E   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000A1   7F01         MOV       R7,#0x1
+   \   0000A3   02....       LJMP      ?BANKED_LEAVE_XDATA
     334          
     335          #ifdef LCD_SUPPORTED
     336          /*********************************************************************
@@ -920,11 +921,23 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     338           * @brief   Initialize LCD at start up.
     339           * @return  none
     340           *********************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     341          static void zmain_lcd_init ( void )
+   \                     zmain_lcd_init:
     342          {
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
     343          #ifdef SERIAL_DEBUG_SUPPORTED
     344            {
     345              HalLcdWriteString( "TexasInstruments", HAL_LCD_DEBUG_LINE_1 );
+   \   000004                ; Setup parameters for call to function HalLcdWriteString
+   \   000004   79FF         MOV       R1,#-0x1
+   \   000006   7A..         MOV       R2,#`?<Constant "TexasInstruments">` & 0xff
+   \   000008   7B..         MOV       R3,#(`?<Constant "TexasInstruments">` >> 8) & 0xff
+   \   00000A   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
     346          
     347          #if defined( MT_MAC_FUNC )
     348          #if defined( ZDO_COORDINATOR )
@@ -942,6 +955,33 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
     360            }
     361          #endif // SERIAL_DEBUG_SUPPORTED
     362          }
+   \   00000D   D083         POP       DPH
+   \   00000F   D082         POP       DPL
+   \   000011   02....       LJMP      ?BRET
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant {255, 255, 255, 255, 255, 255, 255,`:
+   \   000000   FF           DB 255
+   \   000001   FF           DB 255
+   \   000002   FF           DB 255
+   \   000003   FF           DB 255
+   \   000004   FF           DB 255
+   \   000005   FF           DB 255
+   \   000006   FF           DB 255
+   \   000007   FF           DB 255
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "IEEE: ">`:
+   \   000000   49454545     DB "IEEE: "
+   \            3A2000  
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "TexasInstruments">`:
+   \   000000   54657861     DB "TexasInstruments"
+   \            73496E73
+   \            7472756D
+   \            656E7473
+   \            00      
     363          #endif
     364          
     365          /*********************************************************************
@@ -951,28 +991,35 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
 
    ISTACK XSTACK Function
    ------ ------ --------
-      1     17   main
-        0     17   -> HalAdcCheckVdd
-        0     17   -> HalDriverInit
-        0     17   -> HalLcdWriteString
-        0     17   -> InitBoard
-        0     17   -> ZMacInit
-        0     17   -> osal_init_system
-        0     17   -> osal_int_disable
-        0     17   -> osal_int_enable
-        0     17   -> osal_nv_init
-        0     17   -> osal_start_system
-        0     17   -> zgInit
-        0     17   -> zmain_ext_addr
-      1     47   zmain_ext_addr
-        0     28   -> HalFlashRead
-        0     26   -> ZMacSetReq
-        0     29   -> osal_memcmp
-        0     29   -> osal_memcpy
-        0     28   -> osal_nv_item_init
-        0     30   -> osal_nv_read
-        0     30   -> osal_nv_write
-        0     26   -> osal_rand
+      0      0   main
+        0      0   -> HalDriverInit
+        0      0   -> InitBoard
+        0      0   -> ZMacInit
+        0      0   -> osal_init_system
+        0      0   -> osal_int_disable
+        0      0   -> osal_int_enable
+        0      0   -> osal_nv_init
+        0      0   -> osal_start_system
+        0      0   -> zgInit
+        0      0   -> zmain_dev_info
+        0      0   -> zmain_ext_addr
+        0      0   -> zmain_lcd_init
+        0      0   -> zmain_vdd_check
+      1     26   zmain_dev_info
+        0     26   -> HalLcdWriteString
+      1     27   zmain_ext_addr
+        0     25   -> HalFlashRead
+        0     23   -> ZMacSetReq
+        0     26   -> osal_memcmp
+        0     26   -> osal_memcpy
+        0     25   -> osal_nv_item_init
+        0     27   -> osal_nv_read
+        0     27   -> osal_nv_write
+        0     23   -> osal_rand
+      2      0   zmain_lcd_init
+        2      0   -> HalLcdWriteString
+      0      9   zmain_vdd_check
+        0      9   -> HalAdcCheckVdd
 
 
    Segment part sizes:
@@ -982,7 +1029,6 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
        7  ?<Constant "IEEE: ">
       17  ?<Constant "TexasInstruments">
        8  ?<Constant {255, 255, 255, 255, 255, 255, 255,
-      11  ?Subroutine0
        1  CLKCONCMD
        1  CLKCONSTA
        1  P0DIR
@@ -992,20 +1038,23 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c
        1  SLEEPSTA
        1  _A_P0
        1  _A_P1
-     295  main
-     360  zmain_ext_addr
-      12  -- Other
+     131  main
+     166  zmain_dev_info
+     385  zmain_ext_addr
+      20  zmain_lcd_init
+      24  zmain_vdd_check
+      30  -- Other
 
  
- 666 bytes in segment BANKED_CODE
-  12 bytes in segment BANK_RELAYS
+ 726 bytes in segment BANKED_CODE
+  30 bytes in segment BANK_RELAYS
    9 bytes in segment SFR_AN
   32 bytes in segment XDATA_ROM_C
  
-  12 bytes of CODE     memory
+  30 bytes of CODE     memory
   32 bytes of CONST    memory
    0 bytes of DATA     memory (+ 9 bytes shared)
- 666 bytes of HUGECODE memory
+ 726 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

@@ -55,7 +55,10 @@ extern "C"
 /*********************************************************************
  * CONSTANTS
  */
-#define SAMPLESW_ENDPOINT               8
+//#define SAMPLESW_ENDPOINT               8
+#define SW1_ENDPOINT                    8
+#define SW2_ENDPOINT                    9
+#define SW3_ENDPOINT                    10
 
 #define LIGHT_OFF                       0x00
 #define LIGHT_ON                        0x01

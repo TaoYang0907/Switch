@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  10:55:59
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:51
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\services\saddr\saddr.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWFCD6.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW87AD.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\services\saddr\saddr.c" -D BDB_REPORTING -D SECURE=1
 //        -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -261,73 +263,6 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
-        
 osal_memcpy         SYMBOL "osal_memcpy"
 `??osal_memcpy::?relay` SYMBOL "?relay", osal_memcpy
 sAddrCmp            SYMBOL "sAddrCmp"
@@ -445,8 +380,30 @@ sAddrCmp:
         ; Saved register size: 2
         ; Auto size: 0
 //   68   if (pAddr1->addrMode != pAddr2->addrMode)
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_0:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        MOV       DPL,R4
+        MOV       DPH,R5
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        XRL       A,R0
         JNZ       ??sAddrCmp_0
 //   69   {
 //   70     return FALSE;
@@ -463,9 +420,17 @@ sAddrCmp:
         JNZ       ??sAddrCmp_1
 //   77   {
 //   78     return (bool) (pAddr1->addr.shortAddr == pAddr2->addr.shortAddr);
-        LCALL     ?Subroutine2 & 0xFFFF
-//   79   }
-??CrossCallReturnLabel_2:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPL,R4
+        MOV       DPH,R5
+        MOVX      A,@DPTR
+        XRL       A,R0
         JNZ       ??sAddrCmp_2
         INC       DPTR
         MOVX      A,@DPTR
@@ -474,6 +439,7 @@ sAddrCmp:
         JNZ       ??sAddrCmp_0
         MOV       R1,#0x1
         SJMP      ??sAddrCmp_3
+//   79   }
 //   80   else if (pAddr1->addrMode == SADDR_MODE_EXT)
 ??sAddrCmp_1:
         MOV       A,#0x3
@@ -490,28 +456,17 @@ sAddrCmp:
 //   86     return FALSE;
 ??sAddrCmp_0:
         MOV       R1,#0x0
-//   87   }
 ??sAddrCmp_3:
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-//   88 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock1
+//   87   }
+//   88 }
+          CFI EndBlock cfiBlock0
 //   89 
 //   90 /****************************************************************************
 //   91  * @fn          sAddrIden
@@ -542,7 +497,7 @@ sAddrCmp:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  115 bool sAddrIden(const sAddr_t *pAddr1, const sAddr_t *pAddr2)
 sAddrIden:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function sAddrIden
         CODE
 //  116 {
@@ -567,8 +522,30 @@ sAddrIden:
         ; Auto size: 0
 //  117   // first check if the address modes are the same
 //  118   if (pAddr1->addrMode != pAddr2->addrMode)
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_1:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R0,A
+        MOV       DPL,R4
+        MOV       DPH,R5
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        XRL       A,R0
         JNZ       ??sAddrIden_0
 //  119   {
 //  120     // no, so no point in comparing any further
@@ -591,9 +568,17 @@ sAddrIden:
 //  132   {
 //  133     // compare short addresses
 //  134     return (bool) (pAddr1->addr.shortAddr == pAddr2->addr.shortAddr);
-        LCALL     ?Subroutine2 & 0xFFFF
-//  135   }
-??CrossCallReturnLabel_3:
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPL,R4
+        MOV       DPH,R5
+        MOVX      A,@DPTR
+        XRL       A,R0
         JNZ       ??sAddrIden_3
         INC       DPTR
         MOVX      A,@DPTR
@@ -603,6 +588,7 @@ sAddrIden:
 ??sAddrIden_1:
         MOV       R1,#0x1
         SJMP      ??sAddrIden_4
+//  135   }
 //  136   // there's an address; check if it is extended
 //  137   else if (pAddr1->addrMode == SADDR_MODE_EXT)
 ??sAddrIden_2:
@@ -621,90 +607,17 @@ sAddrIden:
 //  144     return FALSE;
 ??sAddrIden_0:
         MOV       R1,#0x0
-//  145   }
 ??sAddrIden_4:
-        SJMP      ?Subroutine0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+//  145   }
 //  146 }
-          CFI EndBlock cfiBlock2
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI Function sAddrCmp
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI (cfiCond4) Function sAddrIden
-          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond4) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond4) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond4) CFA_SP SP+-7
-          CFI Block cfiPicker5 Using cfiCommon1
-          CFI (cfiPicker5) NoFunction
-          CFI (cfiPicker5) Picker
-        MOV       DPL,R2
-        MOV       DPH,R3
-        MOVX      A,@DPTR
-        MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPL,R4
-        MOV       DPH,R5
-        MOVX      A,@DPTR
-        XRL       A,R0
-        RET
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiPicker5
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI Function sAddrCmp
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function sAddrIden
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond7) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond7) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond7) CFA_SP SP+-7
-          CFI Block cfiPicker8 Using cfiCommon1
-          CFI (cfiPicker8) NoFunction
-          CFI (cfiPicker8) Picker
-        MOV       DPL,R2
-        MOV       DPH,R3
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R0,A
-        MOV       DPL,R4
-        MOV       DPH,R5
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        XRL       A,R0
-        RET
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiPicker8
+          CFI EndBlock cfiBlock1
 //  147 
 //  148 /****************************************************************************
 //  149  * @fn          sAddrCpy
@@ -725,7 +638,7 @@ sAddrIden:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  163 void sAddrCpy(sAddr_t *pDest, const sAddr_t *pSrc)
 sAddrCpy:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function sAddrCpy
         CODE
 //  164 {
@@ -804,8 +717,14 @@ sAddrCpy:
 //  174   }
 //  175 }
 ??sAddrCpy_1:
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock9
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
 //  176 
 //  177 /****************************************************************************
 //  178  * @fn          sAddrExtCmp
@@ -825,7 +744,7 @@ sAddrCpy:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  191 bool sAddrExtCmp(const uint8 * pAddr1, const uint8 * pAddr2)
 sAddrExtCmp:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function sAddrExtCmp
         CODE
 //  192 {
@@ -851,9 +770,14 @@ sAddrExtCmp:
 //  194 
 //  195   for (i = SADDR_EXT_LEN; i != 0; i--)
         MOV       ?V0,#0x8
+        SJMP      ??sAddrExtCmp_0
+??sAddrExtCmp_1:
+        DEC       ?V0
+??sAddrExtCmp_0:
+        MOV       A,?V0
+        JZ        ??sAddrExtCmp_2
 //  196   {
 //  197     if (*pAddr1++ != *pAddr2++)
-??sAddrExtCmp_0:
         MOV       A,R2
         MOV       R6,A
         MOV       A,R3
@@ -884,20 +808,17 @@ sAddrExtCmp:
 //  198     {
 //  199       return FALSE;
         MOV       R1,#0x0
-        SJMP      ??sAddrExtCmp_2
+        SJMP      ??sAddrExtCmp_3
 //  200     }
 //  201   }
-??sAddrExtCmp_1:
-        DEC       ?V0
-        MOV       A,?V0
-        JNZ       ??sAddrExtCmp_0
 //  202   return TRUE;
-        MOV       R1,#0x1
 ??sAddrExtCmp_2:
+        MOV       R1,#0x1
+??sAddrExtCmp_3:
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
 //  203 }
-          CFI EndBlock cfiBlock10
+          CFI EndBlock cfiBlock3
 //  204 
 //  205 /****************************************************************************
 //  206  * @fn          sAddrExtCpy
@@ -918,7 +839,7 @@ sAddrExtCmp:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  220 void *sAddrExtCpy(uint8 * pDest, const uint8 * pSrc)
 sAddrExtCpy:
-          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function sAddrExtCpy
         CODE
 //  221 {
@@ -970,7 +891,7 @@ sAddrExtCpy:
         MOV       R7,#0x3
         LJMP      ?BANKED_LEAVE_XDATA
 //  223 }
-          CFI EndBlock cfiBlock11
+          CFI EndBlock cfiBlock4
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??sAddrCmp::?relay`:
@@ -1013,11 +934,11 @@ sAddrExtCpy:
 //  226 
 //  227 
 // 
-// 301 bytes in segment BANKED_CODE
+// 341 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 // 
 //  30 bytes of CODE     memory
-// 301 bytes of HUGECODE memory
+// 341 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  10:56:04
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:09
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWEB3.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW9756.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\zdo\ZDConfig.c" -D BDB_REPORTING -D SECURE=1
 //        -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -406,7 +408,13 @@ ZDConfig_InitDescriptors:
         ; Setup parameters for call to function ZDConfig_UpdatePowerDescriptor
         LCALL     `??ZDConfig_UpdatePowerDescriptor::?relay`; Banked call to: ZDConfig_UpdatePowerDescriptor
 //   99 }
-        SJMP      ??Subroutine1_0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
 //  100 
 //  101 /*********************************************************************
@@ -527,38 +535,16 @@ ZDConfig_UpdateNodeDescriptor:
 //  169   ZDO_Config_Node_Descriptor.DescriptorCapability = 0;
         MOV       DPTR,#ZDO_Config_Node_Descriptor + 12
         CLR       A
-          CFI EndBlock cfiBlock1
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-//  170 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock2 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         MOVX      @DPTR,A
-          CFI EndBlock cfiBlock2
-        REQUIRE ??Subroutine1_0
-        ; // Fall through to label ??Subroutine1_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine1_0:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
+//  170 }
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock3
+          CFI EndBlock cfiBlock1
 //  171 
 //  172 /*********************************************************************
 //  173  * @fn      ZDConfig_UpdatePowerDescriptor()
@@ -573,7 +559,7 @@ ZDConfig_UpdateNodeDescriptor:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  181 void ZDConfig_UpdatePowerDescriptor( void )
 ZDConfig_UpdatePowerDescriptor:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function ZDConfig_UpdatePowerDescriptor
         CODE
 //  182 {
@@ -608,6 +594,7 @@ ZDConfig_UpdatePowerDescriptor:
         MOVX      A,@DPTR
         ANL       A,#0xf0
         MOVX      @DPTR,A
+        MOVX      A,@DPTR
         ORL       A,#0x1
         SJMP      ??ZDConfig_UpdatePowerDescriptor_1
 //  195     else
@@ -616,6 +603,7 @@ ZDConfig_UpdatePowerDescriptor:
         MOVX      A,@DPTR
         ANL       A,#0xf0
         MOVX      @DPTR,A
+        MOVX      A,@DPTR
         ORL       A,#0x2
 ??ZDConfig_UpdatePowerDescriptor_1:
         MOVX      @DPTR,A
@@ -634,11 +622,19 @@ ZDConfig_UpdatePowerDescriptor:
         ORL       A,#0x20
         MOVX      @DPTR,A
         INC       DPTR
-        MOV       A,#-0x7e
-        SJMP      ?Subroutine0
+        MOVX      A,@DPTR
+        ORL       A,#0x82
+        MOVX      @DPTR,A
 //  201   }
 //  202 }
-          CFI EndBlock cfiBlock4
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??ZDConfig_InitDescriptors::?relay`:
@@ -668,12 +664,12 @@ ZDConfig_UpdatePowerDescriptor:
 //  206 
 //  207 
 // 
-// 127 bytes in segment BANKED_CODE
+// 141 bytes in segment BANKED_CODE
 //  18 bytes in segment BANK_RELAYS
 //  15 bytes in segment XDATA_Z
 // 
 //  18 bytes of CODE     memory
-// 127 bytes of HUGECODE memory
+// 141 bytes of HUGECODE memory
 //  15 bytes of XDATA    memory
 //
 //Errors: none

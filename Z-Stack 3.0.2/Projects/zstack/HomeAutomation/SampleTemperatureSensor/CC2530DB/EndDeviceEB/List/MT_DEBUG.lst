@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:26
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  00:36:35
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,14 +13,15 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\mt\MT_DEBUG.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWD4A2.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW1FE8.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mt\MT_DEBUG.c" -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -475,106 +477,137 @@ D:\AA\Z-Stack 3.0.2\Components\mt\MT_DEBUG.c
    \   000068   85..82       MOV       DPL,?V0
    \   00006B   85..83       MOV       DPH,?V1
    \   00006E   E0           MOVX      A,@DPTR
-   \   00006F   7003         JNZ       $+5
-   \   000071   02....       LJMP      ??MT_ProcessDebugMsg_1 & 0xFFFF
+   \   00006F   602F         JZ        ??MT_ProcessDebugMsg_1
     293              {
     294                *pBuf++ = LO_UINT16( msg->param1 );
-   \   000074   EE           MOV       A,R6
-   \   000075   2405         ADD       A,#0x5
-   \   000077   F8           MOV       R0,A
-   \   000078   E4           CLR       A
-   \   000079   3F           ADDC      A,R7
-   \   00007A   F9           MOV       R1,A
-   \   00007B   8882         MOV       DPL,R0
-   \   00007D   F583         MOV       DPH,A
-   \   00007F   E0           MOVX      A,@DPTR
-   \   000080   C0E0         PUSH      A
-   \   000082   7403         MOV       A,#0x3
-   \   000084   12....       LCALL     ?XSTACK_DISP0_8
-   \   000087   D0E0         POP       A
-   \   000089   F0           MOVX      @DPTR,A
+   \   000071   EE           MOV       A,R6
+   \   000072   2405         ADD       A,#0x5
+   \   000074   F8           MOV       R0,A
+   \   000075   E4           CLR       A
+   \   000076   3F           ADDC      A,R7
+   \   000077   F9           MOV       R1,A
+   \   000078   8882         MOV       DPL,R0
+   \   00007A   F583         MOV       DPH,A
+   \   00007C   E0           MOVX      A,@DPTR
+   \   00007D   C0E0         PUSH      A
+   \   00007F   7403         MOV       A,#0x3
+   \   000081   12....       LCALL     ?XSTACK_DISP0_8
+   \   000084   D0E0         POP       A
+   \   000086   F0           MOVX      @DPTR,A
     295                *pBuf++ = HI_UINT16( msg->param1 );
-   \   00008A   8882         MOV       DPL,R0
-   \   00008C   8983         MOV       DPH,R1
-   \   00008E   A3           INC       DPTR
-   \   00008F   E0           MOVX      A,@DPTR
-   \   000090   C0E0         PUSH      A
-   \   000092   7404         MOV       A,#0x4
-   \   000094   12....       LCALL     ?XSTACK_DISP0_8
-   \   000097   D0E0         POP       A
-   \   000099   F0           MOVX      @DPTR,A
-   \   00009A   7405         MOV       A,#0x5
-   \   00009C   12....       LCALL     ?XSTACK_DISP0_8
-   \   00009F   A882         MOV       R0,DPL
-   \   0000A1   A983         MOV       R1,DPH
+   \   000087   8882         MOV       DPL,R0
+   \   000089   8983         MOV       DPH,R1
+   \   00008B   A3           INC       DPTR
+   \   00008C   E0           MOVX      A,@DPTR
+   \   00008D   C0E0         PUSH      A
+   \   00008F   7404         MOV       A,#0x4
+   \   000091   12....       LCALL     ?XSTACK_DISP0_8
+   \   000094   D0E0         POP       A
+   \   000096   F0           MOVX      @DPTR,A
+   \   000097   7405         MOV       A,#0x5
+   \   000099   12....       LCALL     ?XSTACK_DISP0_8
+   \   00009C   A882         MOV       R0,DPL
+   \   00009E   A983         MOV       R1,DPH
     296              }
     297          
     298              if ( msg->numParams >= 2 )
-   \   0000A3   85..82       MOV       DPL,?V0
-   \   0000A6   85..83       MOV       DPH,?V1
-   \   0000A9   E0           MOVX      A,@DPTR
-   \   0000AA   C3           CLR       C
-   \   0000AB   9402         SUBB      A,#0x2
-   \   0000AD   402F         JC        ??MT_ProcessDebugMsg_2
+   \                     ??MT_ProcessDebugMsg_1:
+   \   0000A0   85..82       MOV       DPL,?V0
+   \   0000A3   85..83       MOV       DPH,?V1
+   \   0000A6   E0           MOVX      A,@DPTR
+   \   0000A7   C3           CLR       C
+   \   0000A8   9402         SUBB      A,#0x2
+   \   0000AA   4024         JC        ??MT_ProcessDebugMsg_2
     299              {
     300                *pBuf++ = LO_UINT16( msg->param2 );
-   \   0000AF   EE           MOV       A,R6
-   \   0000B0   2407         ADD       A,#0x7
-   \   0000B2   F8           MOV       R0,A
-   \   0000B3   E4           CLR       A
-   \   0000B4   3F           ADDC      A,R7
-   \   0000B5   F9           MOV       R1,A
-   \   0000B6   8882         MOV       DPL,R0
-   \   0000B8   F583         MOV       DPH,A
-   \   0000BA   E0           MOVX      A,@DPTR
-   \   0000BB   C0E0         PUSH      A
-   \   0000BD   7405         MOV       A,#0x5
-   \   0000BF   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000C2   D0E0         POP       A
-   \   0000C4   F0           MOVX      @DPTR,A
+   \   0000AC   EE           MOV       A,R6
+   \   0000AD   2407         ADD       A,#0x7
+   \   0000AF   FC           MOV       R4,A
+   \   0000B0   E4           CLR       A
+   \   0000B1   3F           ADDC      A,R7
+   \   0000B2   FD           MOV       R5,A
+   \   0000B3   8C82         MOV       DPL,R4
+   \   0000B5   F583         MOV       DPH,A
+   \   0000B7   E0           MOVX      A,@DPTR
+   \   0000B8   8882         MOV       DPL,R0
+   \   0000BA   8983         MOV       DPH,R1
+   \   0000BC   F0           MOVX      @DPTR,A
     301                *pBuf++ = HI_UINT16( msg->param2 );
-   \   0000C5   8882         MOV       DPL,R0
-   \   0000C7   8983         MOV       DPH,R1
-   \   0000C9   A3           INC       DPTR
-   \   0000CA   E0           MOVX      A,@DPTR
-   \   0000CB   C0E0         PUSH      A
-   \   0000CD   7406         MOV       A,#0x6
-   \   0000CF   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000D2   D0E0         POP       A
-   \   0000D4   F0           MOVX      @DPTR,A
-   \   0000D5   7407         MOV       A,#0x7
-   \   0000D7   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000DA   A882         MOV       R0,DPL
-   \   0000DC   A983         MOV       R1,DPH
+   \   0000BD   8C82         MOV       DPL,R4
+   \   0000BF   8D83         MOV       DPH,R5
+   \   0000C1   A3           INC       DPTR
+   \   0000C2   E0           MOVX      A,@DPTR
+   \   0000C3   8882         MOV       DPL,R0
+   \   0000C5   8983         MOV       DPH,R1
+   \   0000C7   A3           INC       DPTR
+   \   0000C8   F0           MOVX      @DPTR,A
+   \   0000C9   E8           MOV       A,R0
+   \   0000CA   2402         ADD       A,#0x2
+   \   0000CC   F8           MOV       R0,A
+   \   0000CD   5001         JNC       ??MT_ProcessDebugMsg_2
+   \   0000CF   09           INC       R1
     302              }
     303          
     304              if ( msg->numParams == 3 )
    \                     ??MT_ProcessDebugMsg_2:
-   \   0000DE   85..82       MOV       DPL,?V0
-   \   0000E1   85..83       MOV       DPH,?V1
-   \   0000E4   E0           MOVX      A,@DPTR
-   \   0000E5   6403         XRL       A,#0x3
-   \   0000E7   700D         JNZ       ??MT_ProcessDebugMsg_1
+   \   0000D0   85..82       MOV       DPL,?V0
+   \   0000D3   85..83       MOV       DPH,?V1
+   \   0000D6   E0           MOVX      A,@DPTR
+   \   0000D7   6403         XRL       A,#0x3
+   \   0000D9   7024         JNZ       ??MT_ProcessDebugMsg_3
     305              {
     306                *pBuf++ = LO_UINT16( msg->param3 );
-   \   0000E9   EE           MOV       A,R6
-   \   0000EA   2409         ADD       A,#0x9
-   \   0000EC   12....       LCALL     ?Subroutine0 & 0xFFFF
+   \   0000DB   EE           MOV       A,R6
+   \   0000DC   2409         ADD       A,#0x9
+   \   0000DE   FC           MOV       R4,A
+   \   0000DF   E4           CLR       A
+   \   0000E0   3F           ADDC      A,R7
+   \   0000E1   FD           MOV       R5,A
+   \   0000E2   8C82         MOV       DPL,R4
+   \   0000E4   F583         MOV       DPH,A
+   \   0000E6   E0           MOVX      A,@DPTR
+   \   0000E7   8882         MOV       DPL,R0
+   \   0000E9   8983         MOV       DPH,R1
+   \   0000EB   F0           MOVX      @DPTR,A
     307                *pBuf++ = HI_UINT16( msg->param3 );
+   \   0000EC   8C82         MOV       DPL,R4
+   \   0000EE   8D83         MOV       DPH,R5
+   \   0000F0   A3           INC       DPTR
+   \   0000F1   E0           MOVX      A,@DPTR
+   \   0000F2   8882         MOV       DPL,R0
+   \   0000F4   8983         MOV       DPH,R1
+   \   0000F6   A3           INC       DPTR
+   \   0000F7   F0           MOVX      @DPTR,A
+   \   0000F8   E8           MOV       A,R0
+   \   0000F9   2402         ADD       A,#0x2
+   \   0000FB   F8           MOV       R0,A
+   \   0000FC   5001         JNC       ??MT_ProcessDebugMsg_3
+   \   0000FE   09           INC       R1
     308              }
-   \                     ??CrossCallReturnLabel_0:
-   \   0000EF   E8           MOV       A,R0
-   \   0000F0   2402         ADD       A,#0x2
-   \   0000F2   F8           MOV       R0,A
-   \   0000F3   5001         JNC       ??MT_ProcessDebugMsg_1
-   \   0000F5   09           INC       R1
     309          
     310              *pBuf++ = LO_UINT16( msg->timestamp );
-   \                     ??MT_ProcessDebugMsg_1:
-   \   0000F6   EE           MOV       A,R6
-   \   0000F7   240B         ADD       A,#0xb
-   \   0000F9   12....       LCALL     ?Subroutine0 & 0xFFFF
+   \                     ??MT_ProcessDebugMsg_3:
+   \   0000FF   EE           MOV       A,R6
+   \   000100   240B         ADD       A,#0xb
+   \   000102   FC           MOV       R4,A
+   \   000103   E4           CLR       A
+   \   000104   3F           ADDC      A,R7
+   \   000105   FD           MOV       R5,A
+   \   000106   8C82         MOV       DPL,R4
+   \   000108   F583         MOV       DPH,A
+   \   00010A   E0           MOVX      A,@DPTR
+   \   00010B   8882         MOV       DPL,R0
+   \   00010D   8983         MOV       DPH,R1
+   \   00010F   F0           MOVX      @DPTR,A
     311              *pBuf = HI_UINT16( msg->timestamp );
+   \   000110   8C82         MOV       DPL,R4
+   \   000112   8D83         MOV       DPH,R5
+   \   000114   A3           INC       DPTR
+   \   000115   E0           MOVX      A,@DPTR
+   \   000116   8882         MOV       DPL,R0
+   \   000118   8983         MOV       DPH,R1
+   \   00011A   A3           INC       DPTR
+   \   00011B   F0           MOVX      @DPTR,A
     312          
     313          #ifdef MT_UART_DEFAULT_PORT
     314              /* Debug message is set to AREQ CMD 0x80 for now */
@@ -582,38 +615,15 @@ D:\AA\Z-Stack 3.0.2\Components\mt\MT_DEBUG.c
     316              MT_BuildAndSendZToolResponse(((uint8)MT_RPC_CMD_AREQ | (uint8)MT_RPC_SYS_DBG), 0x80, dataLen, buf);
     317          #endif
     318              osal_msg_deallocate( msg_ptr );
-   \                     ??CrossCallReturnLabel_1:
-   \   0000FC                ; Setup parameters for call to function osal_msg_deallocate
-   \   0000FC   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
+   \   00011C                ; Setup parameters for call to function osal_msg_deallocate
+   \   00011C   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
     319            }
     320          }
    \                     ??MT_ProcessDebugMsg_0:
-   \   0000FF   740B         MOV       A,#0xb
-   \   000101   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000104   7F04         MOV       R7,#0x4
-   \   000106   02....       LJMP      ?BANKED_LEAVE_XDATA
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   FC           MOV       R4,A
-   \   000001   E4           CLR       A
-   \   000002   3F           ADDC      A,R7
-   \   000003   FD           MOV       R5,A
-   \   000004   8C82         MOV       DPL,R4
-   \   000006   F583         MOV       DPH,A
-   \   000008   E0           MOVX      A,@DPTR
-   \   000009   8882         MOV       DPL,R0
-   \   00000B   8983         MOV       DPH,R1
-   \   00000D   F0           MOVX      @DPTR,A
-   \   00000E   8C82         MOV       DPL,R4
-   \   000010   8D83         MOV       DPH,R5
-   \   000012   A3           INC       DPTR
-   \   000013   E0           MOVX      A,@DPTR
-   \   000014   8882         MOV       DPL,R0
-   \   000016   8983         MOV       DPH,R1
-   \   000018   A3           INC       DPTR
-   \   000019   F0           MOVX      @DPTR,A
-   \   00001A   22           RET
+   \   00011F   740B         MOV       A,#0xb
+   \   000121   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000124   7F04         MOV       R7,#0x4
+   \   000126   02....       LJMP      ?BANKED_LEAVE_XDATA
     321          
     322          /***************************************************************************************************
     323           * @fn      MT_ProcessDebugStr
@@ -687,17 +697,16 @@ D:\AA\Z-Stack 3.0.2\Components\mt\MT_DEBUG.c
 
    Bytes  Function/Label
    -----  --------------
-      27  ?Subroutine0
-     265  MT_ProcessDebugMsg
+     297  MT_ProcessDebugMsg
       32  MT_ProcessDebugStr
       12  -- Other
 
  
- 324 bytes in segment BANKED_CODE
+ 329 bytes in segment BANKED_CODE
   12 bytes in segment BANK_RELAYS
  
   12 bytes of CODE     memory
- 324 bytes of HUGECODE memory
+ 329 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

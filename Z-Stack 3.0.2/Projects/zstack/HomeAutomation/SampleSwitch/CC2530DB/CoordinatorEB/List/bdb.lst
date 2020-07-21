@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               14/Jul/2020  01:19:37
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  22:47:07
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,13 +13,14 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW9292.tmp ("D:\AA\Z-Stack
-#        3.0.2\Components\stack\bdb\bdb.c" -D SECURE=1 -D TC_LINKKEY_JOIN -D
-#        NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
-#        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
-#        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
-#        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
-#        -D ZCL_GROUPS -D ZCL_REPORTING_DEVICE -lC "D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW2831.tmp ("D:\AA\Z-Stack
+#        3.0.2\Components\stack\bdb\bdb.c" -D BDB_REPORTING -D SECURE=1 -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D
+#        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D
+#        xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D
+#        ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
+#        ZCL_ON_OFF -D ZCL_GROUPS -D ZCL_REPORT -D ZCL_REPORTING_DEVICE -D
+#        ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
@@ -489,99 +490,103 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     266          
     267          #if (BDB_REPORTING)
     268            bdb_RepInit();
+   \                     ??bdb_Init_0:
+   \   000017                ; Setup parameters for call to function bdb_RepInit
+   \   000017   12....       LCALL     `??bdb_RepInit::?relay`; Banked call to: bdb_RepInit
     269          #endif  
     270            
     271            //Register ZDO callbacks
     272            ZDO_RegisterForZDOMsg ( task_id, Node_Desc_rsp );
-   \                     ??bdb_Init_0:
-   \   000017                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
-   \   000017   7A02         MOV       R2,#0x2
-   \   000019   7B80         MOV       R3,#-0x80
-   \   00001B   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
+   \   00001A                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
+   \   00001A   7A02         MOV       R2,#0x2
+   \   00001C   7B80         MOV       R3,#-0x80
+   \   00001E   EE           MOV       A,R6
+   \   00001F   F9           MOV       R1,A
+   \   000020   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
     273          #if (BDB_FINDING_BINDING_CAPABILITY_ENABLED==1)  
     274            ZDO_RegisterForZDOMsg ( task_id, IEEE_addr_rsp );
-   \   00001E                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
-   \   00001E   7A01         MOV       R2,#0x1
-   \   000020   7B80         MOV       R3,#-0x80
-   \   000022   EE           MOV       A,R6
-   \   000023   F9           MOV       R1,A
-   \   000024   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
+   \   000023                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
+   \   000023   7A01         MOV       R2,#0x1
+   \   000025   7B80         MOV       R3,#-0x80
+   \   000027   EE           MOV       A,R6
+   \   000028   F9           MOV       R1,A
+   \   000029   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
     275            ZDO_RegisterForZDOMsg ( task_id, Simple_Desc_rsp );
-   \   000027                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
-   \   000027   7A04         MOV       R2,#0x4
-   \   000029   7B80         MOV       R3,#-0x80
-   \   00002B   EE           MOV       A,R6
-   \   00002C   F9           MOV       R1,A
-   \   00002D   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
+   \   00002C                ; Setup parameters for call to function ZDO_RegisterForZDOMsg
+   \   00002C   7A04         MOV       R2,#0x4
+   \   00002E   7B80         MOV       R3,#-0x80
+   \   000030   EE           MOV       A,R6
+   \   000031   F9           MOV       R1,A
+   \   000032   12....       LCALL     `??ZDO_RegisterForZDOMsg::?relay`; Banked call to: ZDO_RegisterForZDOMsg
     276          #endif
     277            
     278          #if !defined (DISABLE_GREENPOWER_BASIC_PROXY) && (ZG_BUILD_RTR_TYPE)
     279            gp_RegisterGPChangeChannelReqForBDBCB(gp_ChangeChannelReq);
-   \   000030                ; Setup parameters for call to function gp_RegisterGPChangeChannelReqForBDBCB
-   \   000030   7A..         MOV       R2,#`??gp_ChangeChannelReq::?relay` & 0xff
-   \   000032   7B..         MOV       R3,#(`??gp_ChangeChannelReq::?relay` >> 8) & 0xff
-   \   000034   12....       LCALL     `??gp_RegisterGPChangeChannelReqForBDBCB::?relay`; Banked call to: gp_RegisterGPChangeChannelReqForBDBCB
+   \   000035                ; Setup parameters for call to function gp_RegisterGPChangeChannelReqForBDBCB
+   \   000035   7A..         MOV       R2,#`??gp_ChangeChannelReq::?relay` & 0xff
+   \   000037   7B..         MOV       R3,#(`??gp_ChangeChannelReq::?relay` >> 8) & 0xff
+   \   000039   12....       LCALL     `??gp_RegisterGPChangeChannelReqForBDBCB::?relay`; Banked call to: gp_RegisterGPChangeChannelReqForBDBCB
     280            gp_CBInit();
-   \   000037   90....       MOV       DPTR,#GP_DataCnfGCB
-   \   00003A   74..         MOV       A,#`??GP_DataCnf::?relay` & 0xff
-   \   00003C   F0           MOVX      @DPTR,A
-   \   00003D   A3           INC       DPTR
-   \   00003E   74..         MOV       A,#(`??GP_DataCnf::?relay` >> 8) & 0xff
-   \   000040   F0           MOVX      @DPTR,A
-   \   000041   90....       MOV       DPTR,#GP_endpointInitGCB
-   \   000044   74..         MOV       A,#`??gp_endpointInit::?relay` & 0xff
-   \   000046   F0           MOVX      @DPTR,A
-   \   000047   A3           INC       DPTR
-   \   000048   74..         MOV       A,#(`??gp_endpointInit::?relay` >> 8) & 0xff
-   \   00004A   F0           MOVX      @DPTR,A
-   \   00004B   90....       MOV       DPTR,#GP_expireDuplicateFilteringGCB
-   \   00004E   74..         MOV       A,#`??gp_expireDuplicateFiltering::?relay` & 0xff
-   \   000050   F0           MOVX      @DPTR,A
-   \   000051   A3           INC       DPTR
-   \   000052   74..         MOV       A,#(`??gp_expireDuplicateFiltering::?relay` >> 8) & 0xff
-   \   000054   F0           MOVX      @DPTR,A
-   \   000055   90....       MOV       DPTR,#GP_stopCommissioningModeGCB
-   \   000058   74..         MOV       A,#`??gp_stopCommissioningMode::?relay` & 0xff
-   \   00005A   F0           MOVX      @DPTR,A
-   \   00005B   A3           INC       DPTR
-   \   00005C   74..         MOV       A,#(`??gp_stopCommissioningMode::?relay` >> 8) & 0xff
-   \   00005E   F0           MOVX      @DPTR,A
-   \   00005F   90....       MOV       DPTR,#GP_returnOperationalChannelGCB
-   \   000062   74..         MOV       A,#`??gp_returnOperationalChannel::?relay` & 0xff
-   \   000064   F0           MOVX      @DPTR,A
-   \   000065   A3           INC       DPTR
-   \   000066   74..         MOV       A,#(`??gp_returnOperationalChannel::?relay` >> 8) & 0xff
-   \   000068   F0           MOVX      @DPTR,A
-   \   000069   90....       MOV       DPTR,#GP_DataIndGCB
-   \   00006C   74..         MOV       A,#`??GP_DataInd::?relay` & 0xff
-   \   00006E   F0           MOVX      @DPTR,A
-   \   00006F   A3           INC       DPTR
-   \   000070   74..         MOV       A,#(`??GP_DataInd::?relay` >> 8) & 0xff
-   \   000072   F0           MOVX      @DPTR,A
-   \   000073   90....       MOV       DPTR,#GP_SecReqGCB
-   \   000076   74..         MOV       A,#`??GP_SecReq::?relay` & 0xff
-   \   000078   F0           MOVX      @DPTR,A
-   \   000079   A3           INC       DPTR
-   \   00007A   74..         MOV       A,#(`??GP_SecReq::?relay` >> 8) & 0xff
-   \   00007C   F0           MOVX      @DPTR,A
-   \   00007D   90....       MOV       DPTR,#GP_CheckAnnouncedDeviceGCB
-   \   000080   74..         MOV       A,#`??gp_CheckAnnouncedDevice::?relay` & 0xff
-   \   000082   F0           MOVX      @DPTR,A
-   \   000083   A3           INC       DPTR
-   \   000084   74..         MOV       A,#(`??gp_CheckAnnouncedDevice::?relay` >> 8) & 0xff
-   \   000086   F0           MOVX      @DPTR,A
-   \   000087   90....       MOV       DPTR,#GP_aliasConflictAnnce
-   \   00008A   74..         MOV       A,#aliasConflictAnnce & 0xff
-   \   00008C   F0           MOVX      @DPTR,A
-   \   00008D   A3           INC       DPTR
-   \   00008E   74..         MOV       A,#(aliasConflictAnnce >> 8) & 0xff
-   \   000090   F0           MOVX      @DPTR,A
-   \   000091                ; Setup parameters for call to function gp_endpointInit
-   \   000091   12....       LCALL     `??gp_endpointInit::?relay`; Banked call to: gp_endpointInit
+   \   00003C   90....       MOV       DPTR,#GP_DataCnfGCB
+   \   00003F   74..         MOV       A,#`??GP_DataCnf::?relay` & 0xff
+   \   000041   F0           MOVX      @DPTR,A
+   \   000042   A3           INC       DPTR
+   \   000043   74..         MOV       A,#(`??GP_DataCnf::?relay` >> 8) & 0xff
+   \   000045   F0           MOVX      @DPTR,A
+   \   000046   90....       MOV       DPTR,#GP_endpointInitGCB
+   \   000049   74..         MOV       A,#`??gp_endpointInit::?relay` & 0xff
+   \   00004B   F0           MOVX      @DPTR,A
+   \   00004C   A3           INC       DPTR
+   \   00004D   74..         MOV       A,#(`??gp_endpointInit::?relay` >> 8) & 0xff
+   \   00004F   F0           MOVX      @DPTR,A
+   \   000050   90....       MOV       DPTR,#GP_expireDuplicateFilteringGCB
+   \   000053   74..         MOV       A,#`??gp_expireDuplicateFiltering::?relay` & 0xff
+   \   000055   F0           MOVX      @DPTR,A
+   \   000056   A3           INC       DPTR
+   \   000057   74..         MOV       A,#(`??gp_expireDuplicateFiltering::?relay` >> 8) & 0xff
+   \   000059   F0           MOVX      @DPTR,A
+   \   00005A   90....       MOV       DPTR,#GP_stopCommissioningModeGCB
+   \   00005D   74..         MOV       A,#`??gp_stopCommissioningMode::?relay` & 0xff
+   \   00005F   F0           MOVX      @DPTR,A
+   \   000060   A3           INC       DPTR
+   \   000061   74..         MOV       A,#(`??gp_stopCommissioningMode::?relay` >> 8) & 0xff
+   \   000063   F0           MOVX      @DPTR,A
+   \   000064   90....       MOV       DPTR,#GP_returnOperationalChannelGCB
+   \   000067   74..         MOV       A,#`??gp_returnOperationalChannel::?relay` & 0xff
+   \   000069   F0           MOVX      @DPTR,A
+   \   00006A   A3           INC       DPTR
+   \   00006B   74..         MOV       A,#(`??gp_returnOperationalChannel::?relay` >> 8) & 0xff
+   \   00006D   F0           MOVX      @DPTR,A
+   \   00006E   90....       MOV       DPTR,#GP_DataIndGCB
+   \   000071   74..         MOV       A,#`??GP_DataInd::?relay` & 0xff
+   \   000073   F0           MOVX      @DPTR,A
+   \   000074   A3           INC       DPTR
+   \   000075   74..         MOV       A,#(`??GP_DataInd::?relay` >> 8) & 0xff
+   \   000077   F0           MOVX      @DPTR,A
+   \   000078   90....       MOV       DPTR,#GP_SecReqGCB
+   \   00007B   74..         MOV       A,#`??GP_SecReq::?relay` & 0xff
+   \   00007D   F0           MOVX      @DPTR,A
+   \   00007E   A3           INC       DPTR
+   \   00007F   74..         MOV       A,#(`??GP_SecReq::?relay` >> 8) & 0xff
+   \   000081   F0           MOVX      @DPTR,A
+   \   000082   90....       MOV       DPTR,#GP_CheckAnnouncedDeviceGCB
+   \   000085   74..         MOV       A,#`??gp_CheckAnnouncedDevice::?relay` & 0xff
+   \   000087   F0           MOVX      @DPTR,A
+   \   000088   A3           INC       DPTR
+   \   000089   74..         MOV       A,#(`??gp_CheckAnnouncedDevice::?relay` >> 8) & 0xff
+   \   00008B   F0           MOVX      @DPTR,A
+   \   00008C   90....       MOV       DPTR,#GP_aliasConflictAnnce
+   \   00008F   74..         MOV       A,#aliasConflictAnnce & 0xff
+   \   000091   F0           MOVX      @DPTR,A
+   \   000092   A3           INC       DPTR
+   \   000093   74..         MOV       A,#(aliasConflictAnnce >> 8) & 0xff
+   \   000095   F0           MOVX      @DPTR,A
+   \   000096                ; Setup parameters for call to function gp_endpointInit
+   \   000096   12....       LCALL     `??gp_endpointInit::?relay`; Banked call to: gp_endpointInit
     281          #endif
     282          }
-   \   000094                REQUIRE ?Subroutine0
-   \   000094                ; // Fall through to label ?Subroutine0
+   \   000099                REQUIRE ?Subroutine0
+   \   000099                ; // Fall through to label ?Subroutine0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine0:
@@ -664,7 +669,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     311            }
     312          }
    \                     ??bdb_RegisterSimpleDescriptor_0:
-   \   000037   02....       LJMP      ??Subroutine56_0 & 0xFFFF
+   \   000037   02....       LJMP      ??Subroutine55_0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine11:
@@ -678,7 +683,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000009   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine56_0:
+   \                     ??Subroutine55_0:
    \   000000   7F02         MOV       R7,#0x2
    \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
     313          
@@ -739,8 +744,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     334              if(*(uint16*)identifyAttrRec.attr.dataPtr != identifyTime)
    \   000032   7406         MOV       A,#0x6
    \   000034   12....       LCALL     ?XSTACK_DISP0_8
-   \   000037   12....       LCALL     ?Subroutine28 & 0xFFFF
-   \                     ??CrossCallReturnLabel_24:
+   \   000037   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_22:
    \   00003A   E0           MOVX      A,@DPTR
    \   00003B   6E           XRL       A,R6
    \   00003C   7003         JNZ       ??bdb_ZclIdentifyCmdInd_1
@@ -769,11 +774,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000053   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
    \   000056   7A00         MOV       R2,#0x0
    \   000058   7B20         MOV       R3,#0x20
-   \   00005A   12....       LCALL     ??Subroutine55_0 & 0xFFFF
+   \   00005A   12....       LCALL     ??Subroutine54_0 & 0xFFFF
     340                }
-   \                     ??CrossCallReturnLabel_102:
+   \                     ??CrossCallReturnLabel_100:
    \   00005D   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000060   800A         SJMP      ??CrossCallReturnLabel_113
+   \   000060   800A         SJMP      ??CrossCallReturnLabel_111
     341                else if ( identifyTime <= 0 )
     342                {
     343                  *((uint16*)identifyAttrRec.attr.dataPtr) = 0;
@@ -786,68 +791,68 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000066                ; Setup parameters for call to function osal_stop_timerEx
    \   000066   FA           MOV       R2,A
    \   000067   7B20         MOV       R3,#0x20
-   \   000069   12....       LCALL     ??Subroutine59_0 & 0xFFFF
+   \   000069   12....       LCALL     ??Subroutine58_0 & 0xFFFF
     345                }
     346                
     347                if(pfnIdentifyTimeChangeCB != NULL)
-   \                     ??CrossCallReturnLabel_113:
+   \                     ??CrossCallReturnLabel_111:
    \   00006C   90....       MOV       DPTR,#pfnIdentifyTimeChangeCB
-   \   00006F   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_78:
+   \   00006F   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_76:
    \   000072   6008         JZ        ??bdb_ZclIdentifyCmdInd_0
     348                {
     349                  pfnIdentifyTimeChangeCB(endpoint);
    \   000074                ; Setup parameters for indirect call
    \   000074   A9..         MOV       R1,?V0
-   \   000076   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \   000076   12....       LCALL     ??Subroutine51_0 & 0xFFFF
     350                }
     351              }
     352            }
-   \                     ??CrossCallReturnLabel_70:
+   \                     ??CrossCallReturnLabel_68:
    \   000079   12....       LCALL     ?CALL_IND
     353          }
    \                     ??bdb_ZclIdentifyCmdInd_0:
    \   00007C   7408         MOV       A,#0x8
-   \   00007E   02....       LJMP      ??Subroutine50_0 & 0xFFFF
+   \   00007E   02....       LJMP      ??Subroutine49_0 & 0xFFFF
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ??Subroutine49_0:
+   \   000000   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000003                REQUIRE ??Subroutine50_0
+   \   000003                ; // Fall through to label ??Subroutine50_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ??Subroutine50_0:
-   \   000000   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000003                REQUIRE ??Subroutine51_0
-   \   000003                ; // Fall through to label ??Subroutine51_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine51_0:
    \   000000   7F04         MOV       R7,#0x4
    \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine28:
-   \   000000   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_137:
+   \                     ?Subroutine27:
+   \   000000   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_135:
    \   000003   F9           MOV       R1,A
    \   000004   8882         MOV       DPL,R0
    \   000006   F583         MOV       DPH,A
    \   000008   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine52_0:
+   \                     ??Subroutine51_0:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   F583         MOV       DPH,A
    \   000003   8882         MOV       DPL,R0
    \   000005   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine53_0:
-   \   000000   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_138:
+   \                     ??Subroutine52_0:
+   \   000000   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_136:
    \   000003   F9           MOV       R1,A
    \   000004   E8           MOV       A,R0
    \   000005   49           ORL       A,R1
    \   000006   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine38:
+   \                     ?Subroutine37:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   F8           MOV       R0,A
    \   000002   A3           INC       DPTR
@@ -855,7 +860,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000004   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine55_0:
+   \                     ??Subroutine54_0:
    \   000000   90....       MOV       DPTR,#bdb_TaskID
    \   000003   E0           MOVX      A,@DPTR
    \   000004   F9           MOV       R1,A
@@ -864,7 +869,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000A   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine59_0:
+   \                     ??Subroutine58_0:
    \   000000   90....       MOV       DPTR,#bdb_TaskID
    \   000003   E0           MOVX      A,@DPTR
    \   000004   F9           MOV       R1,A
@@ -1104,10 +1109,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     481            }
     482          }
    \                     ??bdb_RegisterTCLinkKeyExchangeProcessCB_0:
-   \   000010   02....       LJMP      ??Subroutine47_0 & 0xFFFF
+   \   000010   02....       LJMP      ??Subroutine46_0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine47_0:
+   \                     ??Subroutine46_0:
    \   000000   D083         POP       DPH
    \   000002   D082         POP       DPL
    \   000004   02....       LJMP      ?BRET
@@ -1137,14 +1142,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     499            bdbAttributes.bdbTrustCenterRequireKeyExchange = isKeyExchangeRequired;
    \   000004   E9           MOV       A,R1
    \   000005   90....       MOV       DPTR,#bdbAttributes + 17
-   \   000008   02....       LJMP      ??Subroutine46_0 & 0xFFFF
+   \   000008   02....       LJMP      ??Subroutine45_0 & 0xFFFF
     500          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine46_0:
+   \                     ??Subroutine45_0:
    \   000000   F0           MOVX      @DPTR,A
-   \   000001                REQUIRE ??Subroutine47_0
-   \   000001                ; // Fall through to label ??Subroutine47_0
+   \   000001                REQUIRE ??Subroutine46_0
+   \   000001                ; // Fall through to label ??Subroutine46_0
     501          
     502          
     503          
@@ -1210,8 +1215,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000023   8D..         MOV       ?V1,R5
    \   000025   75..00       MOV       ?V2,#0x0
    \   000028   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   00002B   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_79:
+   \   00002B   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_77:
    \   00002E   7037         JNZ       ??bdb_TCAddJoiningDevice_4
     527            {
     528              bdb_joiningDeviceList = osal_mem_alloc(sizeof(bdb_joiningDeviceList_t));
@@ -1260,11 +1265,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     539            {
     540              tempJoiningDescNode = bdb_joiningDeviceList;
    \                     ??bdb_TCAddJoiningDevice_4:
-   \   000067   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \   000067   12....       LCALL     ?Subroutine36 & 0xFFFF
     541              
     542              //Validate that this is not already in the list... somehow
     543              if(osal_memcmp(JoiningExtAddr,tempJoiningDescNode->bdbJoiningNodeEui64,Z_EXTADDR_LEN))
-   \                     ??CrossCallReturnLabel_122:
+   \                     ??CrossCallReturnLabel_120:
    \   00006A                ; Setup parameters for call to function osal_memcmp
    \   00006A   8882         MOV       DPL,R0
    \   00006C   F583         MOV       DPH,A
@@ -1277,8 +1282,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000078   75..00       MOV       ?V10,#0x0
    \   00007B   78..         MOV       R0,#?V8
    \   00007D   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   000080   12....       LCALL     ?Subroutine39 & 0xFFFF
-   \                     ??CrossCallReturnLabel_52:
+   \   000080   12....       LCALL     ?Subroutine38 & 0xFFFF
+   \                     ??CrossCallReturnLabel_50:
    \   000083   12....       LCALL     ?DEALLOC_XSTACK8
    \   000086   E9           MOV       A,R1
    \   000087   7030         JNZ       ??bdb_TCAddJoiningDevice_7
@@ -1298,8 +1303,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                     ??bdb_TCAddJoiningDevice_9:
    \   000090   F582         MOV       DPL,A
    \   000092   8F83         MOV       DPH,R7
-   \   000094   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_80:
+   \   000094   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_78:
    \   000097   6026         JZ        ??bdb_TCAddJoiningDevice_10
     551              {
     552                tempJoiningDescNode = tempJoiningDescNode->nextDev;
@@ -1321,8 +1326,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000A9   8A..         MOV       ?V9,R2
    \   0000AB   78..         MOV       R0,#?V8
    \   0000AD   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   0000B0   12....       LCALL     ?Subroutine39 & 0xFFFF
-   \                     ??CrossCallReturnLabel_53:
+   \   0000B0   12....       LCALL     ?Subroutine38 & 0xFFFF
+   \                     ??CrossCallReturnLabel_51:
    \   0000B3   12....       LCALL     ?DEALLOC_XSTACK8
    \   0000B6   E9           MOV       A,R1
    \   0000B7   60D0         JZ        ??bdb_TCAddJoiningDevice_8
@@ -1330,9 +1335,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     557                  //The device added is already in the list, refresh its time and do nothing else
     558                  tempJoiningDescNode->NodeJoinTimeout = bdbAttributes.bdbTrustCenterNodeJoinTimeout;
    \                     ??bdb_TCAddJoiningDevice_7:
-   \   0000B9   12....       LCALL     ?Subroutine19 & 0xFFFF
+   \   0000B9   12....       LCALL     ?Subroutine18 & 0xFFFF
     559                  return ZSuccess;
-   \                     ??CrossCallReturnLabel_8:
+   \                     ??CrossCallReturnLabel_6:
    \   0000BC   02....       LJMP      ??bdb_TCAddJoiningDevice_11 & 0xFFFF
     560                }
     561              }
@@ -1345,9 +1350,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000C3   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
    \   0000C6   8B..         MOV       ?V5,R3
    \   0000C8   A9..         MOV       R1,?V5
-   \   0000CA   12....       LCALL     ??Subroutine60_0 & 0xFFFF
+   \   0000CA   12....       LCALL     ??Subroutine59_0 & 0xFFFF
     564              if(tempJoiningDescNode->nextDev == NULL)
-   \                     ??CrossCallReturnLabel_119:
+   \                     ??CrossCallReturnLabel_117:
    \   0000CD   7004         JNZ       ??bdb_TCAddJoiningDevice_12
     565              {
     566                return ZFailure;
@@ -1373,8 +1378,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000DD   3F           ADDC      A,R7
    \   0000DE   F5..         MOV       ?V5,A
    \   0000E0   90....       MOV       DPTR,#pfnTCLinkKeyExchangeProcessCB
-   \   0000E3   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_81:
+   \   0000E3   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_79:
    \   0000E6   603E         JZ        ??bdb_TCAddJoiningDevice_13
     573            {
     574              bdb_TCLinkKeyExchProcess_t bdb_TCLinkKeyExchProcess;
@@ -1389,8 +1394,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000F8   7D00         MOV       R5,#0x0
    \   0000FA   7404         MOV       A,#0x4
    \   0000FC   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000FF   12....       LCALL     ?Subroutine32 & 0xFFFF
-   \                     ??CrossCallReturnLabel_41:
+   \   0000FF   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \                     ??CrossCallReturnLabel_39:
    \   000102   12....       LCALL     ?DEALLOC_XSTACK8
     576              bdb_TCLinkKeyExchProcess.status = BDB_TC_LK_EXCH_PROCESS_JOINING;
    \   000105   85..82       MOV       DPL,?XSP + 0
@@ -1409,23 +1414,23 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00011A   7C09         MOV       R4,#0x9
    \   00011C   7B00         MOV       R3,#0x0
    \   00011E   7A09         MOV       R2,#0x9
-   \   000120   12....       LCALL     ??Subroutine45_0 & 0xFFFF
+   \   000120   12....       LCALL     ??Subroutine44_0 & 0xFFFF
     579            }
-   \                     ??CrossCallReturnLabel_64:
+   \                     ??CrossCallReturnLabel_62:
    \   000123   12....       LCALL     ?DEALLOC_XSTACK8
     580            
     581            tempJoiningDescNode->nextDev = NULL;
    \                     ??bdb_TCAddJoiningDevice_13:
-   \   000126   12....       LCALL     ?Subroutine34 & 0xFFFF
-   \                     ??CrossCallReturnLabel_31:
+   \   000126   12....       LCALL     ?Subroutine33 & 0xFFFF
+   \                     ??CrossCallReturnLabel_29:
    \   000129   E4           CLR       A
    \   00012A   F0           MOVX      @DPTR,A
    \   00012B   A3           INC       DPTR
    \   00012C   F0           MOVX      @DPTR,A
     582            tempJoiningDescNode->NodeJoinTimeout = bdbAttributes.bdbTrustCenterNodeJoinTimeout;
-   \   00012D   12....       LCALL     ?Subroutine19 & 0xFFFF
+   \   00012D   12....       LCALL     ?Subroutine18 & 0xFFFF
     583            tempJoiningDescNode->parentAddr = parentAddr;
-   \                     ??CrossCallReturnLabel_9:
+   \                     ??CrossCallReturnLabel_7:
    \   000130   8E82         MOV       DPL,R6
    \   000132   8F83         MOV       DPH,R7
    \   000134   E5..         MOV       A,?V6
@@ -1441,8 +1446,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000142   7D00         MOV       R5,#0x0
    \   000144   AA..         MOV       R2,?V4
    \   000146   AB..         MOV       R3,?V5
-   \   000148   12....       LCALL     ??Subroutine41_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_45:
+   \   000148   12....       LCALL     ??Subroutine40_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_43:
    \   00014B   12....       LCALL     ?DEALLOC_XSTACK8
     585            
     586            return ZSuccess;
@@ -1461,7 +1466,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000007   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine19:
+   \                     ?Subroutine18:
    \   000000   90....       MOV       DPTR,#bdbAttributes + 16
    \   000003   E0           MOVX      A,@DPTR
    \   000004   8E82         MOV       DPL,R6
@@ -1480,52 +1485,52 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000013   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine32:
+   \                     ?Subroutine31:
    \   000000   AA82         MOV       R2,DPL
    \   000002   AB83         MOV       R3,DPH
-   \   000004                REQUIRE ??Subroutine41_0
-   \   000004                ; // Fall through to label ??Subroutine41_0
+   \   000004                REQUIRE ??Subroutine40_0
+   \   000004                ; // Fall through to label ??Subroutine40_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine41_0:
+   \                     ??Subroutine40_0:
    \   000000   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
    \   000003   7403         MOV       A,#0x3
    \   000005   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine34:
+   \                     ?Subroutine33:
    \   000000   EE           MOV       A,R6
-   \   000001   12....       LCALL     ?Subroutine40 & 0xFFFF
-   \                     ??CrossCallReturnLabel_40:
+   \   000001   12....       LCALL     ?Subroutine39 & 0xFFFF
+   \                     ??CrossCallReturnLabel_38:
    \   000004   3F           ADDC      A,R7
    \   000005   F583         MOV       DPH,A
    \   000007   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine40:
+   \                     ?Subroutine39:
    \   000000   240B         ADD       A,#0xb
    \   000002   F582         MOV       DPL,A
    \   000004   E4           CLR       A
    \   000005   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine39:
+   \                     ?Subroutine38:
    \   000000   7C08         MOV       R4,#0x8
    \   000002   7D00         MOV       R5,#0x0
    \   000004   A9..         MOV       R1,?V0
    \   000006   AA..         MOV       R2,?V1
    \   000008   AB..         MOV       R3,?V2
-   \   00000A                REQUIRE ??Subroutine43_0
-   \   00000A                ; // Fall through to label ??Subroutine43_0
+   \   00000A                REQUIRE ??Subroutine42_0
+   \   00000A                ; // Fall through to label ??Subroutine42_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine43_0:
+   \                     ??Subroutine42_0:
    \   000000   12....       LCALL     `??osal_memcmp::?relay`; Banked call to: osal_memcmp
    \   000003   7403         MOV       A,#0x3
    \   000005   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine45_0:
+   \                     ??Subroutine44_0:
    \   000000   90....       MOV       DPTR,#bdb_TaskID
    \   000003   E0           MOVX      A,@DPTR
    \   000004   F9           MOV       R1,A
@@ -1534,7 +1539,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000A   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine60_0:
+   \                     ??Subroutine59_0:
    \   000000   8E82         MOV       DPL,R6
    \   000002   8F83         MOV       DPH,R7
    \   000004   EA           MOV       A,R2
@@ -1547,13 +1552,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000B   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine37:
+   \                     ?Subroutine36:
    \   000000   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000003                REQUIRE ??Subroutine61_0
-   \   000003                ; // Fall through to label ??Subroutine61_0
+   \   000003                REQUIRE ??Subroutine60_0
+   \   000003                ; // Fall through to label ??Subroutine60_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine61_0:
+   \                     ??Subroutine60_0:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   FE           MOV       R6,A
    \   000002   A3           INC       DPTR
@@ -1593,19 +1598,19 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     602            
     603            if(bdb_joiningDeviceList)
    \   00000A   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   00000D   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_82:
+   \   00000D   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_80:
    \   000010   7003         JNZ       $+5
    \   000012   02....       LJMP      ??bdb_TCProcessJoiningList_0 & 0xFFFF
     604            {
     605              tempJoiningDescNode = bdb_joiningDeviceList;
    \   000015   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000018   12....       LCALL     ?Subroutine25 & 0xFFFF
+   \   000018   12....       LCALL     ?Subroutine24 & 0xFFFF
     606            
     607              while(tempJoiningDescNode)
     608              {
     609                if(tempJoiningDescNode->NodeJoinTimeout)
-   \                     ??CrossCallReturnLabel_14:
+   \                     ??CrossCallReturnLabel_12:
    \   00001B   E5..         MOV       A,?V0
    \   00001D   240A         ADD       A,#0xa
    \   00001F   F582         MOV       DPL,A
@@ -1655,8 +1660,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000054   7D00         MOV       R5,#0x0
    \   000056   7410         MOV       A,#0x10
    \   000058   12....       LCALL     ?XSTACK_DISP0_8
-   \   00005B   12....       LCALL     ?Subroutine32 & 0xFFFF
-   \                     ??CrossCallReturnLabel_42:
+   \   00005B   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \                     ??CrossCallReturnLabel_40:
    \   00005E   12....       LCALL     ?DEALLOC_XSTACK8
     623                      
     624                      if(AddrMgrEntryLookupExt(&entry))
@@ -1678,10 +1683,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00007C   AD83         MOV       R5,DPH
    \   00007E   740D         MOV       A,#0xd
    \   000080   12....       LCALL     ?XSTACK_DISP0_8
-   \   000083   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \   000083   12....       LCALL     ?Subroutine26 & 0xFFFF
     627                      }
     628                  }
-   \                     ??CrossCallReturnLabel_19:
+   \                     ??CrossCallReturnLabel_17:
    \   000086   12....       LCALL     `??ZDSecMgrAPSRemove::?relay`; Banked call to: ZDSecMgrAPSRemove
    \   000089   7402         MOV       A,#0x2
    \   00008B   12....       LCALL     ?DEALLOC_XSTACK8
@@ -1784,14 +1789,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000FF   A3           INC       DPTR
    \   000100   12....       LCALL     ?Subroutine9 & 0xFFFF
     656                    TCLinkKeyFrmCntr[index].txFrmCntr = 0;
-   \                     ??CrossCallReturnLabel_58:
+   \                     ??CrossCallReturnLabel_56:
    \   000103   8882         MOV       DPL,R0
    \   000105   8983         MOV       DPH,R1
-   \   000107   12....       LCALL     ??Subroutine44_0 & 0xFFFF
+   \   000107   12....       LCALL     ??Subroutine43_0 & 0xFFFF
     657                    
     658                    //Update the entry
     659                    osal_nv_write(keyNvIndex,0,sizeof(APSME_TCLKDevEntry_t), &TCLKDevEntry );
-   \                     ??CrossCallReturnLabel_56:
+   \                     ??CrossCallReturnLabel_54:
    \   00010A                ; Setup parameters for call to function osal_nv_write
    \   00010A   7417         MOV       A,#0x17
    \   00010C   12....       LCALL     ?XSTACK_DISP100_8
@@ -1809,16 +1814,16 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000128   FA           MOV       R2,A
    \   000129   EF           MOV       A,R7
    \   00012A   FB           MOV       R3,A
-   \   00012B   12....       LCALL     ??Subroutine58_0 & 0xFFFF
+   \   00012B   12....       LCALL     ??Subroutine57_0 & 0xFFFF
     660                  }
-   \                     ??CrossCallReturnLabel_108:
+   \                     ??CrossCallReturnLabel_106:
    \   00012E   12....       LCALL     ?DEALLOC_XSTACK8
     661                  
     662                  if(pfnTCLinkKeyExchangeProcessCB)
    \                     ??bdb_TCProcessJoiningList_4:
    \   000131   90....       MOV       DPTR,#pfnTCLinkKeyExchangeProcessCB
-   \   000134   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_83:
+   \   000134   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_81:
    \   000137   6035         JZ        ??bdb_TCProcessJoiningList_5
     663                  {
     664                    bdb_TCLinkKeyExchProcess_t bdb_TCLinkKeyExchProcess;
@@ -1830,8 +1835,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000140   7D00         MOV       R5,#0x0
    \   000142   7405         MOV       A,#0x5
    \   000144   12....       LCALL     ?XSTACK_DISP0_8
-   \   000147   12....       LCALL     ?Subroutine32 & 0xFFFF
-   \                     ??CrossCallReturnLabel_43:
+   \   000147   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \                     ??CrossCallReturnLabel_41:
    \   00014A   12....       LCALL     ?DEALLOC_XSTACK8
     666                    bdb_TCLinkKeyExchProcess.status = BDB_TC_LK_EXCH_PROCESS_EXCH_FAIL;
    \   00014D   7401         MOV       A,#0x1
@@ -1850,9 +1855,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000162   7C09         MOV       R4,#0x9
    \   000164   7B00         MOV       R3,#0x0
    \   000166   7A09         MOV       R2,#0x9
-   \   000168   12....       LCALL     ??Subroutine45_0 & 0xFFFF
+   \   000168   12....       LCALL     ??Subroutine44_0 & 0xFFFF
     669                  }
-   \                     ??CrossCallReturnLabel_65:
+   \                     ??CrossCallReturnLabel_63:
    \   00016B   12....       LCALL     ?DEALLOC_XSTACK8
     670                 
     671                  //Free the device from the list
@@ -1866,31 +1871,31 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     674                tempJoiningDescNode = tempJoiningDescNode->nextDev;
    \                     ??bdb_TCProcessJoiningList_2:
    \   000175   E5..         MOV       A,?V0
-   \   000177   12....       LCALL     ?Subroutine40 & 0xFFFF
+   \   000177   12....       LCALL     ?Subroutine39 & 0xFFFF
     675              }
     676            }
-   \                     ??CrossCallReturnLabel_37:
+   \                     ??CrossCallReturnLabel_35:
    \   00017A   35..         ADDC      A,?V1
    \   00017C   F583         MOV       DPH,A
-   \   00017E   12....       LCALL     ?Subroutine24 & 0xFFFF
-   \                     ??CrossCallReturnLabel_12:
+   \   00017E   12....       LCALL     ?Subroutine23 & 0xFFFF
+   \                     ??CrossCallReturnLabel_10:
    \   000181   6003         JZ        $+5
-   \   000183   02....       LJMP      ??CrossCallReturnLabel_14 & 0xFFFF
+   \   000183   02....       LJMP      ??CrossCallReturnLabel_12 & 0xFFFF
     677          
     678            //we are done with the list
     679            if(bdb_joiningDeviceList == NULL)
    \   000186   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000189   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_84:
-   \   00018C   7003         JNZ       ??CrossCallReturnLabel_111
+   \   000189   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_82:
+   \   00018C   7003         JNZ       ??CrossCallReturnLabel_109
     680            {
     681              osal_stop_timerEx(bdb_TaskID,BDB_TC_JOIN_TIMEOUT);
    \                     ??bdb_TCProcessJoiningList_0:
    \   00018E                ; Setup parameters for call to function osal_stop_timerEx
-   \   00018E   12....       LCALL     ?Subroutine21 & 0xFFFF
+   \   00018E   12....       LCALL     ?Subroutine20 & 0xFFFF
     682            }
     683          }
-   \                     ??CrossCallReturnLabel_111:
+   \                     ??CrossCallReturnLabel_109:
    \   000191   742A         MOV       A,#0x2a
    \   000193   12....       LCALL     ?DEALLOC_XSTACK8
    \   000196                REQUIRE ?Subroutine5
@@ -1902,7 +1907,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine27:
+   \                     ?Subroutine26:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   FA           MOV       R2,A
    \   000002   A3           INC       DPTR
@@ -1913,11 +1918,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine9:
    \   000000   E4           CLR       A
-   \   000001                REQUIRE ??Subroutine44_0
-   \   000001                ; // Fall through to label ??Subroutine44_0
+   \   000001                REQUIRE ??Subroutine43_0
+   \   000001                ; // Fall through to label ??Subroutine43_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine44_0:
+   \                     ??Subroutine43_0:
    \   000000   F0           MOVX      @DPTR,A
    \   000001   A3           INC       DPTR
    \   000002   F0           MOVX      @DPTR,A
@@ -1928,7 +1933,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000007   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine25:
+   \                     ?Subroutine24:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   F5..         MOV       ?V0,A
    \   000003   A3           INC       DPTR
@@ -1937,20 +1942,20 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000007   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine58_0:
+   \                     ??Subroutine57_0:
    \   000000   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
    \   000003   7404         MOV       A,#0x4
    \   000005   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine21:
+   \                     ?Subroutine20:
    \   000000   7A00         MOV       R2,#0x0
    \   000002   7B08         MOV       R3,#0x8
-   \   000004                REQUIRE ??Subroutine59_0
-   \   000004                ; // Fall through to label ??Subroutine59_0
+   \   000004                REQUIRE ??Subroutine58_0
+   \   000004                ; // Fall through to label ??Subroutine58_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine24:
+   \                     ?Subroutine23:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   F5..         MOV       ?V0,A
    \   000003   A3           INC       DPTR
@@ -1997,17 +2002,17 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     700            
     701            if((bdb_joiningDeviceList != NULL) && (JoiningExtAddr != NULL))
    \   00000E   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000011   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_85:
+   \   000011   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_83:
    \   000014   7003         JNZ       $+5
-   \   000016   02....       LJMP      ??CrossCallReturnLabel_112 & 0xFFFF
+   \   000016   02....       LJMP      ??CrossCallReturnLabel_110 & 0xFFFF
    \   000019   EA           MOV       A,R2
    \   00001A   4B           ORL       A,R3
-   \   00001B   607D         JZ        ??CrossCallReturnLabel_112
+   \   00001B   607D         JZ        ??CrossCallReturnLabel_110
     702            {
     703              tempJoiningDescNode = bdb_joiningDeviceList;
-   \   00001D   12....       LCALL     ?Subroutine37 & 0xFFFF
-   \                     ??CrossCallReturnLabel_123:
+   \   00001D   12....       LCALL     ?Subroutine36 & 0xFFFF
+   \                     ??CrossCallReturnLabel_121:
    \   000020   8E82         MOV       DPL,R6
    \   000022   8F83         MOV       DPH,R7
    \   000024   A3           INC       DPTR
@@ -2026,8 +2031,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00003F   7C08         MOV       R4,#0x8
    \   000041   7D00         MOV       R5,#0x0
    \   000043   AB..         MOV       R3,?V6
-   \   000045   12....       LCALL     ??Subroutine43_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_54:
+   \   000045   12....       LCALL     ??Subroutine42_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_52:
    \   000048   12....       LCALL     ?DEALLOC_XSTACK8
    \   00004B   E9           MOV       A,R1
    \   00004C   6037         JZ        ??bdb_TCjoiningDeviceComplete_0
@@ -2038,8 +2043,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     708                {
     709                  if(pfnTCLinkKeyExchangeProcessCB)
    \   00004E   90....       MOV       DPTR,#pfnTCLinkKeyExchangeProcessCB
-   \   000051   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_86:
+   \   000051   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_84:
    \   000054   6026         JZ        ??bdb_TCjoiningDeviceComplete_1
     710                  {
     711                    bdb_TCLinkKeyExchProcess_t bdb_TCLinkKeyExchProcess;
@@ -2051,21 +2056,21 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00005D   7D00         MOV       R5,#0x0
    \   00005F   7404         MOV       A,#0x4
    \   000061   12....       LCALL     ?XSTACK_DISP0_8
-   \   000064   12....       LCALL     ?Subroutine32 & 0xFFFF
-   \                     ??CrossCallReturnLabel_44:
+   \   000064   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \                     ??CrossCallReturnLabel_42:
    \   000067   12....       LCALL     ?DEALLOC_XSTACK8
     713                    bdb_TCLinkKeyExchProcess.status = BDB_TC_LK_EXCH_PROCESS_EXCH_SUCCESS;
    \   00006A   12....       LCALL     ?Subroutine8 & 0xFFFF
     714                    
     715                    bdb_SendMsg(bdb_TaskID, BDB_TC_LINK_KEY_EXCHANGE_PROCESS, BDB_MSG_EVENT_SUCCESS,sizeof(bdb_TCLinkKeyExchProcess_t),(uint8*)&bdb_TCLinkKeyExchProcess);
     716                  }        
-   \                     ??CrossCallReturnLabel_47:
+   \                     ??CrossCallReturnLabel_45:
    \   00006D   12....       LCALL     ?PUSH_XSTACK_I_TWO
    \   000070   7C09         MOV       R4,#0x9
    \   000072   7B00         MOV       R3,#0x0
    \   000074   7A09         MOV       R2,#0x9
-   \   000076   12....       LCALL     ??Subroutine45_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_66:
+   \   000076   12....       LCALL     ??Subroutine44_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_64:
    \   000079   12....       LCALL     ?DEALLOC_XSTACK8
     717                  
     718                  bdb_TCJoiningDeviceFree(tempJoiningDescNode);
@@ -2081,29 +2086,29 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     720                }
     721                tempJoiningDescNode = tempJoiningDescNode->nextDev;
    \                     ??bdb_TCjoiningDeviceComplete_0:
-   \   000085   12....       LCALL     ?Subroutine34 & 0xFFFF
+   \   000085   12....       LCALL     ?Subroutine33 & 0xFFFF
     722              }
-   \                     ??CrossCallReturnLabel_32:
-   \   000088   12....       LCALL     ??Subroutine61_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_120:
+   \                     ??CrossCallReturnLabel_30:
+   \   000088   12....       LCALL     ??Subroutine60_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_118:
    \   00008B   EE           MOV       A,R6
    \   00008C   4F           ORL       A,R7
-   \   00008D   7091         JNZ       ??CrossCallReturnLabel_123
+   \   00008D   7091         JNZ       ??CrossCallReturnLabel_121
     723             
     724              if(bdb_joiningDeviceList == NULL)
    \                     ??bdb_TCjoiningDeviceComplete_2:
    \   00008F   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000092   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_87:
-   \   000095   7003         JNZ       ??CrossCallReturnLabel_112
+   \   000092   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_85:
+   \   000095   7003         JNZ       ??CrossCallReturnLabel_110
     725              {
     726                osal_stop_timerEx(bdb_TaskID,BDB_TC_JOIN_TIMEOUT);
    \   000097                ; Setup parameters for call to function osal_stop_timerEx
-   \   000097   12....       LCALL     ?Subroutine21 & 0xFFFF
+   \   000097   12....       LCALL     ?Subroutine20 & 0xFFFF
     727              }
     728            }
     729          }
-   \                     ??CrossCallReturnLabel_112:
+   \                     ??CrossCallReturnLabel_110:
    \   00009A   02....       LJMP      ?Subroutine4 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
@@ -2111,11 +2116,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000000   85..82       MOV       DPL,?XSP + 0
    \   000003   85..83       MOV       DPH,?XSP + 1
    \   000006   7401         MOV       A,#0x1
-   \   000008                REQUIRE ??Subroutine42_0
-   \   000008                ; // Fall through to label ??Subroutine42_0
+   \   000008                REQUIRE ??Subroutine41_0
+   \   000008                ; // Fall through to label ??Subroutine41_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine42_0:
+   \                     ??Subroutine41_0:
    \   000000   F0           MOVX      @DPTR,A
    \   000001                ; Setup parameters for call to function bdb_SendMsg
    \   000001                ; Setup parameters for call to function bdb_SendMsg
@@ -2172,8 +2177,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00001F   7C08         MOV       R4,#0x8
    \   000021   7D00         MOV       R5,#0x0
    \   000023   90....       MOV       DPTR,#bdb_joiningDeviceList
-   \   000026   12....       LCALL     ?Subroutine17 & 0xFFFF
-   \                     ??CrossCallReturnLabel_6:
+   \   000026   12....       LCALL     ?Subroutine16 & 0xFFFF
+   \                     ??CrossCallReturnLabel_4:
    \   000029   12....       LCALL     ?DEALLOC_XSTACK8
    \   00002C   E9           MOV       A,R1
    \   00002D   90....       MOV       DPTR,#bdb_joiningDeviceList
@@ -2187,16 +2192,16 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     751            if(osal_memcmp(bdb_joiningDeviceList->bdbJoiningNodeEui64, JoiningDeviceToRemove->bdbJoiningNodeEui64, Z_EXTADDR_LEN))
     752            {
     753              descCurrent = bdb_joiningDeviceList;
-   \   000032   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \   000032   12....       LCALL     ?Subroutine26 & 0xFFFF
     754              bdb_joiningDeviceList = bdb_joiningDeviceList->nextDev;
-   \                     ??CrossCallReturnLabel_20:
+   \                     ??CrossCallReturnLabel_18:
    \   000035   90....       MOV       DPTR,#bdb_joiningDeviceList
    \   000038   E0           MOVX      A,@DPTR
-   \   000039   12....       LCALL     ?Subroutine40 & 0xFFFF
-   \                     ??CrossCallReturnLabel_38:
+   \   000039   12....       LCALL     ?Subroutine39 & 0xFFFF
+   \                     ??CrossCallReturnLabel_36:
    \   00003C   3B           ADDC      A,R3
-   \   00003D   12....       LCALL     ?Subroutine30 & 0xFFFF
-   \                     ??CrossCallReturnLabel_131:
+   \   00003D   12....       LCALL     ?Subroutine29 & 0xFFFF
+   \                     ??CrossCallReturnLabel_129:
    \   000040   90....       MOV       DPTR,#bdb_joiningDeviceList
    \   000043   E8           MOV       A,R0
    \   000044   F0           MOVX      @DPTR,A
@@ -2221,8 +2226,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     768              }
     769              descCurrent = descCurrent->nextDev;
    \                     ??bdb_TCJoiningDeviceFree_0:
-   \   00004A   12....       LCALL     ??Subroutine62_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_125:
+   \   00004A   12....       LCALL     ??Subroutine61_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_123:
    \   00004D   6040         JZ        ??bdb_TCJoiningDeviceFree_2
    \   00004F   EA           MOV       A,R2
    \   000050   240B         ADD       A,#0xb
@@ -2237,8 +2242,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00005D   7D00         MOV       R5,#0x0
    \   00005F   8E82         MOV       DPL,R6
    \   000061   8F83         MOV       DPH,R7
-   \   000063   12....       LCALL     ?Subroutine17 & 0xFFFF
-   \                     ??CrossCallReturnLabel_7:
+   \   000063   12....       LCALL     ?Subroutine16 & 0xFFFF
+   \                     ??CrossCallReturnLabel_5:
    \   000066   12....       LCALL     ?DEALLOC_XSTACK8
    \   000069   E9           MOV       A,R1
    \   00006A   8E82         MOV       DPL,R6
@@ -2252,14 +2257,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     775            }
     776            
     777            descPrev->nextDev = descPrev->nextDev->nextDev;
-   \   000070   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_133:
+   \   000070   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_131:
    \   000073   C8           XCH       A,R0
-   \   000074   12....       LCALL     ?Subroutine40 & 0xFFFF
-   \                     ??CrossCallReturnLabel_39:
+   \   000074   12....       LCALL     ?Subroutine39 & 0xFFFF
+   \                     ??CrossCallReturnLabel_37:
    \   000077   38           ADDC      A,R0
-   \   000078   12....       LCALL     ?Subroutine30 & 0xFFFF
-   \                     ??CrossCallReturnLabel_132:
+   \   000078   12....       LCALL     ?Subroutine29 & 0xFFFF
+   \                     ??CrossCallReturnLabel_130:
    \   00007B   8E82         MOV       DPL,R6
    \   00007D   8F83         MOV       DPH,R7
    \   00007F   E8           MOV       A,R0
@@ -2285,9 +2290,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     782          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine17:
-   \   000000   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_136:
+   \                     ?Subroutine16:
+   \   000000   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_134:
    \   000003   F583         MOV       DPH,A
    \   000005   8882         MOV       DPL,R0
    \   000007   A3           INC       DPTR
@@ -2295,12 +2300,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000009   A982         MOV       R1,DPL
    \   00000B   AA83         MOV       R2,DPH
    \   00000D   7B00         MOV       R3,#0x0
-   \   00000F   12....       LCALL     ??Subroutine43_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_55:
+   \   00000F   12....       LCALL     ??Subroutine42_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_53:
    \   000012   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine62_0:
+   \                     ??Subroutine61_0:
    \   000000   E0           MOVX      A,@DPTR
    \   000001   FA           MOV       R2,A
    \   000002   A3           INC       DPTR
@@ -2311,15 +2316,15 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000007   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine30:
+   \                     ?Subroutine29:
    \   000000   F583         MOV       DPH,A
-   \   000002                REQUIRE ??Subroutine63_0
-   \   000002                ; // Fall through to label ??Subroutine63_0
+   \   000002                REQUIRE ??Subroutine62_0
+   \   000002                ; // Fall through to label ??Subroutine62_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine63_0:
-   \   000000   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_139:
+   \                     ??Subroutine62_0:
+   \   000000   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_137:
    \   000003   F9           MOV       R1,A
    \   000004   22           RET
     783          
@@ -2361,7 +2366,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000012   7401         MOV       A,#0x1
     804            }
    \                     ??bdb_setJoinUsesInstallCodeKey_1:
-   \   000014   02....       LJMP      ??Subroutine46_0 & 0xFFFF
+   \   000014   02....       LJMP      ??Subroutine45_0 & 0xFFFF
     805          }
     806          #endif
     807          
@@ -2416,8 +2421,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000015                ; Setup parameters for call to function osal_get_timeoutEx
    \   000015   7A04         MOV       R2,#0x4
    \   000017   7B00         MOV       R3,#0x0
-   \   000019   12....       LCALL     ??Subroutine48_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_69:
+   \   000019   12....       LCALL     ??Subroutine47_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_67:
    \   00001C   6020         JZ        ??bdb_StartCommissioning_1
     839            {
     840          #if ZG_BUILD_ENDDEVICE_TYPE
@@ -2444,12 +2449,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     854              {
     855                bdb_nwkSteeringDeviceOnNwk();
    \   00002A                ; Setup parameters for call to function bdb_nwkSteeringDeviceOnNwk
-   \   00002A   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \   00002A   12....       LCALL     ?Subroutine30 & 0xFFFF
     856                bdb_reportCommissioningState(BDB_COMMISSIONING_STATE_STEERING_ON_NWK, TRUE);
     857                
     858                //Clean nwk steering
     859                mode ^= BDB_COMMISSIONING_MODE_NWK_STEERING; 
-   \                     ??CrossCallReturnLabel_28:
+   \                     ??CrossCallReturnLabel_26:
    \   00002D   63..02       XRL       ?V0,#0x2
     860              }
     861              
@@ -2488,183 +2493,213 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     873            {
     874              bdb_initialization = TRUE;
    \   000052   7401         MOV       A,#0x1
-   \   000054   12....       LCALL     ?Subroutine12 & 0xFFFF
+   \   000054   F0           MOVX      @DPTR,A
     875              
     876          #ifdef BDB_REPORTING
     877              //Delete NV data if startup was with factory reset
     878              if(ZDO_INITDEV_NEW_NETWORK_STATE == ZDApp_ReadNetworkRestoreState())
+   \   000055                ; Setup parameters for call to function ZDApp_ReadNetworkRestoreState
+   \   000055   12....       LCALL     `??ZDApp_ReadNetworkRestoreState::?relay`; Banked call to: ZDApp_ReadNetworkRestoreState
+   \   000058   E9           MOV       A,R1
+   \   000059   6401         XRL       A,#0x1
+   \   00005B   701A         JNZ       ??bdb_StartCommissioning_5
     879              {
     880                //Factory reset bdb reporting NV data
     881                uint16 attrRepNvLen = osal_nv_item_len( ZCD_NV_BDBREPORTINGCONFIG );
+   \   00005D                ; Setup parameters for call to function osal_nv_item_len
+   \   00005D   7A56         MOV       R2,#0x56
+   \   00005F   7B00         MOV       R3,#0x0
+   \   000061   12....       LCALL     `??osal_nv_item_len::?relay`; Banked call to: osal_nv_item_len
+   \   000064   8A..         MOV       ?V2,R2
+   \   000066   8B..         MOV       ?V3,R3
+   \   000068   AC..         MOV       R4,?V2
+   \   00006A   AD..         MOV       R5,?V3
     882                if ( attrRepNvLen > 0 )
+   \   00006C   EA           MOV       A,R2
+   \   00006D   4D           ORL       A,R5
+   \   00006E   6007         JZ        ??bdb_StartCommissioning_5
     883                {
     884                  osal_nv_delete( ZCD_NV_BDBREPORTINGCONFIG, attrRepNvLen );
+   \   000070                ; Setup parameters for call to function osal_nv_delete
+   \   000070   7A56         MOV       R2,#0x56
+   \   000072   7B00         MOV       R3,#0x0
+   \   000074   12....       LCALL     `??osal_nv_delete::?relay`; Banked call to: osal_nv_delete
     885                }
     886              }
     887          
     888              //Construct the Endpoint-cluster array
     889              bdb_RepConstructReportingData();
+   \                     ??bdb_StartCommissioning_5:
+   \   000077                ; Setup parameters for call to function bdb_RepConstructReportingData
+   \   000077   12....       LCALL     `??bdb_RepConstructReportingData::?relay`; Banked call to: bdb_RepConstructReportingData
     890          #endif //BDB_REPORTING
     891              
     892              osal_nv_read(ZCD_NV_BDBNODEISONANETWORK,0,sizeof(bdbAttributes.bdbNodeIsOnANetwork),&bdbAttributes.bdbNodeIsOnANetwork);
-   \                     ??CrossCallReturnLabel_2:
-   \   000057   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00005A   75..01       MOV       ?V2,#0x1
-   \   00005D   75..00       MOV       ?V3,#0x0
-   \   000060   78..         MOV       R0,#?V2
-   \   000062   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000065   7C00         MOV       R4,#0x0
-   \   000067   7D00         MOV       R5,#0x0
-   \   000069   7A55         MOV       R2,#0x55
-   \   00006B   7B00         MOV       R3,#0x0
-   \   00006D   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
-   \   000070   7404         MOV       A,#0x4
-   \   000072   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00007A                ; Setup parameters for call to function osal_nv_read
+   \   00007A   75....       MOV       ?V2,#(bdbAttributes + 14) & 0xff
+   \   00007D   75....       MOV       ?V3,#((bdbAttributes + 14) >> 8) & 0xff
+   \   000080   78..         MOV       R0,#?V2
+   \   000082   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000085   75..01       MOV       ?V2,#0x1
+   \   000088   75..00       MOV       ?V3,#0x0
+   \   00008B   78..         MOV       R0,#?V2
+   \   00008D   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000090   7C00         MOV       R4,#0x0
+   \   000092   7D00         MOV       R5,#0x0
+   \   000094   7A55         MOV       R2,#0x55
+   \   000096   7B00         MOV       R3,#0x0
+   \   000098   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
+   \   00009B   7404         MOV       A,#0x4
+   \   00009D   12....       LCALL     ?DEALLOC_XSTACK8
     893              
     894              //Are we on a network
     895              if(bdbAttributes.bdbNodeIsOnANetwork == TRUE)
-   \   000075   90....       MOV       DPTR,#bdbAttributes + 14
-   \   000078   E0           MOVX      A,@DPTR
-   \   000079   6401         XRL       A,#0x1
-   \   00007B   6003         JZ        $+5
-   \   00007D   02....       LJMP      ??bdb_StartCommissioning_4 & 0xFFFF
+   \   0000A0   90....       MOV       DPTR,#bdbAttributes + 14
+   \   0000A3   E0           MOVX      A,@DPTR
+   \   0000A4   6401         XRL       A,#0x1
+   \   0000A6   6003         JZ        $+5
+   \   0000A8   02....       LJMP      ??bdb_StartCommissioning_4 & 0xFFFF
     896              {
     897          #ifdef ZG_BUILD_JOINING_TYPE
     898                //Only for joining devices validate the joining procedure
     899                if(ZG_DEVICE_JOINING_TYPE)
-   \   000080   90....       MOV       DPTR,#zgDeviceLogicalType
-   \   000083   E0           MOVX      A,@DPTR
-   \   000084   6401         XRL       A,#0x1
-   \   000086   6008         JZ        ??bdb_StartCommissioning_5
-   \   000088   E0           MOVX      A,@DPTR
-   \   000089   6402         XRL       A,#0x2
-   \   00008B   6003         JZ        $+5
-   \   00008D   02....       LJMP      ??bdb_StartCommissioning_6 & 0xFFFF
+   \   0000AB   90....       MOV       DPTR,#zgDeviceLogicalType
+   \   0000AE   E0           MOVX      A,@DPTR
+   \   0000AF   6401         XRL       A,#0x1
+   \   0000B1   6008         JZ        ??bdb_StartCommissioning_6
+   \   0000B3   E0           MOVX      A,@DPTR
+   \   0000B4   6402         XRL       A,#0x2
+   \   0000B6   6003         JZ        $+5
+   \   0000B8   02....       LJMP      ??bdb_StartCommissioning_7 & 0xFFFF
     900                {
     901                  //If we got into a network
     902                  if(!osal_isbufset( AIB_apsTrustCenterAddress, 0x00, Z_EXTADDR_LEN ))
-   \                     ??bdb_StartCommissioning_5:
-   \   000090                ; Setup parameters for call to function osal_isbufset
-   \   000090   7C08         MOV       R4,#0x8
-   \   000092   7900         MOV       R1,#0x0
-   \   000094   90....       MOV       DPTR,#AIB_apsTrustCenterAddress
-   \   000097   12....       LCALL     ?Subroutine27 & 0xFFFF
-   \                     ??CrossCallReturnLabel_21:
-   \   00009A   12....       LCALL     `??osal_isbufset::?relay`; Banked call to: osal_isbufset
-   \   00009D   E9           MOV       A,R1
-   \   00009E   6003         JZ        $+5
-   \   0000A0   02....       LJMP      ??bdb_StartCommissioning_6 & 0xFFFF
+   \                     ??bdb_StartCommissioning_6:
+   \   0000BB                ; Setup parameters for call to function osal_isbufset
+   \   0000BB   7C08         MOV       R4,#0x8
+   \   0000BD   7900         MOV       R1,#0x0
+   \   0000BF   90....       MOV       DPTR,#AIB_apsTrustCenterAddress
+   \   0000C2   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_19:
+   \   0000C5   12....       LCALL     `??osal_isbufset::?relay`; Banked call to: osal_isbufset
+   \   0000C8   E9           MOV       A,R1
+   \   0000C9   6003         JZ        $+5
+   \   0000CB   02....       LJMP      ??bdb_StartCommissioning_7 & 0xFFFF
     903                  {
     904                    //Which is not distributed
     905                    if(!APSME_IsDistributedSecurity())
-   \   0000A3                ; Setup parameters for call to function APSME_IsDistributedSecurity
-   \   0000A3   12....       LCALL     `??APSME_IsDistributedSecurity::?relay`; Banked call to: APSME_IsDistributedSecurity
-   \   0000A6   E9           MOV       A,R1
-   \   0000A7   6003         JZ        $+5
-   \   0000A9   02....       LJMP      ??bdb_StartCommissioning_6 & 0xFFFF
+   \   0000CE                ; Setup parameters for call to function APSME_IsDistributedSecurity
+   \   0000CE   12....       LCALL     `??APSME_IsDistributedSecurity::?relay`; Banked call to: APSME_IsDistributedSecurity
+   \   0000D1   E9           MOV       A,R1
+   \   0000D2   6003         JZ        $+5
+   \   0000D4   02....       LJMP      ??bdb_StartCommissioning_7 & 0xFFFF
     906                    {
     907                      uint8 keyAttributes;
     908                      osal_nv_read(ZCD_NV_TCLK_TABLE_START, osal_offsetof(APSME_TCLKDevEntry_t,keyAttributes), sizeof(uint8), &keyAttributes);
-   \   0000AC                ; Setup parameters for call to function osal_nv_read
-   \   0000AC   A8..         MOV       R0,?XSP + 0
-   \   0000AE   A9..         MOV       R1,?XSP + 1
-   \   0000B0   88..         MOV       ?V2,R0
-   \   0000B2   89..         MOV       ?V3,R1
-   \   0000B4   78..         MOV       R0,#?V2
-   \   0000B6   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0000B9   75..01       MOV       ?V2,#0x1
-   \   0000BC   75..00       MOV       ?V3,#0x0
-   \   0000BF   78..         MOV       R0,#?V2
-   \   0000C1   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0000C4   7C10         MOV       R4,#0x10
-   \   0000C6   7D00         MOV       R5,#0x0
-   \   0000C8   7A11         MOV       R2,#0x11
-   \   0000CA   7B01         MOV       R3,#0x1
-   \   0000CC   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
-   \   0000CF   7404         MOV       A,#0x4
-   \   0000D1   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000D7                ; Setup parameters for call to function osal_nv_read
+   \   0000D7   A8..         MOV       R0,?XSP + 0
+   \   0000D9   A9..         MOV       R1,?XSP + 1
+   \   0000DB   88..         MOV       ?V2,R0
+   \   0000DD   89..         MOV       ?V3,R1
+   \   0000DF   78..         MOV       R0,#?V2
+   \   0000E1   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000E4   75..01       MOV       ?V2,#0x1
+   \   0000E7   75..00       MOV       ?V3,#0x0
+   \   0000EA   78..         MOV       R0,#?V2
+   \   0000EC   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0000EF   7C10         MOV       R4,#0x10
+   \   0000F1   7D00         MOV       R5,#0x0
+   \   0000F3   7A11         MOV       R2,#0x11
+   \   0000F5   7B01         MOV       R3,#0x1
+   \   0000F7   12....       LCALL     `??osal_nv_read::?relay`; Banked call to: osal_nv_read
+   \   0000FA   7404         MOV       A,#0x4
+   \   0000FC   12....       LCALL     ?DEALLOC_XSTACK8
     909                      //If we must perform the TCLK exchange and we didn't complete it, then reset to FN
     910                      if(requestNewTrustCenterLinkKey && (keyAttributes != ZG_NON_R21_NWK_JOINED) && (keyAttributes != ZG_VERIFIED_KEY))
-   \   0000D4   90....       MOV       DPTR,#requestNewTrustCenterLinkKey
-   \   0000D7   E0           MOVX      A,@DPTR
-   \   0000D8   607A         JZ        ??bdb_StartCommissioning_6
-   \   0000DA   85..82       MOV       DPL,?XSP + 0
-   \   0000DD   85..83       MOV       DPH,?XSP + 1
-   \   0000E0   E0           MOVX      A,@DPTR
-   \   0000E1   64FD         XRL       A,#0xfd
-   \   0000E3   606F         JZ        ??bdb_StartCommissioning_6
-   \   0000E5   E0           MOVX      A,@DPTR
-   \   0000E6   6402         XRL       A,#0x2
-   \   0000E8   606A         JZ        ??bdb_StartCommissioning_6
+   \   0000FF   90....       MOV       DPTR,#requestNewTrustCenterLinkKey
+   \   000102   E0           MOVX      A,@DPTR
+   \   000103   7003         JNZ       $+5
+   \   000105   02....       LJMP      ??bdb_StartCommissioning_7 & 0xFFFF
+   \   000108   85..82       MOV       DPL,?XSP + 0
+   \   00010B   85..83       MOV       DPH,?XSP + 1
+   \   00010E   E0           MOVX      A,@DPTR
+   \   00010F   64FD         XRL       A,#0xfd
+   \   000111   6075         JZ        ??bdb_StartCommissioning_7
+   \   000113   E0           MOVX      A,@DPTR
+   \   000114   6402         XRL       A,#0x2
+   \   000116   6070         JZ        ??bdb_StartCommissioning_7
     911                      {
     912                        //Force to initialize the entry
     913                        APSME_TCLKDevEntry_t APSME_TCLKDevEntry;
     914                        
     915                        osal_memset(&APSME_TCLKDevEntry,0,sizeof(APSME_TCLKDevEntry_t));
-   \   0000EA                ; Setup parameters for call to function osal_memset
-   \   0000EA   7C13         MOV       R4,#0x13
-   \   0000EC   7D00         MOV       R5,#0x0
-   \   0000EE   7900         MOV       R1,#0x0
-   \   0000F0   7401         MOV       A,#0x1
-   \   0000F2   12....       LCALL     ?XSTACK_DISP101_8
-   \   0000F5   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
+   \   000118                ; Setup parameters for call to function osal_memset
+   \   000118   7C13         MOV       R4,#0x13
+   \   00011A   7D00         MOV       R5,#0x0
+   \   00011C   7900         MOV       R1,#0x0
+   \   00011E   7401         MOV       A,#0x1
+   \   000120   12....       LCALL     ?XSTACK_DISP101_8
+   \   000123   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
     916                        APSME_TCLKDevEntry.keyAttributes = ZG_DEFAULT_KEY;
-   \   0000F8   7411         MOV       A,#0x11
-   \   0000FA   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000FD   74FF         MOV       A,#-0x1
-   \   0000FF   F0           MOVX      @DPTR,A
+   \   000126   7411         MOV       A,#0x11
+   \   000128   12....       LCALL     ?XSTACK_DISP0_8
+   \   00012B   74FF         MOV       A,#-0x1
+   \   00012D   F0           MOVX      @DPTR,A
     917                        osal_nv_write(ZCD_NV_TCLK_TABLE_START, 0, sizeof(APSME_TCLKDevEntry_t), &APSME_TCLKDevEntry);
-   \   000100                ; Setup parameters for call to function osal_nv_write
-   \   000100   7401         MOV       A,#0x1
-   \   000102   12....       LCALL     ?XSTACK_DISP100_8
-   \   000105   88..         MOV       ?V2,R0
-   \   000107   89..         MOV       ?V3,R1
-   \   000109   78..         MOV       R0,#?V2
-   \   00010B   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00010E   75..13       MOV       ?V2,#0x13
-   \   000111   75..00       MOV       ?V3,#0x0
-   \   000114   78..         MOV       R0,#?V2
-   \   000116   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000119   7C00         MOV       R4,#0x0
-   \   00011B   7D00         MOV       R5,#0x0
-   \   00011D   7A11         MOV       R2,#0x11
-   \   00011F   7B01         MOV       R3,#0x1
-   \   000121   12....       LCALL     ??Subroutine58_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_109:
-   \   000124   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00012E                ; Setup parameters for call to function osal_nv_write
+   \   00012E   7401         MOV       A,#0x1
+   \   000130   12....       LCALL     ?XSTACK_DISP100_8
+   \   000133   88..         MOV       ?V2,R0
+   \   000135   89..         MOV       ?V3,R1
+   \   000137   78..         MOV       R0,#?V2
+   \   000139   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00013C   75..13       MOV       ?V2,#0x13
+   \   00013F   75..00       MOV       ?V3,#0x0
+   \   000142   78..         MOV       R0,#?V2
+   \   000144   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000147   7C00         MOV       R4,#0x0
+   \   000149   7D00         MOV       R5,#0x0
+   \   00014B   7A11         MOV       R2,#0x11
+   \   00014D   7B01         MOV       R3,#0x1
+   \   00014F   12....       LCALL     ??Subroutine57_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_107:
+   \   000152   12....       LCALL     ?DEALLOC_XSTACK8
     918                        TCLinkKeyFrmCntr[0].txFrmCntr = 0;
-   \   000127   90....       MOV       DPTR,#TCLinkKeyFrmCntr
-   \   00012A   12....       LCALL     ?Subroutine9 & 0xFFFF
+   \   000155   90....       MOV       DPTR,#TCLinkKeyFrmCntr
+   \   000158   12....       LCALL     ?Subroutine9 & 0xFFFF
     919                        TCLinkKeyFrmCntr[0].rxFrmCntr = 0;
-   \                     ??CrossCallReturnLabel_59:
-   \   00012D   A3           INC       DPTR
-   \   00012E   12....       LCALL     ??Subroutine44_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_57:
+   \   00015B   A3           INC       DPTR
+   \   00015C   12....       LCALL     ??Subroutine43_0 & 0xFFFF
     920                        
     921                        
     922                        //reset the device parameters to FN
     923                        bdbAttributes.bdbNodeIsOnANetwork = FALSE;
-   \                     ??CrossCallReturnLabel_57:
-   \   000131   90....       MOV       DPTR,#bdbAttributes + 14
-   \   000134   12....       LCALL     ?Subroutine12 & 0xFFFF
+   \                     ??CrossCallReturnLabel_55:
+   \   00015F   90....       MOV       DPTR,#bdbAttributes + 14
+   \   000162   F0           MOVX      @DPTR,A
     924                        osal_nv_write(ZCD_NV_BDBNODEISONANETWORK,0,sizeof(bdbAttributes.bdbNodeIsOnANetwork),&bdbAttributes.bdbNodeIsOnANetwork);
-   \                     ??CrossCallReturnLabel_3:
-   \   000137   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00013A   75..01       MOV       ?V2,#0x1
-   \   00013D   75..00       MOV       ?V3,#0x0
-   \   000140   78..         MOV       R0,#?V2
-   \   000142   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000145   12....       LCALL     ?Subroutine33 & 0xFFFF
-   \                     ??CrossCallReturnLabel_105:
-   \   000148   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000163                ; Setup parameters for call to function osal_nv_write
+   \   000163   75....       MOV       ?V2,#(bdbAttributes + 14) & 0xff
+   \   000166   75....       MOV       ?V3,#((bdbAttributes + 14) >> 8) & 0xff
+   \   000169   78..         MOV       R0,#?V2
+   \   00016B   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00016E   75..01       MOV       ?V2,#0x1
+   \   000171   75..00       MOV       ?V3,#0x0
+   \   000174   78..         MOV       R0,#?V2
+   \   000176   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000179   12....       LCALL     ?Subroutine32 & 0xFFFF
+   \                     ??CrossCallReturnLabel_103:
+   \   00017C   12....       LCALL     ?DEALLOC_XSTACK8
     925                        zgWriteStartupOptions(ZG_STARTUP_SET, ZCD_STARTOPT_DEFAULT_CONFIG_STATE | ZCD_STARTOPT_DEFAULT_NETWORK_STATE);
-   \   00014B                ; Setup parameters for call to function zgWriteStartupOptions
-   \   00014B   7A03         MOV       R2,#0x3
-   \   00014D   79FF         MOV       R1,#-0x1
-   \   00014F   12....       LCALL     `??zgWriteStartupOptions::?relay`; Banked call to: zgWriteStartupOptions
+   \   00017F                ; Setup parameters for call to function zgWriteStartupOptions
+   \   00017F   7A03         MOV       R2,#0x3
+   \   000181   79FF         MOV       R1,#-0x1
+   \   000183   12....       LCALL     `??zgWriteStartupOptions::?relay`; Banked call to: zgWriteStartupOptions
     926                        
     927                        //Then start the commissioning process requested
     928                        bdbCommissioningProcedureState.bdbCommissioningState = BDB_COMMISSIONING_STATE_START_RESUME;
-   \   000152   803B         SJMP      ??bdb_StartCommissioning_7
+   \   000186   8040         SJMP      ??bdb_StartCommissioning_8
     929                        osal_set_event( bdb_TaskID, BDB_CHANGE_COMMISSIONING_STATE );
     930                        return;
     931                      }
@@ -2676,44 +2711,48 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     937                //Set the initialization
     938                bdbAttributes.bdbCommissioningMode |= BDB_COMMISSIONING_MODE_INITIALIZATION;
     939                bdbCommissioningProcedureState.bdbCommissioningState = BDB_INITIALIZATION;
-   \                     ??bdb_StartCommissioning_6:
-   \   000154   90....       MOV       DPTR,#bdbCommissioningProcedureState
-   \   000157   7407         MOV       A,#0x7
-   \   000159   F0           MOVX      @DPTR,A
+   \                     ??bdb_StartCommissioning_7:
+   \   000188   90....       MOV       DPTR,#bdbCommissioningProcedureState
+   \   00018B   7407         MOV       A,#0x7
+   \   00018D   F0           MOVX      @DPTR,A
     940                bdbAttributes.bdbCommissioningMode |= mode & BDB_COMMISSIONING_MODES;
-   \   00015A   7410         MOV       A,#0x10
-   \   00015C   4E           ORL       A,R6
-   \   00015D   F8           MOV       R0,A
-   \   00015E   90....       MOV       DPTR,#bdbAttributes + 11
-   \   000161   E0           MOVX      A,@DPTR
-   \   000162   48           ORL       A,R0
-   \   000163   F0           MOVX      @DPTR,A
+   \   00018E   7410         MOV       A,#0x10
+   \   000190   4E           ORL       A,R6
+   \   000191   F8           MOV       R0,A
+   \   000192   90....       MOV       DPTR,#bdbAttributes + 11
+   \   000195   E0           MOVX      A,@DPTR
+   \   000196   48           ORL       A,R0
+   \   000197   F0           MOVX      @DPTR,A
     941                
     942                if(ZDOInitDevice(0) == ZDO_INITDEV_RESTORED_NETWORK_STATE)
-   \   000164                ; Setup parameters for call to function ZDOInitDeviceEx
-   \   000164   7900         MOV       R1,#0x0
-   \   000166   7A00         MOV       R2,#0x0
-   \   000168   7B00         MOV       R3,#0x0
-   \   00016A   12....       LCALL     `??ZDOInitDeviceEx::?relay`; Banked call to: ZDOInitDeviceEx
-   \   00016D   E9           MOV       A,R1
-   \   00016E   602F         JZ        ??bdb_StartCommissioning_3
+   \   000198                ; Setup parameters for call to function ZDOInitDeviceEx
+   \   000198   7900         MOV       R1,#0x0
+   \   00019A   7A00         MOV       R2,#0x0
+   \   00019C   7B00         MOV       R3,#0x0
+   \   00019E   12....       LCALL     `??ZDOInitDeviceEx::?relay`; Banked call to: ZDOInitDeviceEx
+   \   0001A1   E9           MOV       A,R1
+   \   0001A2   7005         JNZ       ??bdb_StartCommissioning_9
     943                {
     944          #ifdef BDB_REPORTING
     945                  //Mark the clusterEndpoint entries that have binding, starts reporting if at least one entry was marked
     946                  bdb_RepUpdateMarkBindings();
+   \   0001A4                ; Setup parameters for call to function bdb_RepUpdateMarkBindings
+   \   0001A4   12....       LCALL     `??bdb_RepUpdateMarkBindings::?relay`; Banked call to: bdb_RepUpdateMarkBindings
     947          #endif
     948                  return;
+   \   0001A7   802F         SJMP      ??bdb_StartCommissioning_3
     949                }
     950                bdb_setNodeIsOnANetwork(FALSE);  
-   \   000170                ; Setup parameters for call to function bdb_setNodeIsOnANetwork
-   \   000170   7900         MOV       R1,#0x0
-   \   000172   12....       LCALL     `??bdb_setNodeIsOnANetwork::?relay`; Banked call to: bdb_setNodeIsOnANetwork
+   \                     ??bdb_StartCommissioning_9:
+   \   0001A9                ; Setup parameters for call to function bdb_setNodeIsOnANetwork
+   \   0001A9   7900         MOV       R1,#0x0
+   \   0001AB   12....       LCALL     `??bdb_setNodeIsOnANetwork::?relay`; Banked call to: bdb_setNodeIsOnANetwork
     951                //Not in the network
     952                bdb_reportCommissioningState(BDB_INITIALIZATION,FALSE);
-   \   000175                ; Setup parameters for call to function bdb_reportCommissioningState
-   \   000175   7A00         MOV       R2,#0x0
-   \   000177   7907         MOV       R1,#0x7
-   \   000179   800F         SJMP      ??bdb_StartCommissioning_8
+   \   0001AE                ; Setup parameters for call to function bdb_reportCommissioningState
+   \   0001AE   7A00         MOV       R2,#0x0
+   \   0001B0   7907         MOV       R1,#0x7
+   \   0001B2   800F         SJMP      ??bdb_StartCommissioning_10
     953                return;
     954              }
     955            }
@@ -2721,57 +2760,47 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     957            //Got requested only to initialize, if so, report that it failed
     958            if(bdbAttributes.bdbCommissioningMode == 0)
    \                     ??bdb_StartCommissioning_4:
-   \   00017B   90....       MOV       DPTR,#bdbAttributes + 11
-   \   00017E   E0           MOVX      A,@DPTR
-   \   00017F   700E         JNZ       ??bdb_StartCommissioning_7
+   \   0001B4   90....       MOV       DPTR,#bdbAttributes + 11
+   \   0001B7   E0           MOVX      A,@DPTR
+   \   0001B8   700E         JNZ       ??bdb_StartCommissioning_8
     959            {
     960              //Set the initialization state and report it to fail
     961              bdbCommissioningProcedureState.bdbCommissioningState = BDB_INITIALIZATION;
-   \   000181   90....       MOV       DPTR,#bdbCommissioningProcedureState
-   \   000184   7407         MOV       A,#0x7
-   \   000186   F0           MOVX      @DPTR,A
+   \   0001BA   90....       MOV       DPTR,#bdbCommissioningProcedureState
+   \   0001BD   7407         MOV       A,#0x7
+   \   0001BF   F0           MOVX      @DPTR,A
     962              bdb_reportCommissioningState(BDB_INITIALIZATION,FALSE);
-   \   000187                ; Setup parameters for call to function bdb_reportCommissioningState
-   \   000187   7A00         MOV       R2,#0x0
-   \   000189   F9           MOV       R1,A
-   \                     ??bdb_StartCommissioning_8:
-   \   00018A   12....       LCALL     `??bdb_reportCommissioningState::?relay`; Banked call to: bdb_reportCommissioningState
+   \   0001C0                ; Setup parameters for call to function bdb_reportCommissioningState
+   \   0001C0   7A00         MOV       R2,#0x0
+   \   0001C2   F9           MOV       R1,A
+   \                     ??bdb_StartCommissioning_10:
+   \   0001C3   12....       LCALL     `??bdb_reportCommissioningState::?relay`; Banked call to: bdb_reportCommissioningState
     963              return;
-   \   00018D   8010         SJMP      ??bdb_StartCommissioning_3
+   \   0001C6   8010         SJMP      ??bdb_StartCommissioning_3
     964            }
     965          
     966            
     967            //Start the commissioning process
     968            bdbCommissioningProcedureState.bdbCommissioningState = BDB_COMMISSIONING_STATE_START_RESUME;
-   \                     ??bdb_StartCommissioning_7:
-   \   00018F   90....       MOV       DPTR,#bdbCommissioningProcedureState
-   \   000192   E4           CLR       A
-   \   000193   F0           MOVX      @DPTR,A
+   \                     ??bdb_StartCommissioning_8:
+   \   0001C8   90....       MOV       DPTR,#bdbCommissioningProcedureState
+   \   0001CB   E4           CLR       A
+   \   0001CC   F0           MOVX      @DPTR,A
     969            osal_set_event( bdb_TaskID, BDB_CHANGE_COMMISSIONING_STATE );
-   \   000194                ; Setup parameters for call to function osal_set_event
-   \   000194   7A04         MOV       R2,#0x4
-   \   000196   FB           MOV       R3,A
-   \   000197   90....       MOV       DPTR,#bdb_TaskID
-   \   00019A   E0           MOVX      A,@DPTR
-   \   00019B   F9           MOV       R1,A
-   \   00019C   12....       LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
+   \   0001CD                ; Setup parameters for call to function osal_set_event
+   \   0001CD   7A04         MOV       R2,#0x4
+   \   0001CF   FB           MOV       R3,A
+   \   0001D0   90....       MOV       DPTR,#bdb_TaskID
+   \   0001D3   E0           MOVX      A,@DPTR
+   \   0001D4   F9           MOV       R1,A
+   \   0001D5   12....       LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
     970          }
    \                     ??bdb_StartCommissioning_3:
-   \   00019F   7414         MOV       A,#0x14
-   \   0001A1   02....       LJMP      ??Subroutine50_0 & 0xFFFF
+   \   0001D8   7414         MOV       A,#0x14
+   \   0001DA   02....       LJMP      ??Subroutine49_0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine12:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001                ; Setup parameters for call to function osal_nv_read
-   \   000001                ; Setup parameters for call to function osal_nv_write
-   \   000001   75....       MOV       ?V2,#(bdbAttributes + 14) & 0xff
-   \   000004   75....       MOV       ?V3,#((bdbAttributes + 14) >> 8) & 0xff
-   \   000007   78..         MOV       R0,#?V2
-   \   000009   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine48_0:
+   \                     ??Subroutine47_0:
    \   000000   90....       MOV       DPTR,#bdb_TaskID
    \   000003   E0           MOVX      A,@DPTR
    \   000004   F9           MOV       R1,A
@@ -2783,7 +2812,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000C   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine31:
+   \                     ?Subroutine30:
    \   000000   12....       LCALL     `??bdb_nwkSteeringDeviceOnNwk::?relay`; Banked call to: bdb_nwkSteeringDeviceOnNwk
    \   000003                ; Setup parameters for call to function bdb_reportCommissioningState
    \   000003                ; Setup parameters for call to function bdb_reportCommissioningState
@@ -2794,18 +2823,18 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000A   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine33:
+   \                     ?Subroutine32:
    \   000000   7C00         MOV       R4,#0x0
    \   000002   7D00         MOV       R5,#0x0
    \   000004   7A55         MOV       R2,#0x55
-   \   000006                REQUIRE ??Subroutine57_0
-   \   000006                ; // Fall through to label ??Subroutine57_0
+   \   000006                REQUIRE ??Subroutine56_0
+   \   000006                ; // Fall through to label ??Subroutine56_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine57_0:
+   \                     ??Subroutine56_0:
    \   000000   7B00         MOV       R3,#0x0
-   \   000002                REQUIRE ??Subroutine58_0
-   \   000002                ; // Fall through to label ??Subroutine58_0
+   \   000002                REQUIRE ??Subroutine57_0
+   \   000002                ; // Fall through to label ??Subroutine57_0
     971          
     972          
     973           /*********************************************************************
@@ -2842,28 +2871,28 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
     988            //Remaining commissioning modes are set just before the call to the application to avoid race conditions
     989          
     990            bdb_NotifyApp((uint8*)&bdbCommissioningModeMsg);
-   \                     ??CrossCallReturnLabel_48:
+   \                     ??CrossCallReturnLabel_46:
    \   000014   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000017   12....       LCALL     ?Subroutine15 & 0xFFFF
-   \                     ??CrossCallReturnLabel_60:
+   \   000017   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_58:
    \   00001A   12....       LCALL     ?DEALLOC_XSTACK8
     991          }
    \   00001D   7403         MOV       A,#0x3
    \   00001F   02....       LJMP      ?Subroutine1 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine15:
+   \                     ?Subroutine14:
    \   000000   7C03         MOV       R4,#0x3
    \   000002   7B00         MOV       R3,#0x0
    \   000004   7A0A         MOV       R2,#0xa
-   \   000006                REQUIRE ??Subroutine45_0
-   \   000006                ; // Fall through to label ??Subroutine45_0
+   \   000006                REQUIRE ??Subroutine44_0
+   \   000006                ; // Fall through to label ??Subroutine44_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine1:
    \   000000   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000003                REQUIRE ??Subroutine56_0
-   \   000003                ; // Fall through to label ??Subroutine56_0
+   \   000003                REQUIRE ??Subroutine55_0
+   \   000003                ; // Fall through to label ??Subroutine55_0
     992          
     993          
     994          
@@ -2923,7 +2952,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000B   79FF         MOV       R1,#-0x1
    \   00000D   12....       LCALL     `??zgWriteStartupOptions::?relay`; Banked call to: zgWriteStartupOptions
    1036          }
-   \   000010   80..         SJMP      ??Subroutine47_0
+   \   000010   80..         SJMP      ??Subroutine46_0
    1037          
    1038           /*********************************************************************
    1039           * @fn          bdb_resetLocalAction
@@ -2969,7 +2998,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000B   12....       LCALL     `??ZDApp_ResetTimerStart::?relay`; Banked call to: ZDApp_ResetTimerStart
    1067            }
    1068          }
-   \   00000E   80..         SJMP      ??Subroutine47_0
+   \   00000E   80..         SJMP      ??Subroutine46_0
    1069          
    1070          
    1071           /*********************************************************************
@@ -3310,8 +3339,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00006D                ; Setup parameters for call to function osal_start_timerEx
    \   00006D   90....       MOV       DPTR,#__Constant_32
    \   000070   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   000073   12....       LCALL     ?Subroutine14 & 0xFFFF
-   \                     ??CrossCallReturnLabel_94:
+   \   000073   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_92:
    \   000076   12....       LCALL     ?DEALLOC_XSTACK8
    1325                  bdbAttributes.bdbCommissioningMode &= ~BDB_COMMISSIONING_MODE_NWK_STEERING;
    \   000079   90....       MOV       DPTR,#bdbAttributes + 11
@@ -3427,8 +3456,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000DD                ; Setup parameters for call to function osal_start_timerEx
    \   0000DD   90....       MOV       DPTR,#__Constant_32
    \   0000E0   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   0000E3   12....       LCALL     ?Subroutine14 & 0xFFFF
-   \                     ??CrossCallReturnLabel_95:
+   \   0000E3   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_93:
    \   0000E6   12....       LCALL     ?DEALLOC_XSTACK8
    1374                  bdbAttributes.bdbCommissioningMode &= ~BDB_COMMISSIONING_MODE_NWK_FORMATION;
    \   0000E9   90....       MOV       DPTR,#bdbAttributes + 11
@@ -3468,13 +3497,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00010A   6003         JZ        $+5
    \   00010C   02....       LJMP      ??bdb_reportCommissioningState_1 & 0xFFFF
    \   00010F                ; Setup parameters for call to function bdb_getRespondentRetry
-   \   00010F   12....       LCALL     ?Subroutine26 & 0xFFFF
-   \                     ??CrossCallReturnLabel_17:
+   \   00010F   12....       LCALL     ?Subroutine25 & 0xFFFF
+   \                     ??CrossCallReturnLabel_15:
    \   000112   6003         JZ        $+5
    \   000114   02....       LJMP      ??bdb_reportCommissioningState_1 & 0xFFFF
    \   000117                ; Setup parameters for call to function osal_get_timeoutEx
-   \   000117   12....       LCALL     ?Subroutine20 & 0xFFFF
-   \                     ??CrossCallReturnLabel_67:
+   \   000117   12....       LCALL     ?Subroutine19 & 0xFFFF
+   \                     ??CrossCallReturnLabel_65:
    \   00011A   6003         JZ        $+5
    \   00011C   02....       LJMP      ??bdb_reportCommissioningState_1 & 0xFFFF
    1391                  {
@@ -3499,11 +3528,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000133                ; Setup parameters for call to function osal_stop_timerEx
    \   000133   7A00         MOV       R2,#0x0
    \   000135   7B40         MOV       R3,#0x40
-   \   000137   12....       LCALL     ??Subroutine59_0 & 0xFFFF
+   \   000137   12....       LCALL     ??Subroutine58_0 & 0xFFFF
    1397                    
    1398                    //Report success if in any of the attempts we got success, regardless that we did receive no rsp on the last attempt
    1399                    if(bdb_FBStateSuccessLatch && (bdbAttributes.bdbCommissioningStatus == BDB_COMMISSIONING_FB_NO_IDENTIFY_QUERY_RESPONSE))
-   \                     ??CrossCallReturnLabel_114:
+   \                     ??CrossCallReturnLabel_112:
    \   00013A   90....       MOV       DPTR,#bdb_FBStateSuccessLatch
    \   00013D   E0           MOVX      A,@DPTR
    \   00013E   600A         JZ        ??bdb_reportCommissioningState_17
@@ -3538,9 +3567,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000159                ; Setup parameters for call to function osal_start_timerEx
    \   000159   90....       MOV       DPTR,#__Constant_32
    \   00015C   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   00015F   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \   00015F   12....       LCALL     ?Subroutine13 & 0xFFFF
    1412                    }
-   \                     ??CrossCallReturnLabel_96:
+   \                     ??CrossCallReturnLabel_94:
    \   000162   12....       LCALL     ?DEALLOC_XSTACK8
    \   000165   800A         SJMP      ??bdb_reportCommissioningState_19
    1413                    else if(bdbCommissioningProcedureState.bdb_ParentLostSavedState == BDB_COMMISSIONING_STATE_FINDING_BINDING)
@@ -3626,8 +3655,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0001A2                ; Setup parameters for call to function osal_start_timerEx
    \   0001A2   90....       MOV       DPTR,#__Constant_32
    \   0001A5   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   0001A8   12....       LCALL     ?Subroutine14 & 0xFFFF
-   \                     ??CrossCallReturnLabel_97:
+   \   0001A8   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_95:
    \   0001AB   12....       LCALL     ?DEALLOC_XSTACK8
    1455                  //Clear the event
    1456                  bdbAttributes.bdbCommissioningMode &= ~BDB_COMMISSIONING_MODE_INITIATOR_TL;
@@ -3684,9 +3713,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0001D3                ; Setup parameters for call to function osal_start_timerEx
    \   0001D3   90....       MOV       DPTR,#__Constant_c8
    \   0001D6   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   0001D9   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \   0001D9   12....       LCALL     ?Subroutine13 & 0xFFFF
    1485                  }
-   \                     ??CrossCallReturnLabel_98:
+   \                     ??CrossCallReturnLabel_96:
    \   0001DC   12....       LCALL     ?DEALLOC_XSTACK8
    \   0001DF   8006         SJMP      ??bdb_reportCommissioningState_22
    1486                  else
@@ -3759,8 +3788,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    1543              if(pfnCommissioningStatusCB)
    \                     ??bdb_reportCommissioningState_7:
    \   0001EE   90....       MOV       DPTR,#pfnCommissioningStatusCB
-   \   0001F1   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_88:
+   \   0001F1   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_86:
    \   0001F4   6016         JZ        ??bdb_reportCommissioningState_1
    1544              {
    1545                //Notify the user about the status, the main state which has failed
@@ -3769,16 +3798,16 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0001F9   E0           MOVX      A,@DPTR
    \   0001FA   85..82       MOV       DPL,?XSP + 0
    \   0001FD   85..83       MOV       DPH,?XSP + 1
-   \   000200   12....       LCALL     ??Subroutine42_0 & 0xFFFF
+   \   000200   12....       LCALL     ??Subroutine41_0 & 0xFFFF
    1547                
    1548                bdb_NotifyApp((uint8*)&bdbCommissioningModeMsg);
    1549              }
    1550          #endif
    1551            }  
-   \                     ??CrossCallReturnLabel_49:
+   \                     ??CrossCallReturnLabel_47:
    \   000203   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000206   12....       LCALL     ?Subroutine15 & 0xFFFF
-   \                     ??CrossCallReturnLabel_61:
+   \   000206   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_59:
    \   000209   12....       LCALL     ?DEALLOC_XSTACK8
    1552          }
    \                     ??bdb_reportCommissioningState_1:
@@ -3786,14 +3815,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00020E   02....       LJMP      ?Subroutine1 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine20:
+   \                     ?Subroutine19:
    \   000000   7A00         MOV       R2,#0x0
    \   000002   7B40         MOV       R3,#0x40
-   \   000004                REQUIRE ??Subroutine48_0
-   \   000004                ; // Fall through to label ??Subroutine48_0
+   \   000004                REQUIRE ??Subroutine47_0
+   \   000004                ; // Fall through to label ??Subroutine47_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine26:
+   \                     ?Subroutine25:
    \   000000   90....       MOV       DPTR,#pRespondentHead
    \   000003   E0           MOVX      A,@DPTR
    \   000004   FA           MOV       R2,A
@@ -3806,16 +3835,16 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000D   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine14:
+   \                     ?Subroutine13:
    \   000000   7A04         MOV       R2,#0x4
-   \   000002                REQUIRE ??Subroutine54_0
-   \   000002                ; // Fall through to label ??Subroutine54_0
+   \   000002                REQUIRE ??Subroutine53_0
+   \   000002                ; // Fall through to label ??Subroutine53_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine54_0:
+   \                     ??Subroutine53_0:
    \   000000   7B00         MOV       R3,#0x0
-   \   000002                REQUIRE ??Subroutine55_0
-   \   000002                ; // Fall through to label ??Subroutine55_0
+   \   000002                REQUIRE ??Subroutine54_0
+   \   000002                ; // Fall through to label ??Subroutine54_0
    1553          
    1554          
    1555           /*********************************************************************
@@ -3916,13 +3945,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine7:
    \   000000   E0           MOVX      A,@DPTR
-   \   000001                REQUIRE ??Subroutine49_0
-   \   000001                ; // Fall through to label ??Subroutine49_0
+   \   000001                REQUIRE ??Subroutine48_0
+   \   000001                ; // Fall through to label ??Subroutine48_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine49_0:
+   \                     ??Subroutine48_0:
    \   000000   F9           MOV       R1,A
-   \   000001   02....       LJMP      ??Subroutine47_0 & 0xFFFF
+   \   000001   02....       LJMP      ??Subroutine46_0 & 0xFFFF
    1601          
    1602          
    1603          /*********************************************************************
@@ -3997,8 +4026,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000027   7C00         MOV       R4,#0x0
    \   000029   7D00         MOV       R5,#0x0
    \   00002B   7A21         MOV       R2,#0x21
-   \   00002D   12....       LCALL     ??Subroutine57_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_107:
+   \   00002D   12....       LCALL     ??Subroutine56_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_105:
    \   000030   12....       LCALL     ?DEALLOC_XSTACK8
    1638            
    1639            // Transition state machine to correct rejoin state based on nwk key
@@ -4497,7 +4526,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00001A   12....       LCALL     ?L_MOV_TO_X
    2031            }
    2032          }
-   \   00001D   80..         SJMP      ??Subroutine51_0
+   \   00001D   80..         SJMP      ??Subroutine50_0
    2033          
    2034           /*********************************************************************
    2035           * @fn          bdb_setChannel
@@ -4512,8 +4541,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine2:
    \   000000   7404         MOV       A,#0x4
-   \   000002                REQUIRE ??Subroutine50_0
-   \   000002                ; // Fall through to label ??Subroutine50_0
+   \   000002                REQUIRE ??Subroutine49_0
+   \   000002                ; // Fall through to label ??Subroutine49_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    2043          void bdb_setChannel(uint32 channel)
@@ -4689,7 +4718,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2104            }
    2105          }
    \                     ??bdb_nwkJoiningFormation_5:
-   \   00006B   02....       LJMP      ??Subroutine51_0 & 0xFFFF
+   \   00006B   02....       LJMP      ??Subroutine50_0 & 0xFFFF
    2106          
    2107          #if (ZG_BUILD_JOINING_TYPE)
    2108           /*********************************************************************
@@ -4880,7 +4909,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine6:
    \   000000   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000003   02....       LJMP      ??Subroutine47_0 & 0xFFFF
+   \   000003   02....       LJMP      ??Subroutine46_0 & 0xFFFF
    2262          
    2263          
    2264          /*********************************************************************
@@ -4973,11 +5002,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2329                if(bdbAttributes.bdbNodeIsOnANetwork)
    \   000020   90....       MOV       DPTR,#bdbAttributes + 14
    \   000023   E0           MOVX      A,@DPTR
-   \   000024   6003         JZ        ??CrossCallReturnLabel_29
+   \   000024   6003         JZ        ??CrossCallReturnLabel_27
    2330                {
    2331                  bdb_nwkSteeringDeviceOnNwk();
    \   000026                ; Setup parameters for call to function bdb_nwkSteeringDeviceOnNwk
-   \   000026   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \   000026   12....       LCALL     ?Subroutine30 & 0xFFFF
    2332                  bdb_reportCommissioningState(BDB_COMMISSIONING_STATE_STEERING_ON_NWK, TRUE);
    2333                }
    2334          #if (ZG_BUILD_JOINING_TYPE)
@@ -4999,7 +5028,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2350                if(ZG_DEVICE_COORDINATOR_TYPE)
    2351                {
    2352                  bdb_reportCommissioningState(BDB_COMMISSIONING_STATE_STEERING_ON_NWK, FALSE);
-   \                     ??CrossCallReturnLabel_29:
+   \                     ??CrossCallReturnLabel_27:
    \   000029                ; Setup parameters for call to function bdb_reportCommissioningState
    \   000029   7A00         MOV       R2,#0x0
    \   00002B   7904         MOV       R1,#0x4
@@ -5120,12 +5149,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2403                }
    2404                
    2405                if( bdb_CurrEpDescriptorList->epDesc->epType & BDB_FINDING_AND_BINDING_TARGET)  //F&B as Target
-   \   0000A3   12....       LCALL     ?Subroutine22 & 0xFFFF
-   \                     ??CrossCallReturnLabel_10:
+   \   0000A3   12....       LCALL     ?Subroutine21 & 0xFFFF
+   \                     ??CrossCallReturnLabel_8:
    \   0000A6   F8           MOV       R0,A
    \   0000A7   A3           INC       DPTR
-   \   0000A8   12....       LCALL     ??Subroutine52_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_71:
+   \   0000A8   12....       LCALL     ??Subroutine51_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_69:
    \   0000AB   A3           INC       DPTR
    \   0000AC   E0           MOVX      A,@DPTR
    \   0000AD   A2E1         MOV       C,0xE0 /* A   */.1
@@ -5159,8 +5188,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2411                    if ( *((uint16*)attrRec.attr.dataPtr) <= BDBC_MIN_COMMISSIONING_TIME )
    \   0000DB   7409         MOV       A,#0x9
    \   0000DD   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000E0   12....       LCALL     ?Subroutine28 & 0xFFFF
-   \                     ??CrossCallReturnLabel_25:
+   \   0000E0   12....       LCALL     ?Subroutine27 & 0xFFFF
+   \                     ??CrossCallReturnLabel_23:
    \   0000E3   C3           CLR       C
    \   0000E4   E0           MOVX      A,@DPTR
    \   0000E5   94B5         SUBB      A,#-0x4b
@@ -5183,14 +5212,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000FA   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
    \   0000FD   7A00         MOV       R2,#0x0
    \   0000FF   7B20         MOV       R3,#0x20
-   \   000101   12....       LCALL     ??Subroutine55_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_103:
+   \   000101   12....       LCALL     ??Subroutine54_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_101:
    \   000104   12....       LCALL     ?DEALLOC_XSTACK8
    2415          
    2416                      if(pfnIdentifyTimeChangeCB != NULL)
    \   000107   90....       MOV       DPTR,#pfnIdentifyTimeChangeCB
-   \   00010A   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_89:
+   \   00010A   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_87:
    \   00010D   6017         JZ        ??bdb_startResumeCommissioningProcess_8
    2417                      {
    2418                        if(bdbIndentifyActiveEndpoint == 0xFF)
@@ -5217,14 +5246,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2426                      }
    2427                    }
    \                     ??bdb_startResumeCommissioningProcess_10:
-   \   000120   12....       LCALL     ?Subroutine23 & 0xFFFF
-   \                     ??CrossCallReturnLabel_73:
+   \   000120   12....       LCALL     ?Subroutine22 & 0xFFFF
+   \                     ??CrossCallReturnLabel_71:
    \   000123   12....       LCALL     ?CALL_IND
    2428                    //Attribute found and set, report success
    2429                    if(!(bdb_CurrEpDescriptorList->epDesc->epType & BDB_FINDING_AND_BINDING_INITIATOR))
    \                     ??bdb_startResumeCommissioningProcess_8:
-   \   000126   12....       LCALL     ?Subroutine16 & 0xFFFF
-   \                     ??CrossCallReturnLabel_4:
+   \   000126   12....       LCALL     ?Subroutine15 & 0xFFFF
+   \                     ??CrossCallReturnLabel_2:
    \   000129   4004         JC        ??bdb_startResumeCommissioningProcess_11
    2430                    {
    2431                      bdb_exitFindingBindingWStatus(BDB_COMMISSIONING_FB_TARGET_IN_PROGRESS);
@@ -5246,15 +5275,15 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000137   85..82       MOV       DPL,?XSP + 0
    \   00013A   85..83       MOV       DPH,?XSP + 1
    \   00013D   7409         MOV       A,#0x9
-   \   00013F   12....       LCALL     ??Subroutine42_0 & 0xFFFF
+   \   00013F   12....       LCALL     ??Subroutine41_0 & 0xFFFF
    2439          
    2440                      bdb_NotifyApp((uint8*)&bdbCommissioningModeMsg);
    2441                    }
    2442                  }
-   \                     ??CrossCallReturnLabel_50:
+   \                     ??CrossCallReturnLabel_48:
    \   000142   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000145   12....       LCALL     ?Subroutine15 & 0xFFFF
-   \                     ??CrossCallReturnLabel_62:
+   \   000145   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_60:
    \   000148   12....       LCALL     ?DEALLOC_XSTACK8
    \   00014B   800A         SJMP      ??bdb_startResumeCommissioningProcess_6
    2443                  else
@@ -5262,8 +5291,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2445                    //Attribute not found and no initiator process, report fail
    2446                    if(!(bdb_CurrEpDescriptorList->epDesc->epType & BDB_FINDING_AND_BINDING_INITIATOR))
    \                     ??bdb_startResumeCommissioningProcess_7:
-   \   00014D   12....       LCALL     ?Subroutine16 & 0xFFFF
-   \                     ??CrossCallReturnLabel_5:
+   \   00014D   12....       LCALL     ?Subroutine15 & 0xFFFF
+   \                     ??CrossCallReturnLabel_3:
    \   000150   4005         JC        ??bdb_startResumeCommissioningProcess_6
    2447                    {
    2448                      bdb_exitFindingBindingWStatus(BDB_COMMISSIONING_FAILURE);
@@ -5277,8 +5306,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2452                
    2453                if( bdb_CurrEpDescriptorList->epDesc->epType & BDB_FINDING_AND_BINDING_INITIATOR)  //F&B as Initiator
    \                     ??bdb_startResumeCommissioningProcess_6:
-   \   000157   12....       LCALL     ?Subroutine22 & 0xFFFF
-   \                     ??CrossCallReturnLabel_11:
+   \   000157   12....       LCALL     ?Subroutine21 & 0xFFFF
+   \                     ??CrossCallReturnLabel_9:
    \   00015A   2401         ADD       A,#0x1
    \   00015C   F8           MOV       R0,A
    \   00015D   A3           INC       DPTR
@@ -5296,8 +5325,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2457                  //If no function to add binds is available then do not process Initiator
    2458                  if(!pbindAddEntry)
    \   00016B   90....       MOV       DPTR,#pbindAddEntry
-   \   00016E   12....       LCALL     ??Subroutine62_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_126:
+   \   00016E   12....       LCALL     ??Subroutine61_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_124:
    \   000171   7010         JNZ       ??bdb_startResumeCommissioningProcess_13
    2459                  {
    2460                    //If no target process, then report fail
@@ -5367,8 +5396,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00019A   90....       MOV       DPTR,#__Constant_3a98
    \   00019D   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
    \   0001A0   7A40         MOV       R2,#0x40
-   \   0001A2   12....       LCALL     ??Subroutine54_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_100:
+   \   0001A2   12....       LCALL     ??Subroutine53_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_98:
    \   0001A5   12....       LCALL     ?DEALLOC_XSTACK8
    \   0001A8   7401         MOV       A,#0x1
    \   0001AA   12....       LCALL     ?XSTACK_DISP0_8
@@ -5377,12 +5406,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0001B0   85..82       MOV       DPL,?XSP + 0
    \   0001B3   85..83       MOV       DPH,?XSP + 1
    \   0001B6   740A         MOV       A,#0xa
-   \   0001B8   12....       LCALL     ??Subroutine42_0 & 0xFFFF
+   \   0001B8   12....       LCALL     ??Subroutine41_0 & 0xFFFF
    2497            }
-   \                     ??CrossCallReturnLabel_51:
+   \                     ??CrossCallReturnLabel_49:
    \   0001BB   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0001BE   12....       LCALL     ?Subroutine15 & 0xFFFF
-   \                     ??CrossCallReturnLabel_63:
+   \   0001BE   12....       LCALL     ?Subroutine14 & 0xFFFF
+   \                     ??CrossCallReturnLabel_61:
    \   0001C1   12....       LCALL     ?DEALLOC_XSTACK8
    2498          #endif
    2499            
@@ -5392,19 +5421,19 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0001C6   02....       LJMP      ?Subroutine1 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine23:
+   \                     ?Subroutine22:
    \   000000   90....       MOV       DPTR,#pfnIdentifyTimeChangeCB + 1
-   \   000003                REQUIRE ??Subroutine52_0
-   \   000003                ; // Fall through to label ??Subroutine52_0
+   \   000003                REQUIRE ??Subroutine51_0
+   \   000003                ; // Fall through to label ??Subroutine51_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine22:
-   \   000000   12....       LCALL     ?Subroutine36 & 0xFFFF
-   \                     ??CrossCallReturnLabel_36:
+   \                     ?Subroutine21:
+   \   000000   12....       LCALL     ?Subroutine35 & 0xFFFF
+   \                     ??CrossCallReturnLabel_34:
    \   000003   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine36:
+   \                     ?Subroutine35:
    \   000000   90....       MOV       DPTR,#bdb_CurrEpDescriptorList
    \   000003   E0           MOVX      A,@DPTR
    \   000004   F8           MOV       R0,A
@@ -5418,9 +5447,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000E   22           RET
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine16:
-   \   000000   12....       LCALL     ?Subroutine36 & 0xFFFF
-   \                     ??CrossCallReturnLabel_35:
+   \                     ?Subroutine15:
+   \   000000   12....       LCALL     ?Subroutine35 & 0xFFFF
+   \                     ??CrossCallReturnLabel_33:
    \   000003   F8           MOV       R0,A
    \   000004   A3           INC       DPTR
    \   000005   E0           MOVX      A,@DPTR
@@ -5503,11 +5532,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2536                  bdb_nwkSteeringDeviceOnNwk();
    \                     ??bdb_event_loop_2:
    \   000028                ; Setup parameters for call to function bdb_nwkSteeringDeviceOnNwk
-   \   000028   12....       LCALL     ?Subroutine31 & 0xFFFF
+   \   000028   12....       LCALL     ?Subroutine30 & 0xFFFF
    2537                  
    2538                  bdb_reportCommissioningState(BDB_COMMISSIONING_STATE_STEERING_ON_NWK, TRUE);
    2539                break;
-   \                     ??CrossCallReturnLabel_30:
+   \                     ??CrossCallReturnLabel_28:
    \   00002B   8015         SJMP      ??bdb_event_loop_4
    2540                
    2541                case BDB_COMMISSIONING_STATE_FINDING_BINDING:
@@ -5523,8 +5552,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000036                ; Setup parameters for call to function osal_start_timerEx
    \   000036   90....       MOV       DPTR,#__Constant_32
    \   000039   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   00003C   12....       LCALL     ?Subroutine14 & 0xFFFF
-   \                     ??CrossCallReturnLabel_99:
+   \   00003C   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \                     ??CrossCallReturnLabel_97:
    \   00003F   12....       LCALL     ?DEALLOC_XSTACK8
    2545                break;
    2546                
@@ -5615,8 +5644,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000064   F8           MOV       R0,A
    \   000065   A3           INC       DPTR
    \                     ??bdb_event_loop_11:
-   \   000066   12....       LCALL     ??Subroutine52_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_72:
+   \   000066   12....       LCALL     ??Subroutine51_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_70:
    \   000069   12....       LCALL     ?CALL_IND
    \                     ??bdb_event_loop_10:
    \   00006C                ; Setup parameters for call to function osal_msg_deallocate
@@ -5694,8 +5723,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   0000DC   A3           INC       DPTR
    \   0000DD   F0           MOVX      @DPTR,A
    \   0000DE   90....       MOV       DPTR,#pfnCommissioningStatusCB
-   \   0000E1   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_90:
+   \   0000E1   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_88:
    \   0000E4   6086         JZ        ??bdb_event_loop_10
    \   0000E6                ; Setup parameters for indirect call
    \   0000E6   02....       LJMP      ??bdb_event_loop_11 & 0xFFFF
@@ -5710,16 +5739,17 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                     ??bdb_event_loop_7:
    \   0000F1   EA           MOV       A,R2
    \   0000F2   5480         ANL       A,#0x80
-   \   0000F4   6007         JZ        ??bdb_event_loop_16
+   \   0000F4   6008         JZ        ??bdb_event_loop_16
    2611          #ifdef BDB_REPORTING    
    2612              bdb_RepProcessEvent();
+   \   0000F6                ; Setup parameters for call to function bdb_RepProcessEvent
+   \   0000F6   12....       LCALL     `??bdb_RepProcessEvent::?relay`; Banked call to: bdb_RepProcessEvent
    2613          #endif
    2614              // Return unprocessed events
    2615              return (events ^ BDB_REPORT_TIMEOUT);
-   \   0000F6   EA           MOV       A,R2
-   \   0000F7   6480         XRL       A,#0x80
-   \   0000F9   FA           MOV       R2,A
-   \   0000FA   02....       LJMP      ??bdb_event_loop_17 & 0xFFFF
+   \   0000F9   EE           MOV       A,R6
+   \   0000FA   6480         XRL       A,#0x80
+   \   0000FC   8059         SJMP      ??bdb_event_loop_5
    2616            }
    2617            
    2618          #if (ZG_BUILD_JOINING_TYPE)
@@ -5745,133 +5775,133 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2638            
    2639            if(events & BDB_TC_JOIN_TIMEOUT)
    \                     ??bdb_event_loop_16:
-   \   0000FD   EB           MOV       A,R3
-   \   0000FE   5408         ANL       A,#0x8
-   \   000100   600B         JZ        ??bdb_event_loop_18
+   \   0000FE   EB           MOV       A,R3
+   \   0000FF   5408         ANL       A,#0x8
+   \   000101   600B         JZ        ??bdb_event_loop_17
    2640            {     
    2641          #if (ZG_BUILD_COORDINATOR_TYPE)
    2642              if(ZG_DEVICE_COORDINATOR_TYPE)
    2643              {
    2644                bdb_TCProcessJoiningList();
-   \   000102                ; Setup parameters for call to function bdb_TCProcessJoiningList
-   \   000102   12....       LCALL     `??bdb_TCProcessJoiningList::?relay`; Banked call to: bdb_TCProcessJoiningList
+   \   000103                ; Setup parameters for call to function bdb_TCProcessJoiningList
+   \   000103   12....       LCALL     `??bdb_TCProcessJoiningList::?relay`; Banked call to: bdb_TCProcessJoiningList
    2645              }
    2646          #endif    
    2647              return (events ^ BDB_TC_JOIN_TIMEOUT);
-   \   000105   EE           MOV       A,R6
-   \   000106   FA           MOV       R2,A
-   \   000107   EF           MOV       A,R7
-   \   000108   6408         XRL       A,#0x8
-   \   00010A   02....       LJMP      ??bdb_event_loop_8 & 0xFFFF
+   \   000106   EE           MOV       A,R6
+   \   000107   FA           MOV       R2,A
+   \   000108   EF           MOV       A,R7
+   \   000109   6408         XRL       A,#0x8
+   \   00010B   02....       LJMP      ??bdb_event_loop_8 & 0xFFFF
    2648            }
    2649          
    2650          #if (BDB_FINDING_BINDING_CAPABILITY_ENABLED==1)  
    2651            
    2652            if(events & BDB_FINDING_AND_BINDING_PERIOD_TIMEOUT)
-   \                     ??bdb_event_loop_18:
-   \   00010D   EA           MOV       A,R2
-   \   00010E   5440         ANL       A,#0x40
-   \   000110   6049         JZ        ??bdb_event_loop_19
+   \                     ??bdb_event_loop_17:
+   \   00010E   EA           MOV       A,R2
+   \   00010F   5440         ANL       A,#0x40
+   \   000111   6049         JZ        ??bdb_event_loop_18
    2653            {
    2654              if ( FINDING_AND_BINDING_PERIODIC_ENABLE == TRUE )
    2655              {
    2656                bdb_CurrEpDescriptor = bdb_setEpDescListToActiveEndpoint();
-   \   000112                ; Setup parameters for call to function bdb_setEpDescListToActiveEndpoint
-   \   000112   12....       LCALL     `??bdb_setEpDescListToActiveEndpoint::?relay`; Banked call to: bdb_setEpDescListToActiveEndpoint
-   \   000115   8A..         MOV       ?V0,R2
-   \   000117   8B..         MOV       ?V1,R3
+   \   000113                ; Setup parameters for call to function bdb_setEpDescListToActiveEndpoint
+   \   000113   12....       LCALL     `??bdb_setEpDescListToActiveEndpoint::?relay`; Banked call to: bdb_setEpDescListToActiveEndpoint
+   \   000116   8A..         MOV       ?V0,R2
+   \   000118   8B..         MOV       ?V1,R3
    2657                
    2658                //If we have endpoint from which to send the identify command, then proceed, otherwise finish
    2659                if(bdb_CurrEpDescriptor != NULL) //just a safty check. The fact that we got to this functuon at all means that this cannot be NULL
-   \   000119   EA           MOV       A,R2
-   \   00011A   4B           ORL       A,R3
-   \   00011B   602B         JZ        ??bdb_event_loop_20
+   \   00011A   EA           MOV       A,R2
+   \   00011B   4B           ORL       A,R3
+   \   00011C   602B         JZ        ??bdb_event_loop_19
    2660                {
    2661                  //Substract an attempt
    2662                  bdb_FB_InitiatorCurrentCyclesNumber--;
    2663                  
    2664                  if(bdb_FB_InitiatorCurrentCyclesNumber > 0)
-   \   00011D   90....       MOV       DPTR,#bdb_FB_InitiatorCurrentCyclesNumber
-   \   000120   E0           MOVX      A,@DPTR
-   \   000121   14           DEC       A
-   \   000122   F0           MOVX      @DPTR,A
-   \   000123   6029         JZ        ??bdb_event_loop_21
+   \   00011E   90....       MOV       DPTR,#bdb_FB_InitiatorCurrentCyclesNumber
+   \   000121   E0           MOVX      A,@DPTR
+   \   000122   14           DEC       A
+   \   000123   F0           MOVX      @DPTR,A
+   \   000124   6029         JZ        ??bdb_event_loop_20
    2665                  {
    2666                    //Only send Identify Query if there is no pending responses from a previous identify query
    2667                    if ((osal_get_timeoutEx(bdb_TaskID, BDB_RESPONDENT_PROCESS_TIMEOUT) == 0) && (bdb_getRespondentRetry(pRespondentHead) == NULL))
-   \   000125                ; Setup parameters for call to function osal_get_timeoutEx
-   \   000125   12....       LCALL     ?Subroutine20 & 0xFFFF
-   \                     ??CrossCallReturnLabel_68:
-   \   000128   7010         JNZ       ??bdb_event_loop_22
-   \   00012A                ; Setup parameters for call to function bdb_getRespondentRetry
-   \   00012A   12....       LCALL     ?Subroutine26 & 0xFFFF
-   \                     ??CrossCallReturnLabel_18:
-   \   00012D   700B         JNZ       ??bdb_event_loop_22
+   \   000126                ; Setup parameters for call to function osal_get_timeoutEx
+   \   000126   12....       LCALL     ?Subroutine19 & 0xFFFF
+   \                     ??CrossCallReturnLabel_66:
+   \   000129   7010         JNZ       ??bdb_event_loop_21
+   \   00012B                ; Setup parameters for call to function bdb_getRespondentRetry
+   \   00012B   12....       LCALL     ?Subroutine25 & 0xFFFF
+   \                     ??CrossCallReturnLabel_16:
+   \   00012E   700B         JNZ       ??bdb_event_loop_21
    2668                    {
    2669                      //Send identify query with the endpoint requested
    2670                      bdb_SendIdentifyQuery(bdb_CurrEpDescriptor->endPoint);
-   \   00012F                ; Setup parameters for call to function bdb_SendIdentifyQuery
-   \   00012F   85..82       MOV       DPL,?V0
-   \   000132   85..83       MOV       DPH,?V1
-   \   000135   E0           MOVX      A,@DPTR
-   \   000136   F9           MOV       R1,A
-   \   000137   12....       LCALL     `??bdb_SendIdentifyQuery::?relay`; Banked call to: bdb_SendIdentifyQuery
+   \   000130                ; Setup parameters for call to function bdb_SendIdentifyQuery
+   \   000130   85..82       MOV       DPL,?V0
+   \   000133   85..83       MOV       DPH,?V1
+   \   000136   E0           MOVX      A,@DPTR
+   \   000137   F9           MOV       R1,A
+   \   000138   12....       LCALL     `??bdb_SendIdentifyQuery::?relay`; Banked call to: bdb_SendIdentifyQuery
    2671                    }
    2672                    osal_start_timerEx(bdb_TaskID, BDB_FINDING_AND_BINDING_PERIOD_TIMEOUT, FINDING_AND_BINDING_PERIODIC_TIME * 1000);
-   \                     ??bdb_event_loop_22:
-   \   00013A                ; Setup parameters for call to function osal_start_timerEx
-   \   00013A   90....       MOV       DPTR,#__Constant_3a98
-   \   00013D   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   000140   7A40         MOV       R2,#0x40
-   \   000142   12....       LCALL     ??Subroutine54_0 & 0xFFFF
+   \                     ??bdb_event_loop_21:
+   \   00013B                ; Setup parameters for call to function osal_start_timerEx
+   \   00013B   90....       MOV       DPTR,#__Constant_3a98
+   \   00013E   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
+   \   000141   7A40         MOV       R2,#0x40
+   \   000143   12....       LCALL     ??Subroutine53_0 & 0xFFFF
    2673                  }
    2674                }
    2675              }
-   \                     ??CrossCallReturnLabel_101:
-   \   000145   12....       LCALL     ?DEALLOC_XSTACK8
+   \                     ??CrossCallReturnLabel_99:
+   \   000146   12....       LCALL     ?DEALLOC_XSTACK8
    2676          
    2677              if (bdb_FB_InitiatorCurrentCyclesNumber == 0)
-   \                     ??bdb_event_loop_20:
-   \   000148   90....       MOV       DPTR,#bdb_FB_InitiatorCurrentCyclesNumber
-   \   00014B   E0           MOVX      A,@DPTR
-   \   00014C   7005         JNZ       ??bdb_event_loop_23
+   \                     ??bdb_event_loop_19:
+   \   000149   90....       MOV       DPTR,#bdb_FB_InitiatorCurrentCyclesNumber
+   \   00014C   E0           MOVX      A,@DPTR
+   \   00014D   7005         JNZ       ??bdb_event_loop_22
    2678              {
    2679                bdb_exitFindingBindingWStatus( BDB_COMMISSIONING_FB_NO_IDENTIFY_QUERY_RESPONSE );
-   \                     ??bdb_event_loop_21:
-   \   00014E                ; Setup parameters for call to function bdb_exitFindingBindingWStatus
-   \   00014E   790B         MOV       R1,#0xb
-   \   000150   12....       LCALL     `??bdb_exitFindingBindingWStatus::?relay`; Banked call to: bdb_exitFindingBindingWStatus
+   \                     ??bdb_event_loop_20:
+   \   00014F                ; Setup parameters for call to function bdb_exitFindingBindingWStatus
+   \   00014F   790B         MOV       R1,#0xb
+   \   000151   12....       LCALL     `??bdb_exitFindingBindingWStatus::?relay`; Banked call to: bdb_exitFindingBindingWStatus
    2680              }
    2681              
    2682              return (events ^ BDB_FINDING_AND_BINDING_PERIOD_TIMEOUT);
-   \                     ??bdb_event_loop_23:
-   \   000153   EE           MOV       A,R6
-   \   000154   6440         XRL       A,#0x40
+   \                     ??bdb_event_loop_22:
+   \   000154   EE           MOV       A,R6
+   \   000155   6440         XRL       A,#0x40
    \                     ??bdb_event_loop_5:
-   \   000156   FA           MOV       R2,A
-   \   000157   EF           MOV       A,R7
-   \   000158   02....       LJMP      ??bdb_event_loop_8 & 0xFFFF
+   \   000157   FA           MOV       R2,A
+   \   000158   EF           MOV       A,R7
+   \   000159   02....       LJMP      ??bdb_event_loop_8 & 0xFFFF
    2683            }
    2684            
    2685            if(events & BDB_IDENTIFY_TIMEOUT)
-   \                     ??bdb_event_loop_19:
-   \   00015B   EB           MOV       A,R3
-   \   00015C   5420         ANL       A,#0x20
-   \   00015E   7003         JNZ       $+5
-   \   000160   02....       LJMP      ??bdb_event_loop_24 & 0xFFFF
+   \                     ??bdb_event_loop_18:
+   \   00015C   EB           MOV       A,R3
+   \   00015D   5420         ANL       A,#0x20
+   \   00015F   7003         JNZ       $+5
+   \   000161   02....       LJMP      ??bdb_event_loop_23 & 0xFFFF
    2686            {
    2687              zclAttrRec_t identifyAttrRec;
    2688              epList_t *bdb_CurrEpDescriptorNextInList = NULL;
    2689              bdb_CurrEpDescriptorNextInList = bdb_HeadEpDescriptorList;
-   \   000163   90....       MOV       DPTR,#bdb_HeadEpDescriptorList
-   \   000166   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_134:
-   \   000169   88..         MOV       ?V0,R0
-   \   00016B   F5..         MOV       ?V1,A
+   \   000164   90....       MOV       DPTR,#bdb_HeadEpDescriptorList
+   \   000167   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_132:
+   \   00016A   88..         MOV       ?V0,R0
+   \   00016C   F5..         MOV       ?V1,A
    2690              
    2691              bool KeepIdentifyTimerRunning = FALSE;
-   \   00016D   75..00       MOV       ?V4,#0x0
-   \   000170   8024         SJMP      ??CrossCallReturnLabel_15
+   \   00016E   75..00       MOV       ?V4,#0x0
+   \   000171   8024         SJMP      ??CrossCallReturnLabel_13
    2692              
    2693              while(bdb_CurrEpDescriptorNextInList != NULL )
    2694              {
@@ -5897,172 +5927,172 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2714                  {
    2715                    // Use bdb success main state
    2716                    bdbAttributes.bdbCommissioningStatus = BDB_COMMISSIONING_SUCCESS;
-   \                     ??bdb_event_loop_25:
-   \   000172   90....       MOV       DPTR,#bdbAttributes + 10
-   \   000175   E4           CLR       A
-   \   000176   F0           MOVX      @DPTR,A
+   \                     ??bdb_event_loop_24:
+   \   000173   90....       MOV       DPTR,#bdbAttributes + 10
+   \   000176   E4           CLR       A
+   \   000177   F0           MOVX      @DPTR,A
    2717                    if(pfnIdentifyTimeChangeCB != NULL)
-   \   000177   90....       MOV       DPTR,#pfnIdentifyTimeChangeCB
-   \   00017A   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_91:
-   \   00017D   600E         JZ        ??bdb_event_loop_26
+   \   000178   90....       MOV       DPTR,#pfnIdentifyTimeChangeCB
+   \   00017B   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_89:
+   \   00017E   600E         JZ        ??bdb_event_loop_25
    2718                    {
    2719                      pfnIdentifyTimeChangeCB(bdb_EpDescriptor->endPoint);
-   \   00017F                ; Setup parameters for indirect call
-   \   00017F   85..82       MOV       DPL,?V2
-   \   000182   85..83       MOV       DPH,?V3
-   \   000185   E0           MOVX      A,@DPTR
-   \   000186   F9           MOV       R1,A
-   \   000187   12....       LCALL     ?Subroutine23 & 0xFFFF
+   \   000180                ; Setup parameters for indirect call
+   \   000180   85..82       MOV       DPL,?V2
+   \   000183   85..83       MOV       DPH,?V3
+   \   000186   E0           MOVX      A,@DPTR
+   \   000187   F9           MOV       R1,A
+   \   000188   12....       LCALL     ?Subroutine22 & 0xFFFF
    2720                    }
    2721                  }
-   \                     ??CrossCallReturnLabel_74:
-   \   00018A   12....       LCALL     ?CALL_IND
+   \                     ??CrossCallReturnLabel_72:
+   \   00018B   12....       LCALL     ?CALL_IND
    2722                }
    2723                bdb_CurrEpDescriptorNextInList = bdb_CurrEpDescriptorNextInList->nextDesc;
-   \                     ??bdb_event_loop_26:
-   \   00018D   85..82       MOV       DPL,?V0
-   \   000190   85..83       MOV       DPH,?V1
-   \   000193   12....       LCALL     ?Subroutine25 & 0xFFFF
-   \                     ??CrossCallReturnLabel_15:
-   \   000196   E5..         MOV       A,?V0
-   \   000198   45..         ORL       A,?V1
-   \   00019A   606A         JZ        ??bdb_event_loop_27
-   \   00019C   85..82       MOV       DPL,?V0
-   \   00019F   85..83       MOV       DPH,?V1
-   \   0001A2   A3           INC       DPTR
+   \                     ??bdb_event_loop_25:
+   \   00018E   85..82       MOV       DPL,?V0
+   \   000191   85..83       MOV       DPH,?V1
+   \   000194   12....       LCALL     ?Subroutine24 & 0xFFFF
+   \                     ??CrossCallReturnLabel_13:
+   \   000197   E5..         MOV       A,?V0
+   \   000199   45..         ORL       A,?V1
+   \   00019B   606A         JZ        ??bdb_event_loop_26
+   \   00019D   85..82       MOV       DPL,?V0
+   \   0001A0   85..83       MOV       DPH,?V1
    \   0001A3   A3           INC       DPTR
-   \   0001A4   12....       LCALL     ?Subroutine38 & 0xFFFF
-   \                     ??CrossCallReturnLabel_135:
-   \   0001A7   8882         MOV       DPL,R0
-   \   0001A9   F583         MOV       DPH,A
-   \   0001AB   8582..       MOV       ?V2,DPL
-   \   0001AE   8583..       MOV       ?V3,DPH
-   \   0001B1   E0           MOVX      A,@DPTR
-   \   0001B2   60D9         JZ        ??bdb_event_loop_26
-   \   0001B4   C3           CLR       C
-   \   0001B5   94F1         SUBB      A,#-0xf
-   \   0001B7   50D4         JNC       ??bdb_event_loop_26
-   \   0001B9                ; Setup parameters for call to function zclFindAttrRec
-   \   0001B9   A8..         MOV       R0,?XSP + 0
-   \   0001BB   A9..         MOV       R1,?XSP + 1
-   \   0001BD   88..         MOV       ?V6,R0
-   \   0001BF   89..         MOV       ?V7,R1
-   \   0001C1   78..         MOV       R0,#?V6
-   \   0001C3   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0001C6   7C00         MOV       R4,#0x0
-   \   0001C8   7D00         MOV       R5,#0x0
-   \   0001CA   7A03         MOV       R2,#0x3
-   \   0001CC   7B00         MOV       R3,#0x0
-   \   0001CE   85..82       MOV       DPL,?V2
-   \   0001D1   85..83       MOV       DPH,?V3
-   \   0001D4   E0           MOVX      A,@DPTR
-   \   0001D5   F9           MOV       R1,A
-   \   0001D6   12....       LCALL     `??zclFindAttrRec::?relay`; Banked call to: zclFindAttrRec
-   \   0001D9   7402         MOV       A,#0x2
-   \   0001DB   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0001DE   E9           MOV       A,R1
-   \   0001DF   60AC         JZ        ??bdb_event_loop_26
-   \   0001E1   7406         MOV       A,#0x6
-   \   0001E3   12....       LCALL     ?XSTACK_DISP0_8
-   \   0001E6   12....       LCALL     ??Subroutine63_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_129:
-   \   0001E9   8882         MOV       DPL,R0
-   \   0001EB   12....       LCALL     ?Subroutine18 & 0xFFFF
-   \                     ??CrossCallReturnLabel_128:
-   \   0001EE   6082         JZ        ??bdb_event_loop_25
-   \   0001F0   EA           MOV       A,R2
-   \   0001F1   24FF         ADD       A,#-0x1
-   \   0001F3   1A           DEC       R2
-   \   0001F4   EB           MOV       A,R3
-   \   0001F5   34FF         ADDC      A,#-0x1
-   \   0001F7   FB           MOV       R3,A
-   \   0001F8   8882         MOV       DPL,R0
-   \   0001FA   8983         MOV       DPH,R1
-   \   0001FC   EA           MOV       A,R2
-   \   0001FD   F0           MOVX      @DPTR,A
-   \   0001FE   A3           INC       DPTR
-   \   0001FF   EB           MOV       A,R3
-   \   000200   F0           MOVX      @DPTR,A
-   \   000201   75..01       MOV       ?V4,#0x1
-   \   000204   8087         SJMP      ??bdb_event_loop_26
+   \   0001A4   A3           INC       DPTR
+   \   0001A5   12....       LCALL     ?Subroutine37 & 0xFFFF
+   \                     ??CrossCallReturnLabel_133:
+   \   0001A8   8882         MOV       DPL,R0
+   \   0001AA   F583         MOV       DPH,A
+   \   0001AC   8582..       MOV       ?V2,DPL
+   \   0001AF   8583..       MOV       ?V3,DPH
+   \   0001B2   E0           MOVX      A,@DPTR
+   \   0001B3   60D9         JZ        ??bdb_event_loop_25
+   \   0001B5   C3           CLR       C
+   \   0001B6   94F1         SUBB      A,#-0xf
+   \   0001B8   50D4         JNC       ??bdb_event_loop_25
+   \   0001BA                ; Setup parameters for call to function zclFindAttrRec
+   \   0001BA   A8..         MOV       R0,?XSP + 0
+   \   0001BC   A9..         MOV       R1,?XSP + 1
+   \   0001BE   88..         MOV       ?V6,R0
+   \   0001C0   89..         MOV       ?V7,R1
+   \   0001C2   78..         MOV       R0,#?V6
+   \   0001C4   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0001C7   7C00         MOV       R4,#0x0
+   \   0001C9   7D00         MOV       R5,#0x0
+   \   0001CB   7A03         MOV       R2,#0x3
+   \   0001CD   7B00         MOV       R3,#0x0
+   \   0001CF   85..82       MOV       DPL,?V2
+   \   0001D2   85..83       MOV       DPH,?V3
+   \   0001D5   E0           MOVX      A,@DPTR
+   \   0001D6   F9           MOV       R1,A
+   \   0001D7   12....       LCALL     `??zclFindAttrRec::?relay`; Banked call to: zclFindAttrRec
+   \   0001DA   7402         MOV       A,#0x2
+   \   0001DC   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0001DF   E9           MOV       A,R1
+   \   0001E0   60AC         JZ        ??bdb_event_loop_25
+   \   0001E2   7406         MOV       A,#0x6
+   \   0001E4   12....       LCALL     ?XSTACK_DISP0_8
+   \   0001E7   12....       LCALL     ??Subroutine62_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_127:
+   \   0001EA   8882         MOV       DPL,R0
+   \   0001EC   12....       LCALL     ?Subroutine17 & 0xFFFF
+   \                     ??CrossCallReturnLabel_126:
+   \   0001EF   6082         JZ        ??bdb_event_loop_24
+   \   0001F1   EA           MOV       A,R2
+   \   0001F2   24FF         ADD       A,#-0x1
+   \   0001F4   1A           DEC       R2
+   \   0001F5   EB           MOV       A,R3
+   \   0001F6   34FF         ADDC      A,#-0x1
+   \   0001F8   FB           MOV       R3,A
+   \   0001F9   8882         MOV       DPL,R0
+   \   0001FB   8983         MOV       DPH,R1
+   \   0001FD   EA           MOV       A,R2
+   \   0001FE   F0           MOVX      @DPTR,A
+   \   0001FF   A3           INC       DPTR
+   \   000200   EB           MOV       A,R3
+   \   000201   F0           MOVX      @DPTR,A
+   \   000202   75..01       MOV       ?V4,#0x1
+   \   000205   8087         SJMP      ??bdb_event_loop_25
    2724              }
    2725              
    2726              //If any endpoint has identify running, keep the timer on
    2727              if(KeepIdentifyTimerRunning)
-   \                     ??bdb_event_loop_27:
-   \   000206   E5..         MOV       A,?V4
-   \   000208   6012         JZ        ??bdb_event_loop_28
+   \                     ??bdb_event_loop_26:
+   \   000207   E5..         MOV       A,?V4
+   \   000209   6012         JZ        ??bdb_event_loop_27
    2728              {
    2729                osal_start_timerEx( bdb_TaskID, BDB_IDENTIFY_TIMEOUT, 1000 );
-   \   00020A                ; Setup parameters for call to function osal_start_timerEx
-   \   00020A   90....       MOV       DPTR,#__Constant_3e8
-   \   00020D   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   000210   7A00         MOV       R2,#0x0
-   \   000212   7B20         MOV       R3,#0x20
-   \   000214   12....       LCALL     ??Subroutine55_0 & 0xFFFF
+   \   00020B                ; Setup parameters for call to function osal_start_timerEx
+   \   00020B   90....       MOV       DPTR,#__Constant_3e8
+   \   00020E   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
+   \   000211   7A00         MOV       R2,#0x0
+   \   000213   7B20         MOV       R3,#0x20
+   \   000215   12....       LCALL     ??Subroutine54_0 & 0xFFFF
    2730              }
-   \                     ??CrossCallReturnLabel_104:
-   \   000217   12....       LCALL     ?DEALLOC_XSTACK8
-   \   00021A   8007         SJMP      ??CrossCallReturnLabel_115
+   \                     ??CrossCallReturnLabel_102:
+   \   000218   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00021B   8007         SJMP      ??CrossCallReturnLabel_113
    2731              else
    2732              {
    2733                osal_stop_timerEx( bdb_TaskID, BDB_IDENTIFY_TIMEOUT );
-   \                     ??bdb_event_loop_28:
-   \   00021C                ; Setup parameters for call to function osal_stop_timerEx
-   \   00021C   7A00         MOV       R2,#0x0
-   \   00021E   7B20         MOV       R3,#0x20
-   \   000220   12....       LCALL     ??Subroutine59_0 & 0xFFFF
+   \                     ??bdb_event_loop_27:
+   \   00021D                ; Setup parameters for call to function osal_stop_timerEx
+   \   00021D   7A00         MOV       R2,#0x0
+   \   00021F   7B20         MOV       R3,#0x20
+   \   000221   12....       LCALL     ??Subroutine58_0 & 0xFFFF
    2734              }
    2735              
    2736              // Return unprocessed events
    2737              return (events ^ BDB_IDENTIFY_TIMEOUT);
-   \                     ??CrossCallReturnLabel_115:
-   \   000223   EE           MOV       A,R6
-   \   000224   FA           MOV       R2,A
-   \   000225   EF           MOV       A,R7
-   \   000226   6420         XRL       A,#0x20
-   \   000228   800D         SJMP      ??bdb_event_loop_8
+   \                     ??CrossCallReturnLabel_113:
+   \   000224   EE           MOV       A,R6
+   \   000225   FA           MOV       R2,A
+   \   000226   EF           MOV       A,R7
+   \   000227   6420         XRL       A,#0x20
+   \   000229   800D         SJMP      ??bdb_event_loop_8
    2738            }
    2739            
    2740            if(events & BDB_RESPONDENT_PROCESS_TIMEOUT)
-   \                     ??bdb_event_loop_24:
-   \   00022A   EB           MOV       A,R3
-   \   00022B   5440         ANL       A,#0x40
-   \   00022D   600B         JZ        ??bdb_event_loop_29
+   \                     ??bdb_event_loop_23:
+   \   00022B   EB           MOV       A,R3
+   \   00022C   5440         ANL       A,#0x40
+   \   00022E   600B         JZ        ??bdb_event_loop_28
    2741            {
    2742              // Send Simple Descriptor request to a respondent node
    2743              bdb_ProcessRespondentList();
-   \   00022F                ; Setup parameters for call to function bdb_ProcessRespondentList
-   \   00022F   12....       LCALL     `??bdb_ProcessRespondentList::?relay`; Banked call to: bdb_ProcessRespondentList
+   \   000230                ; Setup parameters for call to function bdb_ProcessRespondentList
+   \   000230   12....       LCALL     `??bdb_ProcessRespondentList::?relay`; Banked call to: bdb_ProcessRespondentList
    2744          
    2745              return (events ^ BDB_RESPONDENT_PROCESS_TIMEOUT);
-   \   000232   EE           MOV       A,R6
-   \   000233   FA           MOV       R2,A
-   \   000234   EF           MOV       A,R7
-   \   000235   6440         XRL       A,#0x40
+   \   000233   EE           MOV       A,R6
+   \   000234   FA           MOV       R2,A
+   \   000235   EF           MOV       A,R7
+   \   000236   6440         XRL       A,#0x40
    \                     ??bdb_event_loop_8:
-   \   000237   FB           MOV       R3,A
-   \   000238   8004         SJMP      ??bdb_event_loop_17
+   \   000238   FB           MOV       R3,A
+   \   000239   8004         SJMP      ??bdb_event_loop_29
    2746            }
    2747          #endif
    2748            
    2749            return 0;
+   \                     ??bdb_event_loop_28:
+   \   00023B   7A00         MOV       R2,#0x0
+   \   00023D   7B00         MOV       R3,#0x0
    \                     ??bdb_event_loop_29:
-   \   00023A   7A00         MOV       R2,#0x0
-   \   00023C   7B00         MOV       R3,#0x0
-   \                     ??bdb_event_loop_17:
-   \   00023E   7408         MOV       A,#0x8
-   \   000240   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000243   7F08         MOV       R7,#0x8
-   \   000245   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00023F   7408         MOV       A,#0x8
+   \   000241   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000244   7F08         MOV       R7,#0x8
+   \   000246   02....       LJMP      ?BANKED_LEAVE_XDATA
    2750          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine18:
+   \                     ?Subroutine17:
    \   000000   F583         MOV       DPH,A
-   \   000002                REQUIRE ??Subroutine62_0
-   \   000002                ; // Fall through to label ??Subroutine62_0
+   \   000002                REQUIRE ??Subroutine61_0
+   \   000002                ; // Fall through to label ??Subroutine61_0
    2751          
    2752          /*********************************************************************
    2753           * @fn          bdb_processZDOMgs
@@ -6149,8 +6179,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00002A   8F83         MOV       DPH,R7
    \   00002C   A3           INC       DPTR
    \   00002D   A3           INC       DPTR
-   \   00002E   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_92:
+   \   00002E   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_90:
    \   000031   7070         JNZ       ??bdb_ProcessNodeDescRsp_0
    2805                {
    2806                  ZDO_NodeDescRsp_t NDRsp;
@@ -6161,10 +6191,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000033                ; Setup parameters for call to function osal_stop_timerEx
    \   000033   7A00         MOV       R2,#0x0
    \   000035   7B10         MOV       R3,#0x10
-   \   000037   12....       LCALL     ??Subroutine59_0 & 0xFFFF
+   \   000037   12....       LCALL     ??Subroutine58_0 & 0xFFFF
    2811                  
    2812                  ZDO_ParseNodeDescRsp(pMsg, &NDRsp);
-   \                     ??CrossCallReturnLabel_116:
+   \                     ??CrossCallReturnLabel_114:
    \   00003A                ; Setup parameters for call to function ZDO_ParseNodeDescRsp
    \   00003A   7413         MOV       A,#0x13
    \   00003C   12....       LCALL     ?XSTACK_DISP102_8
@@ -6179,8 +6209,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2816                  if( StackComplianceRev >= STACK_COMPL_REV_21 )
    \   000046   741E         MOV       A,#0x1e
    \   000048   12....       LCALL     ?XSTACK_DISP0_8
-   \   00004B   12....       LCALL     ?Subroutine25 & 0xFFFF
-   \                     ??CrossCallReturnLabel_16:
+   \   00004B   12....       LCALL     ?Subroutine24 & 0xFFFF
+   \                     ??CrossCallReturnLabel_14:
    \   00004E   7409         MOV       A,#0x9
    \   000050   78..         MOV       R0,#?V0
    \   000052   12....       LCALL     ?US_SHR
@@ -6225,8 +6255,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00008B   7D00         MOV       R5,#0x0
    \   00008D   7A11         MOV       R2,#0x11
    \   00008F   7B01         MOV       R3,#0x1
-   \   000091   12....       LCALL     ??Subroutine58_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_110:
+   \   000091   12....       LCALL     ??Subroutine57_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_108:
    \   000094   12....       LCALL     ?DEALLOC_XSTACK8
    2827                    
    2828                    bdb_setNodeJoinLinkKeyType(BDB_DEFAULT_GLOBAL_TRUST_CENTER_LINK_KEY);
@@ -6331,13 +6361,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00002F   75..00       MOV       ?V1,#0x0
    \   000032   78..         MOV       R0,#?V0
    \   000034   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000037   12....       LCALL     ?Subroutine33 & 0xFFFF
+   \   000037   12....       LCALL     ?Subroutine32 & 0xFFFF
    2876            }
-   \                     ??CrossCallReturnLabel_106:
+   \                     ??CrossCallReturnLabel_104:
    \   00003A   12....       LCALL     ?DEALLOC_XSTACK8
    2877          }
    \                     ??bdb_setNodeIsOnANetwork_1:
-   \   00003D   80..         SJMP      ??Subroutine56_0
+   \   00003D   80..         SJMP      ??Subroutine55_0
    2878          
    2879          /*********************************************************************
    2880           * @fn          bdb_setCommissioningGroupID
@@ -6355,8 +6385,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000001   F0           MOVX      @DPTR,A
    \   000002   A3           INC       DPTR
    \   000003   EB           MOV       A,R3
-   \   000004                REQUIRE ??Subroutine46_0
-   \   000004                ; // Fall through to label ??Subroutine46_0
+   \   000004                REQUIRE ??Subroutine45_0
+   \   000004                ; // Fall through to label ??Subroutine45_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    2888          void bdb_setCommissioningGroupID(uint16 groupID)
@@ -6382,15 +6412,15 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2901           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine13:
+   \                     ?Subroutine12:
    \   000000   EA           MOV       A,R2
    \   000001   FE           MOV       R6,A
    \   000002   EB           MOV       A,R3
    \   000003   FF           MOV       R7,A
    \   000004   8A82         MOV       DPL,R2
    \   000006   F583         MOV       DPH,A
-   \   000008                REQUIRE ??Subroutine53_0
-   \   000008                ; // Fall through to label ??Subroutine53_0
+   \   000008                REQUIRE ??Subroutine52_0
+   \   000008                ; // Fall through to label ??Subroutine52_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    2902          void bdb_CreateRespondentList( bdbFindingBindingRespondent_t **pHead )
@@ -6402,28 +6432,28 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
-   \   000005   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \   000005   12....       LCALL     ?Subroutine12 & 0xFFFF
    2904          
    2905            // Create the list if empty
    2906            if ( *pHead == NULL )
-   \                     ??CrossCallReturnLabel_75:
-   \   000008   7008         JNZ       ??CrossCallReturnLabel_33
+   \                     ??CrossCallReturnLabel_73:
+   \   000008   7008         JNZ       ??CrossCallReturnLabel_31
    2907            {
    2908              *pHead = ( bdbFindingBindingRespondent_t* )osal_mem_alloc( sizeof( bdbFindingBindingRespondent_t ) );
    \   00000A                ; Setup parameters for call to function osal_mem_alloc
    \   00000A   12....       LCALL     ?Subroutine10 & 0xFFFF
    2909              
    2910              if ( *pHead != NULL )
-   \                     ??CrossCallReturnLabel_117:
-   \   00000D   6003         JZ        ??CrossCallReturnLabel_33
+   \                     ??CrossCallReturnLabel_115:
+   \   00000D   6003         JZ        ??CrossCallReturnLabel_31
    2911              {
    2912                (*pHead)->pNext = NULL;
-   \   00000F   12....       LCALL     ?Subroutine35 & 0xFFFF
+   \   00000F   12....       LCALL     ?Subroutine34 & 0xFFFF
    2913              }
    2914            }
    2915            return;
-   \                     ??CrossCallReturnLabel_33:
-   \   000012   02....       LJMP      ??Subroutine56_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_31:
+   \   000012   02....       LJMP      ??Subroutine55_0 & 0xFFFF
    2916          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
@@ -6433,11 +6463,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000004   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
    \   000007   8B..         MOV       ?V1,R3
    \   000009   A9..         MOV       R1,?V1
-   \   00000B                REQUIRE ??Subroutine60_0
-   \   00000B                ; // Fall through to label ??Subroutine60_0
+   \   00000B                REQUIRE ??Subroutine59_0
+   \   00000B                ; // Fall through to label ??Subroutine59_0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine35:
+   \                     ?Subroutine34:
    \   000000   EA           MOV       A,R2
    \   000001   240F         ADD       A,#0xf
    \   000003   F582         MOV       DPL,A
@@ -6470,20 +6500,20 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
-   \   000005   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \   000005   12....       LCALL     ?Subroutine12 & 0xFFFF
    2929            bdbFindingBindingRespondent_t **pCurr;
    2930            bdbFindingBindingRespondent_t *temp;
    2931            
    2932              // Create respondent list if empty
    2933            if ( *pHead == NULL )
-   \                     ??CrossCallReturnLabel_76:
+   \                     ??CrossCallReturnLabel_74:
    \   000008   7006         JNZ       ??bdb_AddRespondentNode_0
    2934            {
    2935              bdb_CreateRespondentList( pHead );
    \   00000A                ; Setup parameters for call to function bdb_CreateRespondentList
    \   00000A   12....       LCALL     `??bdb_CreateRespondentList::?relay`; Banked call to: bdb_CreateRespondentList
    2936              return *pHead;
-   \   00000D   02....       LJMP      ??CrossCallReturnLabel_34 & 0xFFFF
+   \   00000D   02....       LJMP      ??CrossCallReturnLabel_32 & 0xFFFF
    2937            }
    2938            else
    2939            {
@@ -6551,8 +6581,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00004C   A3           INC       DPTR
    \   00004D   A3           INC       DPTR
    \   00004E   A3           INC       DPTR
-   \   00004F   12....       LCALL     ?Subroutine29 & 0xFFFF
-   \                     ??CrossCallReturnLabel_26:
+   \   00004F   12....       LCALL     ?Subroutine28 & 0xFFFF
+   \                     ??CrossCallReturnLabel_24:
    \   000052   A3           INC       DPTR
    \   000053   A3           INC       DPTR
    \   000054   A3           INC       DPTR
@@ -6576,12 +6606,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2951                    if(temp->data.addr.shortAddr == pCmd->srcAddr->addr.shortAddr)
    \   000065   8A82         MOV       DPL,R2
    \   000067   8B83         MOV       DPH,R3
-   \   000069   12....       LCALL     ?Subroutine29 & 0xFFFF
+   \   000069   12....       LCALL     ?Subroutine28 & 0xFFFF
    2952                    {
    2953                      return NULL;
    2954                    }
    2955                  }
-   \                     ??CrossCallReturnLabel_27:
+   \                     ??CrossCallReturnLabel_25:
    \   00006C   E0           MOVX      A,@DPTR
    \   00006D   6E           XRL       A,R6
    \   00006E   7003         JNZ       ??bdb_AddRespondentNode_5
@@ -6597,10 +6627,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000078   F582         MOV       DPL,A
    \   00007A   E4           CLR       A
    \   00007B   3B           ADDC      A,R3
-   \   00007C   12....       LCALL     ?Subroutine18 & 0xFFFF
+   \   00007C   12....       LCALL     ?Subroutine17 & 0xFFFF
    2957                }
    2958              }
-   \                     ??CrossCallReturnLabel_124:
+   \                     ??CrossCallReturnLabel_122:
    \   00007F   70A0         JNZ       ??bdb_AddRespondentNode_2
    2959              
    2960              pCurr = &((*pHead)->pNext);
@@ -6618,8 +6648,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    2965              }
    \   000088   8E82         MOV       DPL,R6
    \   00008A   8F83         MOV       DPH,R7
-   \   00008C   12....       LCALL     ??Subroutine53_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_93:
+   \   00008C   12....       LCALL     ??Subroutine52_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_91:
    \   00008F   70F0         JNZ       ??bdb_AddRespondentNode_1
    2966          
    2967              *pCurr = ( bdbFindingBindingRespondent_t* )osal_mem_alloc( sizeof( bdbFindingBindingRespondent_t ) );
@@ -6627,7 +6657,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000091   12....       LCALL     ?Subroutine10 & 0xFFFF
    2968              
    2969              if(*pCurr == NULL)
-   \                     ??CrossCallReturnLabel_118:
+   \                     ??CrossCallReturnLabel_116:
    \   000094   7006         JNZ       ??bdb_AddRespondentNode_7
    2970              {
    2971                //No memory
@@ -6635,27 +6665,27 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                     ??bdb_AddRespondentNode_6:
    \   000096   7A00         MOV       R2,#0x0
    \   000098   7B00         MOV       R3,#0x0
-   \   00009A   800A         SJMP      ??CrossCallReturnLabel_22
+   \   00009A   800A         SJMP      ??CrossCallReturnLabel_20
    2973              }
    2974              
    2975              (*pCurr)->pNext = NULL;
    \                     ??bdb_AddRespondentNode_7:
-   \   00009C   12....       LCALL     ?Subroutine35 & 0xFFFF
+   \   00009C   12....       LCALL     ?Subroutine34 & 0xFFFF
    2976            }
    2977            
    2978            return *pCurr;
-   \                     ??CrossCallReturnLabel_34:
+   \                     ??CrossCallReturnLabel_32:
    \   00009F   8E82         MOV       DPL,R6
    \   0000A1   8F83         MOV       DPH,R7
-   \   0000A3   12....       LCALL     ?Subroutine27 & 0xFFFF
-   \                     ??CrossCallReturnLabel_22:
-   \   0000A6   02....       LJMP      ??Subroutine56_0 & 0xFFFF
+   \   0000A3   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_20:
+   \   0000A6   02....       LJMP      ??Subroutine55_0 & 0xFFFF
    2979          }
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine29:
-   \   000000   12....       LCALL     ??Subroutine61_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_121:
+   \                     ?Subroutine28:
+   \   000000   12....       LCALL     ??Subroutine60_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_119:
    \   000003   8C82         MOV       DPL,R4
    \   000005   8D83         MOV       DPH,R5
    \   000007   22           RET
@@ -6682,12 +6712,12 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
    \   000005                ; Saved register size: 12
    \   000005                ; Auto size: 0
-   \   000005   12....       LCALL     ?Subroutine13 & 0xFFFF
+   \   000005   12....       LCALL     ?Subroutine12 & 0xFFFF
    2992            bdbFindingBindingRespondent_t **pCurr;
    2993            bdbFindingBindingRespondent_t **pNext;
    2994            
    2995            if ( *pHead == NULL )
-   \                     ??CrossCallReturnLabel_77:
+   \                     ??CrossCallReturnLabel_75:
    \   000008   6035         JZ        ??bdb_zclRespondentListClean_0
    2996            {
    2997              return;
@@ -6725,8 +6755,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \                     ??bdb_zclRespondentListClean_1:
    \   00002C   85..82       MOV       DPL,?V0
    \   00002F   85..83       MOV       DPH,?V1
-   \   000032   12....       LCALL     ??Subroutine62_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_127:
+   \   000032   12....       LCALL     ??Subroutine61_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_125:
    \   000035   70D9         JNZ       ??bdb_zclRespondentListClean_2
    3009            *pHead = NULL;
    \   000037   8E82         MOV       DPL,R6
@@ -6737,7 +6767,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00003E   F0           MOVX      @DPTR,A
    3010          }
    \                     ??bdb_zclRespondentListClean_0:
-   \   00003F   02....       LJMP      ??Subroutine51_0 & 0xFFFF
+   \   00003F   02....       LJMP      ??Subroutine50_0 & 0xFFFF
    3011          
    3012           /*********************************************************************
    3013           * PRIVATE FUNCTIONS
@@ -6910,8 +6940,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   00000E   6052         JZ        ??bdb_SendMsg_0
    \   000010   7411         MOV       A,#0x11
    \   000012   12....       LCALL     ?XSTACK_DISP0_8
-   \   000015   12....       LCALL     ?Subroutine24 & 0xFFFF
-   \                     ??CrossCallReturnLabel_13:
+   \   000015   12....       LCALL     ?Subroutine23 & 0xFFFF
+   \                     ??CrossCallReturnLabel_11:
    \   000018   6048         JZ        ??bdb_SendMsg_0
    3159            {
    3160              uint8 tmpLength;
@@ -6950,8 +6980,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000045   E4           CLR       A
    \   000046   3F           ADDC      A,R7
    \   000047   FB           MOV       R3,A
-   \   000048   12....       LCALL     ??Subroutine41_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_46:
+   \   000048   12....       LCALL     ??Subroutine40_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_44:
    \   00004B   12....       LCALL     ?DEALLOC_XSTACK8
    3169              
    3170                msgPtr->hdr.event = toCommissioningState;
@@ -7056,7 +7086,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    \   000008   04           INC       A
    \   000009   F0           MOVX      @DPTR,A
    3228            return bdb_ZclTransactionSequenceNumber;
-   \   00000A   02....       LJMP      ??Subroutine49_0 & 0xFFFF
+   \   00000A   02....       LJMP      ??Subroutine48_0 & 0xFFFF
    3229          
    3230          }
    3231          
@@ -7175,7 +7205,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    3332            
    3333            return allowChangeChannel;
    \                     ??gp_ChangeChannelReq_0:
-   \   00000E   02....       LJMP      ??Subroutine47_0 & 0xFFFF
+   \   00000E   02....       LJMP      ??Subroutine46_0 & 0xFFFF
    3334          }
    3335          
    3336          
@@ -7245,8 +7275,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    3383            return CRC;
    \   00001C   85..82       MOV       DPL,?XSP + 0
    \   00001F   85..83       MOV       DPH,?XSP + 1
-   \   000022   12....       LCALL     ?Subroutine27 & 0xFFFF
-   \                     ??CrossCallReturnLabel_23:
+   \   000022   12....       LCALL     ?Subroutine26 & 0xFFFF
+   \                     ??CrossCallReturnLabel_21:
    \   000025   7402         MOV       A,#0x2
    \   000027   02....       LJMP      ?Subroutine6 & 0xFFFF
    3384          }
@@ -7425,8 +7455,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    3432            *crcinit_nondirect = *crc;
    \   000050   8A82         MOV       DPL,R2
    \   000052   8B83         MOV       DPH,R3
-   \   000054   12....       LCALL     ??Subroutine63_0 & 0xFFFF
-   \                     ??CrossCallReturnLabel_130:
+   \   000054   12....       LCALL     ??Subroutine62_0 & 0xFFFF
+   \                     ??CrossCallReturnLabel_128:
    \   000057   7409         MOV       A,#0x9
    \   000059   12....       LCALL     ?XSTACK_DISP0_8
    \   00005C   E0           MOVX      A,@DPTR
@@ -7527,7 +7557,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
    3458            return (crcout);
    \   000044   AA..         MOV       R2,?V0
    \   000046   AB..         MOV       R3,?V1
-   \   000048   02....       LJMP      ??Subroutine51_0 & 0xFFFF
+   \   000048   02....       LJMP      ??Subroutine50_0 & 0xFFFF
    3459          }
    3460          
    3461          
@@ -7753,6 +7783,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
         2      6   -> bdb_calculateCCITT_CRC
       0      9   bdb_Init
         0      9   -> ZDO_RegisterForZDOMsg
+        0      9   -> bdb_RepInit
         0      9   -> gp_RegisterGPChangeChannelReqForBDBCB
         0      9   -> gp_endpointInit
       0      0   bdb_NetworkRestoredResumeState
@@ -7777,13 +7808,18 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
         0     17   -> osal_msg_send
       0     36   bdb_StartCommissioning
         0     32   -> APSME_IsDistributedSecurity
+        0     32   -> ZDApp_ReadNetworkRestoreState
         0     32   -> ZDOInitDeviceEx
+        0     32   -> bdb_RepConstructReportingData
+        0     32   -> bdb_RepUpdateMarkBindings
         0     32   -> bdb_nwkSteeringDeviceOnNwk
         0     32   -> bdb_reportCommissioningState
         0     32   -> bdb_setNodeIsOnANetwork
         0     32   -> osal_get_timeoutEx
         0     32   -> osal_isbufset
         0     32   -> osal_memset
+        0     32   -> osal_nv_delete
+        0     32   -> osal_nv_item_len
         0     36   -> osal_nv_read
         0     36   -> osal_nv_write
         0     32   -> osal_set_event
@@ -7835,6 +7871,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
         0     24   -> bdb_ProcessIEEEAddrRsp
         0     24   -> bdb_ProcessRespondentList
         0     24   -> bdb_ProcessSimpleDesc
+        0     24   -> bdb_RepProcessEvent
         0     24   -> bdb_SendIdentifyQuery
         0     24   -> bdb_TCProcessJoiningList
         0     24   -> bdb_exitFindingBindingWStatus
@@ -7921,65 +7958,64 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
       18  ?<Initializer for bdbAttributes>
        1  ?<Initializer for vDoPrimaryScan>
       18  ?<Initializer for zgBdbInstallCodeCRC>
-       6  ??Subroutine41_0
-      12  ??Subroutine42_0
-       6  ??Subroutine43_0
-       8  ??Subroutine44_0
-      11  ??Subroutine45_0
-       1  ??Subroutine46_0
-       7  ??Subroutine47_0
-      13  ??Subroutine48_0
-       4  ??Subroutine49_0
-       3  ??Subroutine50_0
-       5  ??Subroutine51_0
-       6  ??Subroutine52_0
-       7  ??Subroutine53_0
-       2  ??Subroutine54_0
-      11  ??Subroutine55_0
-       5  ??Subroutine56_0
-       2  ??Subroutine57_0
-       6  ??Subroutine58_0
-       9  ??Subroutine59_0
-      12  ??Subroutine60_0
-       6  ??Subroutine61_0
-       8  ??Subroutine62_0
-       5  ??Subroutine63_0
+       6  ??Subroutine40_0
+      12  ??Subroutine41_0
+       6  ??Subroutine42_0
+       8  ??Subroutine43_0
+      11  ??Subroutine44_0
+       1  ??Subroutine45_0
+       7  ??Subroutine46_0
+      13  ??Subroutine47_0
+       4  ??Subroutine48_0
+       3  ??Subroutine49_0
+       5  ??Subroutine50_0
+       6  ??Subroutine51_0
+       7  ??Subroutine52_0
+       2  ??Subroutine53_0
+      11  ??Subroutine54_0
+       5  ??Subroutine55_0
+       2  ??Subroutine56_0
+       6  ??Subroutine57_0
+       9  ??Subroutine58_0
+      12  ??Subroutine59_0
+       6  ??Subroutine60_0
+       8  ??Subroutine61_0
+       5  ??Subroutine62_0
        5  ?Subroutine0
        3  ?Subroutine1
       11  ?Subroutine10
       10  ?Subroutine11
-      10  ?Subroutine12
-       8  ?Subroutine13
-       2  ?Subroutine14
-       6  ?Subroutine15
-      15  ?Subroutine16
-      19  ?Subroutine17
-       2  ?Subroutine18
-      20  ?Subroutine19
+       8  ?Subroutine12
+       2  ?Subroutine13
+       6  ?Subroutine14
+      15  ?Subroutine15
+      19  ?Subroutine16
+       2  ?Subroutine17
+      20  ?Subroutine18
+       4  ?Subroutine19
        2  ?Subroutine2
        4  ?Subroutine20
        4  ?Subroutine21
-       4  ?Subroutine22
-       3  ?Subroutine23
-      12  ?Subroutine24
-       8  ?Subroutine25
-      14  ?Subroutine26
-       6  ?Subroutine27
-       9  ?Subroutine28
-       8  ?Subroutine29
+       3  ?Subroutine22
+      12  ?Subroutine23
+       8  ?Subroutine24
+      14  ?Subroutine25
+       6  ?Subroutine26
+       9  ?Subroutine27
+       8  ?Subroutine28
+       2  ?Subroutine29
        4  ?Subroutine3
-       2  ?Subroutine30
-      11  ?Subroutine31
-       4  ?Subroutine32
-       6  ?Subroutine33
-       8  ?Subroutine34
-      14  ?Subroutine35
-      15  ?Subroutine36
-       3  ?Subroutine37
-       5  ?Subroutine38
-      10  ?Subroutine39
+      11  ?Subroutine30
+       4  ?Subroutine31
+       6  ?Subroutine32
+       8  ?Subroutine33
+      14  ?Subroutine34
+      15  ?Subroutine35
+       3  ?Subroutine36
+       5  ?Subroutine37
+      10  ?Subroutine38
+       6  ?Subroutine39
       10  ?Subroutine4
-       6  ?Subroutine40
        5  ?Subroutine5
        6  ?Subroutine6
        1  ?Subroutine7
@@ -8000,7 +8036,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
        1  bdb_FB_InitiatorCurrentCyclesNumber
       42  bdb_GenerateInstallCodeCRC
        2  bdb_HeadEpDescriptorList
-     148  bdb_Init
+     153  bdb_Init
        3  bdb_NetworkRestoredResumeState
       34  bdb_NotifyCommissioningModeStart
      165  bdb_ProcessNodeDescRsp
@@ -8008,7 +8044,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
       58  bdb_RegisterSimpleDescriptor
       19  bdb_RegisterTCLinkKeyExchangeProcessCB
      103  bdb_SendMsg
-     420  bdb_StartCommissioning
+     477  bdb_StartCommissioning
      336  bdb_TCAddJoiningDevice
      148  bdb_TCJoiningDeviceFree
      406  bdb_TCProcessJoiningList
@@ -8022,7 +8058,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
      108  bdb_crcInit
       75  bdb_crcReflect
        9  bdb_doTrustCenterRequireKeyExchange
-     584  bdb_event_loop
+     585  bdb_event_loop
       13  bdb_getZCLFrameCounter
        1  bdb_initialization
        7  bdb_isDeviceNonFactoryNew
@@ -8056,7 +8092,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
      270  -- Other
 
  
- 5 683 bytes in segment BANKED_CODE
+ 5 736 bytes in segment BANKED_CODE
    270 bytes in segment BANK_RELAYS
     37 bytes in segment XDATA_I
     37 bytes in segment XDATA_ID
@@ -8065,7 +8101,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb.c
  
    307 bytes of CODE     memory
      0 bytes of CONST    memory (+ 20 bytes shared)
- 5 683 bytes of HUGECODE memory
+ 5 736 bytes of HUGECODE memory
     63 bytes of XDATA    memory
 
 Errors: none

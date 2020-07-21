@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  23:49:45
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              21/Jul/2020  00:38:12
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\zcl_samplethermostat.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW6536.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW9A2F.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\zcl_samplethermostat.c"
 //        -D ZCL_REPORT_DESTINATION_DEVICE -D BDB_REPORTING -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
-//        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -D ZCL_REPORTING_DEVICE -D
+//        ZCL_TEMPERATURE_MEASUREMENT -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
@@ -139,11 +140,12 @@
         EXTERN ?BDISPATCH
         EXTERN ?BRET
         EXTERN ?DEALLOC_XSTACK8
-        EXTERN ?PUSH_XSTACK8_X_TWO
+        EXTERN ?PUSH_XSTACK_I_ONE
         EXTERN ?PUSH_XSTACK_I_TWO
         EXTERN __INIT_XDATA_I
         EXTERN __INIT_XDATA_Z
 
+        FUNCTION `??Control_Test::?relay`,0203H
         FUNCTION `??zclSampleApp_BatteryWarningCB::?relay`,0203H
         FUNCTION `??zclSampleThermostat_BasicResetCB::?relay`,0203H
         PUBLIC `??zclSampleThermostat_Init::?relay`
@@ -153,6 +155,13 @@
         FUNCTION `??zclSampleThermostat_UpdateLedState::?relay`,0203H
         PUBLIC `??zclSampleThermostat_event_loop::?relay`
         FUNCTION `??zclSampleThermostat_event_loop::?relay`,0203H
+        FUNCTION Control_Test,0a1203H
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 17, STACK
+        PUBLIC TestSeqNum
+        PUBLIC Test_dstAddr
         PUBLIC reportableChange
         FUNCTION zclSampleApp_BatteryWarningCB,0603H
         ARGFRAME XSTACK, 0, STACK
@@ -167,17 +176,17 @@
         FUNCTION zclSampleThermostat_ProcessCommissioningStatus,021603H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME XSTACK, 9, STACK
-        FUNCTION zclSampleThermostat_ProcessIncomingMsg,021203H
+        FUNCTION zclSampleThermostat_ProcessIncomingMsg,0a1203H
         ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME XSTACK, 14, STACK
         PUBLIC zclSampleThermostat_TaskID
         FUNCTION zclSampleThermostat_UpdateLedState,021203H
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME ISTACK, 4, STACK
+        LOCFRAME ISTACK, 2, STACK
         PUBLIC zclSampleThermostat_event_loop
         FUNCTION zclSampleThermostat_event_loop,0a1203H
         ARGFRAME XSTACK, 0, STACK
@@ -344,6 +353,8 @@ NLME_PermitJoiningRequest SYMBOL "NLME_PermitJoiningRequest"
 `??NLME_PermitJoiningRequest::?relay` SYMBOL "?relay", NLME_PermitJoiningRequest
 RegisterForKeys     SYMBOL "RegisterForKeys"
 `??RegisterForKeys::?relay` SYMBOL "?relay", RegisterForKeys
+RegisterForUart0    SYMBOL "RegisterForUart0"
+`??RegisterForUart0::?relay` SYMBOL "?relay", RegisterForUart0
 RegisterVoltageWarningCB SYMBOL "RegisterVoltageWarningCB"
 `??RegisterVoltageWarningCB::?relay` SYMBOL "?relay", RegisterVoltageWarningCB
 Uart0_Init          SYMBOL "Uart0_Init"
@@ -356,6 +367,8 @@ bdb_RepAddAttrCfgRecordDefaultToList SYMBOL "bdb_RepAddAttrCfgRecordDefaultToLis
 `??bdb_RepAddAttrCfgRecordDefaultToList::?relay` SYMBOL "?relay", bdb_RepAddAttrCfgRecordDefaultToList
 bdb_StartCommissioning SYMBOL "bdb_StartCommissioning"
 `??bdb_StartCommissioning::?relay` SYMBOL "?relay", bdb_StartCommissioning
+osal_mem_alloc      SYMBOL "osal_mem_alloc"
+`??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
 osal_mem_free       SYMBOL "osal_mem_free"
 `??osal_mem_free::?relay` SYMBOL "?relay", osal_mem_free
 osal_msg_deallocate SYMBOL "osal_msg_deallocate"
@@ -368,6 +381,8 @@ zclGeneral_RegisterCmdCallbacks SYMBOL "zclGeneral_RegisterCmdCallbacks"
 `??zclGeneral_RegisterCmdCallbacks::?relay` SYMBOL "?relay", zclGeneral_RegisterCmdCallbacks
 zclSampleThermostat_ResetAttributesToDefaultValues SYMBOL "zclSampleThermostat_ResetAttributesToDefaultValues"
 ??zclSampleThermostat_ResetAttributesToDefaultV SYMBOL "?relay", zclSampleThermostat_ResetAttributesToDefaultValues
+zcl_SendReportCmd   SYMBOL "zcl_SendReportCmd"
+`??zcl_SendReportCmd::?relay` SYMBOL "?relay", zcl_SendReportCmd
 zcl_registerAttrList SYMBOL "zcl_registerAttrList"
 `??zcl_registerAttrList::?relay` SYMBOL "?relay", zcl_registerAttrList
 zcl_registerForMsg  SYMBOL "zcl_registerForMsg"
@@ -383,6 +398,8 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         FUNCTION `??NLME_PermitJoiningRequest::?relay`,00H
         EXTERN `??RegisterForKeys::?relay`
         FUNCTION `??RegisterForKeys::?relay`,00H
+        EXTERN `??RegisterForUart0::?relay`
+        FUNCTION `??RegisterForUart0::?relay`,00H
         EXTERN `??RegisterVoltageWarningCB::?relay`
         FUNCTION `??RegisterVoltageWarningCB::?relay`,00H
         EXTERN `??Uart0_Init::?relay`
@@ -395,6 +412,8 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         FUNCTION `??bdb_RepAddAttrCfgRecordDefaultToList::?relay`,00H
         EXTERN `??bdb_StartCommissioning::?relay`
         FUNCTION `??bdb_StartCommissioning::?relay`,00H
+        EXTERN `??osal_mem_alloc::?relay`
+        FUNCTION `??osal_mem_alloc::?relay`,00H
         EXTERN `??osal_mem_free::?relay`
         FUNCTION `??osal_mem_free::?relay`,00H
         EXTERN `??osal_msg_deallocate::?relay`
@@ -407,10 +426,13 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         FUNCTION `??zclGeneral_RegisterCmdCallbacks::?relay`,00H
         EXTERN ??zclSampleThermostat_ResetAttributesToDefaultV
         FUNCTION ??zclSampleThermostat_ResetAttributesToDefaultV,00H
+        EXTERN `??zcl_SendReportCmd::?relay`
+        FUNCTION `??zcl_SendReportCmd::?relay`,00H
         EXTERN `??zcl_registerAttrList::?relay`
         FUNCTION `??zcl_registerAttrList::?relay`,00H
         EXTERN `??zcl_registerForMsg::?relay`
         FUNCTION `??zcl_registerForMsg::?relay`,00H
+        EXTERN Contorl
         EXTERN HalLedSet
         FUNCTION HalLedSet,0202H
         ARGFRAME ISTACK, 2, STACK
@@ -427,6 +449,13 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN RegisterForKeys
         FUNCTION RegisterForKeys,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN RegisterForUart0
+        FUNCTION RegisterForUart0,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 10, STACK
@@ -474,11 +503,18 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN osal_mem_alloc
+        FUNCTION osal_mem_alloc,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_mem_free
         FUNCTION osal_mem_free,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_msg_deallocate
@@ -499,7 +535,7 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         FUNCTION printf,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclGeneral_RegisterCmdCallbacks
@@ -511,6 +547,7 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclSampleThermostat_Attrs
         EXTERN zclSampleThermostat_LocalTemperature
+        EXTERN zclSampleThermostat_LocalTemperature1
         EXTERN zclSampleThermostat_NumAttributes
         EXTERN zclSampleThermostat_OccupiedCoolingSetpoint
         EXTERN zclSampleThermostat_OccupiedHeatingSetpoint
@@ -523,6 +560,13 @@ zclSampleThermostat_event_loop SYMBOL "zclSampleThermostat_event_loop"
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zclSampleThermostat_SimpleDesc
         EXTERN zclSampleThermostat_SystemMode
+        EXTERN zcl_SendReportCmd
+        FUNCTION zcl_SendReportCmd,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 17, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN zcl_registerAttrList
         FUNCTION zcl_registerAttrList,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -679,163 +723,192 @@ zclSampleThermostat_TaskID:
 //  131 
 //  132 extern int16 zdpExternalStateTaskID;
 //  133 
-//  134 /*********************************************************************
-//  135  * GLOBAL FUNCTIONS
-//  136  */
-//  137 
-//  138 /*********************************************************************
-//  139  * LOCAL VARIABLES
-//  140  */
-//  141 
+
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA8
+//  134 uint8 TestSeqNum;
+TestSeqNum:
+        DS 1
+        REQUIRE __INIT_XDATA_Z
+//  135 
+//  136 /*********************************************************************
+//  137  * GLOBAL FUNCTIONS
+//  138  */
+//  139 
+//  140 /*********************************************************************
+//  141  * LOCAL VARIABLES
+//  142  */
+//  143 
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  142 devStates_t zclSampleThermostat_NwkState = DEV_INIT;
+//  144 devStates_t zclSampleThermostat_NwkState = DEV_INIT;
 zclSampleThermostat_NwkState:
         DATA8
         DS 1
         REQUIRE `?<Initializer for zclSampleThermostat_NwkState`
         REQUIRE __INIT_XDATA_I
-//  143 
-//  144 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
 //  145 
-//  146 // Test Endpoint to allow SYS_APP_MSGs
-//  147 /*
-//  148 static endPointDesc_t sampleThermostat_TestEp =
-//  149 {
-//  150   20,                                 // Test endpoint
-//  151   0,
-//  152   &zclSampleThermostat_TaskID,
-//  153   (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
-//  154   (afNetworkLatencyReq_t)0            // No Network Latency req
-//  155 };
-//  156 */
-//  157 
-//  158 #ifdef BDB_REPORTING
-//  159 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 8
-//  160   uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // 0x2C01 is 300 in int16
-//  161 #endif
-//  162 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 4
+
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA8
+//  146 afAddrType_t Test_dstAddr;
+Test_dstAddr:
+        DS 12
+        REQUIRE __INIT_XDATA_Z
+//  147   
+//  148 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
+//  149 
+//  150 // Test Endpoint to allow SYS_APP_MSGs
+//  151 /*
+//  152 static endPointDesc_t sampleThermostat_TestEp =
+//  153 {
+//  154   20,                                 // Test endpoint
+//  155   0,
+//  156   &zclSampleThermostat_TaskID,
+//  157   (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
+//  158   (afNetworkLatencyReq_t)0            // No Network Latency req
+//  159 };
+//  160 */
+//  161 
+//  162 #ifdef BDB_REPORTING
+//  163 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 8
+//  164   uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // 0x2C01 is 300 in int16
+//  165 #endif
+//  166 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 4
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  163   uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00}; // 0x2C01 is 300 in int16
+//  167   uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00}; // 0x2C01 is 300 in int16
 reportableChange:
         DATA32
         DS 4
         REQUIRE `?<Initializer for reportableChange>`
         REQUIRE __INIT_XDATA_I
-//  164 #endif 
-//  165 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 2
-//  166   uint8 reportableChange[] = {0x2C, 0x01}; // 0x2C01 is 300 in int16
-//  167 #endif 
-//  168 #endif
-//  169   
-//  170 /*********************************************************************
-//  171  * LOCAL FUNCTIONS
-//  172  */
-//  173 static void zclSampleThermostat_HandleKeys( byte shift, byte keys );
-//  174 static void zclSampleThermostat_BasicResetCB( void );
-//  175 #ifdef MT_APP_FUNC
-//  176 static void zclSampleThermostat_ProcessAppMsg( uint8 srcEP, uint8 len, uint8 *msg );
-//  177 static void zclSampleThermostat_ProcessFoundationMsg( afAddrType_t *dstAddr, uint16 clusterID,
-//  178                                                       zclFrameHdr_t *hdr, zclParseCmd_t *pParseCmd );
-//  179 #endif
-//  180 
-//  181 static void zclSampleThermostat_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg);
-//  182 
-//  183 
-//  184 // app display functions
-//  185 void zclSampleThermostat_LcdDisplayUpdate(void);
-//  186 void zclSampleThermostat_LcdDisplayMainMode(void);
-//  187 void zclSampleThermostat_LcdDisplayHeatMode(void);
-//  188 void zclSampleThermostat_LcdDisplayCoolMode(void);
-//  189 void zclSampleThermostat_LcdDisplayHelpMode(void);
-//  190 
-//  191 // Functions to process ZCL Foundation incoming Command/Response messages
-//  192 static void zclSampleThermostat_ProcessIncomingMsg( zclIncomingMsg_t *msg );
-//  193 #ifdef ZCL_READ
-//  194 static uint8 zclSampleThermostat_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
-//  195 #endif
-//  196 #ifdef ZCL_WRITE
-//  197 static uint8 zclSampleThermostat_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
-//  198 #endif
-//  199 #ifdef ZCL_REPORT_DESTINATION_DEVICE
-//  200 static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg );
-//  201 #endif  // ZCL_REPORT_DESTINATION_DEVICE
-//  202 static uint8 zclSampleThermostat_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
-//  203 
-//  204 static void zclSampleThermostat_UpdateLedState(void);
-//  205 
-//  206 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
-//  207 
-//  208 /*********************************************************************
-//  209  * STATUS STRINGS
-//  210  */
+//  168 #endif 
+//  169 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 2
+//  170   uint8 reportableChange[] = {0x2C, 0x01}; // 0x2C01 is 300 in int16
+//  171 #endif 
+//  172 #endif
+//  173   
+//  174 /*********************************************************************
+//  175  * LOCAL FUNCTIONS
+//  176  */
+//  177 static void Control_Test( void );
+//  178 
+//  179 static void zclSampleThermostat_HandleKeys( byte shift, byte keys );
+//  180 static void zclSampleThermostat_BasicResetCB( void );
+//  181 #ifdef MT_APP_FUNC
+//  182 static void zclSampleThermostat_ProcessAppMsg( uint8 srcEP, uint8 len, uint8 *msg );
+//  183 static void zclSampleThermostat_ProcessFoundationMsg( afAddrType_t *dstAddr, uint16 clusterID,
+//  184                                                       zclFrameHdr_t *hdr, zclParseCmd_t *pParseCmd );
+//  185 #endif
+//  186 
+//  187 static void zclSampleThermostat_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg);
+//  188 
+//  189 
+//  190 // app display functions
+//  191 void zclSampleThermostat_LcdDisplayUpdate(void);
+//  192 void zclSampleThermostat_LcdDisplayMainMode(void);
+//  193 void zclSampleThermostat_LcdDisplayHeatMode(void);
+//  194 void zclSampleThermostat_LcdDisplayCoolMode(void);
+//  195 void zclSampleThermostat_LcdDisplayHelpMode(void);
+//  196 
+//  197 // Functions to process ZCL Foundation incoming Command/Response messages
+//  198 static void zclSampleThermostat_ProcessIncomingMsg( zclIncomingMsg_t *msg );
+//  199 #ifdef ZCL_READ
+//  200 static uint8 zclSampleThermostat_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
+//  201 #endif
+//  202 #ifdef ZCL_WRITE
+//  203 static uint8 zclSampleThermostat_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
+//  204 #endif
+//  205 #ifdef ZCL_REPORT_DESTINATION_DEVICE
+//  206 static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg );
+//  207 #endif  // ZCL_REPORT_DESTINATION_DEVICE
+//  208 static uint8 zclSampleThermostat_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
+//  209 
+//  210 static void zclSampleThermostat_UpdateLedState(void);
 //  211 
-//  212 /*********************************************************************
-//  213  * CONSTANTS
-//  214  */
-//  215 
-//  216 /*********************************************************************
-//  217  * ZCL General Profile Callback table
-//  218  */
+//  212 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
+//  213 
+//  214 /*********************************************************************
+//  215  * STATUS STRINGS
+//  216  */
+//  217 
+//  218 /*********************************************************************
+//  219  * CONSTANTS
+//  220  */
+//  221 
+//  222 /*********************************************************************
+//  223  * ZCL General Profile Callback table
+//  224  */
 
         RSEG XDATA_I:XDATA:NOROOT(0)
-//  219 static zclGeneral_AppCallbacks_t zclSampleThermostat_CmdCallbacks =
+//  225 static zclGeneral_AppCallbacks_t zclSampleThermostat_CmdCallbacks =
 zclSampleThermostat_CmdCallbacks:
         DATA8
         DS 18
         REQUIRE `?<Initializer for zclSampleThermostat_CmdCallb`
         REQUIRE __INIT_XDATA_I
-//  220 {
-//  221   zclSampleThermostat_BasicResetCB,            // Basic Cluster Reset command
-//  222   NULL,                                        // Identify Trigger Effect command
-//  223   NULL,             				                   // On/Off cluster command
-//  224   NULL,                                        // On/Off cluster enhanced command Off with Effect
-//  225   NULL,                                        // On/Off cluster enhanced command On with Recall Global Scene
-//  226   NULL,                                        // On/Off cluster enhanced command On with Timed Off
-//  227 #ifdef ZCL_LEVEL_CTRL
-//  228   NULL,                                        // Level Control Move to Level command
-//  229   NULL,                                        // Level Control Move command
-//  230   NULL,                                        // Level Control Step command
-//  231   NULL,                                        // Level Control Stop command
-//  232 #endif
-//  233 #ifdef ZCL_GROUPS
-//  234   NULL,                                        // Group Response commands
-//  235 #endif
-//  236 #ifdef ZCL_SCENES
-//  237   NULL,                                        // Scene Store Request command
-//  238   NULL,                                        // Scene Recall Request command
-//  239   NULL,                                        // Scene Response command
-//  240 #endif
-//  241 #ifdef ZCL_ALARMS
-//  242   NULL,                                        // Alarm (Response) commands
-//  243 #endif
-//  244 #ifdef SE_UK_EXT
-//  245   NULL,                                        // Get Event Log command
-//  246   NULL,                                        // Publish Event Log command
-//  247 #endif
-//  248   NULL,                                        // RSSI Location command
-//  249   NULL                                         // RSSI Location Response command
-//  250 };
-//  251 
-//  252 /*********************************************************************
-//  253  * @fn          zclSampleThermostat_Init
-//  254  *
-//  255  * @brief       Initialization function for the zclGeneral layer.
-//  256  *
-//  257  * @param       none
-//  258  *
-//  259  * @return      none
-//  260  */
+//  226 {
+//  227   zclSampleThermostat_BasicResetCB,            // Basic Cluster Reset command
+//  228   NULL,                                        // Identify Trigger Effect command
+//  229   NULL,             				                   // On/Off cluster command
+//  230   NULL,                                        // On/Off cluster enhanced command Off with Effect
+//  231   NULL,                                        // On/Off cluster enhanced command On with Recall Global Scene
+//  232   NULL,                                        // On/Off cluster enhanced command On with Timed Off
+//  233 #ifdef ZCL_LEVEL_CTRL
+//  234   NULL,                                        // Level Control Move to Level command
+//  235   NULL,                                        // Level Control Move command
+//  236   NULL,                                        // Level Control Step command
+//  237   NULL,                                        // Level Control Stop command
+//  238 #endif
+//  239 #ifdef ZCL_GROUPS
+//  240   NULL,                                        // Group Response commands
+//  241 #endif
+//  242 #ifdef ZCL_SCENES
+//  243   NULL,                                        // Scene Store Request command
+//  244   NULL,                                        // Scene Recall Request command
+//  245   NULL,                                        // Scene Response command
+//  246 #endif
+//  247 #ifdef ZCL_ALARMS
+//  248   NULL,                                        // Alarm (Response) commands
+//  249 #endif
+//  250 #ifdef SE_UK_EXT
+//  251   NULL,                                        // Get Event Log command
+//  252   NULL,                                        // Publish Event Log command
+//  253 #endif
+//  254   NULL,                                        // RSSI Location command
+//  255   NULL                                         // RSSI Location Response command
+//  256 };
+//  257 
+//  258 /*********************************************************************
+//  259  * @fn          zclSampleThermostat_Init
+//  260  *
+//  261  * @brief       Initialization function for the zclGeneral layer.
+//  262  *
+//  263  * @param       none
+//  264  *
+//  265  * @return      none
+//  266  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  261 void zclSampleThermostat_Init( byte task_id )
+//  267 void zclSampleThermostat_Init( byte task_id )
 zclSampleThermostat_Init:
           CFI Block cfiBlock0 Using cfiCommon0
           CFI Function zclSampleThermostat_Init
         CODE
-//  262 {
+//  268 {
         FUNCALL zclSampleThermostat_Init, Uart0_Init
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_Init, RegisterForUart0
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 10, STACK
@@ -997,36 +1070,57 @@ zclSampleThermostat_Init:
         ; Saved register size: 10
         ; Auto size: 0
         MOV       A,R1
-//  263   zclSampleThermostat_TaskID = task_id;
+//  269   zclSampleThermostat_TaskID = task_id;
         MOV       DPTR,#zclSampleThermostat_TaskID
         MOVX      @DPTR,A
-//  264 
-//  265   //Initialize the Uart0
-//  266   Uart0_Init(HAL_UART_BR_115200);
+//  270 
+//  271   Test_dstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+        MOV       DPTR,#Test_dstAddr + 8
+        CLR       A
+        MOVX      @DPTR,A
+//  272   Test_dstAddr.endPoint = 0;
+        INC       DPTR
+        MOVX      @DPTR,A
+//  273   Test_dstAddr.addr.shortAddr = 0;
+        MOV       DPTR,#Test_dstAddr
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOVX      @DPTR,A
+//  274 
+//  275   //Initialize the Uart0
+//  276   Uart0_Init(HAL_UART_BR_115200);
         ; Setup parameters for call to function Uart0_Init
         MOV       R1,#0x4
         LCALL     `??Uart0_Init::?relay`; Banked call to: Uart0_Init
-//  267   
-//  268   // Register the Simple Descriptor for this application
-//  269   bdb_RegisterSimpleDescriptor( &zclSampleThermostat_SimpleDesc );
+//  277 
+//  278   // Register the Uart0
+//  279   RegisterForUart0( zclSampleThermostat_TaskID );
+        ; Setup parameters for call to function RegisterForUart0
+        MOV       DPTR,#zclSampleThermostat_TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??RegisterForUart0::?relay`; Banked call to: RegisterForUart0
+//  280 
+//  281   // Register the Simple Descriptor for this application
+//  282   bdb_RegisterSimpleDescriptor( &zclSampleThermostat_SimpleDesc );
         ; Setup parameters for call to function bdb_RegisterSimpleDescriptor
         MOV       R2,#zclSampleThermostat_SimpleDesc & 0xff
         MOV       R3,#(zclSampleThermostat_SimpleDesc >> 8) & 0xff
         LCALL     `??bdb_RegisterSimpleDescriptor::?relay`; Banked call to: bdb_RegisterSimpleDescriptor
-//  270 
-//  271   // Register the ZCL General Cluster Library callback functions
-//  272   zclGeneral_RegisterCmdCallbacks( SAMPLETHERMOSTAT_ENDPOINT, &zclSampleThermostat_CmdCallbacks );
+//  283 
+//  284   // Register the ZCL General Cluster Library callback functions
+//  285   zclGeneral_RegisterCmdCallbacks( SAMPLETHERMOSTAT_ENDPOINT, &zclSampleThermostat_CmdCallbacks );
         ; Setup parameters for call to function zclGeneral_RegisterCmdCallbacks
         MOV       R2,#zclSampleThermostat_CmdCallbacks & 0xff
         MOV       R3,#(zclSampleThermostat_CmdCallbacks >> 8) & 0xff
         MOV       R1,#0x8
         LCALL     `??zclGeneral_RegisterCmdCallbacks::?relay`; Banked call to: zclGeneral_RegisterCmdCallbacks
-//  273 
-//  274   // Register the application's attribute list
-//  275   zclSampleThermostat_ResetAttributesToDefaultValues();
+//  286 
+//  287   // Register the application's attribute list
+//  288   zclSampleThermostat_ResetAttributesToDefaultValues();
         ; Setup parameters for call to function zclSampleThermostat_ResetAttributesToDefaultValues
         LCALL     ??zclSampleThermostat_ResetAttributesToDefaultV; Banked call to: zclSampleThermostat_ResetAttributesToDefaultValues
-//  276   zcl_registerAttrList( SAMPLETHERMOSTAT_ENDPOINT, zclSampleThermostat_NumAttributes, zclSampleThermostat_Attrs );
+//  289   zcl_registerAttrList( SAMPLETHERMOSTAT_ENDPOINT, zclSampleThermostat_NumAttributes, zclSampleThermostat_Attrs );
         ; Setup parameters for call to function zcl_registerAttrList
         MOV       R4,#zclSampleThermostat_Attrs & 0xff
         MOV       R5,#(zclSampleThermostat_Attrs >> 8) & 0xff
@@ -1036,42 +1130,42 @@ zclSampleThermostat_Init:
         MOV       R2,A
         MOV       R1,#0x8
         LCALL     `??zcl_registerAttrList::?relay`; Banked call to: zcl_registerAttrList
-//  277 
-//  278   // Register the Application to receive the unprocessed Foundation command/response messages
-//  279   zcl_registerForMsg( zclSampleThermostat_TaskID );
+//  290 
+//  291   // Register the Application to receive the unprocessed Foundation command/response messages
+//  292   zcl_registerForMsg( zclSampleThermostat_TaskID );
         ; Setup parameters for call to function zcl_registerForMsg
         MOV       DPTR,#zclSampleThermostat_TaskID
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??zcl_registerForMsg::?relay`; Banked call to: zcl_registerForMsg
-//  280 
-//  281   // Register low voltage NV memory protection application callback
-//  282   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
+//  293 
+//  294   // Register low voltage NV memory protection application callback
+//  295   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
         ; Setup parameters for call to function RegisterVoltageWarningCB
         MOV       R2,#`??zclSampleApp_BatteryWarningCB::?relay` & 0xff
         MOV       R3,#(`??zclSampleApp_BatteryWarningCB::?relay` >> 8) & 0xff
         LCALL     `??RegisterVoltageWarningCB::?relay`; Banked call to: RegisterVoltageWarningCB
-//  283 
-//  284   // Register for all key events - This app will handle all key events
-//  285   RegisterForKeys( zclSampleThermostat_TaskID );
+//  296 
+//  297   // Register for all key events - This app will handle all key events
+//  298   RegisterForKeys( zclSampleThermostat_TaskID );
         ; Setup parameters for call to function RegisterForKeys
         MOV       DPTR,#zclSampleThermostat_TaskID
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??RegisterForKeys::?relay`; Banked call to: RegisterForKeys
-//  286 
-//  287   bdb_RegisterCommissioningStatusCB( zclSampleThermostat_ProcessCommissioningStatus );
+//  299 
+//  300   bdb_RegisterCommissioningStatusCB( zclSampleThermostat_ProcessCommissioningStatus );
         ; Setup parameters for call to function bdb_RegisterCommissioningStatusCB
         MOV       R2,#??zclSampleThermostat_ProcessCommissioningStatu & 0xff
         MOV       R3,#(??zclSampleThermostat_ProcessCommissioningStatu >> 8) & 0xff
         LCALL     `??bdb_RegisterCommissioningStatusCB::?relay`; Banked call to: bdb_RegisterCommissioningStatusCB
-//  288 
-//  289 #ifdef BDB_REPORTING
-//  290   //Adds the default configuration values for the reportable attributes of the ZCL_CLUSTER_ID_HVAC_THERMOSTAT cluster, for endpoint SAMPLETHERMOSTAT_ENDPOINT
-//  291   //Default maxReportingInterval value is 10 seconds
-//  292   //Default minReportingInterval value is 3 seconds
-//  293   //Default reportChange value is 300 (3 degrees)
-//  294   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_LOCAL_TEMPERATURE, 0, 10, reportableChange);
+//  301 
+//  302 #ifdef BDB_REPORTING
+//  303   //Adds the default configuration values for the reportable attributes of the ZCL_CLUSTER_ID_HVAC_THERMOSTAT cluster, for endpoint SAMPLETHERMOSTAT_ENDPOINT
+//  304   //Default maxReportingInterval value is 10 seconds
+//  305   //Default minReportingInterval value is 3 seconds
+//  306   //Default reportChange value is 300 (3 degrees)
+//  307   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_LOCAL_TEMPERATURE, 0, 10, reportableChange);
         ; Setup parameters for call to function bdb_RepAddAttrCfgRecordDefaultToList
         MOV       ?V0,#reportableChange & 0xff
         MOV       ?V1,#(reportableChange >> 8) & 0xff
@@ -1097,7 +1191,7 @@ zclSampleThermostat_Init:
         MOV       A,#0x6
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  295   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_PI_COOLING_DEMAND, 0, 10, reportableChange);
+//  308   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_PI_COOLING_DEMAND, 0, 10, reportableChange);
         ; Setup parameters for call to function bdb_RepAddAttrCfgRecordDefaultToList
         MOV       ?V0,#reportableChange & 0xff
         MOV       ?V1,#(reportableChange >> 8) & 0xff
@@ -1123,7 +1217,7 @@ zclSampleThermostat_Init:
         MOV       A,#0x6
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  296   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_PI_HEATING_DEMAND, 0, 10, reportableChange);
+//  309   bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETHERMOSTAT_ENDPOINT, ZCL_CLUSTER_ID_HVAC_THERMOSTAT, ATTRID_HVAC_THERMOSTAT_PI_HEATING_DEMAND, 0, 10, reportableChange);
         ; Setup parameters for call to function bdb_RepAddAttrCfgRecordDefaultToList
         MOV       ?V0,#reportableChange & 0xff
         MOV       ?V1,#(reportableChange >> 8) & 0xff
@@ -1149,9 +1243,9 @@ zclSampleThermostat_Init:
         MOV       A,#0x6
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 10)
-//  297 #endif  
-//  298   
-//  299   zdpExternalStateTaskID = zclSampleThermostat_TaskID;
+//  310 #endif  
+//  311   
+//  312   zdpExternalStateTaskID = zclSampleThermostat_TaskID;
         MOV       DPTR,#zclSampleThermostat_TaskID
         MOVX      A,@DPTR
         MOV       DPTR,#zdpExternalStateTaskID
@@ -1159,57 +1253,35 @@ zclSampleThermostat_Init:
         INC       DPTR
         CLR       A
         MOVX      @DPTR,A
-//  300 
-//  301   printf("init successful\r\n");
+//  313 
+//  314   printf("init successful\r\n");
         ; Setup parameters for call to function printf
         MOV       R2,#`?<Constant "init successful\\r\\n">` & 0xff
         MOV       R3,#(`?<Constant "init successful\\r\\n">` >> 8) & 0xff
         LCALL     `??printf::?relay`; Banked call to: printf
-//  302 }
+//  315 }
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock0
-//  303 
-//  304 /*********************************************************************
-//  305  * @fn          zclSample_event_loop
-//  306  *
-//  307  * @brief       Event Loop Processor for zclGeneral.
-//  308  *
-//  309  * @param       none
-//  310  *
-//  311  * @return      none
-//  312  */
+//  316 
+//  317 /*********************************************************************
+//  318  * @fn          zclSample_event_loop
+//  319  *
+//  320  * @brief       Event Loop Processor for zclGeneral.
+//  321  *
+//  322  * @param       none
+//  323  *
+//  324  * @return      none
+//  325  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  313 uint16 zclSampleThermostat_event_loop( uint8 task_id, uint16 events )
+//  326 uint16 zclSampleThermostat_event_loop( uint8 task_id, uint16 events )
 zclSampleThermostat_event_loop:
           CFI Block cfiBlock1 Using cfiCommon0
           CFI Function zclSampleThermostat_event_loop
         CODE
-//  314 {
-        FUNCALL zclSampleThermostat_event_loop, HalLedSet
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleThermostat_event_loop, bdb_StartCommissioning
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL zclSampleThermostat_event_loop, NLME_PermitJoiningRequest
+//  327 {
+        FUNCALL zclSampleThermostat_event_loop, Control_Test
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 12, STACK
@@ -1253,6 +1325,72 @@ zclSampleThermostat_event_loop:
         ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, HalLedSet
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, bdb_StartCommissioning
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, NLME_PermitJoiningRequest
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, HalLedSet
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, Control_Test
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_event_loop, Control_Test
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
@@ -1279,87 +1417,92 @@ zclSampleThermostat_event_loop:
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-//  315   afIncomingMSGPacket_t *MSGpkt;
-//  316 
-//  317   (void)task_id;  // Intentionally unreferenced parameter
-//  318 
-//  319   if ( events & SYS_EVENT_MSG )
+//  328   afIncomingMSGPacket_t *MSGpkt;
+//  329 
+//  330   (void)task_id;  // Intentionally unreferenced parameter
+//  331 
+//  332   if ( events & SYS_EVENT_MSG )
         ANL       A,#0x80
         JNZ       ??zclSampleThermostat_event_loop_0
-//  320   {
-//  321     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleThermostat_TaskID )) )
-//  322     {
-//  323       switch ( MSGpkt->hdr.event )
-//  324       {
-//  325 #ifdef MT_APP_FUNC
-//  326         case MT_SYS_APP_MSG:
-//  327           // Message received from MT
-//  328           zclSampleThermostat_ProcessAppMsg( ((mtSysAppMsg_t *)MSGpkt)->endpoint,
-//  329                                           ((mtSysAppMsg_t *)MSGpkt)->appDataLen,
-//  330                                           ((mtSysAppMsg_t *)MSGpkt)->appData );
-//  331 #endif
-//  332           break;
-//  333 
-//  334         case ZCL_INCOMING_MSG:
-//  335           // Incoming ZCL Foundation command/response messages
-//  336           zclSampleThermostat_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
-//  337           break;
-//  338 
-//  339         case KEY_CHANGE:
-//  340           zclSampleThermostat_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
-//  341           break;
-//  342 
-//  343         case ZDO_STATE_CHANGE:
-//  344           break;
-//  345 
-//  346         default:
-//  347           break;
-//  348       }
-//  349 
-//  350       // Release the memory
-//  351       osal_msg_deallocate( (uint8 *)MSGpkt );
-//  352     }
-//  353 
-//  354     // return unprocessed events
-//  355     return (events ^ SYS_EVENT_MSG);
-//  356   }
-//  357   
-//  358 #if ZG_BUILD_ENDDEVICE_TYPE    
-//  359   if ( events & SAMPLEAPP_END_DEVICE_REJOIN_EVT )
-//  360   {
-//  361     bdb_ZedAttemptRecoverNwk();
-//  362     return ( events ^ SAMPLEAPP_END_DEVICE_REJOIN_EVT );
-//  363   }
-//  364 #endif
-//  365   
-//  366   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
+//  333   {
+//  334     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleThermostat_TaskID )) )
+//  335     {
+//  336       switch ( MSGpkt->hdr.event )
+//  337       {
+//  338 #ifdef MT_APP_FUNC
+//  339         case MT_SYS_APP_MSG:
+//  340           // Message received from MT
+//  341           zclSampleThermostat_ProcessAppMsg( ((mtSysAppMsg_t *)MSGpkt)->endpoint,
+//  342                                           ((mtSysAppMsg_t *)MSGpkt)->appDataLen,
+//  343                                           ((mtSysAppMsg_t *)MSGpkt)->appData );
+//  344 #endif
+//  345           break;
+//  346 
+//  347         case ZCL_INCOMING_MSG:
+//  348           // Incoming ZCL Foundation command/response messages
+//  349           zclSampleThermostat_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
+//  350           break;
+//  351 
+//  352         case KEY_CHANGE:
+//  353           zclSampleThermostat_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
+//  354           break;
+//  355 
+//  356         case ZDO_STATE_CHANGE:
+//  357           break;
+//  358           
+//  359         case UART0_MESSAGE_SW1_ON:
+//  360           Contorl[0] = 1;
+//  361           Contorl[1] = 0;
+//  362           Control_Test();
+//  363           break;
+//  364 
+//  365         case UART0_MESSAGE_SW1_OFF:
+//  366           Contorl[0] = 1;
+//  367           Contorl[1] = 1;
+//  368           Control_Test();
+//  369           break;
+//  370 
+//  371         default:
+//  372           break;
+//  373       }
+//  374 
+//  375       // Release the memory
+//  376       osal_msg_deallocate( (uint8 *)MSGpkt );
+//  377     }
+//  378 
+//  379     // return unprocessed events
+//  380     return (events ^ SYS_EVENT_MSG);
+//  381   }
+//  382   
+//  383 #if ZG_BUILD_ENDDEVICE_TYPE    
+//  384   if ( events & SAMPLEAPP_END_DEVICE_REJOIN_EVT )
+//  385   {
+//  386     bdb_ZedAttemptRecoverNwk();
+//  387     return ( events ^ SAMPLEAPP_END_DEVICE_REJOIN_EVT );
+//  388   }
+//  389 #endif
+//  390   
+//  391   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
         MOV       A,R2
         ANL       A,#0x10
-        JZ        ??zclSampleThermostat_event_loop_1
-//  367   {
-//  368     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
+        JNZ       $+5
+        LJMP      ??zclSampleThermostat_event_loop_1 & 0xFFFF
+//  392   {
+//  393     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
         MOV       A,R2
         XRL       A,#0x10
-        SJMP      ??zclSampleThermostat_event_loop_2
-//  369   }
+        LJMP      ??zclSampleThermostat_event_loop_2 & 0xFFFF
+//  394   }
 ??zclSampleThermostat_event_loop_3:
+        MOV       DPTR,#Contorl
+        MOV       A,#0x1
+        MOVX      @DPTR,A
         INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       C,0xE0 /* A   */.5
-        JNC       ??zclSampleThermostat_event_loop_4
-        ; Setup parameters for call to function HalLedSet
-        MOV       R2,#0x1
-        MOV       R1,#0x2
-        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-        ; Setup parameters for call to function bdb_StartCommissioning
-        MOV       R1,#0xc
-        LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
-        ; Setup parameters for call to function NLME_PermitJoiningRequest
-        MOV       R1,#-0x1
-        LCALL     `??NLME_PermitJoiningRequest::?relay`; Banked call to: NLME_PermitJoiningRequest
 ??zclSampleThermostat_event_loop_4:
+        MOVX      @DPTR,A
+        ; Setup parameters for call to function Control_Test
+        LCALL     `??Control_Test::?relay`; Banked call to: Control_Test
+??zclSampleThermostat_event_loop_5:
         ; Setup parameters for call to function osal_msg_deallocate
         MOV       R2,?V0
         MOV       R3,?V1
@@ -1374,289 +1517,361 @@ zclSampleThermostat_event_loop:
         MOV       ?V1,R3
         MOV       A,R2
         ORL       A,R3
-        JZ        ??zclSampleThermostat_event_loop_5
+        JZ        ??zclSampleThermostat_event_loop_6
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         ADD       A,#-0x34
-        JZ        ??zclSampleThermostat_event_loop_6
-        ADD       A,#0x74
+        JZ        ??zclSampleThermostat_event_loop_7
+        ADD       A,#-0x3
+        JZ        ??zclSampleThermostat_event_loop_8
+        DEC       A
         JZ        ??zclSampleThermostat_event_loop_3
-        SJMP      ??zclSampleThermostat_event_loop_4
-??zclSampleThermostat_event_loop_6:
+        ADD       A,#0x78
+        JZ        ??zclSampleThermostat_event_loop_9
+        SJMP      ??zclSampleThermostat_event_loop_5
+??zclSampleThermostat_event_loop_7:
         ; Setup parameters for call to function zclSampleThermostat_ProcessIncomingMsg
         LCALL     `??zclSampleThermostat_ProcessIncomingMsg::?rela`; Banked call to: zclSampleThermostat_ProcessIncomingMsg
+        SJMP      ??zclSampleThermostat_event_loop_5
+??zclSampleThermostat_event_loop_9:
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V2,A
+        MOV       C,0xE0 /* A   */.5
+        JNC       ??zclSampleThermostat_event_loop_10
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x1
+        MOV       R1,#0x2
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+        ; Setup parameters for call to function bdb_StartCommissioning
+        MOV       R1,#0xc
+        LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
+        ; Setup parameters for call to function NLME_PermitJoiningRequest
+        MOV       R1,#-0x1
+        LCALL     `??NLME_PermitJoiningRequest::?relay`; Banked call to: NLME_PermitJoiningRequest
+??zclSampleThermostat_event_loop_10:
+        MOV       A,?V2
+        MOV       C,0xE0 /* A   */.2
+        JNC       ??zclSampleThermostat_event_loop_5
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x8
+        MOV       R1,#0x2
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+        MOV       DPTR,#Contorl
+        MOV       A,#0x1
+        MOVX      @DPTR,A
+        INC       DPTR
+        INC       A
         SJMP      ??zclSampleThermostat_event_loop_4
-??zclSampleThermostat_event_loop_5:
+??zclSampleThermostat_event_loop_8:
+        MOV       DPTR,#Contorl
+        MOV       A,#0x1
+        MOVX      @DPTR,A
+        INC       DPTR
+        CLR       A
+        SJMP      ??zclSampleThermostat_event_loop_4
+??zclSampleThermostat_event_loop_6:
         MOV       A,R6
         MOV       R2,A
         MOV       A,R7
         XRL       A,#0x80
         MOV       R3,A
-        SJMP      ??zclSampleThermostat_event_loop_7
-//  370 
-//  371   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
+        SJMP      ??zclSampleThermostat_event_loop_11
+//  395 
+//  396   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
 ??zclSampleThermostat_event_loop_1:
         MOV       A,R2
         ANL       A,#0x20
-        JZ        ??zclSampleThermostat_event_loop_8
-//  372   {
-//  373     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
+        JZ        ??zclSampleThermostat_event_loop_12
+//  397   {
+//  398     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
         MOV       A,R2
         XRL       A,#0x20
 ??zclSampleThermostat_event_loop_2:
         MOV       R2,A
-        SJMP      ??zclSampleThermostat_event_loop_7
-//  374   }
-//  375 
-//  376   // Discard unknown events
-//  377   return 0;
-??zclSampleThermostat_event_loop_8:
+        SJMP      ??zclSampleThermostat_event_loop_11
+//  399   }
+//  400 
+//  401   // Discard unknown events
+//  402   return 0;
+??zclSampleThermostat_event_loop_12:
         MOV       R2,#0x0
         MOV       R3,#0x0
-??zclSampleThermostat_event_loop_7:
+??zclSampleThermostat_event_loop_11:
+          CFI EndBlock cfiBlock1
+        REQUIRE ?Subroutine0
+        ; // Fall through to label ?Subroutine0
+//  403 }
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine0:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI NoFunction
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
-//  378 }
-          CFI EndBlock cfiBlock1
-//  379 
-//  380 /*********************************************************************
-//  381  * @fn      zclSampleThermostat_HandleKeys
-//  382  *
-//  383  * @brief   Handles all key events for this device.
-//  384  *
-//  385  * @param   shift - true if in shift/alt.
-//  386  * @param   keys - bit field for key events. Valid entries:
-//  387  *                 HAL_KEY_SW_5
-//  388  *                 HAL_KEY_SW_4
-//  389  *                 HAL_KEY_SW_3
-//  390  *                 HAL_KEY_SW_2
-//  391  *                 HAL_KEY_SW_1
-//  392  *
-//  393  * @return  none
-//  394  */
-//  395 static void zclSampleThermostat_HandleKeys( byte shift, byte keys )
-//  396 {
-//  397   if ( keys & HAL_KEY_SW_6 ) //key1
-//  398   {
-//  399     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
-//  400     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
-//  401     NLME_PermitJoiningRequest( 0xff );
-//  402   }    
-//  403 }
+          CFI EndBlock cfiBlock2
 //  404 
-//  405 #ifdef MT_APP_FUNC
-//  406 
-//  407 /*********************************************************************
-//  408  * @fn      zclSampleThermostat_ProcessAppMsg
+//  405 /*********************************************************************
+//  406  * @fn      zclSampleThermostat_HandleKeys
+//  407  *
+//  408  * @brief   Handles all key events for this device.
 //  409  *
-//  410  * @brief   Process DoorLock messages
-//  411  *
-//  412  * @param   srcEP - Sending Apps endpoint
-//  413  * @param   len - number of bytes
-//  414  * @param   msg - pointer to message
-//  415  *          0 - lo byte destination address
-//  416  *          1 - hi byte destination address
-//  417  *          2 - destination endpoint
-//  418  *          3 - lo byte cluster ID
-//  419  *          4 - hi byte cluster ID
-//  420  *          5 - message length
-//  421  *          6 - destination address mode (first byte of data)
-//  422  *          7 - zcl command frame
-//  423  *
-//  424  * @return  none
-//  425  */
-//  426 static void zclSampleThermostat_ProcessAppMsg( uint8 srcEP, uint8 len, uint8 *msg )
-//  427 {
-//  428   afAddrType_t dstAddr;
-//  429   uint16 clusterID;
-//  430   zclFrameHdr_t hdr;
-//  431   uint8 *pData;
-//  432   uint8 dataLen;
-//  433 
-//  434   dstAddr.addr.shortAddr = BUILD_UINT16( msg[0], msg[1] );
-//  435   msg += 2;
-//  436   dstAddr.endPoint = *msg++;
-//  437   clusterID = BUILD_UINT16( msg[0], msg[1] );
-//  438   msg += 2;
-//  439   dataLen = *msg++; // Length of message (Z-Tool can support up to 255 octets)
-//  440   dstAddr.addrMode = (afAddrMode_t)(*msg++);
-//  441   dataLen--; // Length of ZCL frame
-//  442 
-//  443   // Begining of ZCL frame
-//  444   pData = zclParseHdr( &hdr, msg );
-//  445   dataLen -= (uint8)( pData - msg );
-//  446 
-//  447   // Is this a foundation type message?
-//  448   if ( zcl_ProfileCmd( hdr.fc.type ) )
-//  449   {
-//  450     if ( hdr.fc.manuSpecific )
-//  451     {
-//  452       // We don't support any manufacturer specific command -- just forward it.
-//  453       zcl_SendCommand( srcEP, &dstAddr, clusterID, hdr.commandID, FALSE, ZCL_FRAME_CLIENT_SERVER_DIR,
-//  454                        hdr.fc.disableDefaultRsp, hdr.manuCode, hdr.transSeqNum, dataLen, pData );
-//  455     }
-//  456     else
-//  457     {
-//  458       zclParseCmd_t cmd;
-//  459 
-//  460       cmd.endpoint = srcEP;
-//  461       cmd.dataLen = dataLen;
-//  462       cmd.pData = pData;
-//  463 
-//  464       zclSampleThermostat_ProcessFoundationMsg( &dstAddr, clusterID, &hdr, &cmd );
-//  465     }
-//  466   }
-//  467   else
-//  468   {
-//  469     // Nope, must be specific to the cluster ID
-//  470     if ( hdr.fc.manuSpecific )
-//  471     {
-//  472       // We don't support any manufacturer specific command -- just forward it.
-//  473       zcl_SendCommand( srcEP, &dstAddr, clusterID, hdr.commandID, TRUE, ZCL_FRAME_CLIENT_SERVER_DIR,
-//  474                        hdr.fc.disableDefaultRsp, hdr.manuCode, hdr.transSeqNum, dataLen, pData );
-//  475     }
-//  476   }
-//  477 }
+//  410  * @param   shift - true if in shift/alt.
+//  411  * @param   keys - bit field for key events. Valid entries:
+//  412  *                 HAL_KEY_SW_5
+//  413  *                 HAL_KEY_SW_4
+//  414  *                 HAL_KEY_SW_3
+//  415  *                 HAL_KEY_SW_2
+//  416  *                 HAL_KEY_SW_1
+//  417  *
+//  418  * @return  none
+//  419  */
+//  420 static void zclSampleThermostat_HandleKeys( byte shift, byte keys )
+//  421 {
+//  422   if ( keys & HAL_KEY_SW_6 ) //key1
+//  423   {
+//  424     HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
+//  425     bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
+//  426     NLME_PermitJoiningRequest( 0xff );
+//  427   }
+//  428   if ( keys & HAL_KEY_SW_5 ) //key2
+//  429   {
+//  430     HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+//  431     Contorl[0] = 1;
+//  432     Contorl[1] = 2;
+//  433     Control_Test();
+//  434   }
+//  435 }
+//  436 
+//  437 #ifdef MT_APP_FUNC
+//  438 
+//  439 /*********************************************************************
+//  440  * @fn      zclSampleThermostat_ProcessAppMsg
+//  441  *
+//  442  * @brief   Process DoorLock messages
+//  443  *
+//  444  * @param   srcEP - Sending Apps endpoint
+//  445  * @param   len - number of bytes
+//  446  * @param   msg - pointer to message
+//  447  *          0 - lo byte destination address
+//  448  *          1 - hi byte destination address
+//  449  *          2 - destination endpoint
+//  450  *          3 - lo byte cluster ID
+//  451  *          4 - hi byte cluster ID
+//  452  *          5 - message length
+//  453  *          6 - destination address mode (first byte of data)
+//  454  *          7 - zcl command frame
+//  455  *
+//  456  * @return  none
+//  457  */
+//  458 static void zclSampleThermostat_ProcessAppMsg( uint8 srcEP, uint8 len, uint8 *msg )
+//  459 {
+//  460   afAddrType_t dstAddr;
+//  461   uint16 clusterID;
+//  462   zclFrameHdr_t hdr;
+//  463   uint8 *pData;
+//  464   uint8 dataLen;
+//  465 
+//  466   dstAddr.addr.shortAddr = BUILD_UINT16( msg[0], msg[1] );
+//  467   msg += 2;
+//  468   dstAddr.endPoint = *msg++;
+//  469   clusterID = BUILD_UINT16( msg[0], msg[1] );
+//  470   msg += 2;
+//  471   dataLen = *msg++; // Length of message (Z-Tool can support up to 255 octets)
+//  472   dstAddr.addrMode = (afAddrMode_t)(*msg++);
+//  473   dataLen--; // Length of ZCL frame
+//  474 
+//  475   // Begining of ZCL frame
+//  476   pData = zclParseHdr( &hdr, msg );
+//  477   dataLen -= (uint8)( pData - msg );
 //  478 
-//  479 /*********************************************************************
-//  480  * @fn      zclSampleThermostat_ProcessFoundationMsg
-//  481  *
-//  482  * @brief   Process Foundation message
-//  483  *
-//  484  * @param   srcEP - Sending Apps endpoint
-//  485  * @param   dstAddr - where to send the request
-//  486  * @param   clusterID - real cluster ID
-//  487  * @param   hdr - pointer to the message header
-//  488  * @param   len - length of the received message
-//  489  * @param   data - received message
-//  490  *
-//  491  * @return  none
-//  492  */
-//  493 static void zclSampleThermostat_ProcessFoundationMsg( afAddrType_t *dstAddr, uint16 clusterID,
-//  494                                                 zclFrameHdr_t *hdr, zclParseCmd_t *pParseCmd )
-//  495 {
-//  496 #if defined(ZCL_READ) || defined(ZCL_WRITE) || defined(ZCL_REPORT) || defined(ZCL_DISCOVER)
-//  497   void *cmd;
-//  498 #endif
-//  499 
-//  500   switch ( hdr->commandID )
-//  501   {
-//  502 #ifdef ZCL_READ
-//  503     case ZCL_CMD_READ:
-//  504       cmd = zclParseInReadCmd( pParseCmd );
-//  505       if ( cmd )
-//  506       {
-//  507         zcl_SendRead( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReadCmd_t *)cmd,
-//  508                       ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
-//  509         osal_mem_free( cmd );
-//  510       }
-//  511       break;
-//  512 #endif // ZCL_READ
-//  513 
-//  514 #ifdef ZCL_WRITE
-//  515     case ZCL_CMD_WRITE:
-//  516       cmd = zclParseInWriteCmd( pParseCmd );
-//  517       if ( cmd )
-//  518       {
-//  519         zcl_SendWrite( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
-//  520                        ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
-//  521         osal_mem_free( cmd );
-//  522       }
-//  523       break;
-//  524 
-//  525     case ZCL_CMD_WRITE_UNDIVIDED:
-//  526       cmd = zclParseInWriteCmd( pParseCmd );
-//  527       if ( cmd )
-//  528       {
-//  529         zcl_SendWriteUndivided( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
-//  530                                 ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
-//  531         osal_mem_free( cmd );
-//  532       }
-//  533       break;
-//  534 
-//  535     case ZCL_CMD_WRITE_NO_RSP:
-//  536       cmd = zclParseInWriteCmd( pParseCmd );
+//  479   // Is this a foundation type message?
+//  480   if ( zcl_ProfileCmd( hdr.fc.type ) )
+//  481   {
+//  482     if ( hdr.fc.manuSpecific )
+//  483     {
+//  484       // We don't support any manufacturer specific command -- just forward it.
+//  485       zcl_SendCommand( srcEP, &dstAddr, clusterID, hdr.commandID, FALSE, ZCL_FRAME_CLIENT_SERVER_DIR,
+//  486                        hdr.fc.disableDefaultRsp, hdr.manuCode, hdr.transSeqNum, dataLen, pData );
+//  487     }
+//  488     else
+//  489     {
+//  490       zclParseCmd_t cmd;
+//  491 
+//  492       cmd.endpoint = srcEP;
+//  493       cmd.dataLen = dataLen;
+//  494       cmd.pData = pData;
+//  495 
+//  496       zclSampleThermostat_ProcessFoundationMsg( &dstAddr, clusterID, &hdr, &cmd );
+//  497     }
+//  498   }
+//  499   else
+//  500   {
+//  501     // Nope, must be specific to the cluster ID
+//  502     if ( hdr.fc.manuSpecific )
+//  503     {
+//  504       // We don't support any manufacturer specific command -- just forward it.
+//  505       zcl_SendCommand( srcEP, &dstAddr, clusterID, hdr.commandID, TRUE, ZCL_FRAME_CLIENT_SERVER_DIR,
+//  506                        hdr.fc.disableDefaultRsp, hdr.manuCode, hdr.transSeqNum, dataLen, pData );
+//  507     }
+//  508   }
+//  509 }
+//  510 
+//  511 /*********************************************************************
+//  512  * @fn      zclSampleThermostat_ProcessFoundationMsg
+//  513  *
+//  514  * @brief   Process Foundation message
+//  515  *
+//  516  * @param   srcEP - Sending Apps endpoint
+//  517  * @param   dstAddr - where to send the request
+//  518  * @param   clusterID - real cluster ID
+//  519  * @param   hdr - pointer to the message header
+//  520  * @param   len - length of the received message
+//  521  * @param   data - received message
+//  522  *
+//  523  * @return  none
+//  524  */
+//  525 static void zclSampleThermostat_ProcessFoundationMsg( afAddrType_t *dstAddr, uint16 clusterID,
+//  526                                                 zclFrameHdr_t *hdr, zclParseCmd_t *pParseCmd )
+//  527 {
+//  528 #if defined(ZCL_READ) || defined(ZCL_WRITE) || defined(ZCL_REPORT) || defined(ZCL_DISCOVER)
+//  529   void *cmd;
+//  530 #endif
+//  531 
+//  532   switch ( hdr->commandID )
+//  533   {
+//  534 #ifdef ZCL_READ
+//  535     case ZCL_CMD_READ:
+//  536       cmd = zclParseInReadCmd( pParseCmd );
 //  537       if ( cmd )
 //  538       {
-//  539         zcl_SendWriteNoRsp( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
-//  540                             ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  539         zcl_SendRead( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReadCmd_t *)cmd,
+//  540                       ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
 //  541         osal_mem_free( cmd );
 //  542       }
 //  543       break;
-//  544 #endif // ZCL_WRITE
+//  544 #endif // ZCL_READ
 //  545 
-//  546 #ifdef ZCL_REPORT
-//  547     case ZCL_CMD_CONFIG_REPORT:
-//  548       cmd = zclParseInConfigReportCmd( pParseCmd );
+//  546 #ifdef ZCL_WRITE
+//  547     case ZCL_CMD_WRITE:
+//  548       cmd = zclParseInWriteCmd( pParseCmd );
 //  549       if ( cmd )
 //  550       {
-//  551         zcl_SendConfigReportCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr,  clusterID, (zclCfgReportCmd_t *)cmd,
-//  552                                  ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  551         zcl_SendWrite( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
+//  552                        ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
 //  553         osal_mem_free( cmd );
 //  554       }
 //  555       break;
 //  556 
-//  557     case ZCL_CMD_READ_REPORT_CFG:
-//  558       cmd = zclParseInReadReportCfgCmd( pParseCmd );
+//  557     case ZCL_CMD_WRITE_UNDIVIDED:
+//  558       cmd = zclParseInWriteCmd( pParseCmd );
 //  559       if ( cmd )
 //  560       {
-//  561         zcl_SendReadReportCfgCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReadReportCfgCmd_t *)cmd,
-//  562                                   ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  561         zcl_SendWriteUndivided( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
+//  562                                 ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
 //  563         osal_mem_free( cmd );
 //  564       }
 //  565       break;
 //  566 
-//  567     case ZCL_CMD_REPORT:
-//  568       cmd = zclParseInReportCmd( pParseCmd );
+//  567     case ZCL_CMD_WRITE_NO_RSP:
+//  568       cmd = zclParseInWriteCmd( pParseCmd );
 //  569       if ( cmd )
 //  570       {
-//  571         zcl_SendReportCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReportCmd_t *)cmd,
-//  572                            ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  571         zcl_SendWriteNoRsp( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclWriteCmd_t *)cmd,
+//  572                             ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
 //  573         osal_mem_free( cmd );
 //  574       }
 //  575       break;
-//  576 #endif // ZCL_REPORT
-//  577 #ifdef ZCL_DISCOVER
-//  578     case ZCL_CMD_DISCOVER_ATTRS:
-//  579       cmd = zclParseInDiscAttrsCmd( pParseCmd );
-//  580       if ( cmd )
-//  581       {
-//  582         zcl_SendDiscoverAttrsCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclDiscoverAttrsCmd_t *)cmd,
-//  583                                   ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
-//  584         osal_mem_free( cmd );
-//  585       }
-//  586       break;
-//  587 #endif // ZCL_DISCOVER
+//  576 #endif // ZCL_WRITE
+//  577 
+//  578 #ifdef ZCL_REPORT
+//  579     case ZCL_CMD_CONFIG_REPORT:
+//  580       cmd = zclParseInConfigReportCmd( pParseCmd );
+//  581       if ( cmd )
+//  582       {
+//  583         zcl_SendConfigReportCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr,  clusterID, (zclCfgReportCmd_t *)cmd,
+//  584                                  ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  585         osal_mem_free( cmd );
+//  586       }
+//  587       break;
 //  588 
-//  589     default:
-//  590       // Unsupported command -- just forward it.
-//  591       zcl_SendCommand( pParseCmd->endpoint, dstAddr, clusterID, hdr->commandID, FALSE, ZCL_FRAME_CLIENT_SERVER_DIR,
-//  592                        hdr->fc.disableDefaultRsp, 0, hdr->transSeqNum, pParseCmd->dataLen, pParseCmd->pData );
-//  593       break;
-//  594   }
-//  595 }
-//  596 
-//  597 #endif // MT_APP_FUNC
+//  589     case ZCL_CMD_READ_REPORT_CFG:
+//  590       cmd = zclParseInReadReportCfgCmd( pParseCmd );
+//  591       if ( cmd )
+//  592       {
+//  593         zcl_SendReadReportCfgCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReadReportCfgCmd_t *)cmd,
+//  594                                   ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  595         osal_mem_free( cmd );
+//  596       }
+//  597       break;
 //  598 
-//  599 /*********************************************************************
-//  600  * @fn      zclSampleThermostat_BasicResetCB
-//  601  *
-//  602  * @brief   Callback from the ZCL General Cluster Library
-//  603  *          to set all the Basic Cluster attributes to default values.
-//  604  *
-//  605  * @param   none
-//  606  *
-//  607  * @return  none
-//  608  */
+//  599     case ZCL_CMD_REPORT:
+//  600       cmd = zclParseInReportCmd( pParseCmd );
+//  601       if ( cmd )
+//  602       {
+//  603         zcl_SendReportCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclReportCmd_t *)cmd,
+//  604                            ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  605         osal_mem_free( cmd );
+//  606       }
+//  607       break;
+//  608 #endif // ZCL_REPORT
+//  609 #ifdef ZCL_DISCOVER
+//  610     case ZCL_CMD_DISCOVER_ATTRS:
+//  611       cmd = zclParseInDiscAttrsCmd( pParseCmd );
+//  612       if ( cmd )
+//  613       {
+//  614         zcl_SendDiscoverAttrsCmd( SAMPLETHERMOSTAT_ENDPOINT, dstAddr, clusterID, (zclDiscoverAttrsCmd_t *)cmd,
+//  615                                   ZCL_FRAME_CLIENT_SERVER_DIR, hdr->fc.disableDefaultRsp, hdr->transSeqNum );
+//  616         osal_mem_free( cmd );
+//  617       }
+//  618       break;
+//  619 #endif // ZCL_DISCOVER
+//  620 
+//  621     default:
+//  622       // Unsupported command -- just forward it.
+//  623       zcl_SendCommand( pParseCmd->endpoint, dstAddr, clusterID, hdr->commandID, FALSE, ZCL_FRAME_CLIENT_SERVER_DIR,
+//  624                        hdr->fc.disableDefaultRsp, 0, hdr->transSeqNum, pParseCmd->dataLen, pParseCmd->pData );
+//  625       break;
+//  626   }
+//  627 }
+//  628 
+//  629 #endif // MT_APP_FUNC
+//  630 
+//  631 /*********************************************************************
+//  632  * @fn      zclSampleThermostat_BasicResetCB
+//  633  *
+//  634  * @brief   Callback from the ZCL General Cluster Library
+//  635  *          to set all the Basic Cluster attributes to default values.
+//  636  *
+//  637  * @param   none
+//  638  *
+//  639  * @return  none
+//  640  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  609 static void zclSampleThermostat_BasicResetCB( void )
+//  641 static void zclSampleThermostat_BasicResetCB( void )
 zclSampleThermostat_BasicResetCB:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function zclSampleThermostat_BasicResetCB
         CODE
-//  610 {
+//  642 {
         FUNCALL zclSampleThermostat_BasicResetCB, zclSampleThermostat_ResetAttributesToDefaultValues
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1687,21 +1902,21 @@ zclSampleThermostat_BasicResetCB:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  611   zclSampleThermostat_ResetAttributesToDefaultValues();
+//  643   zclSampleThermostat_ResetAttributesToDefaultValues();
         ; Setup parameters for call to function zclSampleThermostat_ResetAttributesToDefaultValues
         LCALL     ??zclSampleThermostat_ResetAttributesToDefaultV; Banked call to: zclSampleThermostat_ResetAttributesToDefaultValues
-//  612 
-//  613   zclSampleThermostat_UpdateLedState();
+//  644 
+//  645   zclSampleThermostat_UpdateLedState();
         ; Setup parameters for call to function zclSampleThermostat_UpdateLedState
         LCALL     `??zclSampleThermostat_UpdateLedState::?relay`; Banked call to: zclSampleThermostat_UpdateLedState
-//  614 }
-          CFI EndBlock cfiBlock2
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
+//  646 }
+          CFI EndBlock cfiBlock3
+        REQUIRE ?Subroutine1
+        ; // Fall through to label ?Subroutine1
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock3 Using cfiCommon0
+?Subroutine1:
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI NoFunction
           CFI CFA_SP SP+-5
           CFI DPL0 Frame(CFA_SP, 4)
@@ -1713,107 +1928,133 @@ zclSampleThermostat_BasicResetCB:
           CFI CFA_SP SP+-3
           CFI DPL0 SameValue
         LJMP      ?BRET
-          CFI EndBlock cfiBlock3
-//  615 
-//  616 /*********************************************************************
-//  617  * @fn      zclSampleApp_BatteryWarningCB
-//  618  *
-//  619  * @brief   Called to handle battery-low situation.
-//  620  *
-//  621  * @param   voltLevel - level of severity
-//  622  *
-//  623  * @return  none
-//  624  */
+          CFI EndBlock cfiBlock4
+//  647 
+//  648 /*********************************************************************
+//  649  * @fn      zclSampleApp_BatteryWarningCB
+//  650  *
+//  651  * @brief   Called to handle battery-low situation.
+//  652  *
+//  653  * @param   voltLevel - level of severity
+//  654  *
+//  655  * @return  none
+//  656  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  625 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
+//  657 void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
 zclSampleApp_BatteryWarningCB:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function zclSampleApp_BatteryWarningCB
         CODE
-//  626 {
+//  658 {
         ; Saved register size: 0
         ; Auto size: 0
-//  627   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
-//  628   {
-//  629     // Send warning message to the gateway and blink LED
-//  630   }
-//  631   else if ( voltLevel == VOLT_LEVEL_BAD )
-//  632   {
-//  633     // Shut down the system
-//  634   }
-//  635 }
+//  659   if ( voltLevel == VOLT_LEVEL_CAUTIOUS )
+//  660   {
+//  661     // Send warning message to the gateway and blink LED
+//  662   }
+//  663   else if ( voltLevel == VOLT_LEVEL_BAD )
+//  664   {
+//  665     // Shut down the system
+//  666   }
+//  667 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock4
-//  636 
-//  637 /******************************************************************************
-//  638  *
-//  639  *  Functions for processing ZCL Foundation incoming Command/Response messages
-//  640  *
-//  641  *****************************************************************************/
-//  642 
-//  643 /*********************************************************************
-//  644  * @fn      zclSampleThermostat_ProcessIncomingMsg
-//  645  *
-//  646  * @brief   Process ZCL Foundation incoming message
-//  647  *
-//  648  * @param   pInMsg - pointer to the received message
-//  649  *
-//  650  * @return  none
-//  651  */
+          CFI EndBlock cfiBlock5
+//  668 
+//  669 /******************************************************************************
+//  670  *
+//  671  *  Functions for processing ZCL Foundation incoming Command/Response messages
+//  672  *
+//  673  *****************************************************************************/
+//  674 
+//  675 /*********************************************************************
+//  676  * @fn      zclSampleThermostat_ProcessIncomingMsg
+//  677  *
+//  678  * @brief   Process ZCL Foundation incoming message
+//  679  *
+//  680  * @param   pInMsg - pointer to the received message
+//  681  *
+//  682  * @return  none
+//  683  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  652 static void zclSampleThermostat_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg)
+//  684 static void zclSampleThermostat_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg)
 zclSampleThermostat_ProcessIncomingMsg:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function zclSampleThermostat_ProcessIncomingMsg
         CODE
-//  653 {
+//  685 {
         FUNCALL zclSampleThermostat_ProcessIncomingMsg, HalLedSet
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleThermostat_ProcessIncomingMsg, printf
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME XSTACK, 14, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_ProcessIncomingMsg, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclSampleThermostat_ProcessIncomingMsg, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 14, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleThermostat_ProcessIncomingMsg, zclSampleThermostat_UpdateLedState
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL zclSampleThermostat_ProcessIncomingMsg, osal_mem_free
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME XSTACK, 12, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 12, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        MOV       A,#-0x9
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        MOV       A,#-0xc
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1821,19 +2062,26 @@ zclSampleThermostat_ProcessIncomingMsg:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-        ; Saved register size: 9
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
         ; Auto size: 0
-//  654   switch ( pInMsg->zclHdr.commandID )
+//  686   switch ( pInMsg->zclHdr.commandID )
         MOV       A,R2
         ADD       A,#0x17
-        MOV       R6,A
+        MOV       R0,A
         CLR       A
         ADDC      A,R3
+        MOV       R1,A
+        MOV       A,R0
+        MOV       R6,A
+        MOV       A,R1
         MOV       R7,A
         MOV       DPL,R2
         MOV       DPH,R3
@@ -1851,11 +2099,11 @@ zclSampleThermostat_ProcessIncomingMsg:
         JZ        ??zclSampleThermostat_ProcessIncomingMsg_1
         ADD       A,#-0x6
         JZ        ??zclSampleThermostat_ProcessIncomingMsg_2
-        SJMP      ??zclSampleThermostat_ProcessIncomingMsg_3
-//  655   {
-//  656 #ifdef ZCL_READ
-//  657     case ZCL_CMD_READ_RSP:
-//  658       zclSampleThermostat_ProcessInReadRspCmd( pInMsg );
+        LJMP      ??zclSampleThermostat_ProcessIncomingMsg_3 & 0xFFFF
+//  687   {
+//  688 #ifdef ZCL_READ
+//  689     case ZCL_CMD_READ_RSP:
+//  690       zclSampleThermostat_ProcessInReadRspCmd( pInMsg );
 ??zclSampleThermostat_ProcessIncomingMsg_0:
         LCALL     ?Subroutine2 & 0xFFFF
 ??CrossCallReturnLabel_0:
@@ -1864,14 +2112,15 @@ zclSampleThermostat_ProcessIncomingMsg:
         MOV       A,R0
         CLR       C
         SUBB      A,R1
-        JNC       ??zclSampleThermostat_ProcessIncomingMsg_3
+        JC        $+5
+        LJMP      ??zclSampleThermostat_ProcessIncomingMsg_3 & 0xFFFF
         INC       R0
         SJMP      ??CrossCallReturnLabel_0
-//  659       break;
-//  660 #endif
-//  661 #ifdef ZCL_WRITE
-//  662     case ZCL_CMD_WRITE_RSP:
-//  663       zclSampleThermostat_ProcessInWriteRspCmd( pInMsg );
+//  691       break;
+//  692 #endif
+//  693 #ifdef ZCL_WRITE
+//  694     case ZCL_CMD_WRITE_RSP:
+//  695       zclSampleThermostat_ProcessInWriteRspCmd( pInMsg );
 ??zclSampleThermostat_ProcessIncomingMsg_1:
         LCALL     ?Subroutine2 & 0xFFFF
 ??CrossCallReturnLabel_1:
@@ -1880,31 +2129,32 @@ zclSampleThermostat_ProcessIncomingMsg:
         MOV       A,R0
         CLR       C
         SUBB      A,R1
-        JNC       ??zclSampleThermostat_ProcessIncomingMsg_3
+        JC        $+5
+        LJMP      ??zclSampleThermostat_ProcessIncomingMsg_3 & 0xFFFF
         INC       R0
         SJMP      ??CrossCallReturnLabel_1
-//  664       break;
-//  665 #endif
-//  666 #ifdef ZCL_REPORT
-//  667     case ZCL_CMD_CONFIG_REPORT:
-//  668       //zclSampleThermostat_ProcessInConfigReportCmd( pInMsg );
-//  669       break;
-//  670 
-//  671     case ZCL_CMD_CONFIG_REPORT_RSP:
-//  672       //zclSampleThermostat_ProcessInConfigReportRspCmd( pInMsg );
-//  673       break;
-//  674 
-//  675     case ZCL_CMD_READ_REPORT_CFG:
-//  676       //zclSampleThermostat_ProcessInReadReportCfgCmd( pInMsg );
-//  677       break;
-//  678 
-//  679     case ZCL_CMD_READ_REPORT_CFG_RSP:
-//  680       //zclSampleThermostat_ProcessInReadReportCfgRspCmd( pInMsg );
-//  681       break;
-//  682 #endif
-//  683 #ifdef ZCL_REPORT_DESTINATION_DEVICE
-//  684     case ZCL_CMD_REPORT:
-//  685       zclSampleThermostat_ProcessInReportCmd( pInMsg );
+//  696       break;
+//  697 #endif
+//  698 #ifdef ZCL_REPORT
+//  699     case ZCL_CMD_CONFIG_REPORT:
+//  700       //zclSampleThermostat_ProcessInConfigReportCmd( pInMsg );
+//  701       break;
+//  702 
+//  703     case ZCL_CMD_CONFIG_REPORT_RSP:
+//  704       //zclSampleThermostat_ProcessInConfigReportRspCmd( pInMsg );
+//  705       break;
+//  706 
+//  707     case ZCL_CMD_READ_REPORT_CFG:
+//  708       //zclSampleThermostat_ProcessInReadReportCfgCmd( pInMsg );
+//  709       break;
+//  710 
+//  711     case ZCL_CMD_READ_REPORT_CFG_RSP:
+//  712       //zclSampleThermostat_ProcessInReadReportCfgRspCmd( pInMsg );
+//  713       break;
+//  714 #endif
+//  715 #ifdef ZCL_REPORT_DESTINATION_DEVICE
+//  716     case ZCL_CMD_REPORT:
+//  717       zclSampleThermostat_ProcessInReportCmd( pInMsg );
 ??zclSampleThermostat_ProcessIncomingMsg_2:
         ; Setup parameters for call to function HalLedSet
         MOV       R2,#0x8
@@ -1917,59 +2167,109 @@ zclSampleThermostat_ProcessIncomingMsg:
         INC       DPTR
         MOVX      A,@DPTR
         MOV       R1,A
-        MOV       DPL,R0
-        MOV       DPH,A
-        INC       DPTR
+        MOV       A,R0
+        ADD       A,#0x4
+        MOV       R0,A
+        JNC       ??zclSampleThermostat_ProcessIncomingMsg_4
+        INC       R1
+??zclSampleThermostat_ProcessIncomingMsg_4:
+        MOV       DPL,A
+        MOV       DPH,R1
         MOVX      A,@DPTR
         MOV       R2,A
         INC       DPTR
         MOVX      A,@DPTR
+        MOV       DPH,A
+        MOV       DPL,R2
+        MOVX      A,@DPTR
+        MOV       DPTR,#zclSampleThermostat_LocalTemperature
+        MOVX      @DPTR,A
+        MOV       DPL,R0
+        MOV       DPH,R1
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       DPL,R0
+        MOV       DPH,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R4,A
+        MOV       DPL,R0
+        MOV       DPH,R1
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R2,A
+        CLR       A
+        XCH       A,R2
         MOV       R3,A
-        MOV       A,R2
-        ORL       A,R3
-        JNZ       ??zclSampleThermostat_ProcessIncomingMsg_3
+        MOV       A,R4
+        ADD       A,R2
+        MOV       ?V0,A
+        CLR       A
+        ADDC      A,R3
+        MOV       ?V1,A
         MOV       DPL,R0
         MOV       DPH,R1
         INC       DPTR
         INC       DPTR
         INC       DPTR
-        INC       DPTR
-        LCALL     ?Subroutine4 & 0xFFFF
-//  686       break;
-//  687 #endif
-//  688     case ZCL_CMD_DEFAULT_RSP:
-//  689       zclSampleThermostat_ProcessInDefaultRspCmd( pInMsg );
-//  690       break;
-//  691 
-//  692     default:
-//  693       break;
-//  694   }
-??CrossCallReturnLabel_4:
         MOVX      A,@DPTR
-        MOV       R2,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       A,R2
-        MOV       DPTR,#zclSampleThermostat_LocalTemperature
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOV       A,R1
+        MOV       DPTR,#zclSampleThermostat_LocalTemperature1
         MOVX      @DPTR,A
         ; Setup parameters for call to function printf
         MOV       DPTR,#zclSampleThermostat_LocalTemperature
-        LCALL     ?PUSH_XSTACK8_X_TWO
-          CFI CFA_XSP16 add(XSP16, 11)
-        MOV       R2,#`?<Constant "data: %d">` & 0xff
-        MOV       R3,#(`?<Constant "data: %d">` >> 8) & 0xff
+        MOVX      A,@DPTR
+        MOV       ?V2,A
+        MOV       ?V3,R2
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant "%d">` & 0xff
+        MOV       R3,#(`?<Constant "%d">` >> 8) & 0xff
         LCALL     `??printf::?relay`; Banked call to: printf
         MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 9)
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Setup parameters for call to function printf
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant " %04x">` & 0xff
+        MOV       R3,#(`?<Constant " %04x">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Setup parameters for call to function printf
+        MOV       DPTR,#zclSampleThermostat_LocalTemperature1
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        MOV       ?V1,#0x0
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R2,#`?<Constant " %d\\n">` & 0xff
+        MOV       R3,#(`?<Constant " %d\\n">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
         ; Setup parameters for call to function zclSampleThermostat_UpdateLedState
         LCALL     `??zclSampleThermostat_UpdateLedState::?relay`; Banked call to: zclSampleThermostat_UpdateLedState
-//  695 
-//  696   if ( pInMsg->attrCmd )
+//  718       break;
+//  719 #endif
+//  720     case ZCL_CMD_DEFAULT_RSP:
+//  721       zclSampleThermostat_ProcessInDefaultRspCmd( pInMsg );
+//  722       break;
+//  723 
+//  724     default:
+//  725       break;
+//  726   }
+//  727 
+//  728   if ( pInMsg->attrCmd )
 ??zclSampleThermostat_ProcessIncomingMsg_3:
         MOV       DPL,R6
         MOV       DPH,R7
@@ -1980,35 +2280,15 @@ zclSampleThermostat_ProcessIncomingMsg:
         MOV       R3,A
         MOV       A,R2
         ORL       A,R3
-        JZ        ??zclSampleThermostat_ProcessIncomingMsg_4
-//  697   {
-//  698     osal_mem_free( pInMsg->attrCmd );
+        JZ        ??zclSampleThermostat_ProcessIncomingMsg_5
+//  729   {
+//  730     osal_mem_free( pInMsg->attrCmd );
         ; Setup parameters for call to function osal_mem_free
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
-//  699   }
-//  700 }
-??zclSampleThermostat_ProcessIncomingMsg_4:
-          CFI EndBlock cfiBlock5
-        REQUIRE ?Subroutine1
-        ; // Fall through to label ?Subroutine1
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock6 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-        MOV       R7,#0x1
-        LJMP      ?BANKED_LEAVE_XDATA
+//  731   }
+//  732 }
+??zclSampleThermostat_ProcessIncomingMsg_5:
+        LJMP      ?Subroutine0 & 0xFFFF
           CFI EndBlock cfiBlock6
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
@@ -2016,9 +2296,12 @@ zclSampleThermostat_ProcessIncomingMsg:
           CFI Block cfiCond7 Using cfiCommon0
           CFI Function zclSampleThermostat_ProcessIncomingMsg
           CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
@@ -2026,13 +2309,16 @@ zclSampleThermostat_ProcessIncomingMsg:
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
+          CFI CFA_XSP16 add(XSP16, 12)
           CFI Block cfiCond8 Using cfiCommon0
           CFI (cfiCond8) Function zclSampleThermostat_ProcessIncomingMsg
           CFI (cfiCond8) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond8) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond8) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond8) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond8) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond8) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond8) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond8) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond8) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond8) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
           CFI (cfiCond8) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
           CFI (cfiCond8) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI (cfiCond8) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
@@ -2040,88 +2326,33 @@ zclSampleThermostat_ProcessIncomingMsg:
           CFI (cfiCond8) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
           CFI (cfiCond8) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI (cfiCond8) CFA_SP SP+-2
-          CFI (cfiCond8) CFA_XSP16 add(XSP16, 9)
+          CFI (cfiCond8) CFA_XSP16 add(XSP16, 12)
           CFI Block cfiPicker9 Using cfiCommon1
           CFI (cfiPicker9) NoFunction
           CFI (cfiPicker9) Picker
-        MOV       DPL,R6
-        MOV       DPH,R7
-        LCALL     ?Subroutine4 & 0xFFFF
-??CrossCallReturnLabel_5:
-        MOV       R0,#0x0
-        RET
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiCond8
-          CFI EndBlock cfiPicker9
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond10 Using cfiCommon0
-          CFI Function zclSampleThermostat_ProcessIncomingMsg
-          CFI Conditional ??CrossCallReturnLabel_4
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond11 Using cfiCommon0
-          CFI (cfiCond11) Function zclSampleThermostat_ProcessIncomingMsg
-          CFI (cfiCond11) Conditional ??CrossCallReturnLabel_5, ??CrossCallReturnLabel_0
-          CFI (cfiCond11) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond11) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond11) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond11) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond11) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond11) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond11) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond11) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond11) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond11) CFA_SP SP+-4
-          CFI (cfiCond11) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond12 Using cfiCommon0
-          CFI (cfiCond12) Function zclSampleThermostat_ProcessIncomingMsg
-          CFI (cfiCond12) Conditional ??CrossCallReturnLabel_5, ??CrossCallReturnLabel_1
-          CFI (cfiCond12) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond12) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond12) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond12) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond12) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond12) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond12) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond12) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond12) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond12) CFA_SP SP+-4
-          CFI (cfiCond12) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker13 Using cfiCommon1
-          CFI (cfiPicker13) NoFunction
-          CFI (cfiPicker13) Picker
+        MOV       DPL,R0
+        MOV       DPH,R1
         MOVX      A,@DPTR
         MOV       R0,A
         INC       DPTR
         MOVX      A,@DPTR
         MOV       DPL,R0
         MOV       DPH,A
+        MOV       R0,#0x0
         RET
-          CFI EndBlock cfiCond10
-          CFI EndBlock cfiCond11
-          CFI EndBlock cfiCond12
-          CFI EndBlock cfiPicker13
-//  701 
-//  702 
+          CFI EndBlock cfiCond7
+          CFI EndBlock cfiCond8
+          CFI EndBlock cfiPicker9
+//  733 
+//  734 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  703 static void zclSampleThermostat_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg)
+//  735 static void zclSampleThermostat_ProcessCommissioningStatus(bdbCommissioningModeMsg_t* bdbCommissioningModeMsg)
 zclSampleThermostat_ProcessCommissioningStatus:
-          CFI Block cfiBlock14 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function zclSampleThermostat_ProcessCommissioningStatus
         CODE
-//  704 {
+//  736 {
         FUNCALL zclSampleThermostat_ProcessCommissioningStatus, HalLedSet
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -2163,28 +2394,28 @@ zclSampleThermostat_ProcessCommissioningStatus:
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-//  705     switch(bdbCommissioningModeMsg->bdbCommissioningMode)
+//  737     switch(bdbCommissioningModeMsg->bdbCommissioningMode)
         MOV       DPL,R2
         MOV       DPH,A
         INC       DPTR
         MOVX      A,@DPTR
         XRL       A,#0x2
         JNZ       ??zclSampleThermostat_ProcessCommissioningStatu_1
-//  706     {
-//  707       case BDB_COMMISSIONING_FORMATION:
-//  708         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  738     {
+//  739       case BDB_COMMISSIONING_FORMATION:
+//  740         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
         MOV       DPL,R2
         MOV       DPH,R3
         MOVX      A,@DPTR
         JNZ       ??zclSampleThermostat_ProcessCommissioningStatu_1
-//  709         {
-//  710           //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
-//  711           HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+//  741         {
+//  742           //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
+//  743           HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
         ; Setup parameters for call to function HalLedSet
         MOV       R2,#0x1
         MOV       R1,#0x1
         LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-//  712           bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+//  744           bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
         ; Setup parameters for call to function bdb_StartCommissioning
         MOV       DPL,R6
         MOV       DPH,R7
@@ -2194,243 +2425,452 @@ zclSampleThermostat_ProcessCommissioningStatus:
         ORL       A,#0x2
         MOV       R1,A
         LCALL     `??bdb_StartCommissioning::?relay`; Banked call to: bdb_StartCommissioning
-//  713         }
-//  714         else
-//  715         {
-//  716           //Want to try other channels?
-//  717           //try with bdb_setChannelAttribute
-//  718         }
-//  719       break;
-//  720       case BDB_COMMISSIONING_NWK_STEERING:
-//  721         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-//  722         {
-//  723           //YOUR JOB:
-//  724           //We are on the nwk, what now?
-//  725         }
-//  726         else
-//  727         {
-//  728           //See the possible errors for nwk steering procedure
-//  729           //No suitable networks found
-//  730           //Want to try other channels?
-//  731           //try with bdb_setChannelAttribute
-//  732         }
-//  733       break;
-//  734       case BDB_COMMISSIONING_FINDING_BINDING:
-//  735         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-//  736         {
-//  737           //YOUR JOB:
-//  738         }
-//  739         else
-//  740         {
-//  741           //YOUR JOB:
-//  742           //retry?, wait for user interaction?
-//  743         }
-//  744       break;
-//  745       case BDB_COMMISSIONING_INITIALIZATION:
-//  746         //Initialization notification can only be successful. Failure on initialization 
-//  747         //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
-//  748         
-//  749         //YOUR JOB:
-//  750         //We are on a network, what now?
-//  751         
-//  752       break;
-//  753 #if ZG_BUILD_ENDDEVICE_TYPE    
-//  754     case BDB_COMMISSIONING_PARENT_LOST:
-//  755       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
-//  756       {
-//  757         //We did recover from losing parent
-//  758       }
-//  759       else
-//  760       {
-//  761         //Parent not found, attempt to rejoin again after a fixed delay
-//  762         osal_start_timerEx(zclSampleThermostat_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
-//  763       }
-//  764     break;
-//  765 #endif 
-//  766     }
-//  767 
-//  768 }
+//  745         }
+//  746         else
+//  747         {
+//  748           //Want to try other channels?
+//  749           //try with bdb_setChannelAttribute
+//  750         }
+//  751       break;
+//  752       case BDB_COMMISSIONING_NWK_STEERING:
+//  753         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  754         {
+//  755           //YOUR JOB:
+//  756           //We are on the nwk, what now?
+//  757         }
+//  758         else
+//  759         {
+//  760           //See the possible errors for nwk steering procedure
+//  761           //No suitable networks found
+//  762           //Want to try other channels?
+//  763           //try with bdb_setChannelAttribute
+//  764         }
+//  765       break;
+//  766       case BDB_COMMISSIONING_FINDING_BINDING:
+//  767         if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//  768         {
+//  769           //YOUR JOB:
+//  770         }
+//  771         else
+//  772         {
+//  773           //YOUR JOB:
+//  774           //retry?, wait for user interaction?
+//  775         }
+//  776       break;
+//  777       case BDB_COMMISSIONING_INITIALIZATION:
+//  778         //Initialization notification can only be successful. Failure on initialization 
+//  779         //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
+//  780         
+//  781         //YOUR JOB:
+//  782         //We are on a network, what now?
+//  783         
+//  784       break;
+//  785 #if ZG_BUILD_ENDDEVICE_TYPE    
+//  786     case BDB_COMMISSIONING_PARENT_LOST:
+//  787       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
+//  788       {
+//  789         //We did recover from losing parent
+//  790       }
+//  791       else
+//  792       {
+//  793         //Parent not found, attempt to rejoin again after a fixed delay
+//  794         osal_start_timerEx(zclSampleThermostat_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+//  795       }
+//  796     break;
+//  797 #endif 
+//  798     }
+//  799 
+//  800 }
 ??zclSampleThermostat_ProcessCommissioningStatu_1:
-        SJMP      ?Subroutine1
-          CFI EndBlock cfiBlock14
-//  769 
-//  770 
-//  771 #ifdef ZCL_READ
-//  772 /*********************************************************************
-//  773  * @fn      zclSampleThermostat_ProcessInReadRspCmd
-//  774  *
-//  775  * @brief   Process the "Profile" Read Response Command
-//  776  *
-//  777  * @param   pInMsg - incoming message to process
-//  778  *
-//  779  * @return  none
-//  780  */
-//  781 static uint8 zclSampleThermostat_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
-//  782 {
-//  783   zclReadRspCmd_t *readRspCmd;
-//  784   uint8 i;
-//  785 
-//  786   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
-//  787   for (i = 0; i < readRspCmd->numAttr; i++)
-//  788   {
-//  789     // Notify the originator of the results of the original read attributes
-//  790     // attempt and, for each successfull request, the value of the requested
-//  791     // attribute
-//  792   }
-//  793 
-//  794   return ( TRUE );
-//  795 }
-//  796 #endif // ZCL_READ
-//  797 
-//  798 #ifdef ZCL_WRITE
-//  799 /*********************************************************************
-//  800  * @fn      zclSampleThermostat_ProcessInWriteRspCmd
-//  801  *
-//  802  * @brief   Process the "Profile" Write Response Command
-//  803  *
-//  804  * @param   pInMsg - incoming message to process
-//  805  *
-//  806  * @return  none
-//  807  */
-//  808 static uint8 zclSampleThermostat_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
-//  809 {
-//  810   zclWriteRspCmd_t *writeRspCmd;
-//  811   uint8 i;
-//  812 
-//  813   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
-//  814   for (i = 0; i < writeRspCmd->numAttr; i++)
-//  815   {
-//  816     // Notify the device of the results of the its original write attributes
-//  817     // command.
-//  818   }
-//  819 
-//  820   return ( TRUE );
-//  821 }
-//  822 #endif // ZCL_WRITE
-//  823 
-//  824 #ifdef ZCL_REPORT_DESTINATION_DEVICE
-//  825 /*********************************************************************
-//  826  * @fn      zclSampleThermostat_ProcessInReportCmd
-//  827  *
-//  828  * @brief   Process the "Profile" Report Command
-//  829  *
-//  830  * @param   pInMsg - incoming message to process
-//  831  *
-//  832  * @return  none
-//  833  */
-//  834 static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
-//  835 {
-//  836   HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
-//  837   
-//  838   zclReportCmd_t *pInTempSensorReport;
-//  839   
-//  840   pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
-//  841 
-//  842   if ( pInTempSensorReport->attrList[0].attrID != ATTRID_MS_TEMPERATURE_MEASURED_VALUE )
-//  843   {
-//  844     return;
-//  845   }
-//  846   
-//  847   // store the current temperature value sent over the air from temperature sensor
-//  848   zclSampleThermostat_LocalTemperature = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[0], pInTempSensorReport->attrList[0].attrData[1]);
-//  849 
-//  850   printf("data: %d", zclSampleThermostat_LocalTemperature);
-//  851   
-//  852   zclSampleThermostat_UpdateLedState();
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock10
+//  801 
+//  802 
+//  803 #ifdef ZCL_READ
+//  804 /*********************************************************************
+//  805  * @fn      zclSampleThermostat_ProcessInReadRspCmd
+//  806  *
+//  807  * @brief   Process the "Profile" Read Response Command
+//  808  *
+//  809  * @param   pInMsg - incoming message to process
+//  810  *
+//  811  * @return  none
+//  812  */
+//  813 static uint8 zclSampleThermostat_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
+//  814 {
+//  815   zclReadRspCmd_t *readRspCmd;
+//  816   uint8 i;
+//  817 
+//  818   readRspCmd = (zclReadRspCmd_t *)pInMsg->attrCmd;
+//  819   for (i = 0; i < readRspCmd->numAttr; i++)
+//  820   {
+//  821     // Notify the originator of the results of the original read attributes
+//  822     // attempt and, for each successfull request, the value of the requested
+//  823     // attribute
+//  824   }
+//  825 
+//  826   return ( TRUE );
+//  827 }
+//  828 #endif // ZCL_READ
+//  829 
+//  830 #ifdef ZCL_WRITE
+//  831 /*********************************************************************
+//  832  * @fn      zclSampleThermostat_ProcessInWriteRspCmd
+//  833  *
+//  834  * @brief   Process the "Profile" Write Response Command
+//  835  *
+//  836  * @param   pInMsg - incoming message to process
+//  837  *
+//  838  * @return  none
+//  839  */
+//  840 static uint8 zclSampleThermostat_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
+//  841 {
+//  842   zclWriteRspCmd_t *writeRspCmd;
+//  843   uint8 i;
+//  844 
+//  845   writeRspCmd = (zclWriteRspCmd_t *)pInMsg->attrCmd;
+//  846   for (i = 0; i < writeRspCmd->numAttr; i++)
+//  847   {
+//  848     // Notify the device of the results of the its original write attributes
+//  849     // command.
+//  850   }
+//  851 
+//  852   return ( TRUE );
 //  853 }
-//  854 #endif  // ZCL_REPORT_DESTINATION_DEVICE
+//  854 #endif // ZCL_WRITE
 //  855 
-//  856 /*********************************************************************
-//  857  * @fn      zclSampleThermostat_ProcessInDefaultRspCmd
-//  858  *
-//  859  * @brief   Process the "Profile" Default Response Command
-//  860  *
-//  861  * @param   pInMsg - incoming message to process
-//  862  *
-//  863  * @return  none
-//  864  */
-//  865 static uint8 zclSampleThermostat_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
-//  866 {
-//  867   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
-//  868 
-//  869   // Device is notified of the Default Response command.
-//  870   (void)pInMsg;
-//  871 
-//  872   return ( TRUE );
-//  873 }
-//  874 
-//  875 //static void zclSampleThermostat_UiActionSetHeating(uint16 keys)
-//  876 //{
-//  877 //  if ( keys & HAL_KEY_SW_1 )
-//  878 //  {
-//  879 //    // increase heating setpoint, considering whole numbers where necessary
-//  880 //    if ( zclSampleThermostat_OccupiedHeatingSetpoint < zclSampleThermostat_MaxHeatSetpointLimit )
-//  881 //    {
-//  882 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_OccupiedHeatingSetpoint + 100;
-//  883 //    }
-//  884 //    else if ( zclSampleThermostat_OccupiedHeatingSetpoint >= zclSampleThermostat_MaxHeatSetpointLimit )
-//  885 //    {
-//  886 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_MaxHeatSetpointLimit;
-//  887 //    }
-//  888 //  }
-//  889 //  
-//  890 //  if ( keys & HAL_KEY_SW_3 )
-//  891 //  {
-//  892 //    // decrease heating setpoint, considering whole numbers where necessary
-//  893 //    if ( zclSampleThermostat_OccupiedHeatingSetpoint > zclSampleThermostat_MinHeatSetpointLimit )
-//  894 //    {
-//  895 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_OccupiedHeatingSetpoint - 100;
-//  896 //    }
-//  897 //    else if ( zclSampleThermostat_OccupiedHeatingSetpoint <= zclSampleThermostat_MinHeatSetpointLimit )
-//  898 //    {
-//  899 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_MinHeatSetpointLimit;
-//  900 //    }
-//  901 //  }
-//  902 //  
-//  903 //  UI_UpdateLcd();
-//  904 //  zclSampleThermostat_UpdateLedState();
-//  905 //}
-//  906 //
-//  907 //static void zclSampleThermostat_UiActionSetCooling(uint16 keys)
-//  908 //{
-//  909 //  if ( keys & HAL_KEY_SW_1 )
-//  910 //  {
-//  911 //    // increase cooling setpoint, considering whole numbers where necessary
-//  912 //    if ( zclSampleThermostat_OccupiedCoolingSetpoint < zclSampleThermostat_MaxCoolSetpointLimit )
-//  913 //    {
-//  914 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_OccupiedCoolingSetpoint + 100;
-//  915 //    }
-//  916 //    else if ( zclSampleThermostat_OccupiedCoolingSetpoint >= zclSampleThermostat_MaxCoolSetpointLimit )
-//  917 //    {
-//  918 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_MaxCoolSetpointLimit;
-//  919 //    }
-//  920 //  }
-//  921 //  
-//  922 //  if ( keys & HAL_KEY_SW_3 )
-//  923 //  {
-//  924 //    // decrease cooling setpoint, considering whole numbers where necessary
-//  925 //    if ( zclSampleThermostat_OccupiedCoolingSetpoint > zclSampleThermostat_MinCoolSetpointLimit )
-//  926 //    {
-//  927 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_OccupiedCoolingSetpoint - 100;
-//  928 //    }
-//  929 //    else if ( zclSampleThermostat_OccupiedCoolingSetpoint <= zclSampleThermostat_MinCoolSetpointLimit )
-//  930 //    {
-//  931 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_MinCoolSetpointLimit;
-//  932 //    }
-//  933 //  }
-//  934 //  
-//  935 //  UI_UpdateLcd();
-//  936 //  zclSampleThermostat_UpdateLedState();
-//  937 //}
-//  938 
+//  856 #ifdef ZCL_REPORT_DESTINATION_DEVICE
+//  857 /*********************************************************************
+//  858  * @fn      zclSampleThermostat_ProcessInReportCmd
+//  859  *
+//  860  * @brief   Process the "Profile" Report Command
+//  861  *
+//  862  * @param   pInMsg - incoming message to process
+//  863  *
+//  864  * @return  none
+//  865  */
+//  866 static void zclSampleThermostat_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
+//  867 {
+//  868   HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
+//  869   
+//  870   zclReportCmd_t *pInTempSensorReport;
+//  871   
+//  872   uint16 zclSampleThermostat_LocalTemperature2;
+//  873   
+//  874   pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
+//  875 
+//  876 //  if ( pInTempSensorReport->attrList[0].attrID != ATTRID_MS_TEMPERATURE_MEASURED_VALUE )
+//  877 //  {
+//  878 //    return;
+//  879 //  }
+//  880   
+//  881   // store the current temperature value sent over the air from temperature sensor
+//  882   //zclSampleThermostat_LocalTemperature = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[0], pInTempSensorReport->attrList[0].attrData[1]);
+//  883   //zclSampleThermostat_LocalTemperature1 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[2], pInTempSensorReport->attrList[0].attrData[3]);
+//  884   //zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[4], pInTempSensorReport->attrList[0].attrData[5]);
+//  885   zclSampleThermostat_LocalTemperature = pInTempSensorReport->attrList[0].attrData[0];
+//  886   zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[1], pInTempSensorReport->attrList[0].attrData[2]);
+//  887   zclSampleThermostat_LocalTemperature1 = pInTempSensorReport->attrList[0].attrData[3];
+//  888   
+//  889   printf("%d", zclSampleThermostat_LocalTemperature);
+//  890 //  printf("data: %d", zclSampleThermostat_LocalTemperature1);
+//  891   printf(" %04x", zclSampleThermostat_LocalTemperature2);
+//  892   printf(" %d\n", zclSampleThermostat_LocalTemperature1);
+//  893   zclSampleThermostat_UpdateLedState();
+//  894 }
+//  895 #endif  // ZCL_REPORT_DESTINATION_DEVICE
+//  896 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  939 void zclSampleThermostat_UpdateLedState(void)
+//  897 static void Control_Test( void )
+Control_Test:
+          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Function Control_Test
+        CODE
+//  898 {
+        FUNCALL Control_Test, osal_mem_alloc
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Control_Test, zcl_SendReportCmd
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 17, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 17, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Control_Test, osal_mem_free
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        MOV       A,#-0xc
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
+        ; Auto size: 0
+//  899   zclReportCmd_t *pReportCmd;
+//  900 
+//  901   pReportCmd = osal_mem_alloc( sizeof(zclReportCmd_t) + sizeof(zclReport_t) );
+        ; Setup parameters for call to function osal_mem_alloc
+        MOV       R2,#0x6
+        MOV       R3,#0x0
+        LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+//  902   if ( pReportCmd != NULL )
+        MOV       A,R2
+        ORL       A,R3
+        JZ        ??Control_Test_0
+//  903   {
+//  904     pReportCmd->numAttr = 1;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOV       A,#0x1
+        MOVX      @DPTR,A
+//  905     pReportCmd->attrList[0].attrID = TEST_CONTROL;
+        INC       DPTR
+        MOV       A,#0x5
+        MOVX      @DPTR,A
+        INC       DPTR
+        CLR       A
+        LCALL     ?Subroutine3 & 0xFFFF
+//  906     pReportCmd->attrList[0].dataType = ZCL_DATATYPE_UINT16;
+??CrossCallReturnLabel_2:
+        MOV       A,#0x21
+        LCALL     ?Subroutine3 & 0xFFFF
+//  907     pReportCmd->attrList[0].attrData = (void *)(&Contorl);
+??CrossCallReturnLabel_3:
+        INC       DPTR
+        MOV       A,#Contorl & 0xff
+        MOVX      @DPTR,A
+        INC       DPTR
+        MOV       A,#(Contorl >> 8) & 0xff
+        MOVX      @DPTR,A
+//  908 
+//  909     zcl_SendReportCmd( SAMPLETHERMOSTAT_ENDPOINT, &Test_dstAddr,
+//  910                        ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+//  911                        pReportCmd, /*ZCL_FRAME_SERVER_CLIENT_DIR*/ZCL_FRAME_CLIENT_SERVER_DIR, TRUE, TestSeqNum++ );
+        MOV       DPTR,#TestSeqNum
+        MOVX      A,@DPTR
+        MOV       R0,A
+        MOV       A,#0x1
+        ADD       A,R0
+        MOVX      @DPTR,A
+        ; Setup parameters for call to function zcl_SendReportCmd
+        MOV       A,R0
+        MOV       ?V2,A
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 13)
+        MOV       ?V2,#0x1
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       ?V2,#0x0
+        MOV       R0,#?V2
+        LCALL     ?PUSH_XSTACK_I_ONE
+          CFI CFA_XSP16 add(XSP16, 15)
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 17)
+        MOV       R4,#0x2
+        MOV       R5,#0x4
+        MOV       R2,#Test_dstAddr & 0xff
+        MOV       R3,#(Test_dstAddr >> 8) & 0xff
+        MOV       R1,#0x8
+        LCALL     `??zcl_SendReportCmd::?relay`; Banked call to: zcl_SendReportCmd
+        MOV       A,#0x5
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 12)
+//  912   }
+//  913 
+//  914   osal_mem_free( pReportCmd );
+??Control_Test_0:
+        ; Setup parameters for call to function osal_mem_free
+        MOV       R2,?V0
+        MOV       R3,?V1
+        LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+//  915 }
+        LJMP      ?Subroutine0 & 0xFFFF
+          CFI EndBlock cfiBlock11
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine3:
+          CFI Block cfiCond12 Using cfiCommon0
+          CFI Function Control_Test
+          CFI Conditional ??CrossCallReturnLabel_2
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI CFA_SP SP+-2
+          CFI CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiCond13 Using cfiCommon0
+          CFI (cfiCond13) Function Control_Test
+          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond13) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI (cfiCond13) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI (cfiCond13) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond13) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond13) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond13) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond13) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond13) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond13) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond13) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond13) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond13) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond13) CFA_SP SP+-2
+          CFI (cfiCond13) CFA_XSP16 add(XSP16, 12)
+          CFI Block cfiPicker14 Using cfiCommon1
+          CFI (cfiPicker14) NoFunction
+          CFI (cfiPicker14) Picker
+        MOVX      @DPTR,A
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        RET
+          CFI EndBlock cfiCond12
+          CFI EndBlock cfiCond13
+          CFI EndBlock cfiPicker14
+//  916 
+//  917 /*********************************************************************
+//  918  * @fn      zclSampleThermostat_ProcessInDefaultRspCmd
+//  919  *
+//  920  * @brief   Process the "Profile" Default Response Command
+//  921  *
+//  922  * @param   pInMsg - incoming message to process
+//  923  *
+//  924  * @return  none
+//  925  */
+//  926 static uint8 zclSampleThermostat_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
+//  927 {
+//  928   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
+//  929 
+//  930   // Device is notified of the Default Response command.
+//  931   (void)pInMsg;
+//  932 
+//  933   return ( TRUE );
+//  934 }
+//  935 
+//  936 //static void zclSampleThermostat_UiActionSetHeating(uint16 keys)
+//  937 //{
+//  938 //  if ( keys & HAL_KEY_SW_1 )
+//  939 //  {
+//  940 //    // increase heating setpoint, considering whole numbers where necessary
+//  941 //    if ( zclSampleThermostat_OccupiedHeatingSetpoint < zclSampleThermostat_MaxHeatSetpointLimit )
+//  942 //    {
+//  943 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_OccupiedHeatingSetpoint + 100;
+//  944 //    }
+//  945 //    else if ( zclSampleThermostat_OccupiedHeatingSetpoint >= zclSampleThermostat_MaxHeatSetpointLimit )
+//  946 //    {
+//  947 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_MaxHeatSetpointLimit;
+//  948 //    }
+//  949 //  }
+//  950 //  
+//  951 //  if ( keys & HAL_KEY_SW_3 )
+//  952 //  {
+//  953 //    // decrease heating setpoint, considering whole numbers where necessary
+//  954 //    if ( zclSampleThermostat_OccupiedHeatingSetpoint > zclSampleThermostat_MinHeatSetpointLimit )
+//  955 //    {
+//  956 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_OccupiedHeatingSetpoint - 100;
+//  957 //    }
+//  958 //    else if ( zclSampleThermostat_OccupiedHeatingSetpoint <= zclSampleThermostat_MinHeatSetpointLimit )
+//  959 //    {
+//  960 //      zclSampleThermostat_OccupiedHeatingSetpoint = zclSampleThermostat_MinHeatSetpointLimit;
+//  961 //    }
+//  962 //  }
+//  963 //  
+//  964 //  UI_UpdateLcd();
+//  965 //  zclSampleThermostat_UpdateLedState();
+//  966 //}
+//  967 //
+//  968 //static void zclSampleThermostat_UiActionSetCooling(uint16 keys)
+//  969 //{
+//  970 //  if ( keys & HAL_KEY_SW_1 )
+//  971 //  {
+//  972 //    // increase cooling setpoint, considering whole numbers where necessary
+//  973 //    if ( zclSampleThermostat_OccupiedCoolingSetpoint < zclSampleThermostat_MaxCoolSetpointLimit )
+//  974 //    {
+//  975 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_OccupiedCoolingSetpoint + 100;
+//  976 //    }
+//  977 //    else if ( zclSampleThermostat_OccupiedCoolingSetpoint >= zclSampleThermostat_MaxCoolSetpointLimit )
+//  978 //    {
+//  979 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_MaxCoolSetpointLimit;
+//  980 //    }
+//  981 //  }
+//  982 //  
+//  983 //  if ( keys & HAL_KEY_SW_3 )
+//  984 //  {
+//  985 //    // decrease cooling setpoint, considering whole numbers where necessary
+//  986 //    if ( zclSampleThermostat_OccupiedCoolingSetpoint > zclSampleThermostat_MinCoolSetpointLimit )
+//  987 //    {
+//  988 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_OccupiedCoolingSetpoint - 100;
+//  989 //    }
+//  990 //    else if ( zclSampleThermostat_OccupiedCoolingSetpoint <= zclSampleThermostat_MinCoolSetpointLimit )
+//  991 //    {
+//  992 //      zclSampleThermostat_OccupiedCoolingSetpoint = zclSampleThermostat_MinCoolSetpointLimit;
+//  993 //    }
+//  994 //  }
+//  995 //  
+//  996 //  UI_UpdateLcd();
+//  997 //  zclSampleThermostat_UpdateLedState();
+//  998 //}
+//  999 
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+// 1000 void zclSampleThermostat_UpdateLedState(void)
 zclSampleThermostat_UpdateLedState:
           CFI Block cfiBlock15 Using cfiCommon0
           CFI Function zclSampleThermostat_UpdateLedState
         CODE
-//  940 {
+// 1001 {
         FUNCALL zclSampleThermostat_UpdateLedState, HalLedSet
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -2472,107 +2912,81 @@ zclSampleThermostat_UpdateLedState:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-//  941   // use LEDs to show heating or cooling cycles based off local temperature
-//  942   if ( zclSampleThermostat_LocalTemperature != NULL )
+// 1002   // use LEDs to show heating or cooling cycles based off local temperature
+// 1003   if ( zclSampleThermostat_LocalTemperature != NULL )
         MOV       DPTR,#zclSampleThermostat_LocalTemperature
         MOVX      A,@DPTR
-        MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       A,R0
-        ORL       A,R1
         JZ        ??zclSampleThermostat_UpdateLedState_0
-//  943   {
-//  944     if ( zclSampleThermostat_LocalTemperature <= zclSampleThermostat_OccupiedHeatingSetpoint )
-        MOV       DPH,#(zclSampleThermostat_OccupiedHeatingSetpoint >> 8) & 0xff
-        MOV       DPL,#zclSampleThermostat_OccupiedHeatingSetpoint & 0xff
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_2:
-        JC        ??zclSampleThermostat_UpdateLedState_1
-//  945     {
-//  946       // turn on heating
-//  947       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_HEAT;
-        MOV       DPTR,#zclSampleThermostat_SystemMode
-        MOV       A,#0x4
-        SJMP      ??zclSampleThermostat_UpdateLedState_2
-//  948       HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
-//  949     }
-//  950     else if ( zclSampleThermostat_LocalTemperature >= zclSampleThermostat_OccupiedCoolingSetpoint )
-??zclSampleThermostat_UpdateLedState_1:
-        MOV       DPTR,#zclSampleThermostat_OccupiedCoolingSetpoint
-        MOVX      A,@DPTR
+// 1004   {
+// 1005     if ( zclSampleThermostat_LocalTemperature <= zclSampleThermostat_OccupiedHeatingSetpoint )
         MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R1,A
-        MOV       DPH,#(zclSampleThermostat_LocalTemperature >> 8) & 0xff
-        MOV       DPL,#zclSampleThermostat_LocalTemperature & 0xff
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_3:
-        MOV       DPTR,#zclSampleThermostat_SystemMode
-        JC        ??zclSampleThermostat_UpdateLedState_3
-//  951     {
-//  952       // turn on cooling
-//  953       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_COOL;
-        MOV       A,#0x3
-??zclSampleThermostat_UpdateLedState_2:
-        MOVX      @DPTR,A
-//  954       HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
-        ; Setup parameters for call to function HalLedSet
-        MOV       R2,#0x1
-        SJMP      ??zclSampleThermostat_UpdateLedState_4
-//  955     }
-//  956     else
-//  957     {
-//  958       // turn off heating/cooling
-//  959       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_OFF;
-??zclSampleThermostat_UpdateLedState_3:
-        CLR       A
-        MOVX      @DPTR,A
-//  960       HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
-        ; Setup parameters for call to function HalLedSet
-        MOV       R2,A
-??zclSampleThermostat_UpdateLedState_4:
-        MOV       R1,#0x1
-        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
-//  961     }
-//  962   }
-//  963 }
-??zclSampleThermostat_UpdateLedState_0:
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock15
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiCond16 Using cfiCommon0
-          CFI Function zclSampleThermostat_UpdateLedState
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond17 Using cfiCommon0
-          CFI (cfiCond17) Function zclSampleThermostat_UpdateLedState
-          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond17) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond17) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond17) CFA_SP SP+-7
-          CFI Block cfiPicker18 Using cfiCommon1
-          CFI (cfiPicker18) NoFunction
-          CFI (cfiPicker18) Picker
+        MOV       DPTR,#zclSampleThermostat_OccupiedHeatingSetpoint
         CLR       C
         MOVX      A,@DPTR
         SUBB      A,R0
         INC       DPTR
         MOVX      A,@DPTR
-        SUBB      A,R1
+        SUBB      A,#0x0
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
-        RET
-          CFI EndBlock cfiCond16
-          CFI EndBlock cfiCond17
-          CFI EndBlock cfiPicker18
+        JC        ??zclSampleThermostat_UpdateLedState_1
+// 1006     {
+// 1007       // turn on heating
+// 1008       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_HEAT;
+        MOV       DPTR,#zclSampleThermostat_SystemMode
+        MOV       A,#0x4
+        SJMP      ??zclSampleThermostat_UpdateLedState_2
+// 1009       HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+// 1010     }
+// 1011     else if ( zclSampleThermostat_LocalTemperature >= zclSampleThermostat_OccupiedCoolingSetpoint )
+??zclSampleThermostat_UpdateLedState_1:
+        MOV       DPTR,#zclSampleThermostat_OccupiedCoolingSetpoint
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        CLR       C
+        MOV       A,R0
+        SUBB      A,R2
+        CLR       A
+        SUBB      A,R3
+        MOV       C,0xD0 /* PSW */.2
+        XRL       A,PSW
+        RLC       A
+        MOV       DPTR,#zclSampleThermostat_SystemMode
+        JC        ??zclSampleThermostat_UpdateLedState_3
+// 1012     {
+// 1013       // turn on cooling
+// 1014       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_COOL;
+        MOV       A,#0x3
+??zclSampleThermostat_UpdateLedState_2:
+        MOVX      @DPTR,A
+// 1015       HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,#0x1
+        SJMP      ??zclSampleThermostat_UpdateLedState_4
+// 1016     }
+// 1017     else
+// 1018     {
+// 1019       // turn off heating/cooling
+// 1020       zclSampleThermostat_SystemMode = HVAC_THERMOSTAT_SYSTEM_MODE_OFF;
+??zclSampleThermostat_UpdateLedState_3:
+        CLR       A
+        MOVX      @DPTR,A
+// 1021       HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
+        ; Setup parameters for call to function HalLedSet
+        MOV       R2,A
+??zclSampleThermostat_UpdateLedState_4:
+        MOV       R1,#0x1
+        LCALL     `??HalLedSet::?relay`; Banked call to: HalLedSet
+// 1022     }
+// 1023   }
+// 1024 }
+??zclSampleThermostat_UpdateLedState_0:
+        LJMP      ?Subroutine1 & 0xFFFF
+          CFI EndBlock cfiBlock15
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for zclSampleThermostat_NwkState`:
@@ -2643,6 +3057,13 @@ zclSampleThermostat_UpdateLedState:
         DC24    zclSampleThermostat_ProcessCommissioningStatus
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??Control_Test::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    Control_Test
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??zclSampleThermostat_UpdateLedState::?relay`:
         CODE
         LCALL   ?BDISPATCH
@@ -2656,28 +3077,38 @@ zclSampleThermostat_UpdateLedState:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
-`?<Constant "data: %d">`:
-        DB "data: %d"
+`?<Constant "%d">`:
+        DB "%d"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant " %04x">`:
+        DB " %04x"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant " %d\\n">`:
+        DB " %d\012"
 
         END
-//  964 
-//  965 
-//  966 /****************************************************************************
-//  967 ****************************************************************************/
-//  968 
-//  969 
+// 1025 
+// 1026 
+// 1027 /****************************************************************************
+// 1028 ****************************************************************************/
+// 1029 
+// 1030 
 // 
-// 697 bytes in segment BANKED_CODE
-//  42 bytes in segment BANK_RELAYS
+// 980 bytes in segment BANKED_CODE
+//  48 bytes in segment BANK_RELAYS
 //  23 bytes in segment XDATA_I
 //  23 bytes in segment XDATA_ID
-//  27 bytes in segment XDATA_ROM_C
-//   1 byte  in segment XDATA_Z
+//  32 bytes in segment XDATA_ROM_C
+//  14 bytes in segment XDATA_Z
 // 
-//  65 bytes of CODE     memory
-//  27 bytes of CONST    memory
-// 697 bytes of HUGECODE memory
-//  24 bytes of XDATA    memory
+//  71 bytes of CODE     memory
+//  32 bytes of CONST    memory
+// 980 bytes of HUGECODE memory
+//  37 bytes of XDATA    memory
 //
 //Errors: none
 //Warnings: none

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:19
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:40
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWBAB6.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW5A42.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\common\hal_assert.c" -D BDB_REPORTING -D SECURE=1
 #        -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -317,46 +319,49 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
    \   000011   A2E6         MOV       C,0xE0 /* A   */.6
    \   000013   50FA         JNC       ??halAssertHazardLights_0
    \   000015   00           NOP
-   \   000016   78F8         MOV       R0,#-0x8
-   \   000018   7901         MOV       R1,#0x1
-   \                     ??halAssertHazardLights_1:
-   \   00001A   00           NOP
-   \   00001B   E8           MOV       A,R0
-   \   00001C   24FF         ADD       A,#-0x1
-   \   00001E   18           DEC       R0
-   \   00001F   E9           MOV       A,R1
-   \   000020   34FF         ADDC      A,#-0x1
-   \   000022   F9           MOV       R1,A
-   \   000023   E8           MOV       A,R0
-   \   000024   49           ORL       A,R1
-   \   000025   70F3         JNZ       ??halAssertHazardLights_1
-   \   000027   75C600       MOV       0xc6,#0x0
+   \   000016   7800         MOV       R0,#0x0
+   \   000018   7900         MOV       R1,#0x0
+   \   00001A   8006         SJMP      ??halAssertHazardLights_1
    \                     ??halAssertHazardLights_2:
-   \   00002A   E59E         MOV       A,0x9e
-   \   00002C   70FC         JNZ       ??halAssertHazardLights_2
-   \   00002E   43BE04       ORL       0xbe,#0x4
-   \   000031   906270       MOV       DPTR,#0x6270
-   \   000034   7408         MOV       A,#0x8
-   \   000036   F0           MOVX      @DPTR,A
-   \   000037   C290         CLR       0x90.0
-   \   000039   43FE01       ORL       0xfe,#0x1
-   \   00003C   C291         CLR       0x90.1
-   \   00003E   43FE02       ORL       0xfe,#0x2
-   \   000041   C294         CLR       0x90.4
-   \   000043   43FE10       ORL       0xfe,#0x10
-   \   000046   C281         CLR       0x80.1
-   \   000048   43FD02       ORL       0xfd,#0x2
-   \   00004B   438F01       ORL       0x8f,#0x1
+   \   00001C   00           NOP
+   \   00001D   08           INC       R0
+   \   00001E   E8           MOV       A,R0
+   \   00001F   7001         JNZ       ??halAssertHazardLights_1
+   \   000021   09           INC       R1
+   \                     ??halAssertHazardLights_1:
+   \   000022   C3           CLR       C
+   \   000023   E8           MOV       A,R0
+   \   000024   94F8         SUBB      A,#-0x8
+   \   000026   E9           MOV       A,R1
+   \   000027   9401         SUBB      A,#0x1
+   \   000029   40F1         JC        ??halAssertHazardLights_2
+   \   00002B   75C600       MOV       0xc6,#0x0
+   \                     ??halAssertHazardLights_3:
+   \   00002E   E59E         MOV       A,0x9e
+   \   000030   70FC         JNZ       ??halAssertHazardLights_3
+   \   000032   43BE04       ORL       0xbe,#0x4
+   \   000035   906270       MOV       DPTR,#0x6270
+   \   000038   7408         MOV       A,#0x8
+   \   00003A   F0           MOVX      @DPTR,A
+   \   00003B   C290         CLR       0x90.0
+   \   00003D   43FE01       ORL       0xfe,#0x1
+   \   000040   C291         CLR       0x90.1
+   \   000042   43FE02       ORL       0xfe,#0x2
+   \   000045   C294         CLR       0x90.4
+   \   000047   43FE10       ORL       0xfe,#0x10
+   \   00004A   C281         CLR       0x80.1
+   \   00004C   43FD02       ORL       0xfd,#0x2
+   \   00004F   438F01       ORL       0x8f,#0x1
     130          
     131            HAL_TURN_OFF_LED1();
-   \   00004E   C290         CLR       0x90.0
+   \   000052   C290         CLR       0x90.0
     132            HAL_TURN_OFF_LED2();
-   \   000050   C291         CLR       0x90.1
+   \   000054   C291         CLR       0x90.1
     133            HAL_TURN_OFF_LED3();
-   \   000052   C294         CLR       0x90.4
+   \   000056   C294         CLR       0x90.4
     134            HAL_TURN_OFF_LED4();
-   \   000054   C281         CLR       0x80.1
-   \   000056   8019         SJMP      ??halAssertHazardLights_3
+   \   000058   C281         CLR       0x80.1
+   \   00005A   8002         SJMP      ??halAssertHazardLights_4
     135          
     136            /*-------------------------------------------------------------------------------
     137             *  Master infinite loop.
@@ -496,30 +501,15 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
     271                  else
     272                  {
     273                    HAL_TURN_OFF_LED1();
-   \                     ??halAssertHazardLights_4:
-   \   000058   C290         CLR       0x90.0
     274                  }
     275          
     276                  /* advance to next bit */
     277                  iBit++;
-   \                     ??halAssertHazardLights_5:
-   \   00005A   09           INC       R1
     278                  if (iBit == 8)
-   \   00005B   7408         MOV       A,#0x8
-   \   00005D   69           XRL       A,R1
-   \   00005E   6003         JZ        $+5
-   \   000060   02....       LJMP      ??halAssertHazardLights_6 & 0xFFFF
     279                  {
     280                    iBit = 0;
-   \   000063   7900         MOV       R1,#0x0
     281                    iByte++;
-   \   000065   0C           INC       R4
     282                  }
-   \   000066   EC           MOV       A,R4
-   \   000067   C3           CLR       C
-   \   000068   9406         SUBB      A,#0x6
-   \   00006A   5003         JNC       $+5
-   \   00006C   02....       LJMP      ??halAssertHazardLights_6 & 0xFFFF
     283                }
     284              }
     285          
@@ -529,201 +519,225 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
     289               *  the flashing loop which uses a toggle operation to change LED states.
     290               */
     291              HAL_TURN_OFF_LED1();
-   \   00006F   C290         CLR       0x90.0
-   \                     ??halAssertHazardLights_3:
-   \   000071   7900         MOV       R1,#0x0
-   \                     ??halAssertHazardLights_7:
-   \   000073   7406         MOV       A,#0x6
-   \   000075   12....       LCALL     ?XSTACK_DISP0_8
-   \   000078   E4           CLR       A
-   \   000079   F0           MOVX      @DPTR,A
-   \   00007A   A3           INC       DPTR
-   \   00007B   F0           MOVX      @DPTR,A
-   \   00007C   A3           INC       DPTR
-   \   00007D   F0           MOVX      @DPTR,A
-   \   00007E   A3           INC       DPTR
-   \   00007F   F0           MOVX      @DPTR,A
-   \   000080   8012         SJMP      ??halAssertHazardLights_8
-   \                     ??halAssertHazardLights_9:
-   \   000082   90....       MOV       DPTR,#__Constant_1
-   \   000085   78..         MOV       R0,#?V0
-   \   000087   12....       LCALL     ?L_MOV_X
-   \   00008A   7406         MOV       A,#0x6
-   \   00008C   12....       LCALL     ?XSTACK_DISP0_8
-   \   00008F   78..         MOV       R0,#?V0
-   \   000091   12....       LCALL     ?L_ADD_TO_X
-   \                     ??halAssertHazardLights_8:
-   \   000094   90....       MOV       DPTR,#__Constant_5800
-   \   000097   78..         MOV       R0,#?V0
-   \   000099   12....       LCALL     ?L_MOV_X
-   \   00009C   7406         MOV       A,#0x6
-   \   00009E   12....       LCALL     ?XSTACK_DISP0_8
-   \   0000A1   78..         MOV       R0,#?V0
-   \   0000A3   12....       LCALL     ?UL_GT_X
-   \   0000A6   40DA         JC        ??halAssertHazardLights_9
-   \   0000A8   A290         MOV       C,0x90.0
-   \   0000AA   5004         JNC       ??halAssertHazardLights_10
-   \   0000AC   C290         CLR       0x90.0
-   \   0000AE   8002         SJMP      ??halAssertHazardLights_11
-   \                     ??halAssertHazardLights_10:
-   \   0000B0   D290         SETB      0x90.0
-   \                     ??halAssertHazardLights_11:
-   \   0000B2   A291         MOV       C,0x90.1
-   \   0000B4   5004         JNC       ??halAssertHazardLights_12
-   \   0000B6   C291         CLR       0x90.1
-   \   0000B8   8002         SJMP      ??halAssertHazardLights_13
-   \                     ??halAssertHazardLights_12:
-   \   0000BA   D291         SETB      0x90.1
-   \                     ??halAssertHazardLights_13:
-   \   0000BC   A294         MOV       C,0x90.4
-   \   0000BE   5004         JNC       ??halAssertHazardLights_14
-   \   0000C0   C294         CLR       0x90.4
-   \   0000C2   8002         SJMP      ??halAssertHazardLights_15
-   \                     ??halAssertHazardLights_14:
-   \   0000C4   D294         SETB      0x90.4
-   \                     ??halAssertHazardLights_15:
-   \   0000C6   90....       MOV       DPTR,#??escape
-   \   0000C9   E0           MOVX      A,@DPTR
-   \   0000CA   600C         JZ        ??halAssertHazardLights_16
-   \   0000CC   E4           CLR       A
-   \   0000CD   F0           MOVX      @DPTR,A
-   \   0000CE   740A         MOV       A,#0xa
-   \   0000D0   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000D3   7F04         MOV       R7,#0x4
-   \   0000D5   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \                     ??halAssertHazardLights_16:
-   \   0000D8   A281         MOV       C,0x80.1
-   \   0000DA   4095         JC        ??halAssertHazardLights_3
-   \   0000DC   09           INC       R1
-   \   0000DD   740A         MOV       A,#0xa
-   \   0000DF   69           XRL       A,R1
-   \   0000E0   7091         JNZ       ??halAssertHazardLights_7
-   \   0000E2   C290         CLR       0x90.0
-   \   0000E4   C291         CLR       0x90.1
-   \   0000E6   C294         CLR       0x90.4
-   \   0000E8   C281         CLR       0x80.1
-   \   0000EA   7800         MOV       R0,#0x0
-   \   0000EC   7900         MOV       R1,#0x0
-   \                     ??halAssertHazardLights_17:
-   \   0000EE   A281         MOV       C,0x80.1
-   \   0000F0   4004         JC        ??halAssertHazardLights_18
-   \   0000F2   7800         MOV       R0,#0x0
-   \   0000F4   7900         MOV       R1,#0x0
-   \                     ??halAssertHazardLights_18:
-   \   0000F6   08           INC       R0
-   \   0000F7   E8           MOV       A,R0
-   \   0000F8   7001         JNZ       ??halAssertHazardLights_19
-   \   0000FA   09           INC       R1
-   \                     ??halAssertHazardLights_19:
-   \   0000FB   C3           CLR       C
-   \   0000FC   94F4         SUBB      A,#-0xc
-   \   0000FE   E9           MOV       A,R1
-   \   0000FF   9401         SUBB      A,#0x1
-   \   000101   A2D2         MOV       C,0xD0 /* PSW */.2
-   \   000103   65D0         XRL       A,PSW
-   \   000105   33           RLC       A
-   \   000106   40E6         JC        ??halAssertHazardLights_17
-   \   000108   9061A3       MOV       DPTR,#0x61a3
-   \   00010B   E0           MOVX      A,@DPTR
-   \   00010C   C0E0         PUSH      A
-   \   00010E   7404         MOV       A,#0x4
-   \   000110   12....       LCALL     ?XSTACK_DISP0_8
-   \   000113   D0E0         POP       A
-   \   000115   F0           MOVX      @DPTR,A
-   \   000116   9061A4       MOV       DPTR,#0x61a4
-   \   000119   E0           MOVX      A,@DPTR
-   \   00011A   C0E0         PUSH      A
-   \   00011C   7405         MOV       A,#0x5
-   \   00011E   12....       LCALL     ?XSTACK_DISP0_8
-   \   000121   D0E0         POP       A
-   \   000123   F0           MOVX      @DPTR,A
-   \   000124   90....       MOV       DPTR,#macTxActive
-   \   000127   E0           MOVX      A,@DPTR
-   \   000128   C0E0         PUSH      A
-   \   00012A   7402         MOV       A,#0x2
-   \   00012C   12....       LCALL     ?XSTACK_DISP0_8
-   \   00012F   D0E0         POP       A
-   \   000131   F0           MOVX      @DPTR,A
-   \   000132   90....       MOV       DPTR,#macRxActive
-   \   000135   E0           MOVX      A,@DPTR
-   \   000136   C0E0         PUSH      A
-   \   000138   7403         MOV       A,#0x3
-   \   00013A   12....       LCALL     ?XSTACK_DISP0_8
-   \   00013D   D0E0         POP       A
-   \   00013F   F0           MOVX      @DPTR,A
-   \   000140   7900         MOV       R1,#0x0
-   \   000142   7C00         MOV       R4,#0x0
+   \                     ??halAssertHazardLights_5:
+   \   00005C   C290         CLR       0x90.0
+   \                     ??halAssertHazardLights_4:
+   \   00005E   7900         MOV       R1,#0x0
    \                     ??halAssertHazardLights_6:
-   \   000144   A281         MOV       C,0x80.1
-   \   000146   40FC         JC        ??halAssertHazardLights_6
-   \   000148   D290         SETB      0x90.0
-   \   00014A   D291         SETB      0x90.1
-   \   00014C   D294         SETB      0x90.4
-   \   00014E   E9           MOV       A,R1
-   \   00014F   7004         JNZ       ??halAssertHazardLights_20
-   \   000151   D281         SETB      0x80.1
-   \   000153   8002         SJMP      ??halAssertHazardLights_21
+   \   000060   7406         MOV       A,#0x6
+   \   000062   12....       LCALL     ?XSTACK_DISP0_8
+   \   000065   E4           CLR       A
+   \   000066   F0           MOVX      @DPTR,A
+   \   000067   A3           INC       DPTR
+   \   000068   F0           MOVX      @DPTR,A
+   \   000069   A3           INC       DPTR
+   \   00006A   F0           MOVX      @DPTR,A
+   \   00006B   A3           INC       DPTR
+   \   00006C   F0           MOVX      @DPTR,A
+   \   00006D   8012         SJMP      ??halAssertHazardLights_7
+   \                     ??halAssertHazardLights_8:
+   \   00006F   90....       MOV       DPTR,#__Constant_1
+   \   000072   78..         MOV       R0,#?V0
+   \   000074   12....       LCALL     ?L_MOV_X
+   \   000077   7406         MOV       A,#0x6
+   \   000079   12....       LCALL     ?XSTACK_DISP0_8
+   \   00007C   78..         MOV       R0,#?V0
+   \   00007E   12....       LCALL     ?L_ADD_TO_X
+   \                     ??halAssertHazardLights_7:
+   \   000081   90....       MOV       DPTR,#__Constant_5800
+   \   000084   78..         MOV       R0,#?V0
+   \   000086   12....       LCALL     ?L_MOV_X
+   \   000089   7406         MOV       A,#0x6
+   \   00008B   12....       LCALL     ?XSTACK_DISP0_8
+   \   00008E   78..         MOV       R0,#?V0
+   \   000090   12....       LCALL     ?UL_GT_X
+   \   000093   40DA         JC        ??halAssertHazardLights_8
+   \   000095   A290         MOV       C,0x90.0
+   \   000097   5004         JNC       ??halAssertHazardLights_9
+   \   000099   C290         CLR       0x90.0
+   \   00009B   8002         SJMP      ??halAssertHazardLights_10
+   \                     ??halAssertHazardLights_9:
+   \   00009D   D290         SETB      0x90.0
+   \                     ??halAssertHazardLights_10:
+   \   00009F   A291         MOV       C,0x90.1
+   \   0000A1   5004         JNC       ??halAssertHazardLights_11
+   \   0000A3   C291         CLR       0x90.1
+   \   0000A5   8002         SJMP      ??halAssertHazardLights_12
+   \                     ??halAssertHazardLights_11:
+   \   0000A7   D291         SETB      0x90.1
+   \                     ??halAssertHazardLights_12:
+   \   0000A9   A294         MOV       C,0x90.4
+   \   0000AB   5004         JNC       ??halAssertHazardLights_13
+   \   0000AD   C294         CLR       0x90.4
+   \   0000AF   8002         SJMP      ??halAssertHazardLights_14
+   \                     ??halAssertHazardLights_13:
+   \   0000B1   D294         SETB      0x90.4
+   \                     ??halAssertHazardLights_14:
+   \   0000B3   90....       MOV       DPTR,#??escape
+   \   0000B6   E0           MOVX      A,@DPTR
+   \   0000B7   600C         JZ        ??halAssertHazardLights_15
+   \   0000B9   E4           CLR       A
+   \   0000BA   F0           MOVX      @DPTR,A
+   \   0000BB   740A         MOV       A,#0xa
+   \   0000BD   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000C0   7F04         MOV       R7,#0x4
+   \   0000C2   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \                     ??halAssertHazardLights_15:
+   \   0000C5   A281         MOV       C,0x80.1
+   \   0000C7   4003         JC        ??halAssertHazardLights_16
+   \   0000C9   09           INC       R1
+   \   0000CA   8002         SJMP      ??halAssertHazardLights_17
+   \                     ??halAssertHazardLights_16:
+   \   0000CC   7900         MOV       R1,#0x0
+   \                     ??halAssertHazardLights_17:
+   \   0000CE   740A         MOV       A,#0xa
+   \   0000D0   69           XRL       A,R1
+   \   0000D1   708D         JNZ       ??halAssertHazardLights_6
+   \   0000D3   C290         CLR       0x90.0
+   \   0000D5   C291         CLR       0x90.1
+   \   0000D7   C294         CLR       0x90.4
+   \   0000D9   C281         CLR       0x80.1
+   \   0000DB   7800         MOV       R0,#0x0
+   \   0000DD   7900         MOV       R1,#0x0
+   \   0000DF   800D         SJMP      ??halAssertHazardLights_18
+   \                     ??halAssertHazardLights_19:
+   \   0000E1   A281         MOV       C,0x80.1
+   \   0000E3   4004         JC        ??halAssertHazardLights_20
+   \   0000E5   7800         MOV       R0,#0x0
+   \   0000E7   7900         MOV       R1,#0x0
    \                     ??halAssertHazardLights_20:
-   \   000155   C281         CLR       0x80.1
-   \                     ??halAssertHazardLights_21:
-   \   000157   7A00         MOV       R2,#0x0
-   \   000159   7B00         MOV       R3,#0x0
+   \   0000E9   08           INC       R0
+   \   0000EA   E8           MOV       A,R0
+   \   0000EB   7001         JNZ       ??halAssertHazardLights_18
+   \   0000ED   09           INC       R1
+   \                     ??halAssertHazardLights_18:
+   \   0000EE   C3           CLR       C
+   \   0000EF   E8           MOV       A,R0
+   \   0000F0   94F4         SUBB      A,#-0xc
+   \   0000F2   E9           MOV       A,R1
+   \   0000F3   9401         SUBB      A,#0x1
+   \   0000F5   A2D2         MOV       C,0xD0 /* PSW */.2
+   \   0000F7   65D0         XRL       A,PSW
+   \   0000F9   33           RLC       A
+   \   0000FA   40E5         JC        ??halAssertHazardLights_19
+   \   0000FC   9061A3       MOV       DPTR,#0x61a3
+   \   0000FF   E0           MOVX      A,@DPTR
+   \   000100   C0E0         PUSH      A
+   \   000102   7404         MOV       A,#0x4
+   \   000104   12....       LCALL     ?XSTACK_DISP0_8
+   \   000107   D0E0         POP       A
+   \   000109   F0           MOVX      @DPTR,A
+   \   00010A   9061A4       MOV       DPTR,#0x61a4
+   \   00010D   E0           MOVX      A,@DPTR
+   \   00010E   C0E0         PUSH      A
+   \   000110   7405         MOV       A,#0x5
+   \   000112   12....       LCALL     ?XSTACK_DISP0_8
+   \   000115   D0E0         POP       A
+   \   000117   F0           MOVX      @DPTR,A
+   \   000118   90....       MOV       DPTR,#macTxActive
+   \   00011B   E0           MOVX      A,@DPTR
+   \   00011C   C0E0         PUSH      A
+   \   00011E   7402         MOV       A,#0x2
+   \   000120   12....       LCALL     ?XSTACK_DISP0_8
+   \   000123   D0E0         POP       A
+   \   000125   F0           MOVX      @DPTR,A
+   \   000126   90....       MOV       DPTR,#macRxActive
+   \   000129   E0           MOVX      A,@DPTR
+   \   00012A   C0E0         PUSH      A
+   \   00012C   7403         MOV       A,#0x3
+   \   00012E   12....       LCALL     ?XSTACK_DISP0_8
+   \   000131   D0E0         POP       A
+   \   000133   F0           MOVX      @DPTR,A
+   \   000134   7900         MOV       R1,#0x0
+   \   000136   7C00         MOV       R4,#0x0
+   \   000138   800B         SJMP      ??halAssertHazardLights_21
    \                     ??halAssertHazardLights_22:
-   \   00015B   A281         MOV       C,0x80.1
-   \   00015D   4004         JC        ??halAssertHazardLights_23
-   \   00015F   7A00         MOV       R2,#0x0
-   \   000161   7B00         MOV       R3,#0x0
+   \   00013A   C290         CLR       0x90.0
    \                     ??halAssertHazardLights_23:
-   \   000163   0A           INC       R2
-   \   000164   EA           MOV       A,R2
-   \   000165   7001         JNZ       ??halAssertHazardLights_24
-   \   000167   0B           INC       R3
+   \   00013C   09           INC       R1
+   \   00013D   7408         MOV       A,#0x8
+   \   00013F   69           XRL       A,R1
+   \   000140   7003         JNZ       ??halAssertHazardLights_21
+   \   000142   7900         MOV       R1,#0x0
+   \   000144   0C           INC       R4
+   \                     ??halAssertHazardLights_21:
+   \   000145   EC           MOV       A,R4
+   \   000146   C3           CLR       C
+   \   000147   9406         SUBB      A,#0x6
+   \   000149   4003         JC        $+5
+   \   00014B   02....       LJMP      ??halAssertHazardLights_5 & 0xFFFF
    \                     ??halAssertHazardLights_24:
-   \   000168   C3           CLR       C
-   \   000169   94F4         SUBB      A,#-0xc
-   \   00016B   EB           MOV       A,R3
-   \   00016C   9401         SUBB      A,#0x1
-   \   00016E   A2D2         MOV       C,0xD0 /* PSW */.2
-   \   000170   65D0         XRL       A,PSW
-   \   000172   33           RLC       A
-   \   000173   40E6         JC        ??halAssertHazardLights_22
-   \   000175   C290         CLR       0x90.0
-   \   000177   C291         CLR       0x90.1
-   \   000179   C294         CLR       0x90.4
-   \   00017B   C281         CLR       0x80.1
-   \   00017D   75..01       MOV       ?V0,#0x1
-   \   000180   75..00       MOV       ?V1,#0x0
-   \   000183   7407         MOV       A,#0x7
-   \   000185   C3           CLR       C
-   \   000186   99           SUBB      A,R1
-   \   000187   78..         MOV       R0,#?V0
-   \   000189   12....       LCALL     ?S_SHL
-   \   00018C   EC           MOV       A,R4
-   \   00018D   FA           MOV       R2,A
-   \   00018E   85..82       MOV       DPL,?XSP + 0
-   \   000191   85..83       MOV       DPH,?XSP + 1
-   \   000194   E582         MOV       A,DPL
-   \   000196   2A           ADD       A,R2
-   \   000197   F582         MOV       DPL,A
-   \   000199   E4           CLR       A
-   \   00019A   3583         ADDC      A,DPH
-   \   00019C   F583         MOV       DPH,A
-   \   00019E   E0           MOVX      A,@DPTR
-   \   00019F   55..         ANL       A,?V0
-   \   0001A1   7003         JNZ       $+5
-   \   0001A3   02....       LJMP      ??halAssertHazardLights_4 & 0xFFFF
-   \   0001A6   D290         SETB      0x90.0
-   \   0001A8   02....       LJMP      ??halAssertHazardLights_5 & 0xFFFF
-   \   0001AB                REQUIRE _A_IEN0
-   \   0001AB                REQUIRE SLEEPCMD
-   \   0001AB                REQUIRE SLEEPSTA
-   \   0001AB                REQUIRE CLKCONCMD
-   \   0001AB                REQUIRE CLKCONSTA
-   \   0001AB                REQUIRE _A_P1
-   \   0001AB                REQUIRE P1DIR
-   \   0001AB                REQUIRE _A_P0
-   \   0001AB                REQUIRE P0DIR
-   \   0001AB                REQUIRE P0INP
+   \   00014E   A281         MOV       C,0x80.1
+   \   000150   40FC         JC        ??halAssertHazardLights_24
+   \   000152   D290         SETB      0x90.0
+   \   000154   D291         SETB      0x90.1
+   \   000156   D294         SETB      0x90.4
+   \   000158   E9           MOV       A,R1
+   \   000159   7004         JNZ       ??halAssertHazardLights_25
+   \   00015B   D281         SETB      0x80.1
+   \   00015D   8002         SJMP      ??halAssertHazardLights_26
+   \                     ??halAssertHazardLights_25:
+   \   00015F   C281         CLR       0x80.1
+   \                     ??halAssertHazardLights_26:
+   \   000161   7A00         MOV       R2,#0x0
+   \   000163   7B00         MOV       R3,#0x0
+   \   000165   800D         SJMP      ??halAssertHazardLights_27
+   \                     ??halAssertHazardLights_28:
+   \   000167   A281         MOV       C,0x80.1
+   \   000169   4004         JC        ??halAssertHazardLights_29
+   \   00016B   7A00         MOV       R2,#0x0
+   \   00016D   7B00         MOV       R3,#0x0
+   \                     ??halAssertHazardLights_29:
+   \   00016F   0A           INC       R2
+   \   000170   EA           MOV       A,R2
+   \   000171   7001         JNZ       ??halAssertHazardLights_27
+   \   000173   0B           INC       R3
+   \                     ??halAssertHazardLights_27:
+   \   000174   C3           CLR       C
+   \   000175   EA           MOV       A,R2
+   \   000176   94F4         SUBB      A,#-0xc
+   \   000178   EB           MOV       A,R3
+   \   000179   9401         SUBB      A,#0x1
+   \   00017B   A2D2         MOV       C,0xD0 /* PSW */.2
+   \   00017D   65D0         XRL       A,PSW
+   \   00017F   33           RLC       A
+   \   000180   40E5         JC        ??halAssertHazardLights_28
+   \   000182   C290         CLR       0x90.0
+   \   000184   C291         CLR       0x90.1
+   \   000186   C294         CLR       0x90.4
+   \   000188   C281         CLR       0x80.1
+   \   00018A   75..01       MOV       ?V0,#0x1
+   \   00018D   75..00       MOV       ?V1,#0x0
+   \   000190   7407         MOV       A,#0x7
+   \   000192   C3           CLR       C
+   \   000193   99           SUBB      A,R1
+   \   000194   78..         MOV       R0,#?V0
+   \   000196   12....       LCALL     ?S_SHL
+   \   000199   EC           MOV       A,R4
+   \   00019A   FA           MOV       R2,A
+   \   00019B   85..82       MOV       DPL,?XSP + 0
+   \   00019E   85..83       MOV       DPH,?XSP + 1
+   \   0001A1   E582         MOV       A,DPL
+   \   0001A3   2A           ADD       A,R2
+   \   0001A4   F582         MOV       DPL,A
+   \   0001A6   E4           CLR       A
+   \   0001A7   3583         ADDC      A,DPH
+   \   0001A9   F583         MOV       DPH,A
+   \   0001AB   E0           MOVX      A,@DPTR
+   \   0001AC   55..         ANL       A,?V0
+   \   0001AE   608A         JZ        ??halAssertHazardLights_22
+   \   0001B0   D290         SETB      0x90.0
+   \   0001B2   8088         SJMP      ??halAssertHazardLights_23
+   \   0001B4                REQUIRE _A_IEN0
+   \   0001B4                REQUIRE SLEEPCMD
+   \   0001B4                REQUIRE SLEEPSTA
+   \   0001B4                REQUIRE CLKCONCMD
+   \   0001B4                REQUIRE CLKCONSTA
+   \   0001B4                REQUIRE _A_P1
+   \   0001B4                REQUIRE P1DIR
+   \   0001B4                REQUIRE _A_P0
+   \   0001B4                REQUIRE P0DIR
+   \   0001B4                REQUIRE P0INP
     292            }
     293          }
 
@@ -784,11 +798,11 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
        4  __Constant_5800
        1  escape
        3  halAssertHandler
-     427  halAssertHazardLights
+     436  halAssertHazardLights
       12  -- Other
 
  
- 430 bytes in segment BANKED_CODE
+ 439 bytes in segment BANKED_CODE
   12 bytes in segment BANK_RELAYS
   10 bytes in segment SFR_AN
    8 bytes in segment XDATA_ROM_C
@@ -797,7 +811,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_assert.c
   12 bytes of CODE     memory
    0 bytes of CONST    memory (+  8 bytes shared)
    0 bytes of DATA     memory (+ 10 bytes shared)
- 430 bytes of HUGECODE memory
+ 439 bytes of HUGECODE memory
    1 byte  of XDATA    memory
 
 Errors: none

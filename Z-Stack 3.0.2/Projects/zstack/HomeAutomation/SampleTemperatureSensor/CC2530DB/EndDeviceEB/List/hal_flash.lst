@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:20
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:40
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWBD97.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW5BEB.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\target\CC2530EB\hal_flash.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -389,56 +391,58 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
    \   00002A   54FC         ANL       A,#0xfc
    \   00002C   90....       MOV       DPTR,#dmaCh0 + 5
    \   00002F   F0           MOVX      @DPTR,A
-   \   000030   7406         MOV       A,#0x6
-   \   000032   78..         MOV       R0,#?V0
-   \   000034   12....       LCALL     ?US_SHR
-   \   000037   E5..         MOV       A,?V0
-   \   000039   90....       MOV       DPTR,#dmaCh0 + 4
-   \   00003C   F0           MOVX      @DPTR,A
+   \   000030   90....       MOV       DPTR,#dmaCh0 + 4
+   \   000033   E4           CLR       A
+   \   000034   F0           MOVX      @DPTR,A
+   \   000035   7406         MOV       A,#0x6
+   \   000037   78..         MOV       R0,#?V0
+   \   000039   12....       LCALL     ?US_SHR
+   \   00003C   E5..         MOV       A,?V0
+   \   00003E   F0           MOVX      @DPTR,A
     129            HAL_DMA_SET_WORD_SIZE(ch, HAL_DMA_WORDSIZE_BYTE);
     130            HAL_DMA_SET_TRIG_MODE(ch, HAL_DMA_TMODE_SINGLE);
     131            HAL_DMA_SET_TRIG_SRC(ch, HAL_DMA_TRIG_FLASH);
-   \   00003D   90....       MOV       DPTR,#dmaCh0 + 6
-   \   000040   7412         MOV       A,#0x12
-   \   000042   F0           MOVX      @DPTR,A
+   \   00003F   90....       MOV       DPTR,#dmaCh0 + 6
+   \   000042   7412         MOV       A,#0x12
+   \   000044   F0           MOVX      @DPTR,A
     132            HAL_DMA_SET_SRC_INC(ch, HAL_DMA_SRCINC_1);
     133            HAL_DMA_SET_DST_INC(ch, HAL_DMA_DSTINC_0);
     134            // The DMA is to be polled and shall not issue an IRQ upon completion.
     135            HAL_DMA_SET_IRQ(ch, HAL_DMA_IRQMASK_DISABLE);
     136            HAL_DMA_SET_M8( ch, HAL_DMA_M8_USE_8_BITS);
     137            HAL_DMA_SET_PRIORITY(ch, HAL_DMA_PRI_HIGH);
-   \   000043   A3           INC       DPTR
-   \   000044   7442         MOV       A,#0x42
-   \   000046   F0           MOVX      @DPTR,A
+   \   000045   A3           INC       DPTR
+   \   000046   7442         MOV       A,#0x42
+   \   000048   F0           MOVX      @DPTR,A
     138            HAL_DMA_CLEAR_IRQ(HAL_NV_DMA_CH);
-   \   000047   75D1FE       MOV       0xd1,#-0x2
+   \   000049   75D1FE       MOV       0xd1,#-0x2
     139            HAL_DMA_ARM_CH(HAL_NV_DMA_CH);
-   \   00004A   75D601       MOV       0xd6,#0x1
+   \   00004C   75D601       MOV       0xd6,#0x1
     140          
     141            FADDRL = (uint8)addr;
-   \   00004D   EA           MOV       A,R2
-   \   00004E   906271       MOV       DPTR,#0x6271
-   \   000051   F0           MOVX      @DPTR,A
+   \   00004F   EA           MOV       A,R2
+   \   000050   906271       MOV       DPTR,#0x6271
+   \   000053   F0           MOVX      @DPTR,A
     142            FADDRH = (uint8)(addr >> 8);
-   \   000052   EB           MOV       A,R3
-   \   000053   A3           INC       DPTR
-   \   000054   F0           MOVX      @DPTR,A
+   \   000054   EB           MOV       A,R3
+   \   000055   A3           INC       DPTR
+   \   000056   F0           MOVX      @DPTR,A
     143            FCTL |= 0x02;         // Trigger the DMA writes.
-   \   000055   906270       MOV       DPTR,#0x6270
-   \   000058   E0           MOVX      A,@DPTR
-   \   000059   D2E1         SETB      0xE0 /* A   */.1
-   \   00005B   F0           MOVX      @DPTR,A
+   \   000057   906270       MOV       DPTR,#0x6270
+   \   00005A   E0           MOVX      A,@DPTR
+   \   00005B   D2E1         SETB      0xE0 /* A   */.1
+   \   00005D   F0           MOVX      @DPTR,A
     144            while (FCTL & 0x80);  // Wait until writing is done.
    \                     ??HalFlashWrite_0:
-   \   00005C   E0           MOVX      A,@DPTR
-   \   00005D   A2E7         MOV       C,0xE0 /* A   */.7
-   \   00005F   40FB         JC        ??HalFlashWrite_0
+   \   00005E   E0           MOVX      A,@DPTR
+   \   00005F   A2E7         MOV       C,0xE0 /* A   */.7
+   \   000061   40FB         JC        ??HalFlashWrite_0
     145          #endif
     146          }
-   \   000061   7F02         MOV       R7,#0x2
-   \   000063   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \   000066                REQUIRE DMAIRQ
-   \   000066                REQUIRE DMAARM
+   \   000063   7F02         MOV       R7,#0x2
+   \   000065   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000068                REQUIRE DMAIRQ
+   \   000068                REQUIRE DMAARM
     147          
     148          /**************************************************************************************************
     149           * @fn          HalFlashErase
@@ -501,19 +505,19 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
        1  DMAIRQ
       25  HalFlashErase
      131  HalFlashRead
-     102  HalFlashWrite
+     104  HalFlashWrite
        1  MEMCTR
        1  _A_IEN0
       18  -- Other
 
  
- 258 bytes in segment BANKED_CODE
+ 260 bytes in segment BANKED_CODE
   18 bytes in segment BANK_RELAYS
    4 bytes in segment SFR_AN
  
   18 bytes of CODE     memory
    0 bytes of DATA     memory (+ 4 bytes shared)
- 258 bytes of HUGECODE memory
+ 260 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

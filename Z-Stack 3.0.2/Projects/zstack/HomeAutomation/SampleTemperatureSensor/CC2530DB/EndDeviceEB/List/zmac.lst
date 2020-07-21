@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:56:08
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:13
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,14 +13,15 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW2148.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWA519.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\zmac\f8w\zmac.c" -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -292,13 +294,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     150            return ( stat );
    \   000017   EE           MOV       A,R6
    \   000018   F9           MOV       R1,A
-   \   000019   80..         SJMP      ??Subroutine10_0
+   \   000019   7F01         MOV       R7,#0x1
+   \   00001B   02....       LJMP      ?BANKED_LEAVE_XDATA
     151          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine10_0:
-   \   000000   7F01         MOV       R7,#0x1
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
     152          
     153          /********************************************************************************************************
     154           * @fn      ZMacReset
@@ -359,52 +357,42 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     182          #endif /* FEATURE_DUAL_MAC */
     183          
     184            if (ZMac_ScanBuf)
-   \   000029   12....       LCALL     ?Subroutine7 & 0xFFFF
-   \                     ??CrossCallReturnLabel_6:
-   \   00002C   6012         JZ        ??ZMacReset_0
+   \   000029   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   00002C   E0           MOVX      A,@DPTR
+   \   00002D   F8           MOV       R0,A
+   \   00002E   A3           INC       DPTR
+   \   00002F   E0           MOVX      A,@DPTR
+   \   000030   F9           MOV       R1,A
+   \   000031   E8           MOV       A,R0
+   \   000032   49           ORL       A,R1
+   \   000033   6012         JZ        ??ZMacReset_0
     185            {
     186              osal_mem_free(ZMac_ScanBuf);
-   \   00002E                ; Setup parameters for call to function osal_mem_free
-   \   00002E   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   000031   E0           MOVX      A,@DPTR
-   \   000032   FA           MOV       R2,A
-   \   000033   A3           INC       DPTR
-   \   000034   E0           MOVX      A,@DPTR
-   \   000035   FB           MOV       R3,A
-   \   000036   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+   \   000035                ; Setup parameters for call to function osal_mem_free
+   \   000035   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000038   E0           MOVX      A,@DPTR
+   \   000039   FA           MOV       R2,A
+   \   00003A   A3           INC       DPTR
+   \   00003B   E0           MOVX      A,@DPTR
+   \   00003C   FB           MOV       R3,A
+   \   00003D   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
     187              ZMac_ScanBuf = NULL;
-   \   000039   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   00003C   E4           CLR       A
-   \   00003D   F0           MOVX      @DPTR,A
-   \   00003E   A3           INC       DPTR
-   \   00003F   F0           MOVX      @DPTR,A
+   \   000040   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000043   E4           CLR       A
+   \   000044   F0           MOVX      @DPTR,A
+   \   000045   A3           INC       DPTR
+   \   000046   F0           MOVX      @DPTR,A
     188            }
     189          
     190            return ( stat );
    \                     ??ZMacReset_0:
-   \   000040   EE           MOV       A,R6
-   \   000041   F9           MOV       R1,A
-   \   000042   80..         SJMP      ?Subroutine0
+   \   000047   EE           MOV       A,R6
+   \   000048   F9           MOV       R1,A
+   \   000049   7401         MOV       A,#0x1
+   \   00004B   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00004E   7F01         MOV       R7,#0x1
+   \   000050   02....       LJMP      ?BANKED_LEAVE_XDATA
     191          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   7401         MOV       A,#0x1
-   \   000002   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000005                REQUIRE ??Subroutine10_0
-   \   000005                ; // Fall through to label ??Subroutine10_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine7:
-   \   000000   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   000003   E0           MOVX      A,@DPTR
-   \   000004   F8           MOV       R0,A
-   \   000005   A3           INC       DPTR
-   \   000006   E0           MOVX      A,@DPTR
-   \   000007   F9           MOV       R1,A
-   \   000008   E8           MOV       A,R0
-   \   000009   49           ORL       A,R1
-   \   00000A   22           RET
     192          
     193          
     194          /********************************************************************************************************
@@ -459,7 +447,8 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000017                ; Setup parameters for call to function MAC_MlmeGetReq
    \   000017   12....       LCALL     `??MAC_MlmeGetReq::?relay`; Banked call to: MAC_MlmeGetReq
    \                     ??ZMacGetReq_1:
-   \   00001A   80..         SJMP      ??Subroutine10_0
+   \   00001A   7F01         MOV       R7,#0x1
+   \   00001C   02....       LJMP      ?BANKED_LEAVE_XDATA
     224          }
     225          
     226          
@@ -517,7 +506,8 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   00001E   FB           MOV       R3,A
    \   00001F   A9..         MOV       R1,?V0
    \   000021   12....       LCALL     `??MAC_MlmeSetReq::?relay`; Banked call to: MAC_MlmeSetReq
-   \   000024   80..         SJMP      ??Subroutine10_0
+   \   000024   7F01         MOV       R7,#0x1
+   \   000026   02....       LJMP      ?BANKED_LEAVE_XDATA
     249          }
     250          
     251          #ifdef FEATURE_MAC_SECURITY
@@ -784,20 +774,11 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000012                ; Setup parameters for call to function MAC_MlmeAssociateReq
    \   000012   12....       LCALL     `??MAC_MlmeAssociateReq::?relay`; Banked call to: MAC_MlmeAssociateReq
     493            return ( ZMacSuccess );
-   \   000015   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000015   7900         MOV       R1,#0x0
+   \   000017   D083         POP       DPH
+   \   000019   D082         POP       DPL
+   \   00001B   02....       LJMP      ?BRET
     494          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   7900         MOV       R1,#0x0
-   \   000002                REQUIRE ??Subroutine11_0
-   \   000002                ; // Fall through to label ??Subroutine11_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine11_0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
     495          
     496          /********************************************************************************************************
     497           * @fn      ZMacAssociateRsp
@@ -835,7 +816,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     510            return ( MAC_MlmeAssociateRsp( (macMlmeAssociateRsp_t *) pData ) );
    \   000012                ; Setup parameters for call to function MAC_MlmeAssociateRsp
    \   000012   12....       LCALL     `??MAC_MlmeAssociateRsp::?relay`; Banked call to: MAC_MlmeAssociateRsp
-   \   000015   02....       LJMP      ??Subroutine11_0 & 0xFFFF
+   \   000015   D083         POP       DPH
+   \   000017   D082         POP       DPL
+   \   000019   02....       LJMP      ?BRET
     511          }
     512          
     513          /********************************************************************************************************
@@ -875,7 +858,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000012                ; Setup parameters for call to function MAC_MlmeDisassociateReq
    \   000012   12....       LCALL     `??MAC_MlmeDisassociateReq::?relay`; Banked call to: MAC_MlmeDisassociateReq
     528            return ( ZMacSuccess );
-   \   000015   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000015   7900         MOV       R1,#0x0
+   \   000017   D083         POP       DPH
+   \   000019   D082         POP       DPL
+   \   00001B   02....       LJMP      ?BRET
     529          }
     530          
     531          /********************************************************************************************************
@@ -915,7 +901,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000012                ; Setup parameters for call to function MAC_MlmeOrphanRsp
    \   000012   12....       LCALL     `??MAC_MlmeOrphanRsp::?relay`; Banked call to: MAC_MlmeOrphanRsp
     546            return ( ZMacSuccess );
-   \   000015   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000015   7900         MOV       R1,#0x0
+   \   000017   D083         POP       DPH
+   \   000019   D082         POP       DPL
+   \   00001B   02....       LJMP      ?BRET
     547          }
     548          
     549          /********************************************************************************************************
@@ -934,11 +923,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     559          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
-   \   000000                REQUIRE ?V2
-   \   000000                REQUIRE ?V3
-   \   000000   74F4         MOV       A,#-0xc
+   \   000000   74F6         MOV       A,#-0xa
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 12
+   \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
    \   000005   EA           MOV       A,R2
    \   000006   FE           MOV       R6,A
@@ -953,47 +940,91 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     561          
     562            /* scan in progress */
     563            if (ZMac_ScanBuf != NULL)
-   \   000016   12....       LCALL     ?Subroutine7 & 0xFFFF
-   \                     ??CrossCallReturnLabel_7:
-   \   000019   6004         JZ        ??ZMacScanReq_0
+   \   000016   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000019   E0           MOVX      A,@DPTR
+   \   00001A   F8           MOV       R0,A
+   \   00001B   A3           INC       DPTR
+   \   00001C   E0           MOVX      A,@DPTR
+   \   00001D   F9           MOV       R1,A
+   \   00001E   E8           MOV       A,R0
+   \   00001F   49           ORL       A,R1
+   \   000020   6004         JZ        ??ZMacScanReq_0
     564            {
     565              return MAC_SCAN_IN_PROGRESS;
-   \   00001B   79FC         MOV       R1,#-0x4
-   \   00001D   801F         SJMP      ??CrossCallReturnLabel_9
+   \   000022   79FC         MOV       R1,#-0x4
+   \   000024   8069         SJMP      ??ZMacScanReq_1
     566            }
     567          
     568            if (pData->ScanType != ZMAC_ORPHAN_SCAN)
    \                     ??ZMacScanReq_0:
-   \   00001F   8E82         MOV       DPL,R6
-   \   000021   8F83         MOV       DPH,R7
-   \   000023   A3           INC       DPTR
-   \   000024   A3           INC       DPTR
-   \   000025   A3           INC       DPTR
-   \   000026   A3           INC       DPTR
-   \   000027   E0           MOVX      A,@DPTR
-   \   000028   F8           MOV       R0,A
-   \   000029   7403         MOV       A,#0x3
-   \   00002B   68           XRL       A,R0
-   \   00002C   600D         JZ        ??CrossCallReturnLabel_2
+   \   000026   8E82         MOV       DPL,R6
+   \   000028   8F83         MOV       DPH,R7
+   \   00002A   A3           INC       DPTR
+   \   00002B   A3           INC       DPTR
+   \   00002C   A3           INC       DPTR
+   \   00002D   A3           INC       DPTR
+   \   00002E   E0           MOVX      A,@DPTR
+   \   00002F   F8           MOV       R0,A
+   \   000030   7403         MOV       A,#0x3
+   \   000032   68           XRL       A,R0
+   \   000033   6045         JZ        ??ZMacScanReq_2
     569            {
     570              /* Allocate memory depends on the scan type */
     571              if (pData->ScanType == ZMAC_ED_SCAN)
-   \   00002E   12....       LCALL     ?Subroutine9 & 0xFFFF
-   \                     ??CrossCallReturnLabel_11:
-   \   000031   700E         JNZ       ??ZMacScanReq_1
+   \   000035   E8           MOV       A,R0
+   \   000036   705C         JNZ       ??ZMacScanReq_3
     572              {
     573                if ((ZMac_ScanBuf = osal_mem_alloc(ZMAC_ED_SCAN_MAXCHANNELS)) == NULL)
-   \   000033                ; Setup parameters for call to function osal_mem_alloc
-   \   000033   12....       LCALL     ?Subroutine6 & 0xFFFF
-   \                     ??CrossCallReturnLabel_4:
-   \   000036   601C         JZ        ??ZMacScanReq_2
+   \   000038                ; Setup parameters for call to function osal_mem_alloc
+   \   000038   7A1B         MOV       R2,#0x1b
+   \   00003A   7B00         MOV       R3,#0x0
+   \   00003C   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   00003F   8B..         MOV       ?V1,R3
+   \   000041   A9..         MOV       R1,?V1
+   \   000043   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000046   EA           MOV       A,R2
+   \   000047   F0           MOVX      @DPTR,A
+   \   000048   A3           INC       DPTR
+   \   000049   EB           MOV       A,R3
+   \   00004A   F0           MOVX      @DPTR,A
+   \   00004B   EA           MOV       A,R2
+   \   00004C   49           ORL       A,R1
+   \   00004D   607F         JZ        ??ZMacScanReq_4
     574                {
     575                  return MAC_NO_RESOURCES;
     576                }
     577                osal_memset(ZMac_ScanBuf, 0, ZMAC_ED_SCAN_MAXCHANNELS);
-   \   000038                ; Setup parameters for call to function osal_memset
-   \   000038   12....       LCALL     ?Subroutine5 & 0xFFFF
+   \   00004F                ; Setup parameters for call to function osal_memset
+   \   00004F   7C1B         MOV       R4,#0x1b
+   \   000051   7D00         MOV       R5,#0x0
+   \   000053   7900         MOV       R1,#0x0
+   \   000055   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000058   E0           MOVX      A,@DPTR
+   \   000059   FA           MOV       R2,A
+   \   00005A   A3           INC       DPTR
+   \   00005B   E0           MOVX      A,@DPTR
+   \   00005C   FB           MOV       R3,A
+   \   00005D   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
     578                pData->Result.pEnergyDetect = ((uint8*)ZMac_ScanBuf) + MAC_CHAN_11;
+   \   000060   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000063   E0           MOVX      A,@DPTR
+   \   000064   240B         ADD       A,#0xb
+   \   000066   F8           MOV       R0,A
+   \   000067   A3           INC       DPTR
+   \   000068   E0           MOVX      A,@DPTR
+   \   000069   3400         ADDC      A,#0x0
+   \   00006B   F9           MOV       R1,A
+   \   00006C   EE           MOV       A,R6
+   \   00006D   2416         ADD       A,#0x16
+   \   00006F   F582         MOV       DPL,A
+   \   000071   E4           CLR       A
+   \   000072   3F           ADDC      A,R7
+   \   000073   F583         MOV       DPH,A
+   \   000075   E8           MOV       A,R0
+   \   000076   F0           MOVX      @DPTR,A
+   \   000077   A3           INC       DPTR
+   \   000078   E9           MOV       A,R1
+   \   000079   F0           MOVX      @DPTR,A
     579              }
     580              else if (pData->MaxResults > 0)
     581              {
@@ -1007,138 +1038,79 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     589          
     590            /* Channel Page */
     591            pData->ChannelPage = 0x00;
-   \                     ??CrossCallReturnLabel_2:
-   \   00003B   12....       LCALL     ?Subroutine8 & 0xFFFF
+   \                     ??ZMacScanReq_2:
+   \   00007A   8E82         MOV       DPL,R6
+   \   00007C   8F83         MOV       DPH,R7
+   \   00007E   A3           INC       DPTR
+   \   00007F   A3           INC       DPTR
+   \   000080   A3           INC       DPTR
+   \   000081   A3           INC       DPTR
+   \   000082   A3           INC       DPTR
+   \   000083   A3           INC       DPTR
+   \   000084   E4           CLR       A
+   \   000085   F0           MOVX      @DPTR,A
     592          
     593            MAC_MlmeScanReq ((macMlmeScanReq_t *)pData);
+   \   000086                ; Setup parameters for call to function MAC_MlmeScanReq
+   \   000086   EE           MOV       A,R6
+   \   000087   FA           MOV       R2,A
+   \   000088   EF           MOV       A,R7
+   \   000089   FB           MOV       R3,A
+   \   00008A   12....       LCALL     `??MAC_MlmeScanReq::?relay`; Banked call to: MAC_MlmeScanReq
     594          
     595            return ZMacSuccess;
-   \                     ??CrossCallReturnLabel_9:
-   \   00003E   02....       LJMP      ?Subroutine2 & 0xFFFF
+   \   00008D   7900         MOV       R1,#0x0
    \                     ??ZMacScanReq_1:
-   \   000041   8E82         MOV       DPL,R6
-   \   000043   8F83         MOV       DPH,R7
-   \   000045   A3           INC       DPTR
-   \   000046   A3           INC       DPTR
-   \   000047   A3           INC       DPTR
-   \   000048   A3           INC       DPTR
-   \   000049   A3           INC       DPTR
-   \   00004A   A3           INC       DPTR
-   \   00004B   A3           INC       DPTR
-   \   00004C   E0           MOVX      A,@DPTR
-   \   00004D   60EC         JZ        ??CrossCallReturnLabel_2
-   \   00004F                ; Setup parameters for call to function osal_mem_alloc
-   \   00004F   12....       LCALL     ?Subroutine4 & 0xFFFF
-   \                     ??CrossCallReturnLabel_0:
-   \   000052   70E7         JNZ       ??CrossCallReturnLabel_2
-   \                     ??ZMacScanReq_2:
-   \   000054   791A         MOV       R1,#0x1a
-   \   000056   80E6         SJMP      ??CrossCallReturnLabel_9
+   \   00008F   7F02         MOV       R7,#0x2
+   \   000091   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \                     ??ZMacScanReq_3:
+   \   000094   8E82         MOV       DPL,R6
+   \   000096   8F83         MOV       DPH,R7
+   \   000098   A3           INC       DPTR
+   \   000099   A3           INC       DPTR
+   \   00009A   A3           INC       DPTR
+   \   00009B   A3           INC       DPTR
+   \   00009C   A3           INC       DPTR
+   \   00009D   A3           INC       DPTR
+   \   00009E   A3           INC       DPTR
+   \   00009F   E0           MOVX      A,@DPTR
+   \   0000A0   60D8         JZ        ??ZMacScanReq_2
+   \   0000A2                ; Setup parameters for call to function osal_mem_alloc
+   \   0000A2   75F021       MOV       B,#0x21
+   \   0000A5   A4           MUL       AB
+   \   0000A6   FA           MOV       R2,A
+   \   0000A7   ABF0         MOV       R3,B
+   \   0000A9   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   0000AC   EE           MOV       A,R6
+   \   0000AD   2416         ADD       A,#0x16
+   \   0000AF   F582         MOV       DPL,A
+   \   0000B1   E4           CLR       A
+   \   0000B2   3F           ADDC      A,R7
+   \   0000B3   F583         MOV       DPH,A
+   \   0000B5   EA           MOV       A,R2
+   \   0000B6   F0           MOVX      @DPTR,A
+   \   0000B7   A3           INC       DPTR
+   \   0000B8   EB           MOV       A,R3
+   \   0000B9   F0           MOVX      @DPTR,A
+   \   0000BA   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   0000BD   EA           MOV       A,R2
+   \   0000BE   F0           MOVX      @DPTR,A
+   \   0000BF   A3           INC       DPTR
+   \   0000C0   EB           MOV       A,R3
+   \   0000C1   F0           MOVX      @DPTR,A
+   \   0000C2   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   0000C5   E0           MOVX      A,@DPTR
+   \   0000C6   F8           MOV       R0,A
+   \   0000C7   A3           INC       DPTR
+   \   0000C8   E0           MOVX      A,@DPTR
+   \   0000C9   F9           MOV       R1,A
+   \   0000CA   E8           MOV       A,R0
+   \   0000CB   49           ORL       A,R1
+   \   0000CC   70AC         JNZ       ??ZMacScanReq_2
+   \                     ??ZMacScanReq_4:
+   \   0000CE   791A         MOV       R1,#0x1a
+   \   0000D0   80BD         SJMP      ??ZMacScanReq_1
     596          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   7F04         MOV       R7,#0x4
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine9:
-   \   000000   EE           MOV       A,R6
-   \   000001   2416         ADD       A,#0x16
-   \   000003   F5..         MOV       ?V0,A
-   \   000005   E4           CLR       A
-   \   000006   3F           ADDC      A,R7
-   \   000007   F5..         MOV       ?V1,A
-   \   000009   E8           MOV       A,R0
-   \   00000A   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine8:
-   \   000000   8E82         MOV       DPL,R6
-   \   000002   8F83         MOV       DPH,R7
-   \   000004   A3           INC       DPTR
-   \   000005   A3           INC       DPTR
-   \   000006   A3           INC       DPTR
-   \   000007   A3           INC       DPTR
-   \   000008   A3           INC       DPTR
-   \   000009   A3           INC       DPTR
-   \   00000A   E4           CLR       A
-   \   00000B   F0           MOVX      @DPTR,A
-   \   00000C                ; Setup parameters for call to function MAC_MlmeScanReq
-   \   00000C                ; Setup parameters for call to function MAC_MlmeScanReq
-   \   00000C   EE           MOV       A,R6
-   \   00000D   FA           MOV       R2,A
-   \   00000E   EF           MOV       A,R7
-   \   00000F   FB           MOV       R3,A
-   \   000010   12....       LCALL     `??MAC_MlmeScanReq::?relay`; Banked call to: MAC_MlmeScanReq
-   \   000013   7900         MOV       R1,#0x0
-   \   000015   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine6:
-   \   000000   7A1B         MOV       R2,#0x1b
-   \   000002   7B00         MOV       R3,#0x0
-   \   000004   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
-   \   000007   8B..         MOV       ?V3,R3
-   \   000009   A9..         MOV       R1,?V3
-   \   00000B   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   00000E   EA           MOV       A,R2
-   \   00000F   F0           MOVX      @DPTR,A
-   \   000010   A3           INC       DPTR
-   \   000011   EB           MOV       A,R3
-   \   000012   F0           MOVX      @DPTR,A
-   \   000013   EA           MOV       A,R2
-   \   000014   49           ORL       A,R1
-   \   000015   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine5:
-   \   000000   7C1B         MOV       R4,#0x1b
-   \   000002   7D00         MOV       R5,#0x0
-   \   000004   7900         MOV       R1,#0x0
-   \   000006   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-   \   000009   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   00000C   E0           MOVX      A,@DPTR
-   \   00000D   240B         ADD       A,#0xb
-   \   00000F   F8           MOV       R0,A
-   \   000010   A3           INC       DPTR
-   \   000011   E0           MOVX      A,@DPTR
-   \   000012   3400         ADDC      A,#0x0
-   \   000014   F9           MOV       R1,A
-   \   000015   85..82       MOV       DPL,?V0
-   \   000018   85..83       MOV       DPH,?V1
-   \   00001B   E8           MOV       A,R0
-   \   00001C   F0           MOVX      @DPTR,A
-   \   00001D   A3           INC       DPTR
-   \   00001E   E9           MOV       A,R1
-   \   00001F   F0           MOVX      @DPTR,A
-   \   000020   22           RET
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine4:
-   \   000000   75F021       MOV       B,#0x21
-   \   000003   A4           MUL       AB
-   \   000004   FA           MOV       R2,A
-   \   000005   ABF0         MOV       R3,B
-   \   000007   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
-   \   00000A   8B..         MOV       ?V3,R3
-   \   00000C   A9..         MOV       R1,?V3
-   \   00000E   85..82       MOV       DPL,?V0
-   \   000011   85..83       MOV       DPH,?V1
-   \   000014   EA           MOV       A,R2
-   \   000015   F0           MOVX      @DPTR,A
-   \   000016   A3           INC       DPTR
-   \   000017   EB           MOV       A,R3
-   \   000018   F0           MOVX      @DPTR,A
-   \   000019   90....       MOV       DPTR,#ZMac_ScanBuf
-   \   00001C   EA           MOV       A,R2
-   \   00001D   F0           MOVX      @DPTR,A
-   \   00001E   A3           INC       DPTR
-   \   00001F   EB           MOV       A,R3
-   \   000020   F0           MOVX      @DPTR,A
-   \   000021   EA           MOV       A,R2
-   \   000022   49           ORL       A,R1
-   \   000023   22           RET
     597          
     598          
     599          /********************************************************************************************************
@@ -1215,7 +1187,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     626          
     627            return ZMacSuccess;
    \   00003D   7900         MOV       R1,#0x0
-   \   00003F   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   00003F   7401         MOV       A,#0x1
+   \   000041   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000044   7F01         MOV       R7,#0x1
+   \   000046   02....       LJMP      ?BANKED_LEAVE_XDATA
     628          }
     629          
     630          /********************************************************************************************************
@@ -1242,7 +1217,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000004                ; Setup parameters for call to function MAC_MlmeSyncReq
    \   000004   12....       LCALL     `??MAC_MlmeSyncReq::?relay`; Banked call to: MAC_MlmeSyncReq
     644            return ZMacSuccess;
-   \   000007   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000007   7900         MOV       R1,#0x0
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
     645          }
     646          
     647          /********************************************************************************************************
@@ -1280,7 +1258,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   00000F                ; Setup parameters for call to function MAC_MlmePollReq
    \   00000F   12....       LCALL     `??MAC_MlmePollReq::?relay`; Banked call to: MAC_MlmePollReq
     664            return ( ZMacSuccess );
-   \   000012   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000012   7900         MOV       R1,#0x0
+   \   000014   D083         POP       DPH
+   \   000016   D082         POP       DPL
+   \   000018   02....       LJMP      ?BRET
     665          }
     666          
     667          /********************************************************************************************************
@@ -1537,7 +1518,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000004   7C00         MOV       R4,#0x0
    \   000006   7D00         MOV       R5,#0x0
    \   000008   12....       LCALL     `??ZMacDataReqSec::?relay`; Banked call to: ZMacDataReqSec
-   \   00000B   80..         SJMP      ??Subroutine11_0
+   \   00000B   D083         POP       DPH
+   \   00000D   D082         POP       DPL
+   \   00000F   02....       LJMP      ?BRET
     730          }
     731          
     732          /********************************************************************************************************
@@ -1562,14 +1545,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000005                ; Setup parameters for call to function MAC_McpsPurgeReq
    \   000005   12....       LCALL     `??MAC_McpsPurgeReq::?relay`; Banked call to: MAC_McpsPurgeReq
     744            return ZMacSuccess;
-   \   000008                REQUIRE ?Subroutine3
-   \   000008                ; // Fall through to label ?Subroutine3
+   \   000008   7900         MOV       R1,#0x0
+   \   00000A   7F01         MOV       R7,#0x1
+   \   00000C   02....       LJMP      ?BANKED_LEAVE_XDATA
     745          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine3:
-   \   000000   7900         MOV       R1,#0x0
-   \   000002   02....       LJMP      ??Subroutine10_0 & 0xFFFF
     746          
     747          /********************************************************************************************************
     748           * @fn      ZMacSrcMatchEnable
@@ -1595,7 +1574,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000004                ; Setup parameters for call to function MAC_SrcMatchEnable
    \   000004   12....       LCALL     `??MAC_SrcMatchEnable::?relay`; Banked call to: MAC_SrcMatchEnable
     761            return ZMacSuccess;
-   \   000007   80..         SJMP      ?Subroutine1
+   \   000007   7900         MOV       R1,#0x0
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
     762          }
     763          
     764          /********************************************************************************************************
@@ -1623,7 +1605,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     779            return (MAC_SrcMatchAddEntry ((sAddr_t*)addr, panID));
    \   000004                ; Setup parameters for call to function MAC_SrcMatchAddEntry
    \   000004   12....       LCALL     `??MAC_SrcMatchAddEntry::?relay`; Banked call to: MAC_SrcMatchAddEntry
-   \   000007   80..         SJMP      ??Subroutine11_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     780          }
     781          
     782          /********************************************************************************************************
@@ -1651,7 +1635,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     797            return (MAC_SrcMatchDeleteEntry ((sAddr_t*)addr, panID));
    \   000004                ; Setup parameters for call to function MAC_SrcMatchDeleteEntry
    \   000004   12....       LCALL     `??MAC_SrcMatchDeleteEntry::?relay`; Banked call to: MAC_SrcMatchDeleteEntry
-   \   000007   80..         SJMP      ??Subroutine11_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     798          }
     799          
     800          /********************************************************************************************************
@@ -1682,7 +1668,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000005   12....       LCALL     `??MAC_SrcMatchAckAllPending::?relay`; Banked call to: MAC_SrcMatchAckAllPending
     817          
     818            return ZMacSuccess;
-   \   000008   80..         SJMP      ?Subroutine3
+   \   000008   7900         MOV       R1,#0x0
+   \   00000A   7F01         MOV       R7,#0x1
+   \   00000C   02....       LJMP      ?BANKED_LEAVE_XDATA
     819          }
     820          
     821          /********************************************************************************************************
@@ -1706,7 +1694,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     832            return (MAC_SrcMatchCheckAllPending ());
    \   000004                ; Setup parameters for call to function MAC_SrcMatchCheckAllPending
    \   000004   12....       LCALL     `??MAC_SrcMatchCheckAllPending::?relay`; Banked call to: MAC_SrcMatchCheckAllPending
-   \   000007   80..         SJMP      ??Subroutine11_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     833          }
     834          
     835          /********************************************************************************************************
@@ -1735,7 +1725,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000004                ; Setup parameters for call to function MAC_PwrOnReq
    \   000004   12....       LCALL     `??MAC_PwrOnReq::?relay`; Banked call to: MAC_PwrOnReq
     851          }
-   \   000007   80..         SJMP      ??Subroutine11_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     852          
     853          /********************************************************************************************************
     854           * @fn          MAC_PwrMode
@@ -1764,7 +1756,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     870            return (MAC_PwrMode());
    \   000004                ; Setup parameters for call to function MAC_PwrMode
    \   000004   12....       LCALL     `??MAC_PwrMode::?relay`; Banked call to: MAC_PwrMode
-   \   000007   80..         SJMP      ??Subroutine11_0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     871          }
     872          
     873          /********************************************************************************************************
@@ -1799,7 +1793,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
    \   000017   12....       LCALL     `??MAC_MlmeSetReq::?relay`; Banked call to: MAC_MlmeSetReq
    \   00001A   7401         MOV       A,#0x1
    \   00001C   12....       LCALL     ?DEALLOC_XSTACK8
-   \   00001F   80..         SJMP      ??Subroutine11_0
+   \   00001F   D083         POP       DPH
+   \   000021   D082         POP       DPL
+   \   000023   02....       LJMP      ?BRET
     885          }
     886          
     887          /********************************************************************************************************
@@ -1934,8 +1930,8 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     924          
     925          }
    \                     ??ZMacSendNoData_0:
-   \   000078                REQUIRE ?Subroutine2
-   \   000078                ; // Fall through to label ?Subroutine2
+   \   000078   7F04         MOV       R7,#0x4
+   \   00007A   02....       LJMP      ?BANKED_LEAVE_XDATA
     926          
     927          /********************************************************************************************************
     928           * @fn      ZMacStateIdle
@@ -1958,7 +1954,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     938            return macStateIdle();
    \   000004                ; Setup parameters for call to function macStateIdle
    \   000004   12....       LCALL     `??macStateIdle::?relay`; Banked call to: macStateIdle
-   \   000007   02....       LJMP      ??Subroutine11_0 & 0xFFFF
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     939          }
     940          
     941          /********************************************************************************************************
@@ -1977,11 +1975,9 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     951          {
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
-   \   000000                REQUIRE ?V2
-   \   000000                REQUIRE ?V3
-   \   000000   74F4         MOV       A,#-0xc
+   \   000000   74F6         MOV       A,#-0xa
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 12
+   \   000005                ; Saved register size: 10
    \   000005                ; Auto size: 0
    \   000005   EA           MOV       A,R2
    \   000006   FE           MOV       R6,A
@@ -1996,47 +1992,91 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     953          
     954            /* scan in progress */
     955            if (ZMac_ScanBuf != NULL)
-   \   000016   12....       LCALL     ?Subroutine7 & 0xFFFF
-   \                     ??CrossCallReturnLabel_8:
-   \   000019   6004         JZ        ??ZMacEnhancedActiveScanReq_0
+   \   000016   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000019   E0           MOVX      A,@DPTR
+   \   00001A   F8           MOV       R0,A
+   \   00001B   A3           INC       DPTR
+   \   00001C   E0           MOVX      A,@DPTR
+   \   00001D   F9           MOV       R1,A
+   \   00001E   E8           MOV       A,R0
+   \   00001F   49           ORL       A,R1
+   \   000020   6004         JZ        ??ZMacEnhancedActiveScanReq_0
     956            {
     957              return MAC_SCAN_IN_PROGRESS;
-   \   00001B   79FC         MOV       R1,#-0x4
-   \   00001D   801F         SJMP      ??CrossCallReturnLabel_10
+   \   000022   79FC         MOV       R1,#-0x4
+   \   000024   8069         SJMP      ??ZMacEnhancedActiveScanReq_1
     958            }
     959          
     960            if (pData->ScanType != ZMAC_ORPHAN_SCAN)
    \                     ??ZMacEnhancedActiveScanReq_0:
-   \   00001F   8E82         MOV       DPL,R6
-   \   000021   8F83         MOV       DPH,R7
-   \   000023   A3           INC       DPTR
-   \   000024   A3           INC       DPTR
-   \   000025   A3           INC       DPTR
-   \   000026   A3           INC       DPTR
-   \   000027   E0           MOVX      A,@DPTR
-   \   000028   F8           MOV       R0,A
-   \   000029   7403         MOV       A,#0x3
-   \   00002B   68           XRL       A,R0
-   \   00002C   600D         JZ        ??CrossCallReturnLabel_3
+   \   000026   8E82         MOV       DPL,R6
+   \   000028   8F83         MOV       DPH,R7
+   \   00002A   A3           INC       DPTR
+   \   00002B   A3           INC       DPTR
+   \   00002C   A3           INC       DPTR
+   \   00002D   A3           INC       DPTR
+   \   00002E   E0           MOVX      A,@DPTR
+   \   00002F   F8           MOV       R0,A
+   \   000030   7403         MOV       A,#0x3
+   \   000032   68           XRL       A,R0
+   \   000033   6045         JZ        ??ZMacEnhancedActiveScanReq_2
     961            {
     962              /* Allocate memory depends on the scan type */
     963              if (pData->ScanType == ZMAC_ED_SCAN)
-   \   00002E   12....       LCALL     ?Subroutine9 & 0xFFFF
-   \                     ??CrossCallReturnLabel_12:
-   \   000031   700D         JNZ       ??ZMacEnhancedActiveScanReq_1
+   \   000035   E8           MOV       A,R0
+   \   000036   705C         JNZ       ??ZMacEnhancedActiveScanReq_3
     964              {
     965                if ((ZMac_ScanBuf = osal_mem_alloc(ZMAC_ED_SCAN_MAXCHANNELS)) == NULL)
-   \   000033                ; Setup parameters for call to function osal_mem_alloc
-   \   000033   12....       LCALL     ?Subroutine6 & 0xFFFF
-   \                     ??CrossCallReturnLabel_5:
-   \   000036   601B         JZ        ??ZMacEnhancedActiveScanReq_2
+   \   000038                ; Setup parameters for call to function osal_mem_alloc
+   \   000038   7A1B         MOV       R2,#0x1b
+   \   00003A   7B00         MOV       R3,#0x0
+   \   00003C   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   00003F   8B..         MOV       ?V1,R3
+   \   000041   A9..         MOV       R1,?V1
+   \   000043   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000046   EA           MOV       A,R2
+   \   000047   F0           MOVX      @DPTR,A
+   \   000048   A3           INC       DPTR
+   \   000049   EB           MOV       A,R3
+   \   00004A   F0           MOVX      @DPTR,A
+   \   00004B   EA           MOV       A,R2
+   \   00004C   49           ORL       A,R1
+   \   00004D   607F         JZ        ??ZMacEnhancedActiveScanReq_4
     966                {
     967                  return MAC_NO_RESOURCES;
     968                }
     969                osal_memset(ZMac_ScanBuf, 0, ZMAC_ED_SCAN_MAXCHANNELS);
-   \   000038                ; Setup parameters for call to function osal_memset
-   \   000038   12....       LCALL     ?Subroutine5 & 0xFFFF
+   \   00004F                ; Setup parameters for call to function osal_memset
+   \   00004F   7C1B         MOV       R4,#0x1b
+   \   000051   7D00         MOV       R5,#0x0
+   \   000053   7900         MOV       R1,#0x0
+   \   000055   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000058   E0           MOVX      A,@DPTR
+   \   000059   FA           MOV       R2,A
+   \   00005A   A3           INC       DPTR
+   \   00005B   E0           MOVX      A,@DPTR
+   \   00005C   FB           MOV       R3,A
+   \   00005D   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
     970                pData->Result.pEnergyDetect = ((uint8*)ZMac_ScanBuf) + MAC_CHAN_11;
+   \   000060   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   000063   E0           MOVX      A,@DPTR
+   \   000064   240B         ADD       A,#0xb
+   \   000066   F8           MOV       R0,A
+   \   000067   A3           INC       DPTR
+   \   000068   E0           MOVX      A,@DPTR
+   \   000069   3400         ADDC      A,#0x0
+   \   00006B   F9           MOV       R1,A
+   \   00006C   EE           MOV       A,R6
+   \   00006D   2416         ADD       A,#0x16
+   \   00006F   F582         MOV       DPL,A
+   \   000071   E4           CLR       A
+   \   000072   3F           ADDC      A,R7
+   \   000073   F583         MOV       DPH,A
+   \   000075   E8           MOV       A,R0
+   \   000076   F0           MOVX      @DPTR,A
+   \   000077   A3           INC       DPTR
+   \   000078   E9           MOV       A,R1
+   \   000079   F0           MOVX      @DPTR,A
     971              }
     972              else if (pData->MaxResults > 0)
     973              {
@@ -2050,33 +2090,78 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
     981          
     982            /* Channel Page */
     983            pData->ChannelPage = 0x00; 
-   \                     ??CrossCallReturnLabel_3:
-   \   00003B   12....       LCALL     ?Subroutine8 & 0xFFFF
+   \                     ??ZMacEnhancedActiveScanReq_2:
+   \   00007A   8E82         MOV       DPL,R6
+   \   00007C   8F83         MOV       DPH,R7
+   \   00007E   A3           INC       DPTR
+   \   00007F   A3           INC       DPTR
+   \   000080   A3           INC       DPTR
+   \   000081   A3           INC       DPTR
+   \   000082   A3           INC       DPTR
+   \   000083   A3           INC       DPTR
+   \   000084   E4           CLR       A
+   \   000085   F0           MOVX      @DPTR,A
     984          
     985            MAC_MlmeScanReq ((macMlmeScanReq_t *)pData);
+   \   000086                ; Setup parameters for call to function MAC_MlmeScanReq
+   \   000086   EE           MOV       A,R6
+   \   000087   FA           MOV       R2,A
+   \   000088   EF           MOV       A,R7
+   \   000089   FB           MOV       R3,A
+   \   00008A   12....       LCALL     `??MAC_MlmeScanReq::?relay`; Banked call to: MAC_MlmeScanReq
     986          
     987            return ZMacSuccess;
-   \                     ??CrossCallReturnLabel_10:
-   \   00003E   80..         SJMP      ?Subroutine2
+   \   00008D   7900         MOV       R1,#0x0
    \                     ??ZMacEnhancedActiveScanReq_1:
-   \   000040   8E82         MOV       DPL,R6
-   \   000042   8F83         MOV       DPH,R7
-   \   000044   A3           INC       DPTR
-   \   000045   A3           INC       DPTR
-   \   000046   A3           INC       DPTR
-   \   000047   A3           INC       DPTR
-   \   000048   A3           INC       DPTR
-   \   000049   A3           INC       DPTR
-   \   00004A   A3           INC       DPTR
-   \   00004B   E0           MOVX      A,@DPTR
-   \   00004C   60ED         JZ        ??CrossCallReturnLabel_3
-   \   00004E                ; Setup parameters for call to function osal_mem_alloc
-   \   00004E   12....       LCALL     ?Subroutine4 & 0xFFFF
-   \                     ??CrossCallReturnLabel_1:
-   \   000051   70E8         JNZ       ??CrossCallReturnLabel_3
-   \                     ??ZMacEnhancedActiveScanReq_2:
-   \   000053   791A         MOV       R1,#0x1a
-   \   000055   80E7         SJMP      ??CrossCallReturnLabel_10
+   \   00008F   7F02         MOV       R7,#0x2
+   \   000091   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \                     ??ZMacEnhancedActiveScanReq_3:
+   \   000094   8E82         MOV       DPL,R6
+   \   000096   8F83         MOV       DPH,R7
+   \   000098   A3           INC       DPTR
+   \   000099   A3           INC       DPTR
+   \   00009A   A3           INC       DPTR
+   \   00009B   A3           INC       DPTR
+   \   00009C   A3           INC       DPTR
+   \   00009D   A3           INC       DPTR
+   \   00009E   A3           INC       DPTR
+   \   00009F   E0           MOVX      A,@DPTR
+   \   0000A0   60D8         JZ        ??ZMacEnhancedActiveScanReq_2
+   \   0000A2                ; Setup parameters for call to function osal_mem_alloc
+   \   0000A2   75F021       MOV       B,#0x21
+   \   0000A5   A4           MUL       AB
+   \   0000A6   FA           MOV       R2,A
+   \   0000A7   ABF0         MOV       R3,B
+   \   0000A9   12....       LCALL     `??osal_mem_alloc::?relay`; Banked call to: osal_mem_alloc
+   \   0000AC   EE           MOV       A,R6
+   \   0000AD   2416         ADD       A,#0x16
+   \   0000AF   F582         MOV       DPL,A
+   \   0000B1   E4           CLR       A
+   \   0000B2   3F           ADDC      A,R7
+   \   0000B3   F583         MOV       DPH,A
+   \   0000B5   EA           MOV       A,R2
+   \   0000B6   F0           MOVX      @DPTR,A
+   \   0000B7   A3           INC       DPTR
+   \   0000B8   EB           MOV       A,R3
+   \   0000B9   F0           MOVX      @DPTR,A
+   \   0000BA   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   0000BD   EA           MOV       A,R2
+   \   0000BE   F0           MOVX      @DPTR,A
+   \   0000BF   A3           INC       DPTR
+   \   0000C0   EB           MOV       A,R3
+   \   0000C1   F0           MOVX      @DPTR,A
+   \   0000C2   90....       MOV       DPTR,#ZMac_ScanBuf
+   \   0000C5   E0           MOVX      A,@DPTR
+   \   0000C6   F8           MOV       R0,A
+   \   0000C7   A3           INC       DPTR
+   \   0000C8   E0           MOVX      A,@DPTR
+   \   0000C9   F9           MOV       R1,A
+   \   0000CA   E8           MOV       A,R0
+   \   0000CB   49           ORL       A,R1
+   \   0000CC   70AC         JNZ       ??ZMacEnhancedActiveScanReq_2
+   \                     ??ZMacEnhancedActiveScanReq_4:
+   \   0000CE   791A         MOV       R1,#0x1a
+   \   0000D0   80BD         SJMP      ??ZMacEnhancedActiveScanReq_1
     988          }
     989          
     990          #ifdef FEATURE_DUAL_MAC
@@ -2116,10 +2201,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
         0     20   -> osal_msg_deallocate
       2      0   ZMacDisassociateReq
         2      0   -> MAC_MlmeDisassociateReq
-      0     12   ZMacEnhancedActiveScanReq
-        0     12   -> MAC_MlmeScanReq
-        0     12   -> osal_mem_alloc
-        0     12   -> osal_memset
+      0     10   ZMacEnhancedActiveScanReq
+        0     10   -> MAC_MlmeScanReq
+        0     10   -> osal_mem_alloc
+        0     10   -> osal_memset
       0      9   ZMacGetReq
         0      9   -> MAC_MlmeGetReq
         0      9   -> sAddrExtCpy
@@ -2140,10 +2225,10 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
         0     10   -> MAC_MlmeResetReq
         0     10   -> MAC_MlmeSetReq
         0     10   -> osal_mem_free
-      0     12   ZMacScanReq
-        0     12   -> MAC_MlmeScanReq
-        0     12   -> osal_mem_alloc
-        0     12   -> osal_memset
+      0     10   ZMacScanReq
+        0     10   -> MAC_MlmeScanReq
+        0     10   -> osal_mem_alloc
+        0     10   -> osal_memset
       0     12   ZMacSendNoData
         0     12   -> MAC_McpsDataAlloc
         0     12   -> MAC_McpsDataReq
@@ -2177,55 +2262,43 @@ D:\AA\Z-Stack 3.0.2\Components\zmac\f8w\zmac.c
 
    Bytes  Function/Label
    -----  --------------
-       5  ??Subroutine10_0
-       7  ??Subroutine11_0
-       5  ?Subroutine0
-       2  ?Subroutine1
-       5  ?Subroutine2
-       5  ?Subroutine3
-      36  ?Subroutine4
-      33  ?Subroutine5
-      22  ?Subroutine6
-      11  ?Subroutine7
-      22  ?Subroutine8
-      11  ?Subroutine9
-      24  ZMacAssociateReq
-      24  ZMacAssociateRsp
-      13  ZMacDataReq
+      30  ZMacAssociateReq
+      28  ZMacAssociateRsp
+      18  ZMacDataReq
      276  ZMacDataReqSec
-      24  ZMacDisassociateReq
-      87  ZMacEnhancedActiveScanReq
-      28  ZMacGetReq
-      27  ZMacInit
-      24  ZMacOrphanRsp
-      21  ZMacPollReq
-       8  ZMacPurgeReq
-       9  ZMacPwrOnReq
-      68  ZMacReset
-      88  ZMacScanReq
-     120  ZMacSendNoData
-      38  ZMacSetReq
-      33  ZMacSetTransmitPower
-      10  ZMacSrcMatchAckAllPending
-       9  ZMacSrcMatchAddEntry
-       9  ZMacSrcMatchCheckAllPending
-       9  ZMacSrcMatchDeleteEntry
-       9  ZMacSrcMatchEnable
-      66  ZMacStartReq
-      10  ZMacStateIdle
-      10  ZMacSyncReq
-       9  ZMac_PwrMode
+      30  ZMacDisassociateReq
+     210  ZMacEnhancedActiveScanReq
+      31  ZMacGetReq
+      30  ZMacInit
+      30  ZMacOrphanRsp
+      27  ZMacPollReq
+      15  ZMacPurgeReq
+      14  ZMacPwrOnReq
+      83  ZMacReset
+     210  ZMacScanReq
+     125  ZMacSendNoData
+      41  ZMacSetReq
+      38  ZMacSetTransmitPower
+      15  ZMacSrcMatchAckAllPending
+      14  ZMacSrcMatchAddEntry
+      14  ZMacSrcMatchCheckAllPending
+      14  ZMacSrcMatchDeleteEntry
+      16  ZMacSrcMatchEnable
+      73  ZMacStartReq
+      14  ZMacStateIdle
+      16  ZMacSyncReq
+      14  ZMac_PwrMode
        2  ZMac_ScanBuf
        4  _ScanChannels
      156  -- Other
 
  
- 1 217 bytes in segment BANKED_CODE
+ 1 426 bytes in segment BANKED_CODE
    156 bytes in segment BANK_RELAYS
      6 bytes in segment XDATA_Z
  
    156 bytes of CODE     memory
- 1 217 bytes of HUGECODE memory
+ 1 426 bytes of HUGECODE memory
      6 bytes of XDATA    memory
 
 Errors: none

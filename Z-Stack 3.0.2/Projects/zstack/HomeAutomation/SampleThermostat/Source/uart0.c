@@ -93,30 +93,30 @@ void Uart0_Process( uint8 port, uint8 event )
 
 void Uart0_Handle( void )
 {
-//  if(strstr((const char*)UART0_RX_BUFF,"LED1_ON"))
-//  {
-//    printf("Router LED1_ON\n");
-//    UART0_t *msgPtr;
-//    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-//    if ( msgPtr )
-//    {
-//      msgPtr->hdr.event = UART0_MESSAGE_LED1_ON;
-//
-//      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-//    }
-//  }
-//  else if(strstr((const char*)UART0_RX_BUFF,"LED1_OFF"))
-//  {
-//    printf("Router LED1_OFF\n");
-//    UART0_t *msgPtr;
-//    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-//    if ( msgPtr )
-//    {
-//      msgPtr->hdr.event = UART0_MESSAGE_LED1_OFF;
-//
-//      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-//    }
-//  }
+  if(strstr((const char*)UART0_RX_BUFF,"SW1_ON"))
+  {
+    printf("SW1_ON\n");
+    UART0_t *msgPtr;
+    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    if ( msgPtr )
+    {
+      msgPtr->hdr.event = UART0_MESSAGE_SW1_ON;
+
+      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+    }
+  }
+  else if(strstr((const char*)UART0_RX_BUFF,"SW1_OFF"))
+  {
+    printf("SW1_OFF\n");
+    UART0_t *msgPtr;
+    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    if ( msgPtr )
+    {
+      msgPtr->hdr.event = UART0_MESSAGE_SW1_OFF;
+
+      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+    }
+  }
 }
 
 void Uart0_Reset( void )

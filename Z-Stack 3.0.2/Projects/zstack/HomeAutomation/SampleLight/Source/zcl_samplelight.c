@@ -97,6 +97,7 @@
    
 #include "bdb.h"
 #include "bdb_interface.h"
+#include "bdb_Reporting.h"
 
  //GP_UPDATE
 #include "gp_interface.h"
@@ -123,13 +124,10 @@
   #include "bdb_touchlink.h"
 #endif
 
-#include "zcl_sampleapps_ui.h"
 
 /*********************************************************************
  * MACROS
  */
-#define UI_STATE_TOGGLE_LIGHT 1 //UI_STATE_BACK_FROM_APP_MENU is item #0, so app item numbers should start from 1
-
 #define APP_TITLE "TI Sample Light"
 
 /*********************************************************************
@@ -152,14 +150,14 @@ uint8 zclSampleLightSeqNum;
 afAddrType_t zclSampleLight_DstAddr;
 
 // Test Endpoint to allow SYS_APP_MSGs
-static endPointDesc_t sampleLight_TestEp =
-{
-  SAMPLELIGHT_ENDPOINT,
-  0,
-  &zclSampleLight_TaskID,
-  (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
-  (afNetworkLatencyReq_t)0            // No Network Latency req
-};
+//static endPointDesc_t sampleLight_TestEp =
+//{
+//  SAMPLELIGHT_ENDPOINT,
+//  0,
+//  &zclSampleLight_TaskID,
+//  (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
+//  (afNetworkLatencyReq_t)0            // No Network Latency req
+//};
 
 #ifdef ZCL_LEVEL_CTRL
 uint8 zclSampleLight_WithOnOff;       // set to TRUE if state machine should set light on/off
@@ -169,6 +167,21 @@ bool  zclSampleLight_NewLevelUp;      // is direction to new level up or down?
 int32 zclSampleLight_CurrentLevel32;  // current level, fixed point (e.g. 192.456)
 int32 zclSampleLight_Rate32;          // rate in units, fixed point (e.g. 16.123)
 uint8 zclSampleLight_LevelLastLevel;  // to save the Current Level before the light was turned OFF
+#endif
+
+#ifdef BDB_REPORTING
+#if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 8
+  uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // 0x2C01 is 300 in int16
+  uint8 reportableChangeTest[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+#endif
+#if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 4
+  uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00}; // 0x2C01 is 300 in int16   0x012c
+  uint8 reportableChangeTest[] = {0x00, 0x00, 0x00, 0x00};     
+#endif 
+#if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 2
+  uint8 reportableChange[] = {0x2C, 0x01}; // 0x2C01 is 300 in int16
+  uint8 reportableChangeTest[] = {0x00, 0x00};
+#endif 
 #endif
 
 /*********************************************************************
@@ -217,18 +230,11 @@ static uint8 zclSampleLight_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMs
 
 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
 
-void zclSampleLight_UiActionToggleLight(uint16 keys);
-void zclSampleLight_UiUpdateLcd(uint8 uiCurrentState, char * line[3]);
 void zclSampleLight_UpdateLedState(void);
 
 /*********************************************************************
  * CONSTANTS
  */
-const uiState_t zclSampleLight_UiStatesMain[] = 
-{
-  /*  UI_STATE_BACK_FROM_APP_MENU  */   {UI_STATE_DEFAULT_MOVE,       UI_STATE_TOGGLE_LIGHT,  UI_KEY_SW_5_PRESSED, &UI_ActionBackFromAppMenu}, //do not change this line, except for the second item, which should point to the last entry in this menu
-  /*  UI_STATE_TOGGLE_LIGHT        */   {UI_STATE_BACK_FROM_APP_MENU, UI_STATE_DEFAULT_MOVE,  UI_KEY_SW_5_PRESSED, &zclSampleLight_UiActionToggleLight},
-};
 
 #define LEVEL_CHANGED_BY_LEVEL_CMD  0
 #define LEVEL_CHANGED_BY_ON_CMD     1
@@ -335,7 +341,7 @@ void zclSampleLight_Init( byte task_id )
   bdb_RegisterCommissioningStatusCB( zclSampleLight_ProcessCommissioningStatus );
   
   // Register for a test endpoint
-  afRegister( &sampleLight_TestEp );
+  //afRegister( &sampleLight_TestEp );
 
 #ifdef ZCL_DIAGNOSTIC
   // Register the application's callback function to read/write attribute data.
@@ -355,10 +361,10 @@ void zclSampleLight_Init( byte task_id )
 #endif
   
   zdpExternalStateTaskID = zclSampleLight_TaskID;
-
-  UI_Init(zclSampleLight_TaskID, SAMPLEAPP_LCD_AUTO_UPDATE_EVT, SAMPLEAPP_KEY_AUTO_REPEAT_EVT, &zclSampleLight_IdentifyTime, APP_TITLE, &zclSampleLight_UiUpdateLcd, zclSampleLight_UiStatesMain);
-
-  UI_UpdateLcd();
+  
+  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 5, reportableChangeTest);
+  
+//  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, ATTRID_ON_OFF, 0, 10, reportableChangeTest);
 }
 
 /*********************************************************************
@@ -392,7 +398,6 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
           break;
 
         case ZDO_STATE_CHANGE:
-          UI_DeviceStateUpdated((devStates_t)(MSGpkt->hdr.status));
           break;
 
         default:
@@ -425,13 +430,11 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
 
   if ( events & SAMPLEAPP_LCD_AUTO_UPDATE_EVT )
   {
-    UI_UpdateLcd();
     return ( events ^ SAMPLEAPP_LCD_AUTO_UPDATE_EVT );
   }
 
   if ( events & SAMPLEAPP_KEY_AUTO_REPEAT_EVT )
   {
-    UI_MainStateMachine(UI_KEY_AUTO_PRESSED);
     return ( events ^ SAMPLEAPP_KEY_AUTO_REPEAT_EVT );
   }
 
@@ -456,7 +459,26 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
  */
 static void zclSampleLight_HandleKeys( byte shift, byte keys )
 {
-  UI_MainStateMachine(keys);
+  if ( keys & HAL_KEY_SW_6 )  // Switch 6
+  {     
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
+    bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
+  }
+  if ( keys & HAL_KEY_SW_5 )  // Switch 5
+  {     
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+    if ( zclSampleLight_OnOff == LIGHT_OFF )
+    {
+      zclSampleLight_OnOff = LIGHT_ON;
+    }
+    else
+    {
+      zclSampleLight_OnOff = LIGHT_OFF;
+    }
+    //zclSampleLight_OnOff = zclSampleLight_OnOff + 5;
+    bdb_RepChangedAttrValue(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
+    zclSampleLight_UpdateLedState();
+  }
 }
 
 //GP_UPDATE
@@ -539,6 +561,7 @@ static void zclSampleLight_ProcessCommissioningStatus(bdbCommissioningModeMsg_t 
       {
         //YOUR JOB:
         //We are on the nwk, what now?
+        HalLedSet ( HAL_LED_1, HAL_LED_MODE_FLASH );
       }
       else
       {
@@ -581,8 +604,7 @@ static void zclSampleLight_ProcessCommissioningStatus(bdbCommissioningModeMsg_t 
     break;
 #endif 
   }
-  
-  UI_UpdateComissioningStatus(bdbCommissioningModeMsg);
+
 }
 
 /*********************************************************************
@@ -602,9 +624,6 @@ static void zclSampleLight_BasicResetCB( void )
   zclSampleLight_ResetAttributesToDefaultValues();
 
   zclSampleLight_UpdateLedState();
-
-  // update the display
-  UI_UpdateLcd( ); 
 }
 
 /*********************************************************************
@@ -683,9 +702,6 @@ static void zclSampleLight_OnOffCB( uint8 cmd )
 #endif
 
   zclSampleLight_UpdateLedState();
-  
-  // update the display
-  UI_UpdateLcd( );
 }
 
 #ifdef ZCL_LEVEL_CTRL
@@ -950,9 +966,6 @@ static void zclSampleLight_AdjustLightLevel( void )
   }
 
   zclSampleLight_UpdateLedState();
-  
-  // display light level as we go
-  UI_UpdateLcd( );
 
   // keep ticking away
   if ( zclSampleLight_LevelRemainingTime )
@@ -1305,35 +1318,20 @@ static uint8 zclSampleLight_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMs
 }
 #endif // ZCL_DISCOVER
 
-void zclSampleLight_UiActionToggleLight(uint16 keys)
-{
-  zclSampleLight_OnOffCB(COMMAND_TOGGLE);
-}
-
 void zclSampleLight_UpdateLedState(void)
 {
   // set the LED1 based on light (on or off)
   if ( zclSampleLight_OnOff == LIGHT_ON )
   {
-    HalLedSet ( UI_LED_APP, HAL_LED_MODE_ON );
+    HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
   }
   else
   {
-    HalLedSet ( UI_LED_APP, HAL_LED_MODE_OFF );
+    HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
   }
 }
 
-void zclSampleLight_UiUpdateLcd(uint8 UiState, char * line[3])
-{
-#ifdef LCD_SUPPORTED
-#ifdef ZCL_LEVEL_CTRL
-  zclHA_uint8toa( zclSampleLight_LevelCurrentLevel, &sLightLevel[9] );
-  line[0] = (char *)sLightLevel;
-#endif // ZCL_LEVEL_CTRL
-  line[1] = (char *)(zclSampleLight_OnOff ? sLightOn : sLightOff);
-  line[2] = "< TOGGLE LIGHT >";
-#endif
-}
+
 
 /****************************************************************************
 ****************************************************************************/

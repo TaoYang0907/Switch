@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:22
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:43
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWC727.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW6657.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\mac_low_level.c" -D BDB_REPORTING
 #        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 #        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -266,13 +268,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
    \   000013                ; Setup parameters for call to function macBackoffTimerInit
    \   000013   12....       LCALL     `??macBackoffTimerInit::?relay`; Banked call to: macBackoffTimerInit
     130          }
-   \   000016   80..         SJMP      ?Subroutine0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   000016   D083         POP       DPH
+   \   000018   D082         POP       DPL
+   \   00001A   02....       LJMP      ?BRET
     131          
     132          
     133          /**************************************************************************************************
@@ -332,8 +330,10 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
    \   000020   7401         MOV       A,#0x1
    \   000022   F0           MOVX      @DPTR,A
     162          }
-   \   000023   80..         SJMP      ?Subroutine0
-   \   000025                REQUIRE _A_IEN0
+   \   000023   D083         POP       DPH
+   \   000025   D082         POP       DPL
+   \   000027   02....       LJMP      ?BRET
+   \   00002A                REQUIRE _A_IEN0
     163          
     164          
     165          /**************************************************************************************************
@@ -366,8 +366,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
    \   000004                ; Setup parameters for call to function macRadioInit
    \   000004   12....       LCALL     `??macRadioInit::?relay`; Banked call to: macRadioInit
     185          }
-   \   000007                REQUIRE ?Subroutine0
-   \   000007                ; // Fall through to label ?Subroutine0
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     186          
     187          
     188          /**************************************************************************************************
@@ -432,8 +433,10 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
    \   00002A   A2E0         MOV       C,0xE0 /* A   */.0
    \   00002C   92AF         MOV       0xa8.7,C
     217            return rtrn;
-   \   00002E   80..         SJMP      ?Subroutine0
-   \   000030                REQUIRE _A_IEN0
+   \   00002E   D083         POP       DPH
+   \   000030   D082         POP       DPL
+   \   000032   02....       LJMP      ?BRET
+   \   000035                REQUIRE _A_IEN0
     218          }
     219          
     220          
@@ -500,23 +503,22 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ?Subroutine0
        1  _A_IEN0
        3  macLowLevelDiags
-      24  macLowLevelInit
-      37  macLowLevelReset
-       7  macLowLevelResume
-      48  macLowLevelYield
+      29  macLowLevelInit
+      42  macLowLevelReset
+      14  macLowLevelResume
+      53  macLowLevelYield
       30  -- Other
 
  
- 126 bytes in segment BANKED_CODE
+ 141 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    1 byte  in segment SFR_AN
  
   30 bytes of CODE     memory
    0 bytes of DATA     memory (+ 1 byte shared)
- 126 bytes of HUGECODE memory
+ 141 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

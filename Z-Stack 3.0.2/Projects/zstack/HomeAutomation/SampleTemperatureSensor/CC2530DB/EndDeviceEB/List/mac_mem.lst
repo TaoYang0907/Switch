@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:55:50
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:43
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,14 +15,15 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWD846.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW67F0.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c" -D
 #        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE
 #        -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -199,15 +201,10 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
    \   000006   8B83         MOV       DPH,R3
    \   000008   E0           MOVX      A,@DPTR
    \   000009   F9           MOV       R1,A
-   \   00000A                REQUIRE ?Subroutine0
-   \   00000A                ; // Fall through to label ?Subroutine0
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
      71          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
      72          
      73          
      74          /**************************************************************************************************
@@ -259,7 +256,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
    \   00001F   E9           MOV       A,R1
    \   000020   70E4         JNZ       ??macMemWriteRam_1
      95          }
-   \   000022   80..         SJMP      ?Subroutine0
+   \   000022   D083         POP       DPH
+   \   000024   D082         POP       DPL
+   \   000026   02....       LJMP      ?BRET
      96          
      97          
      98          /**************************************************************************************************
@@ -313,7 +312,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
    \   000023   E9           MOV       A,R1
    \   000024   70E0         JNZ       ??macMemReadRam_1
     119          }
-   \   000026   80..         SJMP      ?Subroutine0
+   \   000026   D083         POP       DPH
+   \   000028   D082         POP       DPL
+   \   00002A   02....       LJMP      ?BRET
     120          
     121          
     122          /**************************************************************************************************
@@ -367,14 +368,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
    \   00001F   E5..         MOV       A,?V0
    \   000021   70EE         JNZ       ??macMemWriteTxFifo_0
     144          }
-   \   000023                REQUIRE ?Subroutine1
-   \   000023                REQUIRE RFD
-   \   000023                ; // Fall through to label ?Subroutine1
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   7F01         MOV       R7,#0x1
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000023   7F01         MOV       R7,#0x1
+   \   000025   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000028                REQUIRE RFD
     145          
     146          
     147          /**************************************************************************************************
@@ -428,8 +424,9 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
    \   00001F   E5..         MOV       A,?V0
    \   000021   70EE         JNZ       ??macMemReadRxFifo_0
     169          }
-   \   000023   80..         SJMP      ?Subroutine1
-   \   000025                REQUIRE RFD
+   \   000023   7F01         MOV       R7,#0x1
+   \   000025   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000028                REQUIRE RFD
     170          
     171          
     172          /**************************************************************************************************
@@ -452,24 +449,22 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ?Subroutine0
-       5  ?Subroutine1
        1  RFD
-      40  macMemReadRam
-      10  macMemReadRamByte
-      37  macMemReadRxFifo
-      36  macMemWriteRam
-      35  macMemWriteTxFifo
+      45  macMemReadRam
+      17  macMemReadRamByte
+      40  macMemReadRxFifo
+      41  macMemWriteRam
+      40  macMemWriteTxFifo
       30  -- Other
 
  
- 170 bytes in segment BANKED_CODE
+ 183 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    1 byte  in segment SFR_AN
  
   30 bytes of CODE     memory
    0 bytes of DATA     memory (+ 1 byte shared)
- 170 bytes of HUGECODE memory
+ 183 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

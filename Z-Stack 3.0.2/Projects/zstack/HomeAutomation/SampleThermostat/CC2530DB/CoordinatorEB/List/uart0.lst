@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  23:39:12
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:10:55
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,14 +15,15 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWBCF9.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW1EE0.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0.c"
 #        -D ZCL_REPORT_DESTINATION_DEVICE -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
-#        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -D ZCL_REPORTING_DEVICE -D
+#        ZCL_TEMPERATURE_MEASUREMENT -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
@@ -302,7 +303,7 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0
    \   000017   12....       LCALL     `??Hal_UART_RxBufLen::?relay`; Banked call to: Hal_UART_RxBufLen
    \   00001A   EA           MOV       A,R2
    \   00001B   4B           ORL       A,R3
-   \   00001C   6076         JZ        ??Uart0_Process_1
+   \   00001C   6079         JZ        ??Uart0_Process_1
      57            {
      58              HalUARTRead (port, &Res, 1);//读取一个字节
    \   00001E                ; Setup parameters for call to function HalUARTRead
@@ -400,18 +401,20 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0
    \   00008D   90....       MOV       DPTR,#UART0_RX_LEN
    \   000090   F0           MOVX      @DPTR,A
      87                Uart0_Handle();
+   \   000091                ; Setup parameters for call to function Uart0_Handle
+   \   000091   12....       LCALL     `??Uart0_Handle::?relay`; Banked call to: Uart0_Handle
      88                Uart0_Reset();
-   \   000091                ; Setup parameters for call to function Uart0_Reset
-   \   000091   12....       LCALL     `??Uart0_Reset::?relay`; Banked call to: Uart0_Reset
+   \   000094                ; Setup parameters for call to function Uart0_Reset
+   \   000094   12....       LCALL     `??Uart0_Reset::?relay`; Banked call to: Uart0_Reset
      89                break;
      90              }
      91            }
      92          }
    \                     ??Uart0_Process_1:
-   \   000094   7401         MOV       A,#0x1
-   \   000096   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000099                REQUIRE ?Subroutine0
-   \   000099                ; // Fall through to label ?Subroutine0
+   \   000097   7401         MOV       A,#0x1
+   \   000099   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00009C                REQUIRE ?Subroutine0
+   \   00009C                ; // Fall through to label ?Subroutine0
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ?Subroutine0:
@@ -423,34 +426,96 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0
      94          void Uart0_Handle( void )
    \                     Uart0_Handle:
      95          {
-   \   000000                ; Saved register size: 0
-   \   000000                ; Auto size: 0
-     96          //  if(strstr((const char*)UART0_RX_BUFF,"LED1_ON"))
-     97          //  {
-     98          //    printf("Router LED1_ON\n");
-     99          //    UART0_t *msgPtr;
-    100          //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-    101          //    if ( msgPtr )
-    102          //    {
-    103          //      msgPtr->hdr.event = UART0_MESSAGE_LED1_ON;
-    104          //
-    105          //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-    106          //    }
-    107          //  }
-    108          //  else if(strstr((const char*)UART0_RX_BUFF,"LED1_OFF"))
-    109          //  {
-    110          //    printf("Router LED1_OFF\n");
-    111          //    UART0_t *msgPtr;
-    112          //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-    113          //    if ( msgPtr )
-    114          //    {
-    115          //      msgPtr->hdr.event = UART0_MESSAGE_LED1_OFF;
-    116          //
-    117          //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-    118          //    }
-    119          //  }
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 0
+     96            if(strstr((const char*)UART0_RX_BUFF,"SW1_ON"))
+   \   000005                ; Setup parameters for call to function strstr
+   \   000005   7C..         MOV       R4,#`?<Constant "SW1_ON">` & 0xff
+   \   000007   7D..         MOV       R5,#(`?<Constant "SW1_ON">` >> 8) & 0xff
+   \   000009   7A..         MOV       R2,#UART0_RX_BUFF & 0xff
+   \   00000B   7B..         MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
+   \   00000D   12....       LCALL     `??strstr::?relay`; Banked call to: strstr
+   \   000010   EA           MOV       A,R2
+   \   000011   4B           ORL       A,R3
+   \   000012   6011         JZ        ??Uart0_Handle_0
+     97            {
+     98              printf("SW1_ON\n");
+   \   000014                ; Setup parameters for call to function printf
+   \   000014   7A..         MOV       R2,#`?<Constant "SW1_ON\\n">` & 0xff
+   \   000016   7B..         MOV       R3,#(`?<Constant "SW1_ON\\n">` >> 8) & 0xff
+   \   000018   12....       LCALL     ?Subroutine1 & 0xFFFF
+     99              UART0_t *msgPtr;
+    100              msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    101              if ( msgPtr )
+   \                     ??CrossCallReturnLabel_0:
+   \   00001B   602F         JZ        ??Uart0_Handle_1
+    102              {
+    103                msgPtr->hdr.event = UART0_MESSAGE_SW1_ON;
+   \   00001D   8A82         MOV       DPL,R2
+   \   00001F   8B83         MOV       DPH,R3
+   \   000021   7437         MOV       A,#0x37
+   \   000023   801E         SJMP      ??Uart0_Handle_2
+    104          
+    105                osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+    106              }
+    107            }
+    108            else if(strstr((const char*)UART0_RX_BUFF,"SW1_OFF"))
+   \                     ??Uart0_Handle_0:
+   \   000025                ; Setup parameters for call to function strstr
+   \   000025   7C..         MOV       R4,#`?<Constant "SW1_OFF">` & 0xff
+   \   000027   7D..         MOV       R5,#(`?<Constant "SW1_OFF">` >> 8) & 0xff
+   \   000029   7A..         MOV       R2,#UART0_RX_BUFF & 0xff
+   \   00002B   7B..         MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
+   \   00002D   12....       LCALL     `??strstr::?relay`; Banked call to: strstr
+   \   000030   EA           MOV       A,R2
+   \   000031   4B           ORL       A,R3
+   \   000032   6018         JZ        ??Uart0_Handle_1
+    109            {
+    110              printf("SW1_OFF\n");
+   \   000034                ; Setup parameters for call to function printf
+   \   000034   7A..         MOV       R2,#`?<Constant "SW1_OFF\\n">` & 0xff
+   \   000036   7B..         MOV       R3,#(`?<Constant "SW1_OFF\\n">` >> 8) & 0xff
+   \   000038   12....       LCALL     ?Subroutine1 & 0xFFFF
+    111              UART0_t *msgPtr;
+    112              msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    113              if ( msgPtr )
+   \                     ??CrossCallReturnLabel_1:
+   \   00003B   600F         JZ        ??Uart0_Handle_1
+    114              {
+    115                msgPtr->hdr.event = UART0_MESSAGE_SW1_OFF;
+   \   00003D   8A82         MOV       DPL,R2
+   \   00003F   8B83         MOV       DPH,R3
+   \   000041   7438         MOV       A,#0x38
+   \                     ??Uart0_Handle_2:
+   \   000043   F0           MOVX      @DPTR,A
+    116          
+    117                osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+   \   000044                ; Setup parameters for call to function osal_msg_send
+   \   000044   90....       MOV       DPTR,#registeredUart0TaskID
+   \   000047   E0           MOVX      A,@DPTR
+   \   000048   F9           MOV       R1,A
+   \   000049   12....       LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
+    118              }
+    119            }
     120          }
-   \   000000   02....       LJMP      ?BRET
+   \                     ??Uart0_Handle_1:
+   \   00004C   80..         SJMP      ?Subroutine0
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   12....       LCALL     `??printf::?relay`; Banked call to: printf
+   \   000003                ; Setup parameters for call to function osal_msg_allocate
+   \   000003                ; Setup parameters for call to function osal_msg_allocate
+   \   000003   7A02         MOV       R2,#0x2
+   \   000005   7B00         MOV       R3,#0x0
+   \   000007   12....       LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
+   \   00000A   EA           MOV       A,R2
+   \   00000B   4B           ORL       A,R3
+   \   00000C   22           RET
     121          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
@@ -481,23 +546,49 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0
    \   000023   E4           CLR       A
    \   000024   F0           MOVX      @DPTR,A
     126          }
-   \   000025   80..         SJMP      ?Subroutine0
+   \   000025   02....       LJMP      ?Subroutine0 & 0xFFFF
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for registeredUart0TaskID>`:
    \   000000   FF           DB 255
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "SW1_ON">`:
+   \   000000   5357315F     DB "SW1_ON"
+   \            4F4E00  
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "SW1_ON\\n">`:
+   \   000000   5357315F     DB "SW1_ON\012"
+   \            4F4E0A00
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "SW1_OFF">`:
+   \   000000   5357315F     DB "SW1_OFF"
+   \            4F464600
+
+   \                                 In  segment XDATA_ROM_C, align 1
+   \                     `?<Constant "SW1_OFF\\n">`:
+   \   000000   5357315F     DB "SW1_OFF\012"
+   \            4F46460A
+   \            00      
 
    Maximum stack usage in bytes:
 
    ISTACK XSTACK Function
    ------ ------ --------
       2      0   RegisterForUart0
-      0      0   Uart0_Handle
+      0     21   Uart0_Handle
+        0     10   -> osal_msg_allocate
+        0     10   -> osal_msg_send
+        0     10   -> printf
+        0     10   -> strstr
       1     38   Uart0_Init
         0     38   -> HalUARTOpen
       1     11   Uart0_Process
         0     11   -> HalUARTRead
         0     11   -> Hal_UART_RxBufLen
+        0     11   -> Uart0_Handle
         0     11   -> Uart0_Reset
       0     23   Uart0_Reset
         0     12   -> memset
@@ -507,28 +598,35 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0
 
    Bytes  Function/Label
    -----  --------------
+       8  ?<Constant "SW1_OFF">
+       9  ?<Constant "SW1_OFF\n">
+       7  ?<Constant "SW1_ON">
+       8  ?<Constant "SW1_ON\n">
        1  ?<Initializer for registeredUart0TaskID>
        5  ?Subroutine0
+      13  ?Subroutine1
       26  RegisterForUart0
       60  UART0_RX_BUFF
        1  UART0_RX_LEN
        1  UART0_RX_STA
-       3  Uart0_Handle
+      78  Uart0_Handle
      111  Uart0_Init
-     153  Uart0_Process
-      39  Uart0_Reset
+     156  Uart0_Process
+      40  Uart0_Reset
        1  registeredUart0TaskID
       30  -- Other
 
  
- 337 bytes in segment BANKED_CODE
+ 429 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    1 byte  in segment XDATA_I
    1 byte  in segment XDATA_ID
+  32 bytes in segment XDATA_ROM_C
   62 bytes in segment XDATA_Z
  
   31 bytes of CODE     memory
- 337 bytes of HUGECODE memory
+  32 bytes of CONST    memory
+ 429 bytes of HUGECODE memory
   63 bytes of XDATA    memory
 
 Errors: none

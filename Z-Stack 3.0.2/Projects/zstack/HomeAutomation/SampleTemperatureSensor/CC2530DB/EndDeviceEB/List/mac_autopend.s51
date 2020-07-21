@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:21
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:01
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_autopend.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWC426.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW7682.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\mac_autopend.c" -D BDB_REPORTING
 //        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -140,9 +142,6 @@
         EXTERN ?V9
         EXTERN ?V10
         EXTERN ?V11
-        EXTERN ?V12
-        EXTERN ?V14
-        EXTERN ?V15
         EXTERN ?ALLOC_XSTACK8
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
@@ -176,10 +175,15 @@
         FUNCTION `??MAC_SrcMatchDeleteEntry::?relay`,0203H
         PUBLIC `??MAC_SrcMatchEnable::?relay`
         FUNCTION `??MAC_SrcMatchEnable::?relay`,0203H
+        FUNCTION `??macSrcMatchCheckEnableBit::?relay`,0203H
         FUNCTION `??macSrcMatchCheckSrcAddr::?relay`,0203H
+        FUNCTION `??macSrcMatchFindEmptyEntry::?relay`,0203H
         FUNCTION `??macSrcMatchGetExtAddrEnableBit::?relay`,0203H
+        FUNCTION `??macSrcMatchGetExtAddrPendEnBit::?relay`,0203H
         FUNCTION `??macSrcMatchGetShortAddrEnableBit::?relay`,0203H
+        FUNCTION `??macSrcMatchGetShortAddrPendEnBit::?relay`,0203H
         FUNCTION `??macSrcMatchSetEnableBit::?relay`,0203H
+        FUNCTION `??macSrcMatchSetPendEnBit::?relay`,0203H
         PUBLIC MAC_SrcMatchAckAllPending
         FUNCTION MAC_SrcMatchAckAllPending,0203H
         ARGFRAME XSTACK, 0, STACK
@@ -188,7 +192,7 @@
         FUNCTION MAC_SrcMatchAddEntry,0a1203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 1, STACK
-        LOCFRAME XSTACK, 38, STACK
+        LOCFRAME XSTACK, 20, STACK
         PUBLIC MAC_SrcMatchCheckAllPending
         FUNCTION MAC_SrcMatchCheckAllPending,0203H
         ARGFRAME XSTACK, 0, STACK
@@ -205,20 +209,42 @@
         FUNCTION MAC_SrcMatchEnable,0203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
+        FUNCTION macSrcMatchCheckEnableBit,080203H
+        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 12, STACK
         FUNCTION macSrcMatchCheckSrcAddr,0a1203H
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 1, STACK
         LOCFRAME XSTACK, 35, STACK
+        FUNCTION macSrcMatchFindEmptyEntry,0a1203H
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 20, STACK
         FUNCTION macSrcMatchGetExtAddrEnableBit,021203H
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME XSTACK, 3, STACK
+        FUNCTION macSrcMatchGetExtAddrPendEnBit,021203H
+        ARGFRAME XSTACK, 19, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME XSTACK, 3, STACK
         FUNCTION macSrcMatchGetShortAddrEnableBit,021203H
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME XSTACK, 3, STACK
+        FUNCTION macSrcMatchGetShortAddrPendEnBit,021203H
+        ARGFRAME XSTACK, 19, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
@@ -226,10 +252,15 @@
         PUBLIC macSrcMatchIsAckAllPending
         PUBLIC macSrcMatchIsEnabled
         FUNCTION macSrcMatchSetEnableBit,0a1203H
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 21, STACK
+        FUNCTION macSrcMatchSetPendEnBit,0a1203H
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 23, STACK
         
           CFI Names cfiNames0
           CFI StackFrame CFA_SP SP IDATA
@@ -319,73 +350,6 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
-        
 macMemReadRam       SYMBOL "macMemReadRam"
 `??macMemReadRam::?relay` SYMBOL "?relay", macMemReadRam
 macMemWriteRam      SYMBOL "macMemWriteRam"
@@ -423,28 +387,28 @@ MAC_SrcMatchEnable  SYMBOL "MAC_SrcMatchEnable"
         FUNCTION macMemReadRam,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 32, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN macMemWriteRam
         FUNCTION macMemWriteRam,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_buffer_uint24
         FUNCTION osal_buffer_uint24,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 38, STACK
+        ARGFRAME XSTACK, 23, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_build_uint32
         FUNCTION osal_build_uint32,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 3, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_memcmp
@@ -636,7 +600,13 @@ MAC_SrcMatchEnable:
         MOV       A,#0x1
         MOVX      @DPTR,A
 //  131 }
-        LJMP      ??Subroutine6_0 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
 //  132 
 //  133 /*********************************************************************
@@ -667,155 +637,67 @@ MAC_SrcMatchAddEntry:
         FUNCALL MAC_SrcMatchAddEntry, macSrcMatchCheckSrcAddr
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macSrcMatchGetShortAddrEnableBit
+        FUNCALL MAC_SrcMatchAddEntry, macSrcMatchFindEmptyEntry
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macSrcMatchGetExtAddrEnableBit
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL MAC_SrcMatchAddEntry, macMemWriteRam
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL MAC_SrcMatchAddEntry, macMemWriteRam
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macMemReadRam
+        FUNCALL MAC_SrcMatchAddEntry, macSrcMatchSetPendEnBit
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, osal_build_uint32
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, osal_buffer_uint24
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 38, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 38, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macMemWriteRam
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macMemReadRam
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, osal_build_uint32
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, osal_buffer_uint24
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 38, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 38, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MAC_SrcMatchAddEntry, macMemWriteRam
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL MAC_SrcMatchAddEntry, macSrcMatchSetEnableBit
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 34, STACK
+        LOCFRAME XSTACK, 20, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 34, STACK
+        ARGFRAME XSTACK, 20, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
@@ -826,14 +708,7 @@ MAC_SrcMatchAddEntry:
         REQUIRE ?V5
         REQUIRE ?V6
         REQUIRE ?V7
-        REQUIRE ?V8
-        REQUIRE ?V9
-        REQUIRE ?V10
-        REQUIRE ?V11
-        REQUIRE ?V12
-        REQUIRE ?V14
-        REQUIRE ?V15
-        MOV       A,#-0x18
+        MOV       A,#-0x10
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -841,37 +716,27 @@ MAC_SrcMatchAddEntry:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 24)
-        ; Saved register size: 24
-        ; Auto size: 10
-        MOV       A,#-0xa
+          CFI CFA_XSP16 add(XSP16, 16)
+        ; Saved register size: 16
+        ; Auto size: 4
+        MOV       A,#-0x4
         LCALL     ?ALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 34)
-        MOV       ?V14,R2
-        MOV       ?V15,R3
-        MOV       A,R4
-        MOV       R6,A
-        MOV       A,R5
-        MOV       R7,A
+          CFI CFA_XSP16 add(XSP16, 20)
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V2,R4
+        MOV       ?V3,R5
 //  152   uint8 index;
 //  153   uint8 entry[MAC_SRCMATCH_SHORT_ENTRY_SIZE];
 //  154   
@@ -880,16 +745,14 @@ MAC_SrcMatchAddEntry:
         MOV       A,R2
         ORL       A,R3
         JZ        ??MAC_SrcMatchAddEntry_0
-        MOV       DPL,R2
-        MOV       DPH,R3
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
+        MOV       A,R2
+        ADD       A,#0x8
+        MOV       ?V0,A
+        CLR       A
+        ADDC      A,?V5
+        MOV       ?V1,A
+        MOV       DPL,?V0
+        MOV       DPH,A
         MOVX      A,@DPTR
         MOV       R0,A
         MOV       A,#0x2
@@ -924,171 +787,83 @@ MAC_SrcMatchAddEntry:
 //  169   /* Find the first empty entry */
 //  170   index = macSrcMatchFindEmptyEntry(addr->addrMode);
 ??MAC_SrcMatchAddEntry_3:
-        MOV       DPL,?V14
-        MOV       DPH,?V15
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
+        ; Setup parameters for call to function macSrcMatchFindEmptyEntry
+        MOV       DPL,?V0
+        MOV       DPH,?V1
         MOVX      A,@DPTR
-        MOV       ?V12,A
-        ; Setup parameters for call to function macSrcMatchGetShortAddrEnableBit
-        LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       ?V2,R4
-        MOV       ?V3,R5
-        ; Setup parameters for call to function macSrcMatchGetExtAddrEnableBit
-        LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
-        MOV       ?V8,R2
-        MOV       ?V9,R3
-        MOV       ?V10,R4
-        MOV       ?V11,R5
-        MOV       ?V4,?V0
-        MOV       ?V5,?V1
-        MOV       ?V6,?V2
-        MOV       ?V7,?V3
-        MOV       R0,#?V4
-        MOV       R1,#?V8
-        LCALL     ?L_IOR
-        MOV       A,#0x2
-        XRL       A,?V12
-        MOV       ?V12,#0x0
-        JNZ       ??MAC_SrcMatchAddEntry_4
-??MAC_SrcMatchAddEntry_5:
-        MOV       ?V4,R2
-        MOV       ?V5,R3
-        MOV       ?V6,R4
-        MOV       ?V7,R5
-        MOV       A,#-0x2
-        ANL       A,?V12
-        MOV       R0,#?V4
-        LCALL     ?UL_SHR
-        MOV       A,?V4
-        MOV       C,0xE0 /* A   */.0
-        JC        ??MAC_SrcMatchAddEntry_6
-        MOV       ?V4,?V0
-        MOV       ?V5,?V1
-        MOV       ?V6,?V2
-        MOV       ?V7,?V3
-        MOV       A,?V12
-        MOV       R0,#?V4
-        LCALL     ?UL_SHR
-        MOV       A,?V4
-        MOV       C,0xE0 /* A   */.0
-        JNC       ??MAC_SrcMatchAddEntry_7
-??MAC_SrcMatchAddEntry_6:
-        INC       ?V12
-        MOV       A,?V12
-        CLR       C
-        SUBB      A,#0x18
-        JNC       ??MAC_SrcMatchAddEntry_7
-        SJMP      ??MAC_SrcMatchAddEntry_5
-??MAC_SrcMatchAddEntry_4:
-        MOV       ?V0,?V4
-        MOV       ?V1,?V5
-        MOV       ?V2,?V6
-        MOV       ?V3,?V7
-        MOV       ?V8,#0x3
-        MOV       ?V9,#0x0
-        MOV       ?V10,#0x0
-        MOV       ?V11,#0x0
-        MOV       A,?V12
-        CLR       C
-        RLC       A
-        MOV       R0,#?V8
-        LCALL     ?L_SHL
-        MOV       R0,#?V0
-        MOV       R1,#?V8
-        LCALL     ?L_AND
-        MOV       A,?V0
-        ORL       A,?V1
-        ORL       A,?V2
-        ORL       A,?V3
-        JZ        ??MAC_SrcMatchAddEntry_7
-        INC       ?V12
-        MOV       A,?V12
-        CLR       C
-        SUBB      A,#0xc
-        JC        ??MAC_SrcMatchAddEntry_4
+        MOV       R1,A
+        LCALL     `??macSrcMatchFindEmptyEntry::?relay`; Banked call to: macSrcMatchFindEmptyEntry
+        MOV       A,R1
+        MOV       R6,A
 //  171   
 //  172 
 //  173   if ( (index == MAC_SRCMATCH_SHORT_MAX_NUM_ENTRIES && addr->addrMode == SADDR_MODE_SHORT) || 
 //  174        (index == MAC_SRCMATCH_EXT_MAX_NUM_ENTRIES && addr->addrMode == SADDR_MODE_EXT) )
-??MAC_SrcMatchAddEntry_7:
-        MOV       A,#0x18
-        XRL       A,?V12
-        JNZ       ??MAC_SrcMatchAddEntry_8
-        MOV       DPL,?V14
-        MOV       DPH,?V15
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
+        MOV       DPL,?V0
+        MOV       DPH,?V1
         MOVX      A,@DPTR
-        XRL       A,#0x2
-        JZ        ??MAC_SrcMatchAddEntry_9
+        MOV       R0,A
+        MOV       A,#0x18
+        XRL       A,R6
+        JNZ       ??MAC_SrcMatchAddEntry_4
+        MOV       A,#0x2
+        XRL       A,R0
+        JZ        ??MAC_SrcMatchAddEntry_5
+??MAC_SrcMatchAddEntry_4:
+        MOV       A,#0xc
+        XRL       A,R6
+        JNZ       ??MAC_SrcMatchAddEntry_6
+        MOV       A,#0x3
+        XRL       A,R0
+        JNZ       ??MAC_SrcMatchAddEntry_6
 //  175   {
 //  176     return MAC_NO_RESOURCES;   /* Table is full */
+??MAC_SrcMatchAddEntry_5:
+        MOV       R1,#0x1a
+        LJMP      ??MAC_SrcMatchAddEntry_2 & 0xFFFF
 //  177   }
 //  178   
 //  179   if ( addr->addrMode == SADDR_MODE_SHORT )
-??MAC_SrcMatchAddEntry_10:
-        MOV       A,?V12
-        MOV       ?V0,A
-        MOV       ?V1,#0x0
-        MOV       DPL,?V14
-        MOV       DPH,?V15
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        XRL       A,#0x2
-        JNZ       ??MAC_SrcMatchAddEntry_11
+??MAC_SrcMatchAddEntry_6:
+        MOV       A,R1
+        MOV       ?V6,A
+        MOV       ?V7,#0x0
+        MOV       A,#0x2
+        XRL       A,R0
+        JNZ       ??MAC_SrcMatchAddEntry_7
 //  180   {
 //  181     /* Write the PanID and short address */
 //  182     entry[0] = LO_UINT16( panID );  /* Little Endian for the radio RAM */
-        MOV       A,#0x6
-        LCALL     ?XSTACK_DISP0_8
-        MOV       A,R6
+        MOV       DPL,?XSP + 0
+        MOV       DPH,?XSP + 1
+        MOV       A,?V2
         MOVX      @DPTR,A
 //  183     entry[1] = HI_UINT16( panID );
-        MOV       A,#0x7
+        MOV       A,?V3
+        MOV       ?V2,A
+        MOV       A,#0x1
         LCALL     ?XSTACK_DISP0_8
-        MOV       A,R7
+        MOV       A,?V2
         MOVX      @DPTR,A
 //  184     entry[2] = LO_UINT16( addr->addr.shortAddr );
-        MOV       DPL,?V14
-        MOV       DPH,?V15
+        MOV       DPL,?V4
+        MOV       DPH,?V5
         MOVX      A,@DPTR
         PUSH      A
           CFI CFA_SP SP+-1
-        MOV       A,#0x8
+        MOV       A,#0x2
         LCALL     ?XSTACK_DISP0_8
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
 //  185     entry[3] = HI_UINT16( addr->addr.shortAddr );
-        MOV       DPL,?V14
-        MOV       DPH,?V15
+        MOV       DPL,?V4
+        MOV       DPH,?V5
         INC       DPTR
         MOVX      A,@DPTR
         PUSH      A
           CFI CFA_SP SP+-1
-        MOV       A,#0x9
+        MOV       A,#0x3
         LCALL     ?XSTACK_DISP0_8
         POP       A
           CFI CFA_SP SP+0
@@ -1097,312 +872,66 @@ MAC_SrcMatchAddEntry:
 //  187                    entry, MAC_SRCMATCH_SHORT_ENTRY_SIZE );
         ; Setup parameters for call to function macMemWriteRam
         MOV       R1,#0x4
-        MOV       A,#0x6
-        LCALL     ?XSTACK_DISP102_8
+        MOV       R4,?XSP + 0
+        MOV       R5,?XSP + 1
         MOV       A,#0x2
-        SJMP      ??MAC_SrcMatchAddEntry_12
+        SJMP      ??MAC_SrcMatchAddEntry_8
 //  188   }
-??MAC_SrcMatchAddEntry_8:
-        MOV       A,#0xc
-        XRL       A,?V12
-        JNZ       ??MAC_SrcMatchAddEntry_10
-        MOV       DPL,?V14
-        MOV       DPH,?V15
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        XRL       A,#0x3
-        JNZ       ??MAC_SrcMatchAddEntry_10
-??MAC_SrcMatchAddEntry_9:
-        MOV       R1,#0x1a
-        LJMP      ??MAC_SrcMatchAddEntry_2 & 0xFFFF
 //  189   else
 //  190   {
 //  191     /* Write the extended address */
 //  192     MAC_RADIO_SRC_MATCH_TABLE_WRITE( ( index * MAC_SRCMATCH_EXT_ENTRY_SIZE ), 
 //  193                    addr->addr.extAddr, MAC_SRCMATCH_EXT_ENTRY_SIZE ); 
-??MAC_SrcMatchAddEntry_11:
+??MAC_SrcMatchAddEntry_7:
         ; Setup parameters for call to function macMemWriteRam
         MOV       R1,#0x8
-        MOV       R4,?V14
-        MOV       R5,?V15
+        MOV       R4,?V4
+        MOV       R5,?V5
         MOV       A,#0x3
-??MAC_SrcMatchAddEntry_12:
-        MOV       R0,#?V0
+??MAC_SrcMatchAddEntry_8:
+        MOV       R0,#?V6
         LCALL     ?S_SHL
-        ADD       A,?V0
+        ADD       A,?V6
         MOV       R2,A
         MOV       A,#0x61
-        ADDC      A,?V1
+        ADDC      A,?V7
         MOV       R3,A
+        LCALL     `??macMemWriteRam::?relay`; Banked call to: macMemWriteRam
 //  194   }
-        LCALL     ?Subroutine2 & 0xFFFF
-??CrossCallReturnLabel_2:
-        XRL       A,#0x2
-        MOV       R1,#0x3
-        MOV       R4,?XSP + 0
-        MOV       R5,?XSP + 1
-        JNZ       ??MAC_SrcMatchAddEntry_13
-        ; Setup parameters for call to function macMemReadRam
-        MOV       R2,#0x67
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_0:
-        ; Setup parameters for call to function osal_buffer_uint24
-        MOV       ?V4,#0x1
-        MOV       ?V5,#0x0
-        MOV       ?V6,#0x0
-        MOV       ?V7,#0x0
-        MOV       A,?V12
-        MOV       R0,#?V4
-        LCALL     ?L_SHL
-        MOV       R0,#?V0
-        MOV       R1,#?V4
-        LCALL     ?L_IOR
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_FOUR
-          CFI CFA_XSP16 add(XSP16, 38)
-        MOV       A,#0x7
-        LCALL     ?XSTACK_DISP101_8
-        LCALL     `??osal_buffer_uint24::?relay`; Banked call to: osal_buffer_uint24
-        MOV       A,#0x4
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 34)
-        ; Setup parameters for call to function macMemWriteRam
-        MOV       R1,#0x3
-        MOV       A,R1
-        LCALL     ?XSTACK_DISP102_8
-        MOV       R2,#0x67
-        SJMP      ??MAC_SrcMatchAddEntry_14
-??MAC_SrcMatchAddEntry_13:
-        ; Setup parameters for call to function macMemReadRam
-        MOV       R2,#0x64
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_1:
-        MOV       A,?V12
-        CLR       C
-        RLC       A
-        MOV       R2,A
-        ; Setup parameters for call to function osal_buffer_uint24
-        MOV       ?V4,#0x1
-        MOV       ?V5,#0x0
-        MOV       ?V6,#0x0
-        MOV       ?V7,#0x0
-        MOV       R0,#?V4
-        LCALL     ?L_SHL
-        MOV       R0,#?V0
-        MOV       R1,#?V4
-        LCALL     ?L_IOR
-        MOV       ?V4,#0x1
-        MOV       ?V5,#0x0
-        MOV       ?V6,#0x0
-        MOV       ?V7,#0x0
-        MOV       A,#0x1
-        ADD       A,R2
-        MOV       R0,#?V4
-        LCALL     ?L_SHL
-        MOV       R0,#?V0
-        MOV       R1,#?V4
-        LCALL     ?L_IOR
-        MOV       R0,#?V0
-        LCALL     ?PUSH_XSTACK_I_FOUR
-          CFI CFA_XSP16 add(XSP16, 38)
-        MOV       A,#0x7
-        LCALL     ?XSTACK_DISP101_8
-        LCALL     `??osal_buffer_uint24::?relay`; Banked call to: osal_buffer_uint24
-        MOV       A,#0x4
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 34)
-        ; Setup parameters for call to function macMemWriteRam
-        MOV       R1,#0x3
-        MOV       A,R1
-        LCALL     ?XSTACK_DISP102_8
-        MOV       R2,#0x64
-??MAC_SrcMatchAddEntry_14:
-        MOV       R3,#0x61
-        LCALL     ?Subroutine2 & 0xFFFF
 //  195   
 //  196   /* Set the Autopend enable bits */
 //  197   macSrcMatchSetPendEnBit( index, addr->addrMode );
+        ; Setup parameters for call to function macSrcMatchSetPendEnBit
+        MOV       DPL,?V0
+        MOV       DPH,?V1
+        MOVX      A,@DPTR
+        MOV       R2,A
+        MOV       A,R6
+        MOV       R1,A
+        LCALL     `??macSrcMatchSetPendEnBit::?relay`; Banked call to: macSrcMatchSetPendEnBit
 //  198   
 //  199   /* Set the Src Match enable bits */
 //  200   macSrcMatchSetEnableBit( index, TRUE, addr->addrMode);
-??CrossCallReturnLabel_3:
+        ; Setup parameters for call to function macSrcMatchSetEnableBit
+        MOV       DPL,?V0
+        MOV       DPH,?V1
+        MOVX      A,@DPTR
         MOV       R3,A
         MOV       R2,#0x1
-        MOV       R1,?V12
+        MOV       A,R6
+        MOV       R1,A
         LCALL     `??macSrcMatchSetEnableBit::?relay`; Banked call to: macSrcMatchSetEnableBit
 //  201   
 //  202   return MAC_SUCCESS;
         MOV       R1,#0x0
 ??MAC_SrcMatchAddEntry_2:
-        MOV       A,#0xa
+        MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 24)
-        MOV       R7,#0x10
+          CFI CFA_XSP16 add(XSP16, 16)
+        MOV       R7,#0x8
         LJMP      ?BANKED_LEAVE_XDATA
 //  203 }
           CFI EndBlock cfiBlock1
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond2 Using cfiCommon0
-          CFI Function MAC_SrcMatchAddEntry
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI (cfiCond3) Function MAC_SrcMatchAddEntry
-          CFI (cfiCond3) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond3) R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI (cfiCond3) VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI (cfiCond3) V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI (cfiCond3) V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI (cfiCond3) V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI (cfiCond3) V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI (cfiCond3) V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI (cfiCond3) V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI (cfiCond3) V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond3) V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond3) V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond3) V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond3) V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond3) V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond3) V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond3) V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond3) V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond3) V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond3) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond3) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond3) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond3) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond3) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond3) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond3) CFA_SP SP+-2
-          CFI (cfiCond3) CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiPicker4 Using cfiCommon1
-          CFI (cfiPicker4) NoFunction
-          CFI (cfiPicker4) Picker
-        LCALL     `??macMemWriteRam::?relay`; Banked call to: macMemWriteRam
-        ; Setup parameters for call to function macSrcMatchSetEnableBit
-        MOV       DPL,?V14
-        MOV       DPH,?V15
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        RET
-          CFI EndBlock cfiCond2
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiPicker4
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond5 Using cfiCommon0
-          CFI Function MAC_SrcMatchAddEntry
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI (cfiCond6) Function MAC_SrcMatchAddEntry
-          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond6) R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI (cfiCond6) VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI (cfiCond6) V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI (cfiCond6) V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI (cfiCond6) V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI (cfiCond6) V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI (cfiCond6) V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI (cfiCond6) V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI (cfiCond6) V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond6) V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond6) V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond6) V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond6) V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond6) V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond6) V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond6) V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond6) V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond6) V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond6) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond6) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond6) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond6) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond6) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond6) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond6) CFA_SP SP+-2
-          CFI (cfiCond6) CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiPicker7 Using cfiCommon1
-          CFI (cfiPicker7) NoFunction
-          CFI (cfiPicker7) Picker
-        LCALL     ?Subroutine5 & 0xFFFF
-??CrossCallReturnLabel_8:
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       ?V2,R4
-        MOV       ?V3,R5
-        RET
-          CFI EndBlock cfiCond5
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiPicker7
 //  204 
 //  205 /*********************************************************************
 //  206  * @fn         MAC_SrcMatchDeleteEntry
@@ -1425,7 +954,7 @@ MAC_SrcMatchAddEntry:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  222 uint8 MAC_SrcMatchDeleteEntry ( sAddr_t *addr, uint16 panID  )
 MAC_SrcMatchDeleteEntry:
-          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function MAC_SrcMatchDeleteEntry
         CODE
 //  223 {
@@ -1528,7 +1057,7 @@ MAC_SrcMatchDeleteEntry:
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
 //  243 }
-          CFI EndBlock cfiBlock8
+          CFI EndBlock cfiBlock2
 //  244                   
 //  245 /*********************************************************************
 //  246  * @fn          MAC_SrcMatchAckAllPending
@@ -1549,7 +1078,7 @@ MAC_SrcMatchDeleteEntry:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  260 void MAC_SrcMatchAckAllPending ( uint8 option  ) 
 MAC_SrcMatchAckAllPending:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function MAC_SrcMatchAckAllPending
         CODE
 //  261 {
@@ -1594,134 +1123,14 @@ MAC_SrcMatchAckAllPending:
         MOVX      @DPTR,A
 //  275   }
 //  276 }
-        SJMP      ??Subroutine6_0
-          CFI EndBlock cfiBlock9
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock10 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI CFA_XSP16 add(XSP16, 3)
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        LCALL     ?Subroutine5 & 0xFFFF
-??CrossCallReturnLabel_9:
-        MOV       A,#0x3
-        LCALL     ?DEALLOC_XSTACK8
-          CFI EndBlock cfiBlock10
-        REQUIRE ??Subroutine6_0
-        ; // Fall through to label ??Subroutine6_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine6_0:
-          CFI Block cfiBlock11 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
-        POP       DPL
-          CFI CFA_SP SP+-3
-          CFI DPL0 SameValue
-        LJMP      ?BRET
-          CFI EndBlock cfiBlock11
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine5:
-          CFI Block cfiCond12 Using cfiCommon0
-          CFI Function MAC_SrcMatchAddEntry
-          CFI Conditional ??CrossCallReturnLabel_8, ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI CFA_SP SP+-4
-          CFI CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiCond13 Using cfiCommon0
-          CFI (cfiCond13) Function MAC_SrcMatchAddEntry
-          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_8, ??CrossCallReturnLabel_1
-          CFI (cfiCond13) R6 load(1, XDATA, add(CFA_XSP16, literal(-24)))
-          CFI (cfiCond13) VB load(1, XDATA, add(CFA_XSP16, literal(-23)))
-          CFI (cfiCond13) V0 load(1, XDATA, add(CFA_XSP16, literal(-22)))
-          CFI (cfiCond13) V1 load(1, XDATA, add(CFA_XSP16, literal(-21)))
-          CFI (cfiCond13) V2 load(1, XDATA, add(CFA_XSP16, literal(-20)))
-          CFI (cfiCond13) V3 load(1, XDATA, add(CFA_XSP16, literal(-19)))
-          CFI (cfiCond13) V4 load(1, XDATA, add(CFA_XSP16, literal(-18)))
-          CFI (cfiCond13) V5 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI (cfiCond13) V6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond13) V7 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond13) V8 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond13) V9 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond13) V10 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond13) V11 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond13) V12 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond13) V13 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond13) V14 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond13) V15 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond13) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond13) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond13) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond13) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond13) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond13) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond13) CFA_SP SP+-4
-          CFI (cfiCond13) CFA_XSP16 add(XSP16, 34)
-          CFI Block cfiCond14 Using cfiCommon0
-          CFI (cfiCond14) Function macSrcMatchGetShortAddrEnableBit
-          CFI (cfiCond14) Conditional ??CrossCallReturnLabel_9
-          CFI (cfiCond14) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond14) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond14) CFA_SP SP+-7
-          CFI (cfiCond14) CFA_XSP16 add(XSP16, 3)
-          CFI Block cfiCond15 Using cfiCommon0
-          CFI (cfiCond15) Function macSrcMatchGetExtAddrEnableBit
-          CFI (cfiCond15) Conditional ??CrossCallReturnLabel_9
-          CFI (cfiCond15) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond15) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond15) CFA_SP SP+-7
-          CFI (cfiCond15) CFA_XSP16 add(XSP16, 3)
-          CFI Block cfiPicker16 Using cfiCommon1
-          CFI (cfiPicker16) NoFunction
-          CFI (cfiPicker16) Picker
-        MOV       R3,#0x61
-        LCALL     `??macMemReadRam::?relay`; Banked call to: macMemReadRam
-        ; Setup parameters for call to function osal_build_uint32
-        ; Setup parameters for call to function osal_build_uint32
-        ; Setup parameters for call to function osal_build_uint32
-        ; Setup parameters for call to function osal_build_uint32
-        MOV       R1,#0x3
-        MOV       R2,?XSP + 0
-        MOV       R3,?XSP + 1
-        LCALL     `??osal_build_uint32::?relay`; Banked call to: osal_build_uint32
-        RET
-          CFI EndBlock cfiCond12
-          CFI EndBlock cfiCond13
-          CFI EndBlock cfiCond14
-          CFI EndBlock cfiCond15
-          CFI EndBlock cfiPicker16
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock3
 //  277 
 //  278 /*********************************************************************
 //  279  * @fn          MAC_SrcMatchCheckAllPending
@@ -1737,7 +1146,7 @@ MAC_SrcMatchAckAllPending:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  288 uint8 MAC_SrcMatchCheckAllPending ( void )
 MAC_SrcMatchCheckAllPending:
-          CFI Block cfiBlock17 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function MAC_SrcMatchCheckAllPending
         CODE
 //  289 {
@@ -1764,9 +1173,15 @@ MAC_SrcMatchCheckAllPending:
 ??MAC_SrcMatchCheckAllPending_0:
         MOV       R1,#-0x1
 ??MAC_SrcMatchCheckAllPending_1:
-        SJMP      ??Subroutine6_0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  296 }
-          CFI EndBlock cfiBlock17
+          CFI EndBlock cfiBlock4
 //  297 
 //  298 /*********************************************************************
 //  299  * @fn          MAC_SrcMatchCheckResult
@@ -1781,7 +1196,7 @@ MAC_SrcMatchCheckAllPending:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  307 MAC_INTERNAL_API bool MAC_SrcMatchCheckResult( void )
 MAC_SrcMatchCheckResult:
-          CFI Block cfiBlock18 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function MAC_SrcMatchCheckResult
         CODE
 //  308 {
@@ -1816,9 +1231,15 @@ MAC_SrcMatchCheckResult:
         ANL       A,R0
         MOV       R1,A
 ??MAC_SrcMatchCheckResult_1:
-        SJMP      ??Subroutine6_0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  319 }
-          CFI EndBlock cfiBlock18
+          CFI EndBlock cfiBlock5
 //  320 
 //  321 /*********************************************************************
 //  322  * @fn          macSrcMatchFindEmptyEntry
@@ -1830,16 +1251,112 @@ MAC_SrcMatchCheckResult:
 //  328  *
 //  329  * @return      uint8 - return index of the first empty entry found
 //  330  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  331 static uint8 macSrcMatchFindEmptyEntry( uint8 macSrcMatchAddrMode )
+macSrcMatchFindEmptyEntry:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function macSrcMatchFindEmptyEntry
+        CODE
 //  332 {
+        FUNCALL macSrcMatchFindEmptyEntry, macSrcMatchGetShortAddrEnableBit
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 20, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchFindEmptyEntry, macSrcMatchGetExtAddrEnableBit
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 20, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        REQUIRE ?V6
+        REQUIRE ?V7
+        REQUIRE ?V8
+        REQUIRE ?V9
+        REQUIRE ?V10
+        REQUIRE ?V11
+        MOV       A,#-0x14
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-17)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-18)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-19)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-20)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 20)
+        ; Saved register size: 20
+        ; Auto size: 0
+        MOV       A,R1
+        MOV       R6,A
 //  333   uint8  index;
 //  334   uint24 shortAddrEnable = MAC_RADIO_SRC_MATCH_GET_SHORTADDR_EN();
+        ; Setup parameters for call to function macSrcMatchGetShortAddrEnableBit
+        LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+        MOV       ?V2,R4
+        MOV       ?V3,R5
 //  335   uint24 extAddrEnable = MAC_RADIO_SRC_MATCH_GET_EXTADDR_EN();
+        ; Setup parameters for call to function macSrcMatchGetExtAddrEnableBit
+        LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
+        MOV       ?V8,R2
+        MOV       ?V9,R3
+        MOV       ?V10,R4
+        MOV       ?V11,R5
 //  336   uint24 enable = shortAddrEnable | extAddrEnable;
+        MOV       ?V4,?V0
+        MOV       ?V5,?V1
+        MOV       ?V6,?V2
+        MOV       ?V7,?V3
+        MOV       R0,#?V4
+        MOV       R1,#?V8
+        LCALL     ?L_IOR
 //  337 
 //  338   if( macSrcMatchAddrMode == SADDR_MODE_SHORT )
+        MOV       A,#0x2
+        XRL       A,R6
+        MOV       R2,#0x0
+        JNZ       ??macSrcMatchFindEmptyEntry_0
 //  339    {
 //  340      for( index = 0; index < MAC_SRCMATCH_SHORT_MAX_NUM_ENTRIES; index ++ )
+??macSrcMatchFindEmptyEntry_1:
+        MOV       A,R2
+        CLR       C
+        SUBB      A,#0x18
+        JNC       ??macSrcMatchFindEmptyEntry_2
 //  341      {
 //  342        /* Both 2n bit of extAddrEnable and
 //  343         * corresponding bit of shortAddrEnable must be clear
@@ -1848,14 +1365,45 @@ MAC_SrcMatchCheckResult:
 //  346         */
 //  347        if( (extAddrEnable & ((uint24)0x01 << ((index/2)*2))) == 0 &&
 //  348            (shortAddrEnable & ((uint24)0x01 << index)) == 0 )
+        MOV       ?V4,?V8
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       A,#-0x2
+        ANL       A,R2
+        MOV       R0,#?V4
+        LCALL     ?UL_SHR
+        MOV       A,?V4
+        MOV       C,0xE0 /* A   */.0
+        JC        ??macSrcMatchFindEmptyEntry_3
+        MOV       ?V4,?V0
+        MOV       ?V5,?V1
+        MOV       ?V6,?V2
+        MOV       ?V7,?V3
+        MOV       A,R2
+        MOV       R0,#?V4
+        LCALL     ?UL_SHR
+        MOV       A,?V4
+        MOV       C,0xE0 /* A   */.0
+        JNC       ??macSrcMatchFindEmptyEntry_2
 //  349        {
 //  350          return index;
 //  351        }
 //  352      }
+??macSrcMatchFindEmptyEntry_3:
+        INC       R2
+        SJMP      ??macSrcMatchFindEmptyEntry_1
 //  353    }
 //  354    else
 //  355    {
 //  356      for( index = 0; index < MAC_SRCMATCH_EXT_MAX_NUM_ENTRIES; index++ )
+??macSrcMatchFindEmptyEntry_4:
+        INC       R2
+??macSrcMatchFindEmptyEntry_0:
+        MOV       A,R2
+        CLR       C
+        SUBB      A,#0xc
+        JNC       ??macSrcMatchFindEmptyEntry_2
 //  357      {
 //  358        /* Both 2n bit of extAddrEnable and
 //  359         * 2n bit and 2n+1 bit of shortAddrEnable must be clear in order
@@ -1863,13 +1411,40 @@ MAC_SrcMatchCheckResult:
 //  361         * is not used.        
 //  362         */
 //  363        if( (enable & ((uint24)0x03 << (index*2))) == 0 )
+        MOV       ?V0,?V4
+        MOV       ?V1,?V5
+        MOV       ?V2,?V6
+        MOV       ?V3,?V7
+        MOV       ?V8,#0x3
+        MOV       ?V9,#0x0
+        MOV       ?V10,#0x0
+        MOV       ?V11,#0x0
+        MOV       A,R2
+        CLR       C
+        RLC       A
+        MOV       R0,#?V8
+        LCALL     ?L_SHL
+        MOV       R0,#?V0
+        MOV       R1,#?V8
+        LCALL     ?L_AND
+        MOV       A,?V0
+        ORL       A,?V1
+        ORL       A,?V2
+        ORL       A,?V3
+        JNZ       ??macSrcMatchFindEmptyEntry_4
 //  364        {
 //  365          return index;
 //  366        }
 //  367      }
 //  368    }
 //  369   return index;
+??macSrcMatchFindEmptyEntry_2:
+        MOV       A,R2
+        MOV       R1,A
+        MOV       R7,#0xc
+        LJMP      ?BANKED_LEAVE_XDATA
 //  370 }
+          CFI EndBlock cfiBlock6
 //  371 
 //  372 /*********************************************************************
 //  373  * @fn         macSrcMatchCheckSrcAddr
@@ -1890,7 +1465,7 @@ MAC_SrcMatchCheckResult:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  387 static uint8 macSrcMatchCheckSrcAddr ( sAddr_t *addr, uint16 panID  )
 macSrcMatchCheckSrcAddr:
-          CFI Block cfiBlock19 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function macSrcMatchCheckSrcAddr
         CODE
 //  388 {
@@ -1906,6 +1481,17 @@ macSrcMatchCheckSrcAddr:
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL macSrcMatchCheckSrcAddr, macSrcMatchGetExtAddrEnableBit
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 32, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 32, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchCheckSrcAddr, macSrcMatchCheckEnableBit
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 32, STACK
@@ -2011,9 +1597,13 @@ macSrcMatchCheckSrcAddr:
         MOV       DPH,?XSP + 1
         MOVX      @DPTR,A
 //  404     entry[1] = HI_UINT16( panID );
+        MOV       A,R5
+        PUSH      A
+          CFI CFA_SP SP+-1
         MOV       A,#0x1
         LCALL     ?XSTACK_DISP0_8
-        MOV       A,R5
+        POP       A
+          CFI CFA_SP SP+0
         MOVX      @DPTR,A
 //  405     entry[2] = LO_UINT16( addr->addr.shortAddr );
         MOV       DPL,R2
@@ -2046,7 +1636,7 @@ macSrcMatchCheckSrcAddr:
 //  408     entrySize = MAC_SRCMATCH_SHORT_ENTRY_SIZE;
         MOV       R6,#0x4
 //  409     indexSize = 1;
-        MOV       ?V8,#0x1
+        MOV       ?V3,#0x1
 //  410     enable = MAC_RADIO_SRC_MATCH_GET_SHORTADDR_EN();
         ; Setup parameters for call to function macSrcMatchGetShortAddrEnableBit
         LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
@@ -2061,7 +1651,7 @@ macSrcMatchCheckSrcAddr:
 //  415     entrySize = MAC_SRCMATCH_EXT_ENTRY_SIZE;
         MOV       R6,#0x8
 //  416     indexSize = 2;
-        MOV       ?V8,#0x2
+        MOV       ?V3,#0x2
 //  417     enable = MAC_RADIO_SRC_MATCH_GET_EXTADDR_EN();
         ; Setup parameters for call to function macSrcMatchGetExtAddrEnableBit
         LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
@@ -2074,30 +1664,39 @@ macSrcMatchCheckSrcAddr:
 //  419   
 //  420   for( index = 0; index < MAC_SRCMATCH_SHORT_MAX_NUM_ENTRIES; index += indexSize )
         MOV       R7,#0x0
+        SJMP      ??macSrcMatchCheckSrcAddr_2
+??macSrcMatchCheckSrcAddr_3:
+        MOV       A,?V3
+        ADD       A,R7
+        MOV       R7,A
+??macSrcMatchCheckSrcAddr_2:
+        MOV       A,R7
+        CLR       C
+        SUBB      A,#0x18
+        JNC       ??macSrcMatchCheckSrcAddr_4
 //  421   {
 //  422     /* Check if the entry is enabled */
 //  423     if( macSrcMatchCheckEnableBit( index, enable ) == FALSE )
-??macSrcMatchCheckSrcAddr_2:
-        MOV       ?V0,?V4
-        MOV       ?V1,?V5
-        MOV       ?V2,?V6
-        MOV       ?V3,?V7
+        ; Setup parameters for call to function macSrcMatchCheckEnableBit
+        MOV       R2,?V4
+        MOV       R3,?V5
+        MOV       R4,?V6
+        MOV       R5,?V7
         MOV       A,R7
-        MOV       R0,#?V0
-        LCALL     ?UL_SHR
-        MOV       A,?V0
-        MOV       C,0xE0 /* A   */.0
-        JNC       ??macSrcMatchCheckSrcAddr_3
+        MOV       R1,A
+        LCALL     `??macSrcMatchCheckEnableBit::?relay`; Banked call to: macSrcMatchCheckEnableBit
+        MOV       A,R1
+        JZ        ??macSrcMatchCheckSrcAddr_3
 //  424     {
 //  425       continue; 
 //  426     }
 //  427     
 //  428     indexUsed = index / indexSize;
-        MOV       A,?V8
+        MOV       A,?V3
         MOV       B,A
         MOV       A,R7
         DIV       AB
-        MOV       ?V3,A
+        MOV       ?V8,A
 //  429       
 //  430     /* Compare the short address or extended address */
 //  431     MAC_RADIO_SRC_MATCH_TABLE_READ( ( indexUsed * entrySize ), ramEntry, entrySize );
@@ -2106,7 +1705,7 @@ macSrcMatchCheckSrcAddr:
         MOV       R1,A
         MOV       A,#0x4
         LCALL     ?XSTACK_DISP102_8
-        MOV       A,?V3
+        MOV       A,?V8
         MOV       B,R1
         MUL       AB
         MOV       R2,A
@@ -2147,28 +1746,22 @@ macSrcMatchCheckSrcAddr:
 //  434     {
 //  435       /* Match found */
 //  436       return indexUsed;
-        MOV       R1,?V3
-        SJMP      ??macSrcMatchCheckSrcAddr_4
+        MOV       R1,?V8
+        SJMP      ??macSrcMatchCheckSrcAddr_5
 //  437     }
 //  438   }
-??macSrcMatchCheckSrcAddr_3:
-        MOV       A,?V8
-        ADD       A,R7
-        MOV       R7,A
-        CLR       C
-        SUBB      A,#0x18
-        JC        ??macSrcMatchCheckSrcAddr_2
 //  439   
 //  440   return MAC_SRCMATCH_INVALID_INDEX;
-        MOV       R1,#-0x1
 ??macSrcMatchCheckSrcAddr_4:
+        MOV       R1,#-0x1
+??macSrcMatchCheckSrcAddr_5:
         MOV       A,#0xc
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 20)
         MOV       R7,#0xc
         LJMP      ?BANKED_LEAVE_XDATA
 //  441 }
-          CFI EndBlock cfiBlock19
+          CFI EndBlock cfiBlock7
 //  442 
 //  443 /*********************************************************************
 //  444  * @fn          macSrcMatchSetPendEnBit
@@ -2181,27 +1774,226 @@ macSrcMatchCheckSrcAddr:
 //  451  *
 //  452  * @return      none
 //  453  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  454 static void macSrcMatchSetPendEnBit( uint8 index, uint8 macSrcMatchAddrMode )
+macSrcMatchSetPendEnBit:
+          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Function macSrcMatchSetPendEnBit
+        CODE
 //  455 {
+        FUNCALL macSrcMatchSetPendEnBit, macSrcMatchGetShortAddrPendEnBit
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchSetPendEnBit, osal_buffer_uint24
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 23, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 23, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchSetPendEnBit, macMemWriteRam
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchSetPendEnBit, macSrcMatchGetExtAddrPendEnBit
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchSetPendEnBit, osal_buffer_uint24
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 23, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 23, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchSetPendEnBit, macMemWriteRam
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 19, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 19, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        REQUIRE ?V6
+        REQUIRE ?V7
+        MOV       A,#-0x10
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 16)
+        ; Saved register size: 16
+        ; Auto size: 3
+        MOV       A,#-0x3
+        LCALL     ?ALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 19)
+        MOV       A,R1
+        MOV       R6,A
+        MOV       A,R2
+        MOV       R7,A
 //  456   uint24 enable;
 //  457   uint8 buf[MAC_SRCMATCH_ENABLE_BITMAP_LEN];
 //  458        
 //  459   if( macSrcMatchAddrMode == SADDR_MODE_SHORT )
+        MOV       A,#0x2
+        XRL       A,R7
+        JNZ       ??macSrcMatchSetPendEnBit_0
 //  460   {
 //  461     enable = MAC_RADIO_SRC_MATCH_GET_SHORTADDR_PENDEN(); 
+        ; Setup parameters for call to function macSrcMatchGetShortAddrPendEnBit
+        LCALL     `??macSrcMatchGetShortAddrPendEnBit::?relay`; Banked call to: macSrcMatchGetShortAddrPendEnBit
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+        MOV       ?V2,R4
+        MOV       ?V3,R5
 //  462     enable |= ( (uint24)0x01 << index );
 //  463     osal_buffer_uint24( buf, enable );
+        ; Setup parameters for call to function osal_buffer_uint24
+        MOV       ?V4,#0x1
+        MOV       ?V5,#0x0
+        MOV       ?V6,#0x0
+        MOV       ?V7,#0x0
+        MOV       A,R6
+        MOV       R0,#?V4
+        LCALL     ?L_SHL
+        MOV       R0,#?V0
+        MOV       R1,#?V4
+        LCALL     ?L_IOR
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_FOUR
+          CFI CFA_XSP16 add(XSP16, 23)
+        MOV       A,#0x4
+        LCALL     ?XSTACK_DISP101_8
+        LCALL     `??osal_buffer_uint24::?relay`; Banked call to: osal_buffer_uint24
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 19)
 //  464     MAC_RADIO_SRC_MATCH_SET_SHORTPENDEN( buf );
+        ; Setup parameters for call to function macMemWriteRam
+        MOV       R1,#0x3
+        MOV       R4,?XSP + 0
+        MOV       R5,?XSP + 1
+        MOV       R2,#0x67
+        SJMP      ??macSrcMatchSetPendEnBit_1
 //  465   }
 //  466   else
 //  467   {
 //  468     enable = MAC_RADIO_SRC_MATCH_GET_EXTADDR_PENDEN(); 
+??macSrcMatchSetPendEnBit_0:
+        ; Setup parameters for call to function macSrcMatchGetExtAddrPendEnBit
+        LCALL     `??macSrcMatchGetExtAddrPendEnBit::?relay`; Banked call to: macSrcMatchGetExtAddrPendEnBit
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+        MOV       ?V2,R4
+        MOV       ?V3,R5
 //  469     enable |= ( (uint24)0x01 << ( index * EXT_ADDR_INDEX_SIZE ) );
 //  470     enable |= ( (uint24)0x01 << ( ( index * EXT_ADDR_INDEX_SIZE ) + 1 ) );
 //  471     osal_buffer_uint24( buf, enable );
+        MOV       A,R6
+        CLR       C
+        RLC       A
+        MOV       R2,A
+        ; Setup parameters for call to function osal_buffer_uint24
+        MOV       ?V4,#0x1
+        MOV       ?V5,#0x0
+        MOV       ?V6,#0x0
+        MOV       ?V7,#0x0
+        MOV       R0,#?V4
+        LCALL     ?L_SHL
+        MOV       R0,#?V0
+        MOV       R1,#?V4
+        LCALL     ?L_IOR
+        MOV       ?V4,#0x1
+        MOV       ?V5,#0x0
+        MOV       ?V6,#0x0
+        MOV       ?V7,#0x0
+        MOV       A,#0x1
+        ADD       A,R2
+        MOV       R0,#?V4
+        LCALL     ?L_SHL
+        MOV       R0,#?V0
+        MOV       R1,#?V4
+        LCALL     ?L_IOR
+        MOV       R0,#?V0
+        LCALL     ?PUSH_XSTACK_I_FOUR
+          CFI CFA_XSP16 add(XSP16, 23)
+        MOV       A,#0x4
+        LCALL     ?XSTACK_DISP101_8
+        LCALL     `??osal_buffer_uint24::?relay`; Banked call to: osal_buffer_uint24
+        MOV       A,#0x4
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 19)
 //  472     MAC_RADIO_SRC_MATCH_SET_EXTPENDEN( buf );
+        ; Setup parameters for call to function macMemWriteRam
+        MOV       R1,#0x3
+        MOV       R4,?XSP + 0
+        MOV       R5,?XSP + 1
+        MOV       R2,#0x64
+??macSrcMatchSetPendEnBit_1:
+        MOV       R3,#0x61
+        LCALL     `??macMemWriteRam::?relay`; Banked call to: macMemWriteRam
 //  473   }
 //  474 }
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 16)
+        MOV       R7,#0x8
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock8
 //  475 
 //  476 /*********************************************************************
 //  477  * @fn          macSrcMatchSetEnableBit
@@ -2220,7 +2012,7 @@ macSrcMatchCheckSrcAddr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  489 static void macSrcMatchSetEnableBit( uint8 index, 
 macSrcMatchSetEnableBit:
-          CFI Block cfiBlock20 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function macSrcMatchSetEnableBit
         CODE
 //  490                                     bool option, 
@@ -2346,34 +2138,20 @@ macSrcMatchSetEnableBit:
           CFI CFA_XSP16 add(XSP16, 17)
         ; Saved register size: 17
         ; Auto size: 0
-        MOV       A,R3
+        MOV       A,R1
         MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
 //  493   uint24 enable;  
 //  494   
 //  495   if( option == TRUE )
-        MOV       ?V4,#0x1
-        MOV       ?V5,#0x0
-        MOV       ?V6,#0x0
-        MOV       ?V7,#0x0
-        MOV       A,R1
-        CLR       C
-        RLC       A
-        MOV       R0,#?V4
-        LCALL     ?L_SHL
-        MOV       ?V0,#0x1
-        MOV       ?V1,A
-        MOV       ?V2,A
-        MOV       ?V3,A
-        MOV       A,R1
-        MOV       R0,#?V0
-        LCALL     ?L_SHL
-        INC       A
+        MOV       A,#0x1
         XRL       A,R2
         JNZ       ??macSrcMatchSetEnableBit_0
 //  496   {
 //  497     if( macSrcMatchAddrMode == SADDR_MODE_SHORT )
         MOV       A,#0x2
-        XRL       A,R6
+        XRL       A,R7
         JNZ       ??macSrcMatchSetEnableBit_1
 //  498     {
 //  499       enable = MAC_RADIO_SRC_MATCH_GET_SHORTADDR_EN(); 
@@ -2381,13 +2159,23 @@ macSrcMatchSetEnableBit:
 //  501       MAC_RADIO_SRC_MATCH_SET_SHORTEN( enable );
         ; Setup parameters for call to function osal_buffer_uint24
         ; Setup parameters for call to function macSrcMatchGetShortAddrEnableBit
-        LCALL     ?Subroutine3 & 0xFFFF
-//  502     }
-??CrossCallReturnLabel_4:
+        LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       ?V0,#0x1
+        MOV       ?V1,#0x0
+        MOV       ?V2,#0x0
+        MOV       ?V3,#0x0
+        MOV       A,R6
+        MOV       R0,#?V0
+        LCALL     ?L_SHL
         MOV       R0,#?V4
         MOV       R1,#?V0
         LCALL     ?L_IOR
         SJMP      ??macSrcMatchSetEnableBit_2
+//  502     }
 //  503     else
 //  504     {
 //  505       enable = MAC_RADIO_SRC_MATCH_GET_EXTADDR_EN(); 
@@ -2396,20 +2184,32 @@ macSrcMatchSetEnableBit:
 ??macSrcMatchSetEnableBit_1:
         ; Setup parameters for call to function osal_buffer_uint24
         ; Setup parameters for call to function macSrcMatchGetExtAddrEnableBit
-        LCALL     ?Subroutine4 & 0xFFFF
-//  508     }
-//  509   }
-??CrossCallReturnLabel_6:
+        LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       ?V0,#0x1
+        MOV       ?V1,#0x0
+        MOV       ?V2,#0x0
+        MOV       ?V3,#0x0
+        MOV       A,R6
+        CLR       C
+        RLC       A
         MOV       R0,#?V0
-        MOV       R1,#?V4
+        LCALL     ?L_SHL
+        MOV       R0,#?V4
+        MOV       R1,#?V0
         LCALL     ?L_IOR
         SJMP      ??macSrcMatchSetEnableBit_3
+//  508     }
+//  509   }
 //  510   else
 //  511   {
 //  512     if( macSrcMatchAddrMode == SADDR_MODE_SHORT )
 ??macSrcMatchSetEnableBit_0:
         MOV       A,#0x2
-        XRL       A,R6
+        XRL       A,R7
         JNZ       ??macSrcMatchSetEnableBit_4
 //  513     {
 //  514       enable = MAC_RADIO_SRC_MATCH_GET_SHORTADDR_EN();
@@ -2417,9 +2217,18 @@ macSrcMatchSetEnableBit:
 //  516       MAC_RADIO_SRC_MATCH_SET_SHORTEN( enable );
         ; Setup parameters for call to function osal_buffer_uint24
         ; Setup parameters for call to function macSrcMatchGetShortAddrEnableBit
-        LCALL     ?Subroutine3 & 0xFFFF
-//  517     }
-??CrossCallReturnLabel_5:
+        LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       ?V0,#0x1
+        MOV       ?V1,#0x0
+        MOV       ?V2,#0x0
+        MOV       ?V3,#0x0
+        MOV       A,R6
+        MOV       R0,#?V0
+        LCALL     ?L_SHL
         MOV       R0,#?V0
         LCALL     ?L_NOT
         MOV       R0,#?V4
@@ -2432,6 +2241,7 @@ macSrcMatchSetEnableBit:
         MOV       R2,#-0x7d
         SJMP      ??macSrcMatchSetEnableBit_5
           CFI CFA_XSP16 add(XSP16, 17)
+//  517     }
 //  518     else
 //  519     {
 //  520       enable = MAC_RADIO_SRC_MATCH_GET_EXTADDR_EN(); 
@@ -2440,17 +2250,27 @@ macSrcMatchSetEnableBit:
 ??macSrcMatchSetEnableBit_4:
         ; Setup parameters for call to function osal_buffer_uint24
         ; Setup parameters for call to function macSrcMatchGetExtAddrEnableBit
-        LCALL     ?Subroutine4 & 0xFFFF
-//  523     }
-//  524   }
-??CrossCallReturnLabel_7:
-        MOV       R0,#?V4
-        LCALL     ?L_NOT
+        LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       ?V0,#0x1
+        MOV       ?V1,#0x0
+        MOV       ?V2,#0x0
+        MOV       ?V3,#0x0
+        MOV       A,R6
+        CLR       C
+        RLC       A
         MOV       R0,#?V0
-        MOV       R1,#?V4
+        LCALL     ?L_SHL
+        MOV       R0,#?V0
+        LCALL     ?L_NOT
+        MOV       R0,#?V4
+        MOV       R1,#?V0
         LCALL     ?L_AND
 ??macSrcMatchSetEnableBit_3:
-        MOV       R0,#?V0
+        MOV       R0,#?V4
         LCALL     ?PUSH_XSTACK_I_FOUR
           CFI CFA_XSP16 add(XSP16, 21)
         MOV       R2,#-0x7a
@@ -2460,128 +2280,12 @@ macSrcMatchSetEnableBit:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 17)
+//  523     }
+//  524   }
 //  525 }
         MOV       R7,#0x9
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock20
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond21 Using cfiCommon0
-          CFI Function macSrcMatchSetEnableBit
-          CFI Conditional ??CrossCallReturnLabel_6
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 17)
-          CFI Block cfiCond22 Using cfiCommon0
-          CFI (cfiCond22) Function macSrcMatchSetEnableBit
-          CFI (cfiCond22) Conditional ??CrossCallReturnLabel_7
-          CFI (cfiCond22) R6 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI (cfiCond22) VB load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond22) V0 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond22) V1 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond22) V2 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond22) V3 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond22) V4 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond22) V5 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond22) V6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond22) V7 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond22) V8 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond22) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond22) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond22) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond22) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond22) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond22) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond22) CFA_SP SP+-2
-          CFI (cfiCond22) CFA_XSP16 add(XSP16, 17)
-          CFI Block cfiPicker23 Using cfiCommon1
-          CFI (cfiPicker23) NoFunction
-          CFI (cfiPicker23) Picker
-        LCALL     `??macSrcMatchGetExtAddrEnableBit::?relay`; Banked call to: macSrcMatchGetExtAddrEnableBit
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       ?V2,R4
-        MOV       ?V3,R5
-        RET
-          CFI EndBlock cfiCond21
-          CFI EndBlock cfiCond22
-          CFI EndBlock cfiPicker23
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiCond24 Using cfiCommon0
-          CFI Function macSrcMatchSetEnableBit
-          CFI Conditional ??CrossCallReturnLabel_4
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 17)
-          CFI Block cfiCond25 Using cfiCommon0
-          CFI (cfiCond25) Function macSrcMatchSetEnableBit
-          CFI (cfiCond25) Conditional ??CrossCallReturnLabel_5
-          CFI (cfiCond25) R6 load(1, XDATA, add(CFA_XSP16, literal(-17)))
-          CFI (cfiCond25) VB load(1, XDATA, add(CFA_XSP16, literal(-16)))
-          CFI (cfiCond25) V0 load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI (cfiCond25) V1 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI (cfiCond25) V2 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI (cfiCond25) V3 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond25) V4 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond25) V5 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond25) V6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond25) V7 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond25) V8 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond25) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond25) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond25) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond25) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond25) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond25) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond25) CFA_SP SP+-2
-          CFI (cfiCond25) CFA_XSP16 add(XSP16, 17)
-          CFI Block cfiPicker26 Using cfiCommon1
-          CFI (cfiPicker26) NoFunction
-          CFI (cfiPicker26) Picker
-        LCALL     `??macSrcMatchGetShortAddrEnableBit::?relay`; Banked call to: macSrcMatchGetShortAddrEnableBit
-        MOV       ?V4,R2
-        MOV       ?V5,R3
-        MOV       ?V6,R4
-        MOV       ?V7,R5
-        RET
-          CFI EndBlock cfiCond24
-          CFI EndBlock cfiCond25
-          CFI EndBlock cfiPicker26
+          CFI EndBlock cfiBlock9
 //  526 
 //  527 /*********************************************************************
 //  528  * @fn          macSrcMatchCheckEnableBit
@@ -2594,15 +2298,61 @@ macSrcMatchSetEnableBit:
 //  535  *
 //  536  * @return      TRUE or FALSE
 //  537  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  538 static bool macSrcMatchCheckEnableBit( uint8 index, uint24 enable)
+macSrcMatchCheckEnableBit:
+          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Function macSrcMatchCheckEnableBit
+        CODE
 //  539 {
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        MOV       A,#-0xc
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 12)
+        ; Saved register size: 12
+        ; Auto size: 0
+        MOV       A,R1
+        MOV       ?V0,R2
+        MOV       ?V1,R3
+        MOV       ?V2,R4
+        MOV       ?V3,R5
 //  540   if( enable & ((uint24)0x01 << index ))
+        MOV       R0,#?V0
+        LCALL     ?UL_SHR
+        MOV       A,?V0
+        MOV       C,0xE0 /* A   */.0
+        JNC       ??macSrcMatchCheckEnableBit_0
 //  541   {
 //  542     return TRUE;
+        MOV       R1,#0x1
+        SJMP      ??macSrcMatchCheckEnableBit_1
 //  543   }
 //  544   
 //  545   return FALSE; 
+??macSrcMatchCheckEnableBit_0:
+        MOV       R1,#0x0
+??macSrcMatchCheckEnableBit_1:
+        MOV       R7,#0x4
+        LJMP      ?BANKED_LEAVE_XDATA
 //  546 }
+          CFI EndBlock cfiBlock10
 //  547  
 //  548 /*********************************************************************
 //  549  * @fn          macSrcMatchGetShortAddrPendEnBit
@@ -2613,14 +2363,76 @@ macSrcMatchSetEnableBit:
 //  554  *
 //  555  * @return      uint24 - 24 bits bitmap
 //  556  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  557 static uint24 macSrcMatchGetShortAddrPendEnBit( void )
+macSrcMatchGetShortAddrPendEnBit:
+          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Function macSrcMatchGetShortAddrPendEnBit
+        CODE
 //  558 {
+        FUNCALL macSrcMatchGetShortAddrPendEnBit, macMemReadRam
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 3, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 3, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchGetShortAddrPendEnBit, osal_build_uint32
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 3, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 3, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 3
+        MOV       A,#-0x3
+        LCALL     ?ALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 3)
 //  559   uint8 buf[MAC_SRCMATCH_ENABLE_BITMAP_LEN];
 //  560   
 //  561   MAC_RADIO_GET_SRC_SHORTPENDEN( buf );
+        ; Setup parameters for call to function macMemReadRam
+        MOV       R1,#0x3
+        MOV       R4,?XSP + 0
+        MOV       R5,?XSP + 1
+        MOV       R2,#0x67
+        MOV       R3,#0x61
+        LCALL     `??macMemReadRam::?relay`; Banked call to: macMemReadRam
 //  562   
 //  563   return osal_build_uint32( buf, MAC_SRCMATCH_ENABLE_BITMAP_LEN );
+        ; Setup parameters for call to function osal_build_uint32
+        MOV       R1,#0x3
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_build_uint32::?relay`; Banked call to: osal_build_uint32
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 XSP16+0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  564 }
+          CFI EndBlock cfiBlock11
 //  565 
 //  566  
 //  567 /*********************************************************************
@@ -2632,14 +2444,76 @@ macSrcMatchSetEnableBit:
 //  573  *
 //  574  * @return      uint24 - 24 bits bitmap
 //  575  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  576 static uint24 macSrcMatchGetExtAddrPendEnBit( void )
+macSrcMatchGetExtAddrPendEnBit:
+          CFI Block cfiBlock12 Using cfiCommon0
+          CFI Function macSrcMatchGetExtAddrPendEnBit
+        CODE
 //  577 {
+        FUNCALL macSrcMatchGetExtAddrPendEnBit, macMemReadRam
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 3, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 3, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL macSrcMatchGetExtAddrPendEnBit, osal_build_uint32
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 3, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 3, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 3
+        MOV       A,#-0x3
+        LCALL     ?ALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 3)
 //  578   uint8 buf[MAC_SRCMATCH_ENABLE_BITMAP_LEN];
 //  579   
 //  580   MAC_RADIO_GET_SRC_EXTENPEND( buf );
+        ; Setup parameters for call to function macMemReadRam
+        MOV       R1,#0x3
+        MOV       R4,?XSP + 0
+        MOV       R5,?XSP + 1
+        MOV       R2,#0x64
+        MOV       R3,#0x61
+        LCALL     `??macMemReadRam::?relay`; Banked call to: macMemReadRam
 //  581   
 //  582   return osal_build_uint32( buf, MAC_SRCMATCH_ENABLE_BITMAP_LEN );
+        ; Setup parameters for call to function osal_build_uint32
+        MOV       R1,#0x3
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_build_uint32::?relay`; Banked call to: osal_build_uint32
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 XSP16+0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  583 }
+          CFI EndBlock cfiBlock12
 //  584 
 //  585 /*********************************************************************
 //  586  * @fn          macSrcMatchGetShortAddrEnableBit
@@ -2654,7 +2528,7 @@ macSrcMatchSetEnableBit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  594 static uint24 macSrcMatchGetShortAddrEnableBit( void )
 macSrcMatchGetShortAddrEnableBit:
-          CFI Block cfiBlock27 Using cfiCommon0
+          CFI Block cfiBlock13 Using cfiCommon0
           CFI Function macSrcMatchGetShortAddrEnableBit
         CODE
 //  595 {
@@ -2699,11 +2573,27 @@ macSrcMatchGetShortAddrEnableBit:
         MOV       R4,?XSP + 0
         MOV       R5,?XSP + 1
         MOV       R2,#-0x7d
-        LJMP      ?Subroutine0 & 0xFFFF
+        MOV       R3,#0x61
+        LCALL     `??macMemReadRam::?relay`; Banked call to: macMemReadRam
 //  599   
 //  600   return osal_build_uint32( buf, MAC_SRCMATCH_ENABLE_BITMAP_LEN );
+        ; Setup parameters for call to function osal_build_uint32
+        MOV       R1,#0x3
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_build_uint32::?relay`; Banked call to: osal_build_uint32
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 XSP16+0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  601 }
-          CFI EndBlock cfiBlock27
+          CFI EndBlock cfiBlock13
 //  602 
 //  603 /*********************************************************************
 //  604  * @fn          macSrcMatchGetExtAddrEnBit
@@ -2718,7 +2608,7 @@ macSrcMatchGetShortAddrEnableBit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  612 static uint24 macSrcMatchGetExtAddrEnableBit( void )
 macSrcMatchGetExtAddrEnableBit:
-          CFI Block cfiBlock28 Using cfiCommon0
+          CFI Block cfiBlock14 Using cfiCommon0
           CFI Function macSrcMatchGetExtAddrEnableBit
         CODE
 //  613 {
@@ -2763,11 +2653,27 @@ macSrcMatchGetExtAddrEnableBit:
         MOV       R4,?XSP + 0
         MOV       R5,?XSP + 1
         MOV       R2,#-0x7a
-        LJMP      ?Subroutine0 & 0xFFFF
+        MOV       R3,#0x61
+        LCALL     `??macMemReadRam::?relay`; Banked call to: macMemReadRam
 //  617   
 //  618   return osal_build_uint32( buf, MAC_SRCMATCH_ENABLE_BITMAP_LEN );
+        ; Setup parameters for call to function osal_build_uint32
+        MOV       R1,#0x3
+        MOV       R2,?XSP + 0
+        MOV       R3,?XSP + 1
+        LCALL     `??osal_build_uint32::?relay`; Banked call to: osal_build_uint32
+        MOV       A,#0x3
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 XSP16+0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  619 }
-          CFI EndBlock cfiBlock28
+          CFI EndBlock cfiBlock14
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??MAC_SrcMatchEnable::?relay`:
@@ -2812,6 +2718,13 @@ macSrcMatchGetExtAddrEnableBit:
         DC24    MAC_SrcMatchCheckResult
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??macSrcMatchFindEmptyEntry::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    macSrcMatchFindEmptyEntry
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macSrcMatchCheckSrcAddr::?relay`:
         CODE
         LCALL   ?BDISPATCH
@@ -2819,11 +2732,39 @@ macSrcMatchGetExtAddrEnableBit:
         DC24    macSrcMatchCheckSrcAddr
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??macSrcMatchSetPendEnBit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    macSrcMatchSetPendEnBit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macSrcMatchSetEnableBit::?relay`:
         CODE
         LCALL   ?BDISPATCH
         DATA24
         DC24    macSrcMatchSetEnableBit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??macSrcMatchCheckEnableBit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    macSrcMatchCheckEnableBit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??macSrcMatchGetShortAddrPendEnBit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    macSrcMatchGetShortAddrPendEnBit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??macSrcMatchGetExtAddrPendEnBit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    macSrcMatchGetExtAddrPendEnBit
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macSrcMatchGetShortAddrEnableBit::?relay`:
@@ -2843,12 +2784,12 @@ macSrcMatchGetExtAddrEnableBit:
 //  620 
 //  621 
 // 
-// 1 288 bytes in segment BANKED_CODE
-//    60 bytes in segment BANK_RELAYS
+// 1 488 bytes in segment BANKED_CODE
+//    90 bytes in segment BANK_RELAYS
 //     2 bytes in segment XDATA_Z
 // 
-//    60 bytes of CODE     memory
-// 1 288 bytes of HUGECODE memory
+//    90 bytes of CODE     memory
+// 1 488 bytes of HUGECODE memory
 //     2 bytes of XDATA    memory
 //
 //Errors: none

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:24
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:45
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_tx.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWCF2F.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW6F79.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\mac_tx.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -184,7 +186,9 @@
         LOCFRAME ISTACK, 2, STACK
         PUBLIC macTxCollisionWithRxCallback
         FUNCTION macTxCollisionWithRxCallback,021203H
-        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
         PUBLIC macTxCsmaBackoffDelay
         PUBLIC macTxDoneCallback
@@ -331,73 +335,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 halAssertHandler    SYMBOL "halAssertHandler"
 `??halAssertHandler::?relay` SYMBOL "?relay", halAssertHandler
@@ -627,7 +564,7 @@ macTxTimestampCallback SYMBOL "macTxTimestampCallback"
         FUNCTION macRxHaltCleanup,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 0, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN macRxOffRequest
@@ -915,7 +852,13 @@ macTxInit:
 //  174   macTxAckIsrTimer.pFunc = &txAckIsrTimeout;
 //  175 #endif /* ACK_DONE_ISR_WROKAROUND */
 //  176 }
-        LJMP      ?Subroutine0 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
 //  177 
 //  178 
@@ -974,7 +917,13 @@ macTxHaltCleanup:
         ; Setup parameters for call to function macTxInit
         LCALL     `??macTxInit::?relay`; Banked call to: macTxInit
 //  193 }
-        LJMP      ?Subroutine0 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock1
 //  194 
 //  195 
@@ -1149,6 +1098,7 @@ macTxFrame:
 //  233    *  Prepare for transmit.
 //  234    */
 //  235   if (macTxType == MAC_TX_TYPE_SLOTTED)
+        MOVX      A,@DPTR
         XRL       A,#0x2
         JNZ       ??macTxFrame_3
 //  236   {
@@ -1171,6 +1121,7 @@ macTxFrame:
 ??macTxFrame_3:
         MOVX      A,@DPTR
         JZ        ??macTxFrame_5
+        MOVX      A,@DPTR
         XRL       A,#0x1
         JZ        ??macTxFrame_5
         ; Setup parameters for call to function halAssertHandler
@@ -1203,10 +1154,11 @@ macTxFrame:
 ??macTxFrame_7:
         MOVX      A,@DPTR
         MOV       DPTR,#macTxBe
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOVX      @DPTR,A
 //  253 
 //  254     if ((macTxType == MAC_TX_TYPE_SLOTTED_CSMA) && (pMacPib->battLifeExt))
-??CrossCallReturnLabel_4:
+        MOV       DPTR,#macTxType
+        MOVX      A,@DPTR
         JNZ       ??macTxFrame_8
         MOV       DPTR,#macPib + 3
         MOVX      A,@DPTR
@@ -1257,8 +1209,15 @@ macTxFrame:
 //  273     /* save needed parameters */
 //  274     txAckReq = MAC_ACK_REQUEST(pMacDataTx->msdu.p);
 ??macTxFrame_10:
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_2:
+        MOV       DPTR,#pMacDataTx
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPH,A
+        MOV       DPL,R0
+        INC       DPTR
+        INC       DPTR
         MOVX      A,@DPTR
         MOV       R0,A
         INC       DPTR
@@ -1358,12 +1317,17 @@ macTxFrame:
 //  311     {
 //  312       macTxActive = MAC_TX_ACTIVE_GO;
         MOV       DPTR,#macTxActive
-        LCALL     ?Subroutine2 & 0xFFFF
+        MOV       A,#-0x7d
+        MOVX      @DPTR,A
 //  313       HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R0
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  314       txGo();
-//  315     }
-??CrossCallReturnLabel_0:
+        ; Setup parameters for call to function txGo
+        LCALL     `??txGo::?relay` ; Banked call to: txGo
         SJMP      ??macTxFrame_2
+//  315     }
 //  316     else
 //  317     {
 //  318 #ifdef ACK_DONE_ISR_WORKAROUND
@@ -1394,7 +1358,8 @@ macTxFrame:
 //  336   }
 //  337 }
 ??macTxFrame_2:
-        LJMP      ?Subroutine1 & 0xFFFF
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock2
         REQUIRE RFST
         REQUIRE _A_IEN0
@@ -1484,10 +1449,11 @@ txCsmaPrep:
         DEC       A
         ANL       A,R1
         MOV       DPTR,#macTxCsmaBackoffDelay
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOVX      @DPTR,A
 //  353 
 //  354   if (macTxType == MAC_TX_TYPE_SLOTTED_CSMA)
-??CrossCallReturnLabel_5:
+        MOV       DPTR,#macTxType
+        MOVX      A,@DPTR
         JNZ       ??txCsmaPrep_0
 //  355   {
 //  356     MAC_RADIO_TX_PREP_CSMA_SLOTTED();
@@ -1608,11 +1574,12 @@ txGo:
 //  410   macRxOutgoingAckFlag = 0;
         MOV       DPTR,#macRxOutgoingAckFlag
         CLR       A
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOVX      @DPTR,A
 //  411 
 //  412   /* based on type of transmit, call the correct "go" functionality */
 //  413   if (macTxType == MAC_TX_TYPE_SLOTTED)
-??CrossCallReturnLabel_6:
+        MOV       DPTR,#macTxType
+        MOVX      A,@DPTR
         XRL       A,#0x2
         JNZ       ??txGo_0
 //  414   {
@@ -1645,65 +1612,14 @@ txGo:
 //  428   }
 //  429 }
 ??txGo_1:
-        SJMP      ?Subroutine0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock4
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond5 Using cfiCommon0
-          CFI Function macTxFrame
-          CFI Conditional ??CrossCallReturnLabel_4
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI (cfiCond6) Function txCsmaPrep
-          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_5
-          CFI (cfiCond6) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond6) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond6) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond6) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond6) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond6) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond6) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond6) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond6) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond6) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond6) CFA_SP SP+-2
-          CFI (cfiCond6) CFA_XSP16 add(XSP16, 10)
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function txGo
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_6
-          CFI (cfiCond7) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond7) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond7) CFA_SP SP+-7
-          CFI Block cfiCond8 Using cfiCommon0
-          CFI (cfiCond8) Function macTxFrameRetransmit
-          CFI (cfiCond8) Conditional ??CrossCallReturnLabel_7
-          CFI (cfiCond8) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond8) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond8) CFA_SP SP+-7
-          CFI Block cfiPicker9 Using cfiCommon1
-          CFI (cfiPicker9) NoFunction
-          CFI (cfiPicker9) Picker
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function macTxFrame
-        MOV       DPTR,#macTxType
-        MOVX      A,@DPTR
-        RET
-          CFI EndBlock cfiCond5
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiCond8
-          CFI EndBlock cfiPicker9
 //  430 
 //  431 
 //  432 /*=================================================================================================
@@ -1720,7 +1636,7 @@ txGo:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  442 static void txCsmaGo(void)
 txCsmaGo:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function txCsmaGo
         CODE
 //  443 {
@@ -1799,8 +1715,14 @@ txCsmaGo:
 //  456   }
 //  457 }
 ??txCsmaGo_1:
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock10
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock5
 //  458 
 //  459 
 //  460 /**************************************************************************************************
@@ -1817,7 +1739,7 @@ txCsmaGo:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  470 MAC_INTERNAL_API void macTxFrameRetransmit(void)
 macTxFrameRetransmit:
-          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function macTxFrameRetransmit
         CODE
 //  471 {
@@ -1843,7 +1765,7 @@ macTxFrameRetransmit:
 //  472   txRetransmitFlag = 1;
         MOV       DPTR,#txRetransmitFlag
         MOV       A,#0x1
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOVX      @DPTR,A
 //  473 
 //  474 #if defined ( FEATURE_SYSTEM_STATS )
 //  475   /* Update Diagnostics counter */
@@ -1851,29 +1773,20 @@ macTxFrameRetransmit:
 //  477 #endif
 //  478   
 //  479   macTxFrame(macTxType);
-??CrossCallReturnLabel_7:
+        ; Setup parameters for call to function macTxFrame
+        MOV       DPTR,#macTxType
+        MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??macTxFrame::?relay`; Banked call to: macTxFrame
 //  480 }
-          CFI EndBlock cfiBlock11
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock12 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock12
+          CFI EndBlock cfiBlock6
 //  481 
 //  482 
 //  483 /**************************************************************************************************
@@ -1891,7 +1804,7 @@ macTxFrameRetransmit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  494 MAC_INTERNAL_API void macTxStartQueuedFrame(void)
 macTxStartQueuedFrame:
-          CFI Block cfiBlock13 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function macTxStartQueuedFrame
         CODE
 //  495 {
@@ -1956,12 +1869,17 @@ macTxStartQueuedFrame:
         JNZ       ??macTxStartQueuedFrame_2
 //  506   {
 //  507     macTxActive = MAC_TX_ACTIVE_GO;
-        LCALL     ?Subroutine2 & 0xFFFF
+        MOV       A,#-0x7d
+        MOVX      @DPTR,A
 //  508     HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R0
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  509     txGo();
-//  510   }
-??CrossCallReturnLabel_1:
+        ; Setup parameters for call to function txGo
+        LCALL     `??txGo::?relay` ; Banked call to: txGo
         SJMP      ??macTxStartQueuedFrame_3
+//  510   }
 //  511   else
 //  512   {
 //  513     HAL_EXIT_CRITICAL_SECTION(s);
@@ -1972,47 +1890,15 @@ macTxStartQueuedFrame:
 //  514   }
 //  515 }
 ??macTxStartQueuedFrame_3:
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock13
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock7
         REQUIRE _A_IEN0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond14 Using cfiCommon0
-          CFI Function macTxFrame
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond15 Using cfiCommon0
-          CFI (cfiCond15) Function macTxStartQueuedFrame
-          CFI (cfiCond15) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond15) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond15) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond15) CFA_SP SP+-7
-          CFI Block cfiPicker16 Using cfiCommon1
-          CFI (cfiPicker16) NoFunction
-          CFI (cfiPicker16) Picker
-        MOV       A,#-0x7d
-        MOVX      @DPTR,A
-        MOV       A,R0
-        MOV       C,0xE0 /* A   */.0
-        MOV       0xa8.7,C
-        ; Setup parameters for call to function txGo
-        ; Setup parameters for call to function txGo
-        LCALL     `??txGo::?relay` ; Banked call to: txGo
-        RET
-          CFI EndBlock cfiCond14
-          CFI EndBlock cfiCond15
-          CFI EndBlock cfiPicker16
 //  516 
 //  517 
 //  518 /**************************************************************************************************
@@ -2030,7 +1916,7 @@ macTxStartQueuedFrame:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  529 MAC_INTERNAL_API void macTxChannelBusyCallback(void)
 macTxChannelBusyCallback:
-          CFI Block cfiBlock17 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function macTxChannelBusyCallback
         CODE
 //  530 {
@@ -2101,6 +1987,7 @@ macTxChannelBusyCallback:
         MOV       DPTR,#macTxType
         MOVX      A,@DPTR
         JZ        ??macTxChannelBusyCallback_0
+        MOVX      A,@DPTR
         XRL       A,#0x1
         JZ        ??macTxChannelBusyCallback_0
         ; Setup parameters for call to function halAssertHandler
@@ -2123,6 +2010,7 @@ macTxChannelBusyCallback:
         INC       A
         MOVX      @DPTR,A
 //  539   if (nb > pMacPib->maxCsmaBackoffs)
+        MOVX      A,@DPTR
         MOV       R0,A
         MOV       DPTR,#macPib + 27
         MOVX      A,@DPTR
@@ -2182,8 +2070,14 @@ macTxChannelBusyCallback:
 //  549   }
 //  550 }
 ??macTxChannelBusyCallback_2:
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock17
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock8
 //  551 
 //  552 
 //  553 /**************************************************************************************************
@@ -2200,11 +2094,11 @@ macTxChannelBusyCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  563 MAC_INTERNAL_API void macTxDoneCallback(void)
 macTxDoneCallback:
-          CFI Block cfiBlock18 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function macTxDoneCallback
         CODE
 //  564 {
-        FUNCALL macTxDoneCallback, macRxHaltCleanup
+        FUNCALL macTxDoneCallback, macTxCollisionWithRxCallback
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 9, STACK
@@ -2278,8 +2172,8 @@ macTxDoneCallback:
 //  576     {
 //  577       /* RX was partly done just before TX. Reset the RX state. */
 //  578       macTxCollisionWithRxCallback();
-        ; Setup parameters for call to function macRxHaltCleanup
-        LCALL     `??macRxHaltCleanup::?relay`; Banked call to: macRxHaltCleanup
+        ; Setup parameters for call to function macTxCollisionWithRxCallback
+        LCALL     `??macTxCollisionWithRxCallback::?relay`; Banked call to: macTxCollisionWithRxCallback
 //  579     }
 //  580     
 //  581     /* see if ACK was requested */
@@ -2334,8 +2228,9 @@ macTxDoneCallback:
 //  607   }
 //  608 }
 ??macTxDoneCallback_3:
-        SJMP      ?Subroutine1
-          CFI EndBlock cfiBlock18
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock9
         REQUIRE _A_IEN0
 //  609 
 //  610 
@@ -2355,7 +2250,7 @@ macTxDoneCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  623 MAC_INTERNAL_API void macTxAckReceivedCallback(uint8 seqn, uint8 pendingFlag)
 macTxAckReceivedCallback:
-          CFI Block cfiBlock19 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function macTxAckReceivedCallback
         CODE
 //  624 {
@@ -2438,13 +2333,18 @@ macTxAckReceivedCallback:
         JNZ       ??macTxAckReceivedCallback_0
 //  630   {
 //  631     macTxActive = MAC_TX_ACTIVE_POST_ACK;
-        LCALL     ?Subroutine5 & 0xFFFF
+        MOV       A,#-0x79
+        MOVX      @DPTR,A
 //  632     MAC_RADIO_TX_CANCEL_ACK_TIMEOUT_CALLBACK();
+        ; Setup parameters for call to function macCspTxCancelAckTimeoutCallback
+        LCALL     `??macCspTxCancelAckTimeoutCallback::?relay`; Banked call to: macCspTxCancelAckTimeoutCallback
 //  633     HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R6
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  634 
 //  635     /* see if the sequence number of received ACK matches sequence number of packet just sent */
 //  636     if (seqn == txSeqn)
-??CrossCallReturnLabel_8:
         MOV       DPTR,#txSeqn
         MOVX      A,@DPTR
         XRL       A,R7
@@ -2494,29 +2394,10 @@ macTxAckReceivedCallback:
 //  660   }
 //  661 }
 ??macTxAckReceivedCallback_4:
-          CFI EndBlock cfiBlock19
-        REQUIRE ?Subroutine1
-        REQUIRE _A_IEN0
-        ; // Fall through to label ?Subroutine1
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock20 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock20
+          CFI EndBlock cfiBlock10
+        REQUIRE _A_IEN0
 //  662 
 //  663 
 //  664 /**************************************************************************************************
@@ -2537,7 +2418,7 @@ macTxAckReceivedCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  678 MAC_INTERNAL_API void macTxAckNotReceivedCallback(void)
 macTxAckNotReceivedCallback:
-          CFI Block cfiBlock21 Using cfiCommon0
+          CFI Block cfiBlock11 Using cfiCommon0
           CFI Function macTxAckNotReceivedCallback
         CODE
 //  679 {
@@ -2594,13 +2475,18 @@ macTxAckNotReceivedCallback:
         JNZ       ??macTxAckNotReceivedCallback_0
 //  685   {
 //  686     macTxActive = MAC_TX_ACTIVE_POST_ACK;
-        LCALL     ?Subroutine5 & 0xFFFF
+        MOV       A,#-0x79
+        MOVX      @DPTR,A
 //  687     MAC_RADIO_TX_CANCEL_ACK_TIMEOUT_CALLBACK();
+        ; Setup parameters for call to function macCspTxCancelAckTimeoutCallback
+        LCALL     `??macCspTxCancelAckTimeoutCallback::?relay`; Banked call to: macCspTxCancelAckTimeoutCallback
 //  688     HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R6
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  689     
 //  690     /* a non-ACK was received when expecting an ACK, per spec transmit is over at this point */
 //  691     txComplete(MAC_NO_ACK);
-??CrossCallReturnLabel_9:
         ; Setup parameters for call to function txComplete
         MOV       R1,#-0x17
         LCALL     `??txComplete::?relay`; Banked call to: txComplete
@@ -2616,55 +2502,10 @@ macTxAckNotReceivedCallback:
 //  696   }
 //  697 }
 ??macTxAckNotReceivedCallback_1:
-        SJMP      ?Subroutine1
-          CFI EndBlock cfiBlock21
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock11
         REQUIRE _A_IEN0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine5:
-          CFI Block cfiCond22 Using cfiCommon0
-          CFI Function macTxAckReceivedCallback
-          CFI Conditional ??CrossCallReturnLabel_8
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond23 Using cfiCommon0
-          CFI (cfiCond23) Function macTxAckNotReceivedCallback
-          CFI (cfiCond23) Conditional ??CrossCallReturnLabel_9
-          CFI (cfiCond23) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond23) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond23) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond23) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond23) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond23) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond23) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond23) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond23) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond23) CFA_SP SP+-2
-          CFI (cfiCond23) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker24 Using cfiCommon1
-          CFI (cfiPicker24) NoFunction
-          CFI (cfiPicker24) Picker
-        MOV       A,#-0x79
-        MOVX      @DPTR,A
-        ; Setup parameters for call to function macCspTxCancelAckTimeoutCallback
-        ; Setup parameters for call to function macCspTxCancelAckTimeoutCallback
-        LCALL     `??macCspTxCancelAckTimeoutCallback::?relay`; Banked call to: macCspTxCancelAckTimeoutCallback
-        MOV       A,R6
-        MOV       C,0xE0 /* A   */.0
-        MOV       0xa8.7,C
-        RET
-          CFI EndBlock cfiCond22
-          CFI EndBlock cfiCond23
-          CFI EndBlock cfiPicker24
 //  698 
 //  699 #ifdef ACK_DONE_ISR_WORKAROUND
 //  700 /*=================================================================================================
@@ -2711,7 +2552,7 @@ macTxAckNotReceivedCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  740 static void txComplete(uint8 status)
 txComplete:
-          CFI Block cfiBlock25 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function txComplete
         CODE
 //  741 {
@@ -2826,8 +2667,9 @@ txComplete:
         MOV       R1,A
         LCALL     `??macTxCompleteCallback::?relay`; Banked call to: macTxCompleteCallback
 //  769 }
-        SJMP      ?Subroutine1
-          CFI EndBlock cfiBlock25
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock12
 //  770 
 //  771 
 //  772 /**************************************************************************************************
@@ -2845,7 +2687,7 @@ txComplete:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  783 MAC_INTERNAL_API void macTxTimestampCallback(void)
 macTxTimestampCallback:
-          CFI Block cfiBlock26 Using cfiCommon0
+          CFI Block cfiBlock13 Using cfiCommon0
           CFI Function macTxTimestampCallback
         CODE
 //  784 {
@@ -2925,8 +2767,15 @@ macTxTimestampCallback:
         MOV       ?V1,R3
         MOV       ?V2,R4
         MOV       ?V3,R5
-        LCALL     ?Subroutine3 & 0xFFFF
-??CrossCallReturnLabel_3:
+        MOV       DPTR,#pMacDataTx
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPH,A
+        MOV       DPL,R0
+        INC       DPTR
+        INC       DPTR
         INC       DPTR
         INC       DPTR
         INC       DPTR
@@ -2955,57 +2804,7 @@ macTxTimestampCallback:
 //  789 }
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock26
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiCond27 Using cfiCommon0
-          CFI Function macTxFrame
-          CFI Conditional ??CrossCallReturnLabel_2
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond28 Using cfiCommon0
-          CFI (cfiCond28) Function macTxTimestampCallback
-          CFI (cfiCond28) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond28) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond28) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond28) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond28) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond28) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond28) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond28) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond28) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond28) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond28) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond28) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond28) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond28) CFA_SP SP+-2
-          CFI (cfiCond28) CFA_XSP16 add(XSP16, 12)
-          CFI Block cfiPicker29 Using cfiCommon1
-          CFI (cfiPicker29) NoFunction
-          CFI (cfiPicker29) Picker
-        MOV       DPTR,#pMacDataTx
-        MOVX      A,@DPTR
-        MOV       R0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       DPH,A
-        MOV       DPL,R0
-        INC       DPTR
-        INC       DPTR
-        RET
-          CFI EndBlock cfiCond27
-          CFI EndBlock cfiCond28
-          CFI EndBlock cfiPicker29
+          CFI EndBlock cfiBlock13
 //  790 
 //  791 
 //  792 /**************************************************************************************************
@@ -3022,7 +2821,7 @@ macTxTimestampCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  802 MAC_INTERNAL_API void macTxCollisionWithRxCallback(void)
 macTxCollisionWithRxCallback:
-          CFI Block cfiBlock30 Using cfiCommon0
+          CFI Block cfiBlock14 Using cfiCommon0
           CFI Function macTxCollisionWithRxCallback
         CODE
 //  803 {
@@ -3049,8 +2848,14 @@ macTxCollisionWithRxCallback:
         ; Setup parameters for call to function macRxHaltCleanup
         LCALL     `??macRxHaltCleanup::?relay`; Banked call to: macRxHaltCleanup
 //  805 }
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock30
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock14
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macTxInit::?relay`:
@@ -3171,7 +2976,7 @@ macTxCollisionWithRxCallback:
 //  816 /**************************************************************************************************
 //  817 */
 // 
-// 924 bytes in segment BANKED_CODE
+// 986 bytes in segment BANKED_CODE
 //  90 bytes in segment BANK_RELAYS
 //   2 bytes in segment SFR_AN
 //   1 byte  in segment XDATA_ROM_C
@@ -3180,7 +2985,7 @@ macTxCollisionWithRxCallback:
 //  90 bytes of CODE     memory
 //   1 byte  of CONST    memory
 //   0 bytes of DATA     memory (+ 2 bytes shared)
-// 924 bytes of HUGECODE memory
+// 986 bytes of HUGECODE memory
 //   9 bytes of XDATA    memory
 //
 //Errors: none

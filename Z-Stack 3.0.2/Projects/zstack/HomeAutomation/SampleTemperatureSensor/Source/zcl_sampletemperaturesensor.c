@@ -84,6 +84,10 @@
 #include "hal_led.h"
 #include "hal_key.h"
 
+/* UART */
+#include "uart0.h"
+#include "user_printf.h"
+
 #include "bdb_interface.h"
 #include "bdb_Reporting.h"
 
@@ -99,6 +103,9 @@
 
 #define APP_TITLE "   Temp Sensor  "
 
+#define HI_UINT16(a) (((a) >> 8) & 0xFF)
+
+#define LO_UINT16(a) ((a) & 0xFF)
 /*********************************************************************
  * CONSTANTS
  */
@@ -117,7 +124,7 @@ extern int16 zdpExternalStateTaskID;
 /*********************************************************************
  * GLOBAL FUNCTIONS
  */
-
+extern uint16 NLME_GetShortAddr( void );
 /*********************************************************************
  * LOCAL VARIABLES
  */
@@ -142,7 +149,8 @@ static endPointDesc_t sampleTemperatureSensor_TestEp =
   uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; // 0x2C01 is 300 in int16
 #endif
 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 4
-  uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00}; // 0x2C01 is 300 in int16
+  uint8 reportableChange[] = {0x2C, 0x01, 0x00, 0x00}; // 0x2C01 is 300 in int16   0x012c
+  uint8 reportableChangeTest[] = {0x00, 0x00, 0x00, 0x00};     
 #endif 
 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 2
   uint8 reportableChange[] = {0x2C, 0x01}; // 0x2C01 is 300 in int16
@@ -171,6 +179,8 @@ static uint8 zclSampleTemperatureSensor_ProcessInDiscCmdsRspCmd( zclIncomingMsg_
 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg );
 static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg );
 #endif // ZCL_DISCOVER
+
+static void ControlMessage_Process( zclIncomingMsg_t *pInMsg );
 
 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
 
@@ -232,6 +242,9 @@ void zclSampleTemperatureSensor_Init( byte task_id )
 
   // Register the Simple Descriptor for this application
   bdb_RegisterSimpleDescriptor( &zclSampleTemperatureSensor_SimpleDesc ); 
+
+  //Initialize the Uart0
+  Uart0_Init(HAL_UART_BR_115200);
   
   // Register the ZCL General Cluster Library callback functions
   zclGeneral_RegisterCmdCallbacks( SAMPLETEMPERATURESENSOR_ENDPOINT, &zclSampleTemperatureSensor_CmdCallbacks );
@@ -254,9 +267,11 @@ void zclSampleTemperatureSensor_Init( byte task_id )
 #ifdef BDB_REPORTING
   //Adds the default configuration values for the temperature attribute of the ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT cluster, for endpoint SAMPLETEMPERATURESENSOR_ENDPOINT
   //Default maxReportingInterval value is 10 seconds
-  //Default minReportingInterval value is 3 seconds
-  //Default reportChange value is 300 (3 degrees)
-  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE, 0, 10, reportableChange);
+  //Default minReportingInterval value is 3 seconds 
+  //Default reportChange value is 300 (3 degrees)ZCL_CLUSTER_ID_GEN_ON_OFF
+  //bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 5, reportableChangeTest);
+  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, TEST, 0, 7, reportableChangeTest/*reportableChange*/);
+  //bdb_RepAddAttrCfgRecordDefaultToList(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE, 0, 10, reportableChange);
 #endif
   
   zdpExternalStateTaskID = zclSampleTemperatureSensor_TaskID;
@@ -354,8 +369,8 @@ static void zclSampleTemperatureSensor_HandleKeys( byte shift, byte keys )
   if ( keys & HAL_KEY_SW_5 )  // Switch 5
   {     
     HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
-    zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 350;
-    bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+    Sw_Test[0] = Sw_Test[0] + 1;
+    bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, TEST);
   }
 }
 
@@ -390,6 +405,8 @@ static void zclSampleTemperatureSensor_ProcessCommissioningStatus(bdbCommissioni
           //YOUR JOB:
           //We are on the nwk, what now?
           HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+          Sw_Test[1] =  LO_UINT16(NLME_GetShortAddr());
+          Sw_Test[2] =  HI_UINT16(NLME_GetShortAddr());
         }
         else
         {
@@ -516,7 +533,7 @@ static void zclSampleTemperatureSensor_ProcessIncomingMsg( zclIncomingMsg_t *pIn
       break;
 
     case ZCL_CMD_REPORT:
-      //zclSampleTemperatureSensor_ProcessInReportCmd( pInMsg );
+      ControlMessage_Process( pInMsg );
       break;
 #endif
     case ZCL_CMD_DEFAULT_RSP:
@@ -692,43 +709,22 @@ static uint8 zclSampleTemperatureSensor_ProcessInDiscAttrsExtRspCmd( zclIncoming
 }
 #endif // ZCL_DISCOVER
 
-// GUI_LOCAL_TEMP
-//static void zclSampleTemperatureSensor_UiActionChangeTemp(uint16 keys)
-//{
-//  if ( keys & HAL_KEY_SW_1 )
-//  {
-//    // increase the temperature
-//    if ( zclSampleTemperatureSensor_MeasuredValue < zclSampleTemperatureSensor_MaxMeasuredValue )
-//    {
-//      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue + 100;  // considering using whole number value
-//#ifdef BDB_REPORTING      
-//      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-//#endif
-//    }
-//    else if ( zclSampleTemperatureSensor_MeasuredValue >= zclSampleTemperatureSensor_MaxMeasuredValue )
-//    {
-//      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MaxMeasuredValue;
-//    }
-//  }
-//  
-//  if ( keys & HAL_KEY_SW_3 )
-//  {
-//    // decrease the temperature
-//    if ( zclSampleTemperatureSensor_MeasuredValue > zclSampleTemperatureSensor_MinMeasuredValue )
-//    {
-//      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MeasuredValue - 100;  // considering using whole number value
-//#ifdef BDB_REPORTING
-//      uint8 status = bdb_RepChangedAttrValue(SAMPLETEMPERATURESENSOR_ENDPOINT, ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-//#endif
-//    }
-//    else if ( zclSampleTemperatureSensor_MeasuredValue <= zclSampleTemperatureSensor_MinMeasuredValue )
-//    {
-//      zclSampleTemperatureSensor_MeasuredValue = zclSampleTemperatureSensor_MinMeasuredValue;
-//    }
-//  }
-//  
-//  UI_UpdateLcd();
-//}
+static void ControlMessage_Process( zclIncomingMsg_t *pInMsg )
+{
+  HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
+  
+  zclReportCmd_t *pInReport;
+
+  pInReport = (zclReportCmd_t *)pInMsg->attrCmd;
+  
+  uint8 data1 = pInReport->attrList[0].attrData[0];
+  uint8 data2 = pInReport->attrList[0].attrData[1];
+//  printf("data: %04x \n", a);
+  printf("%d", data1);
+  printf(" %d\n", data2);
+//  pInReport->attrList[0].attrID
+}
+
 
 /****************************************************************************
 ****************************************************************************/

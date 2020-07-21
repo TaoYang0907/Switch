@@ -289,7 +289,8 @@ const cId_t zclSampleSw_InClusterList[] =
 {
   ZCL_CLUSTER_ID_GEN_BASIC,
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
-  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
 #define ZCLSAMPLESW_MAX_INCLUSTERS    ( sizeof( zclSampleSw_InClusterList ) / sizeof( zclSampleSw_InClusterList[0] ))
@@ -299,13 +300,14 @@ const cId_t zclSampleSw_OutClusterList[] =
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
   ZCL_CLUSTER_ID_GEN_ON_OFF,
   ZCL_CLUSTER_ID_GEN_GROUPS,
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG
 };
 
 #define ZCLSAMPLESW_MAX_OUTCLUSTERS   ( sizeof( zclSampleSw_OutClusterList ) / sizeof( zclSampleSw_OutClusterList[0] ))
 
 SimpleDescriptionFormat_t zclSampleSw_SimpleDesc =
 {
-  SAMPLESW_ENDPOINT,                  //  int Endpoint;
+  SW1_ENDPOINT,                  //  int Endpoint;
   ZCL_HA_PROFILE_ID,                  //  uint16 AppProfId[2];
   ZCL_HA_DEVICEID_ON_OFF_LIGHT_SWITCH,//  uint16 AppDeviceId[2];
   SAMPLESW_DEVICE_VERSION,            //  int   AppDevVer:4;

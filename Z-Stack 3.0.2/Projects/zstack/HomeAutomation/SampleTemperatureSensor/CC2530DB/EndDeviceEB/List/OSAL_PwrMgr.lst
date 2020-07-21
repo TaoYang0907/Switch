@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:29
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:05
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWE1C0.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW870E.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\osal\common\OSAL_PwrMgr.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -260,19 +262,14 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
    \   000009   90....       MOV       DPTR,#pwrmgr_attribute
    \   00000C   F0           MOVX      @DPTR,A
    \   00000D   A3           INC       DPTR
-   \   00000E                REQUIRE ?Subroutine0
-   \   00000E                ; // Fall through to label ?Subroutine0
+   \   00000E   F0           MOVX      @DPTR,A
     126          #if defined USE_ICALL || defined OSAL_PORT2TIRTOS
     127            pwrmgr_initialized = TRUE;
     128          #endif /* defined USE_ICALL || defined OSAL_PORT2TIRTOS */
     129          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   D083         POP       DPH
-   \   000003   D082         POP       DPL
-   \   000005   02....       LJMP      ?BRET
+   \   00000F   D083         POP       DPH
+   \   000011   D082         POP       DPL
+   \   000013   02....       LJMP      ?BRET
     130          
     131          #if !defined USE_ICALL && !defined OSAL_PORT2TIRTOS
     132          /*********************************************************************
@@ -299,8 +296,11 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
     146            pwrmgr_attribute.pwrmgr_device = pwrmgr_device;
    \   000004   E9           MOV       A,R1
    \   000005   90....       MOV       DPTR,#pwrmgr_attribute + 6
-   \   000008   80..         SJMP      ?Subroutine0
+   \   000008   F0           MOVX      @DPTR,A
     147          }
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
     148          #endif /* !defined USE_ICALL && !defined OSAL_PORT2TIRTOS*/
     149          
     150          /*********************************************************************
@@ -497,23 +497,22 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
 
    Bytes  Function/Label
    -----  --------------
-       8  ?Subroutine0
        1  _A_IEN0
-      10  osal_pwrmgr_device
-      14  osal_pwrmgr_init
+      16  osal_pwrmgr_device
+      22  osal_pwrmgr_init
       84  osal_pwrmgr_task_state
        7  pwrmgr_attribute
       18  -- Other
 
  
- 116 bytes in segment BANKED_CODE
+ 122 bytes in segment BANKED_CODE
   18 bytes in segment BANK_RELAYS
    1 byte  in segment SFR_AN
    7 bytes in segment XDATA_Z
  
   18 bytes of CODE     memory
    0 bytes of DATA     memory (+ 1 byte shared)
- 116 bytes of HUGECODE memory
+ 122 bytes of HUGECODE memory
    7 bytes of XDATA    memory
 
 Errors: none

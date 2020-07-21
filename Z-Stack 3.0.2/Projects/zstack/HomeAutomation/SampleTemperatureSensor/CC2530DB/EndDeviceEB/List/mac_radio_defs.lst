@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:23
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:44
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,14 +15,15 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWCA67.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW6B3E.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c" -D
 #        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE
 #        -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -706,11 +708,7 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
     495            paLnaChip = PA_LNA_NONE;
    \   000004   90....       MOV       DPTR,#paLnaChip
    \   000007   E4           CLR       A
-   \   000008                REQUIRE ?Subroutine0
-   \   000008                REQUIRE P0DIR
-   \   000008                REQUIRE P1DIR
-   \   000008                REQUIRE _A_P1
-   \   000008                ; // Fall through to label ?Subroutine0
+   \   000008   F0           MOVX      @DPTR,A
     496          #endif
     497            
     498            if (paLnaChip == PA_LNA_SE2431L)
@@ -727,13 +725,12 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
     509              HAL_PA_LNA_RX_CSD_HIGH();
     510            }  
     511          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001   D083         POP       DPH
-   \   000003   D082         POP       DPL
-   \   000005   02....       LJMP      ?BRET
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
+   \   000010                REQUIRE P0DIR
+   \   000010                REQUIRE P1DIR
+   \   000010                REQUIRE _A_P1
     512          
     513          
     514          /**************************************************************************************************
@@ -862,8 +859,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
    \   000045   F0           MOVX      @DPTR,A
    \   000046   E0           MOVX      A,@DPTR
    \   000047   4409         ORL       A,#0x9
-   \   000049   80..         SJMP      ?Subroutine0
+   \   000049   F0           MOVX      @DPTR,A
     595          }
+   \   00004A   D083         POP       DPH
+   \   00004C   D082         POP       DPL
+   \   00004E   02....       LJMP      ?BRET
     596          
     597          
     598          /**************************************************************************************************
@@ -920,8 +920,11 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
    \   000004   9061A5       MOV       DPTR,#0x61a5
    \   000007   E0           MOVX      A,@DPTR
    \   000008   C2E2         CLR       0xE0 /* A   */.2
-   \   00000A   80..         SJMP      ?Subroutine0
+   \   00000A   F0           MOVX      @DPTR,A
     642          }
+   \   00000B   D083         POP       DPH
+   \   00000D   D082         POP       DPL
+   \   00000F   02....       LJMP      ?BRET
     643          
     644          
     645          /**************************************************************************************************
@@ -977,21 +980,20 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
 
    Bytes  Function/Label
    -----  --------------
-       8  ?Subroutine0
-       8  MAC_SetRadioRegTable
+      16  MAC_SetRadioRegTable
        1  P0DIR
        1  P1DIR
        1  _A_P1
       28  macRadioDefsTxPwrBare
       30  macRadioDefsTxPwrBare0x95
-      12  macRadioTurnOffPower
-      75  macRadioTurnOnPower
+      18  macRadioTurnOffPower
+      81  macRadioTurnOnPower
        1  paLnaChip
        1  reqTxBoost
       18  -- Other
 
  
- 103 bytes in segment BANKED_CODE
+ 115 bytes in segment BANKED_CODE
   18 bytes in segment BANK_RELAYS
   58 bytes in segment CODE_C
    3 bytes in segment SFR_AN
@@ -999,7 +1001,7 @@ D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
  
   76 bytes of CODE     memory
    0 bytes of DATA     memory (+ 3 bytes shared)
- 103 bytes of HUGECODE memory
+ 115 bytes of HUGECODE memory
    2 bytes of XDATA    memory
 
 Errors: none

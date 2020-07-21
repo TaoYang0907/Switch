@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  23:39:12
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:10:55
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWBCF9.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW1EE0.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\Source\uart0.c"
 //        -D ZCL_REPORT_DESTINATION_DEVICE -D BDB_REPORTING -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
-//        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        -D ZCL_HVAC_CLUSTER -D ZCL_GROUPS -D ZCL_REPORTING_DEVICE -D
+//        ZCL_TEMPERATURE_MEASUREMENT -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleThermostat\CC2530DB\CoordinatorEB\List"
@@ -162,8 +163,11 @@
         PUBLIC UART0_RX_LEN
         PUBLIC UART0_RX_STA
         PUBLIC Uart0_Handle
-        FUNCTION Uart0_Handle,0203H
-        ARGFRAME XSTACK, 0, STACK
+        FUNCTION Uart0_Handle,0a1203H
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 10, STACK
         PUBLIC Uart0_Init
         FUNCTION Uart0_Init,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -269,6 +273,73 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 1
+          CFI DataAlign -1
+          CFI ReturnAddress ?RET CODE
+          CFI CFA_DOVERLAY Used
+          CFI CFA_IOVERLAY Used
+          CFI CFA_SP SP+-2
+          CFI CFA_PSP16 PSP16+0
+          CFI CFA_XSP16 XSP16+0
+          CFI `PSW.CY` SameValue
+          CFI `B.BR0` SameValue
+          CFI `B.BR1` SameValue
+          CFI `B.BR2` SameValue
+          CFI `B.BR3` SameValue
+          CFI `B.BR4` SameValue
+          CFI `B.BR5` SameValue
+          CFI `B.BR6` SameValue
+          CFI `B.BR7` SameValue
+          CFI `VB.BR8` SameValue
+          CFI `VB.BR9` SameValue
+          CFI `VB.BR10` SameValue
+          CFI `VB.BR11` SameValue
+          CFI `VB.BR12` SameValue
+          CFI `VB.BR13` SameValue
+          CFI `VB.BR14` SameValue
+          CFI `VB.BR15` SameValue
+          CFI VB SameValue
+          CFI B SameValue
+          CFI A SameValue
+          CFI PSW SameValue
+          CFI DPL0 SameValue
+          CFI DPH0 SameValue
+          CFI R0 SameValue
+          CFI R1 SameValue
+          CFI R2 SameValue
+          CFI R3 SameValue
+          CFI R4 SameValue
+          CFI R5 SameValue
+          CFI R6 SameValue
+          CFI R7 SameValue
+          CFI V0 SameValue
+          CFI V1 SameValue
+          CFI V2 SameValue
+          CFI V3 SameValue
+          CFI V4 SameValue
+          CFI V5 SameValue
+          CFI V6 SameValue
+          CFI V7 SameValue
+          CFI V8 SameValue
+          CFI V9 SameValue
+          CFI V10 SameValue
+          CFI V11 SameValue
+          CFI V12 SameValue
+          CFI V13 SameValue
+          CFI V14 SameValue
+          CFI V15 SameValue
+          CFI PSPH Undefined
+          CFI PSPL Undefined
+          CFI XSPH Undefined
+          CFI XSPL Undefined
+          CFI ?RET Concat
+          CFI ?BRET_EXT SameValue
+          CFI ?RET_HIGH Frame(CFA_SP, 2)
+          CFI ?RET_LOW Frame(CFA_SP, 1)
+          CFI EndCommon cfiCommon1
+        
 HalUARTOpen         SYMBOL "HalUARTOpen"
 `??HalUARTOpen::?relay` SYMBOL "?relay", HalUARTOpen
 HalUARTRead         SYMBOL "HalUARTRead"
@@ -277,6 +348,14 @@ Hal_UART_RxBufLen   SYMBOL "Hal_UART_RxBufLen"
 `??Hal_UART_RxBufLen::?relay` SYMBOL "?relay", Hal_UART_RxBufLen
 memset              SYMBOL "memset"
 `??memset::?relay`  SYMBOL "?relay", memset
+osal_msg_allocate   SYMBOL "osal_msg_allocate"
+`??osal_msg_allocate::?relay` SYMBOL "?relay", osal_msg_allocate
+osal_msg_send       SYMBOL "osal_msg_send"
+`??osal_msg_send::?relay` SYMBOL "?relay", osal_msg_send
+printf              SYMBOL "printf"
+`??printf::?relay`  SYMBOL "?relay", printf
+strstr              SYMBOL "strstr"
+`??strstr::?relay`  SYMBOL "?relay", strstr
 RegisterForUart0    SYMBOL "RegisterForUart0"
 `??RegisterForUart0::?relay` SYMBOL "?relay", RegisterForUart0
 Uart0_Handle        SYMBOL "Uart0_Handle"
@@ -296,6 +375,14 @@ Uart0_Reset         SYMBOL "Uart0_Reset"
         FUNCTION `??Hal_UART_RxBufLen::?relay`,00H
         EXTERN `??memset::?relay`
         FUNCTION `??memset::?relay`,00H
+        EXTERN `??osal_msg_allocate::?relay`
+        FUNCTION `??osal_msg_allocate::?relay`,00H
+        EXTERN `??osal_msg_send::?relay`
+        FUNCTION `??osal_msg_send::?relay`,00H
+        EXTERN `??printf::?relay`
+        FUNCTION `??printf::?relay`,00H
+        EXTERN `??strstr::?relay`
+        FUNCTION `??strstr::?relay`,00H
         EXTERN HalUARTOpen
         FUNCTION HalUARTOpen,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -322,6 +409,34 @@ Uart0_Reset         SYMBOL "Uart0_Reset"
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 12, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN osal_msg_allocate
+        FUNCTION osal_msg_allocate,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN osal_msg_send
+        FUNCTION osal_msg_send,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN printf
+        FUNCTION printf,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN strstr
+        FUNCTION strstr,010202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
 
@@ -555,6 +670,17 @@ Uart0_Process:
         ARGFRAME XSTACK, 11, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Process, Uart0_Handle
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 11, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 11, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL Uart0_Process, Uart0_Reset
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -707,6 +833,8 @@ Uart0_Process:
         MOV       DPTR,#UART0_RX_LEN
         MOVX      @DPTR,A
 //   87       Uart0_Handle();
+        ; Setup parameters for call to function Uart0_Handle
+        LCALL     `??Uart0_Handle::?relay`; Banked call to: Uart0_Handle
 //   88       Uart0_Reset();
         ; Setup parameters for call to function Uart0_Reset
         LCALL     `??Uart0_Reset::?relay`; Banked call to: Uart0_Reset
@@ -749,41 +877,239 @@ Uart0_Handle:
           CFI Function Uart0_Handle
         CODE
 //   95 {
-        ; Saved register size: 0
+        FUNCALL Uart0_Handle, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, osal_msg_allocate
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, osal_msg_send
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, strstr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, osal_msg_allocate
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL Uart0_Handle, osal_msg_send
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
         ; Auto size: 0
-//   96 //  if(strstr((const char*)UART0_RX_BUFF,"LED1_ON"))
-//   97 //  {
-//   98 //    printf("Router LED1_ON\n");
-//   99 //    UART0_t *msgPtr;
-//  100 //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-//  101 //    if ( msgPtr )
-//  102 //    {
-//  103 //      msgPtr->hdr.event = UART0_MESSAGE_LED1_ON;
-//  104 //
-//  105 //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-//  106 //    }
-//  107 //  }
-//  108 //  else if(strstr((const char*)UART0_RX_BUFF,"LED1_OFF"))
-//  109 //  {
-//  110 //    printf("Router LED1_OFF\n");
-//  111 //    UART0_t *msgPtr;
-//  112 //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-//  113 //    if ( msgPtr )
-//  114 //    {
-//  115 //      msgPtr->hdr.event = UART0_MESSAGE_LED1_OFF;
-//  116 //
-//  117 //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-//  118 //    }
-//  119 //  }
+//   96   if(strstr((const char*)UART0_RX_BUFF,"SW1_ON"))
+        ; Setup parameters for call to function strstr
+        MOV       R4,#`?<Constant "SW1_ON">` & 0xff
+        MOV       R5,#(`?<Constant "SW1_ON">` >> 8) & 0xff
+        MOV       R2,#UART0_RX_BUFF & 0xff
+        MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
+        LCALL     `??strstr::?relay`; Banked call to: strstr
+        MOV       A,R2
+        ORL       A,R3
+        JZ        ??Uart0_Handle_0
+//   97   {
+//   98     printf("SW1_ON\n");
+        ; Setup parameters for call to function printf
+        MOV       R2,#`?<Constant "SW1_ON\\n">` & 0xff
+        MOV       R3,#(`?<Constant "SW1_ON\\n">` >> 8) & 0xff
+        LCALL     ?Subroutine1 & 0xFFFF
+//   99     UART0_t *msgPtr;
+//  100     msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//  101     if ( msgPtr )
+??CrossCallReturnLabel_0:
+        JZ        ??Uart0_Handle_1
+//  102     {
+//  103       msgPtr->hdr.event = UART0_MESSAGE_SW1_ON;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOV       A,#0x37
+        SJMP      ??Uart0_Handle_2
+//  104 
+//  105       osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+//  106     }
+//  107   }
+//  108   else if(strstr((const char*)UART0_RX_BUFF,"SW1_OFF"))
+??Uart0_Handle_0:
+        ; Setup parameters for call to function strstr
+        MOV       R4,#`?<Constant "SW1_OFF">` & 0xff
+        MOV       R5,#(`?<Constant "SW1_OFF">` >> 8) & 0xff
+        MOV       R2,#UART0_RX_BUFF & 0xff
+        MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
+        LCALL     `??strstr::?relay`; Banked call to: strstr
+        MOV       A,R2
+        ORL       A,R3
+        JZ        ??Uart0_Handle_1
+//  109   {
+//  110     printf("SW1_OFF\n");
+        ; Setup parameters for call to function printf
+        MOV       R2,#`?<Constant "SW1_OFF\\n">` & 0xff
+        MOV       R3,#(`?<Constant "SW1_OFF\\n">` >> 8) & 0xff
+        LCALL     ?Subroutine1 & 0xFFFF
+//  111     UART0_t *msgPtr;
+//  112     msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//  113     if ( msgPtr )
+??CrossCallReturnLabel_1:
+        JZ        ??Uart0_Handle_1
+//  114     {
+//  115       msgPtr->hdr.event = UART0_MESSAGE_SW1_OFF;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOV       A,#0x38
+??Uart0_Handle_2:
+        MOVX      @DPTR,A
+//  116 
+//  117       osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+        ; Setup parameters for call to function osal_msg_send
+        MOV       DPTR,#registeredUart0TaskID
+        MOVX      A,@DPTR
+        MOV       R1,A
+        LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
+//  118     }
+//  119   }
 //  120 }
-        LJMP      ?BRET
+??Uart0_Handle_1:
+        SJMP      ?Subroutine0
           CFI EndBlock cfiBlock4
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+?Subroutine1:
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI Function Uart0_Handle
+          CFI Conditional ??CrossCallReturnLabel_0
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI CFA_SP SP+-2
+          CFI CFA_XSP16 add(XSP16, 10)
+          CFI Block cfiCond6 Using cfiCommon0
+          CFI (cfiCond6) Function Uart0_Handle
+          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond6) R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI (cfiCond6) VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI (cfiCond6) V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI (cfiCond6) V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI (cfiCond6) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI (cfiCond6) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI (cfiCond6) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI (cfiCond6) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI (cfiCond6) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI (cfiCond6) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI (cfiCond6) CFA_SP SP+-2
+          CFI (cfiCond6) CFA_XSP16 add(XSP16, 10)
+          CFI Block cfiPicker7 Using cfiCommon1
+          CFI (cfiPicker7) NoFunction
+          CFI (cfiPicker7) Picker
+        LCALL     `??printf::?relay`; Banked call to: printf
+        ; Setup parameters for call to function osal_msg_allocate
+        ; Setup parameters for call to function osal_msg_allocate
+        MOV       R2,#0x2
+        MOV       R3,#0x0
+        LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
+        MOV       A,R2
+        ORL       A,R3
+        RET
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiCond6
+          CFI EndBlock cfiPicker7
 //  121 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  122 void Uart0_Reset( void )
 Uart0_Reset:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function Uart0_Reset
         CODE
 //  123 {
@@ -836,8 +1162,8 @@ Uart0_Reset:
         CLR       A
         MOVX      @DPTR,A
 //  126 }
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock5
+        LJMP      ?Subroutine0 & 0xFFFF
+          CFI EndBlock cfiBlock8
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for registeredUart0TaskID>`:
@@ -879,16 +1205,38 @@ Uart0_Reset:
         DATA24
         DC24    Uart0_Reset
 
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "SW1_ON">`:
+        DB "SW1_ON"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "SW1_ON\\n">`:
+        DB "SW1_ON\012"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "SW1_OFF">`:
+        DB "SW1_OFF"
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA8
+`?<Constant "SW1_OFF\\n">`:
+        DB "SW1_OFF\012"
+
         END
 // 
-// 337 bytes in segment BANKED_CODE
+// 429 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 //   1 byte  in segment XDATA_I
 //   1 byte  in segment XDATA_ID
+//  32 bytes in segment XDATA_ROM_C
 //  62 bytes in segment XDATA_Z
 // 
 //  31 bytes of CODE     memory
-// 337 bytes of HUGECODE memory
+//  32 bytes of CONST    memory
+// 429 bytes of HUGECODE memory
 //  63 bytes of XDATA    memory
 //
 //Errors: none

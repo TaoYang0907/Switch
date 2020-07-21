@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:55:59
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  00:36:35
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,14 +15,15 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Source\OSAL_SampleTemperatureSensor.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWFB2E.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW20A4.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Source\OSAL_SampleTemperatureSensor.c"
 #        -D BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 #        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK
 #        -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -280,61 +282,67 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Sourc
    \   000013   7C12         MOV       R4,#0x12
    \   000015   7D00         MOV       R5,#0x0
    \   000017   7900         MOV       R1,#0x0
-   \   000019   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
+   \   000019   90....       MOV       DPTR,#tasksEvents
+   \   00001C   E0           MOVX      A,@DPTR
+   \   00001D   FA           MOV       R2,A
+   \   00001E   A3           INC       DPTR
+   \   00001F   E0           MOVX      A,@DPTR
+   \   000020   FB           MOV       R3,A
+   \   000021   12....       LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
     126          
     127            macTaskInit( taskID++ );
-   \   00001C                ; Setup parameters for call to function macTaskInit
-   \   00001C   7900         MOV       R1,#0x0
-   \   00001E   12....       LCALL     `??macTaskInit::?relay`; Banked call to: macTaskInit
+   \   000024                ; Setup parameters for call to function macTaskInit
+   \   000024   7900         MOV       R1,#0x0
+   \   000026   12....       LCALL     `??macTaskInit::?relay`; Banked call to: macTaskInit
     128            nwk_init( taskID++ );
-   \   000021                ; Setup parameters for call to function nwk_init
-   \   000021   7901         MOV       R1,#0x1
-   \   000023   12....       LCALL     `??nwk_init::?relay`; Banked call to: nwk_init
+   \   000029                ; Setup parameters for call to function nwk_init
+   \   000029   7901         MOV       R1,#0x1
+   \   00002B   12....       LCALL     `??nwk_init::?relay`; Banked call to: nwk_init
     129          #if !defined (DISABLE_GREENPOWER_BASIC_PROXY) && (ZG_BUILD_RTR_TYPE)
     130            gp_Init( taskID++ );
     131          #endif
     132            Hal_Init( taskID++ );
-   \   000026                ; Setup parameters for call to function Hal_Init
-   \   000026   7902         MOV       R1,#0x2
-   \   000028   12....       LCALL     `??Hal_Init::?relay`; Banked call to: Hal_Init
+   \   00002E                ; Setup parameters for call to function Hal_Init
+   \   00002E   7902         MOV       R1,#0x2
+   \   000030   12....       LCALL     `??Hal_Init::?relay`; Banked call to: Hal_Init
     133          #if defined( MT_TASK )
     134            MT_TaskInit( taskID++ );
     135          #endif
     136            APS_Init( taskID++ );
-   \   00002B                ; Setup parameters for call to function APS_Init
-   \   00002B   7903         MOV       R1,#0x3
-   \   00002D   12....       LCALL     `??APS_Init::?relay`; Banked call to: APS_Init
+   \   000033                ; Setup parameters for call to function APS_Init
+   \   000033   7903         MOV       R1,#0x3
+   \   000035   12....       LCALL     `??APS_Init::?relay`; Banked call to: APS_Init
     137          #if defined ( ZIGBEE_FRAGMENTATION )
     138            APSF_Init( taskID++ );
-   \   000030                ; Setup parameters for call to function APSF_Init
-   \   000030   7904         MOV       R1,#0x4
-   \   000032   12....       LCALL     `??APSF_Init::?relay`; Banked call to: APSF_Init
+   \   000038                ; Setup parameters for call to function APSF_Init
+   \   000038   7904         MOV       R1,#0x4
+   \   00003A   12....       LCALL     `??APSF_Init::?relay`; Banked call to: APSF_Init
     139          #endif
     140            ZDApp_Init( taskID++ );
-   \   000035                ; Setup parameters for call to function ZDApp_Init
-   \   000035   7905         MOV       R1,#0x5
-   \   000037   12....       LCALL     `??ZDApp_Init::?relay`; Banked call to: ZDApp_Init
+   \   00003D                ; Setup parameters for call to function ZDApp_Init
+   \   00003D   7905         MOV       R1,#0x5
+   \   00003F   12....       LCALL     `??ZDApp_Init::?relay`; Banked call to: ZDApp_Init
     141          #if defined ( ZIGBEE_FREQ_AGILITY ) || defined ( ZIGBEE_PANID_CONFLICT )
     142            ZDNwkMgr_Init( taskID++ );
     143          #endif
     144            zcl_Init( taskID++ );
-   \   00003A                ; Setup parameters for call to function zcl_Init
-   \   00003A   7906         MOV       R1,#0x6
-   \   00003C   12....       LCALL     `??zcl_Init::?relay`; Banked call to: zcl_Init
+   \   000042                ; Setup parameters for call to function zcl_Init
+   \   000042   7906         MOV       R1,#0x6
+   \   000044   12....       LCALL     `??zcl_Init::?relay`; Banked call to: zcl_Init
     145            bdb_Init( taskID++ );
-   \   00003F                ; Setup parameters for call to function bdb_Init
-   \   00003F   7907         MOV       R1,#0x7
-   \   000041   12....       LCALL     `??bdb_Init::?relay`; Banked call to: bdb_Init
+   \   000047                ; Setup parameters for call to function bdb_Init
+   \   000047   7907         MOV       R1,#0x7
+   \   000049   12....       LCALL     `??bdb_Init::?relay`; Banked call to: bdb_Init
     146            zclSampleTemperatureSensor_Init( taskID );
-   \   000044                ; Setup parameters for call to function zclSampleTemperatureSensor_Init
-   \   000044   7908         MOV       R1,#0x8
-   \   000046   12....       LCALL     `??zclSampleTemperatureSensor_Init::?relay`; Banked call to: zclSampleTemperatureSensor_Init
+   \   00004C                ; Setup parameters for call to function zclSampleTemperatureSensor_Init
+   \   00004C   7908         MOV       R1,#0x8
+   \   00004E   12....       LCALL     `??zclSampleTemperatureSensor_Init::?relay`; Banked call to: zclSampleTemperatureSensor_Init
     147            
     148          
     149          }
-   \   000049   D083         POP       DPH
-   \   00004B   D082         POP       DPL
-   \   00004D   02....       LJMP      ?BRET
+   \   000051   D083         POP       DPH
+   \   000053   D082         POP       DPL
+   \   000055   02....       LJMP      ?BRET
     150          
     151          /*********************************************************************
     152          *********************************************************************/
@@ -361,21 +369,21 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\Sourc
 
    Bytes  Function/Label
    -----  --------------
-      80  osalInitTasks
+      88  osalInitTasks
       18  tasksArr
        1  tasksCnt
        2  tasksEvents
        6  -- Other
 
  
- 80 bytes in segment BANKED_CODE
+ 88 bytes in segment BANKED_CODE
   6 bytes in segment BANK_RELAYS
  19 bytes in segment XDATA_ROM_C
   2 bytes in segment XDATA_Z
  
   6 bytes of CODE     memory
  19 bytes of CONST    memory
- 80 bytes of HUGECODE memory
+ 88 bytes of HUGECODE memory
   2 bytes of XDATA    memory
 
 Errors: none

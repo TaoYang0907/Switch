@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:27
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:04
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\mt\MT_TASK.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWD8FD.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW814A.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mt\MT_TASK.c" -D BDB_REPORTING -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -130,7 +132,6 @@
         EXTERN ?V0
         EXTERN ?V1
         EXTERN ?V2
-        EXTERN ?V3
         EXTERN ?V4
         EXTERN ?V5
         EXTERN ?BANKED_ENTER_XDATA
@@ -140,13 +141,19 @@
 
         PUBLIC `??MT_ProcessEvent::?relay`
         FUNCTION `??MT_ProcessEvent::?relay`,0203H
+        FUNCTION `??MT_ProcessIncomingCommand::?relay`,0203H
         PUBLIC `??MT_TaskInit::?relay`
         FUNCTION `??MT_TaskInit::?relay`,0203H
         PUBLIC MT_ProcessEvent
         FUNCTION MT_ProcessEvent,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME ISTACK, 1, STACK
         LOCFRAME XSTACK, 14, STACK
+        FUNCTION MT_ProcessIncomingCommand,0a1203H
+        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 1, STACK
+        LOCFRAME XSTACK, 9, STACK
         PUBLIC MT_TaskID
         PUBLIC MT_TaskInit
         FUNCTION MT_TaskInit,021203H
@@ -298,7 +305,7 @@ MT_TaskInit         SYMBOL "MT_TaskInit"
         FUNCTION MTProcessAppRspMsg,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MT_AfExec
@@ -319,28 +326,28 @@ MT_TaskInit         SYMBOL "MT_TaskInit"
         FUNCTION MT_ProcessDebugMsg,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MT_ProcessDebugStr
         FUNCTION MT_ProcessDebugStr,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MT_ProcessIncoming
         FUNCTION MT_ProcessIncoming,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MT_UartCalcFCS
         FUNCTION MT_UartCalcFCS,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN MT_UartInit
@@ -589,51 +596,7 @@ MT_ProcessEvent:
         ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessEvent, MTProcessAppRspMsg
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessEvent, MT_ProcessDebugStr
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessEvent, MT_UartCalcFCS
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessEvent, MT_ProcessDebugMsg
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 14, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 14, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL MT_ProcessEvent, MT_ProcessIncoming
+        FUNCALL MT_ProcessEvent, MT_ProcessIncomingCommand
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 14, STACK
@@ -680,7 +643,6 @@ MT_ProcessEvent:
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
-        REQUIRE ?V3
         REQUIRE ?V4
         REQUIRE ?V5
         MOV       A,#-0xe
@@ -703,184 +665,95 @@ MT_ProcessEvent:
           CFI CFA_XSP16 add(XSP16, 14)
         ; Saved register size: 14
         ; Auto size: 0
-        MOV       ?V2,R2
-        MOV       ?V3,R3
+        MOV       A,R2
+        MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
 //  114   /* Could be multiple events, so switch won't work */
 //  115   if ( events & SYS_EVENT_MSG )
-        MOV       A,R3
         ANL       A,#0x80
-        JNZ       $+5
-        LJMP      ??MT_ProcessEvent_0 & 0xFFFF
+        JZ        ??MT_ProcessEvent_0
 //  116   {
 //  117     uint8 *msg_ptr = osal_msg_receive(task_id);
         ; Setup parameters for call to function osal_msg_receive
         LCALL     `??osal_msg_receive::?relay`; Banked call to: osal_msg_receive
         MOV       ?V0,R2
         MOV       ?V1,R3
-        MOV       R6,?V0
-        MOV       R7,?V1
 //  118 
 //  119     if (msg_ptr != NULL)
         MOV       A,R2
-        ORL       A,R7
-        JNZ       $+5
-        LJMP      ??MT_ProcessEvent_1 & 0xFFFF
+        ORL       A,R3
+        JZ        ??MT_ProcessEvent_1
 //  120     {
 //  121       MT_ProcessIncomingCommand((mtOSALSerialData_t *)msg_ptr);
-        MOV       DPL,R2
-        MOV       DPH,R3
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       ?V0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       ?V1,A
-        MOV       DPL,R2
-        MOV       DPH,R3
-        MOVX      A,@DPTR
-        DEC       A
-        JZ        ??MT_ProcessEvent_2
-        DEC       A
-        JZ        ??MT_ProcessEvent_3
-        ADD       A,#-0x2
-        JZ        ??MT_ProcessEvent_4
-        ADD       A,#-0x2
-        JZ        ??MT_ProcessEvent_5
-        ADD       A,#-0x1e
-        JNZ       ??MT_ProcessEvent_6
-        ; Setup parameters for call to function MTProcessAppRspMsg
-        MOV       DPL,?V0
-        MOV       DPH,?V1
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        ADD       A,#0x5
-        MOV       R1,A
-        MOV       R2,?V0
-        MOV       R3,?V1
-        LCALL     `??MTProcessAppRspMsg::?relay`; Banked call to: MTProcessAppRspMsg
-        SJMP      ??MT_ProcessEvent_6
-??MT_ProcessEvent_5:
-        ; Setup parameters for call to function MT_ProcessDebugStr
-        LCALL     `??MT_ProcessDebugStr::?relay`; Banked call to: MT_ProcessDebugStr
-        SJMP      ??MT_ProcessEvent_6
-??MT_ProcessEvent_4:
-        MOV       DPL,?V0
-        MOV       DPH,?V1
-        INC       DPTR
-        INC       DPTR
-        INC       DPTR
-        MOVX      A,@DPTR
-        ADD       A,#0x5
-        MOV       ?V5,A
-        ; Setup parameters for call to function MT_UartCalcFCS
-        MOV       A,#-0x2
-        ADD       A,?V5
-        MOV       R1,A
-        MOV       DPL,?V0
-        MOV       DPH,?V1
-        INC       DPTR
-        MOV       R2,DPL
-        MOV       R3,DPH
-        LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
-        MOV       A,R1
-        PUSH      A
-          CFI CFA_SP SP+-1
-        MOV       R0,?V5
-        MOV       A,?V0
-        ADD       A,R0
-        MOV       R0,A
-        CLR       A
-        ADDC      A,?V1
-        MOV       R1,A
-        MOV       A,R0
-        ADD       A,#-0x1
-        MOV       DPL,A
-        MOV       A,R1
-        ADDC      A,#-0x1
-        MOV       DPH,A
-        POP       A
-          CFI CFA_SP SP+0
-        MOVX      @DPTR,A
-        SJMP      ??MT_ProcessEvent_6
-??MT_ProcessEvent_3:
-        ; Setup parameters for call to function MT_ProcessDebugMsg
-        LCALL     `??MT_ProcessDebugMsg::?relay`; Banked call to: MT_ProcessDebugMsg
-        SJMP      ??MT_ProcessEvent_6
-??MT_ProcessEvent_2:
-        ; Setup parameters for call to function MT_ProcessIncoming
-        MOV       R2,?V0
-        MOV       R3,?V1
-        LCALL     `??MT_ProcessIncoming::?relay`; Banked call to: MT_ProcessIncoming
+        ; Setup parameters for call to function MT_ProcessIncomingCommand
+        LCALL     `??MT_ProcessIncomingCommand::?relay`; Banked call to: MT_ProcessIncomingCommand
 //  122       osal_msg_deallocate(msg_ptr);
-??MT_ProcessEvent_6:
         ; Setup parameters for call to function osal_msg_deallocate
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
+        MOV       R2,?V0
+        MOV       R3,?V1
         LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
 //  123     }
 //  124 
 //  125     /* Return unproccessed events */
 //  126     return (events ^ SYS_EVENT_MSG);
 ??MT_ProcessEvent_1:
-        MOV       R2,?V2
-        MOV       A,?V3
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
         XRL       A,#0x80
-        MOV       R3,A
-        SJMP      ??MT_ProcessEvent_7
+        SJMP      ??MT_ProcessEvent_2
 //  127   }
 //  128 
 //  129   if ( events & MT_SECONDARY_INIT_EVENT )
 ??MT_ProcessEvent_0:
         MOV       A,R2
         ANL       A,#0x10
-        JZ        ??MT_ProcessEvent_8
+        JZ        ??MT_ProcessEvent_3
 //  130   {
 //  131     MT_Init(task_id);
         ; Setup parameters for call to function MT_Init
         LCALL     `??MT_Init::?relay`; Banked call to: MT_Init
 //  132     /* Return unproccessed events */
 //  133     return (events ^ MT_SECONDARY_INIT_EVENT);
-        MOV       A,?V2
+        MOV       A,R6
         XRL       A,#0x10
-        SJMP      ??MT_ProcessEvent_9
+        SJMP      ??MT_ProcessEvent_4
 //  134   }
 //  135 
 //  136   if ( events & MT_ZTOOL_SERIAL_RCV_BUFFER_FULL )
-??MT_ProcessEvent_8:
+??MT_ProcessEvent_3:
         MOV       A,R2
         ANL       A,#0x2
-        JZ        ??MT_ProcessEvent_10
+        JZ        ??MT_ProcessEvent_5
 //  137   {
 //  138     /* Return unproccessed events */
 //  139     return (events ^ MT_ZTOOL_SERIAL_RCV_BUFFER_FULL);
         MOV       A,R2
         XRL       A,#0x2
         MOV       R2,A
-        SJMP      ??MT_ProcessEvent_7
+        SJMP      ??MT_ProcessEvent_6
 //  140   }
 //  141 
 //  142 #if !defined( NONWK )
 //  143   if ( events & MT_AF_EXEC_EVT )
-??MT_ProcessEvent_10:
+??MT_ProcessEvent_5:
         MOV       A,R2
         ANL       A,#0x8
-        JZ        ??MT_ProcessEvent_11
+        JZ        ??MT_ProcessEvent_7
 //  144   {
 //  145     MT_AfExec();
         ; Setup parameters for call to function MT_AfExec
         LCALL     `??MT_AfExec::?relay`; Banked call to: MT_AfExec
 //  146     return (events ^ MT_AF_EXEC_EVT);
-        MOV       A,?V2
+        MOV       A,R6
         XRL       A,#0x8
-??MT_ProcessEvent_9:
+??MT_ProcessEvent_4:
         MOV       R2,A
-        MOV       R3,?V3
-        SJMP      ??MT_ProcessEvent_7
+        MOV       A,R7
+??MT_ProcessEvent_2:
+        MOV       R3,A
+        SJMP      ??MT_ProcessEvent_6
 //  147   }
 //  148 #endif  /* NONWK */
 //  149 
@@ -926,31 +799,15 @@ MT_ProcessEvent:
 //  189 
 //  190   /* Discard or make more handlers */
 //  191   return 0;
-??MT_ProcessEvent_11:
+??MT_ProcessEvent_7:
         MOV       R2,#0x0
         MOV       R3,#0x0
-??MT_ProcessEvent_7:
+??MT_ProcessEvent_6:
         MOV       R7,#0x6
         LJMP      ?BANKED_LEAVE_XDATA
 //  192 
 //  193 } /* MT_ProcessEvent() */
           CFI EndBlock cfiBlock1
-
-        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
-`??MT_TaskInit::?relay`:
-        CODE
-        LCALL   ?BDISPATCH
-        DATA24
-        DC24    MT_TaskInit
-
-        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
-`??MT_ProcessEvent::?relay`:
-        CODE
-        LCALL   ?BDISPATCH
-        DATA24
-        DC24    MT_ProcessEvent
-
-        END
 //  194 
 //  195 #ifdef MT_SRNG
 //  196 /***************************************************************************************************
@@ -999,20 +856,132 @@ MT_ProcessEvent:
 //  239  *
 //  240  * @return
 //  241  ***************************************************************************************************/
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  242 static void MT_ProcessIncomingCommand( mtOSALSerialData_t *msg )
+MT_ProcessIncomingCommand:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Function MT_ProcessIncomingCommand
+        CODE
 //  243 {
+        FUNCALL MT_ProcessIncomingCommand, MT_ProcessIncoming
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL MT_ProcessIncomingCommand, MT_ProcessDebugMsg
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL MT_ProcessIncomingCommand, MT_UartCalcFCS
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL MT_ProcessIncomingCommand, MT_ProcessDebugStr
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL MT_ProcessIncomingCommand, MTProcessAppRspMsg
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 9, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        MOV       A,#-0x9
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 9)
+        ; Saved register size: 9
+        ; Auto size: 0
 //  244   uint8 len, *msg_ptr = msg->msg;
+        MOV       DPL,R2
+        MOV       DPH,R3
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R6,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R7,A
 //  245 
 //  246   /* Use the first byte of the message as the command ID */
 //  247   switch ( msg->hdr.event )
+        MOV       DPL,R2
+        MOV       DPH,R3
+        MOVX      A,@DPTR
+        DEC       A
+        JZ        ??MT_ProcessIncomingCommand_0
+        DEC       A
+        JZ        ??MT_ProcessIncomingCommand_1
+        ADD       A,#-0x2
+        JZ        ??MT_ProcessIncomingCommand_2
+        ADD       A,#-0x2
+        JZ        ??MT_ProcessIncomingCommand_3
+        ADD       A,#-0x1e
+        JZ        ??MT_ProcessIncomingCommand_4
+        SJMP      ??MT_ProcessIncomingCommand_5
 //  248   {
 //  249     case CMD_SERIAL_MSG:
 //  250       MT_ProcessIncoming(msg_ptr);
+??MT_ProcessIncomingCommand_0:
+        ; Setup parameters for call to function MT_ProcessIncoming
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??MT_ProcessIncoming::?relay`; Banked call to: MT_ProcessIncoming
 //  251       break;
+        SJMP      ??MT_ProcessIncomingCommand_5
 //  252 
 //  253     case CMD_DEBUG_MSG:
 //  254       MT_ProcessDebugMsg( (mtDebugMsg_t *)msg );
+??MT_ProcessIncomingCommand_1:
+        ; Setup parameters for call to function MT_ProcessDebugMsg
+        LCALL     `??MT_ProcessDebugMsg::?relay`; Banked call to: MT_ProcessDebugMsg
 //  255       break;
+        SJMP      ??MT_ProcessIncomingCommand_5
 //  256 
 //  257     case CB_FUNC:
 //  258       /*
@@ -1022,6 +991,15 @@ MT_ProcessEvent:
 //  262 
 //  263       /* msg_ptr is the beginning of the intended SPI message */
 //  264       len = SPI_0DATA_MSG_LEN + msg_ptr[DATALEN_FIELD];
+??MT_ProcessIncomingCommand_2:
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        ADD       A,#0x5
+        MOV       ?V0,A
 //  265 
 //  266       /*
 //  267         FCS goes to the last byte in the message and is calculated over all
@@ -1029,6 +1007,35 @@ MT_ProcessEvent:
 //  269       */
 //  270 #if !defined(NPI)
 //  271       msg_ptr[len-1] = MT_UartCalcFCS(msg_ptr + 1, (uint8)(len-2));
+        ; Setup parameters for call to function MT_UartCalcFCS
+        MOV       A,#-0x2
+        ADD       A,?V0
+        MOV       R1,A
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        MOV       R2,DPL
+        MOV       R3,DPH
+        LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
+        MOV       A,R1
+        PUSH      A
+          CFI CFA_SP SP+-1
+        MOV       R0,?V0
+        MOV       A,R6
+        ADD       A,R0
+        MOV       R0,A
+        CLR       A
+        ADDC      A,R7
+        MOV       R1,A
+        MOV       A,R0
+        ADD       A,#-0x1
+        MOV       DPL,A
+        MOV       A,R1
+        ADDC      A,#-0x1
+        MOV       DPH,A
+        POP       A
+          CFI CFA_SP SP+0
+        MOVX      @DPTR,A
 //  272 #else
 //  273       msg_ptr[len-1] = npiframe_calcMTFCS(msg_ptr + 1, (uint8)(len-2));
 //  274 #endif
@@ -1037,15 +1044,35 @@ MT_ProcessEvent:
 //  277       HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
 //  278 #endif
 //  279       break;
+        SJMP      ??MT_ProcessIncomingCommand_5
 //  280 
 //  281     case CMD_DEBUG_STR:
 //  282       MT_ProcessDebugStr( (mtDebugStr_t *)msg );
+??MT_ProcessIncomingCommand_3:
+        ; Setup parameters for call to function MT_ProcessDebugStr
+        LCALL     `??MT_ProcessDebugStr::?relay`; Banked call to: MT_ProcessDebugStr
 //  283       break;
+        SJMP      ??MT_ProcessIncomingCommand_5
 //  284 
 //  285 #if !defined ( NONWK )
 //  286     case MT_SYS_APP_RSP_MSG:
 //  287       len = SPI_0DATA_MSG_LEN + msg_ptr[DATALEN_FIELD];
 //  288       MTProcessAppRspMsg( msg_ptr, len );
+??MT_ProcessIncomingCommand_4:
+        ; Setup parameters for call to function MTProcessAppRspMsg
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        ADD       A,#0x5
+        MOV       R1,A
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??MTProcessAppRspMsg::?relay`; Banked call to: MTProcessAppRspMsg
 //  289       break;
 //  290 #endif  // NONWK
 //  291 
@@ -1066,6 +1093,33 @@ MT_ProcessEvent:
 //  306       break;
 //  307   }
 //  308 }
+??MT_ProcessIncomingCommand_5:
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock2
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??MT_TaskInit::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    MT_TaskInit
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??MT_ProcessEvent::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    MT_ProcessEvent
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??MT_ProcessIncomingCommand::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    MT_ProcessIncomingCommand
+
+        END
 //  309 
 //  310 #ifdef MT_TASK
 //  311 /***************************************************************************************************
@@ -1133,12 +1187,12 @@ MT_ProcessEvent:
 //  373 /***************************************************************************************************
 //  374  ***************************************************************************************************/
 // 
-// 271 bytes in segment BANKED_CODE
-//  12 bytes in segment BANK_RELAYS
+// 261 bytes in segment BANKED_CODE
+//  18 bytes in segment BANK_RELAYS
 //   1 byte  in segment XDATA_Z
 // 
-//  12 bytes of CODE     memory
-// 271 bytes of HUGECODE memory
+//  18 bytes of CODE     memory
+// 261 bytes of HUGECODE memory
 //   1 byte  of XDATA    memory
 //
 //Errors: none

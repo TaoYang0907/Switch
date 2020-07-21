@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:27
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:05
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\stack\nwk\nwk_globals.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWDB61.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW84B9.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\nwk\nwk_globals.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -132,6 +134,8 @@
         EXTERN ?V1
         EXTERN ?V2
         EXTERN ?V3
+        EXTERN ?V4
+        EXTERN ?V5
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
@@ -229,7 +233,7 @@
         PUBLIC nwk_adjustDelay
         FUNCTION nwk_adjustDelay,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME XSTACK, 14, STACK
         PUBLIC nwk_globals_init
         FUNCTION nwk_globals_init,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -327,73 +331,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 AddrMgrInit         SYMBOL "AddrMgrInit"
 `??AddrMgrInit::?relay` SYMBOL "?relay", AddrMgrInit
@@ -495,7 +432,7 @@ nwk_globals_init    SYMBOL "nwk_globals_init"
         FUNCTION osal_rand,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN sAddrExtCpy
@@ -1378,25 +1315,14 @@ nwk_globals_init:
 //  385     NwkInitChildAging();
 //  386   }
 //  387 }
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock1
+          CFI EndBlock cfiBlock0
 //  388 
 //  389 /*********************************************************************
 //  390  * @fn       NIB_init()
@@ -1413,7 +1339,7 @@ nwk_globals_init:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  400 void NIB_init()
 NIB_init:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function NIB_init
         CODE
 //  401 {
@@ -1575,17 +1501,27 @@ NIB_init:
         MOV       DPTR,#zgRouteExpiryTime
         MOVX      A,@DPTR
         MOV       DPTR,#_NIB + 19
-        LCALL     ?Subroutine1 & 0xFFFF
+        MOVX      @DPTR,A
 //  446 
 //  447   _NIB.nwkDevAddress = INVALID_NODE_ADDR;
+        INC       DPTR
+        MOV       A,#-0x2
+        MOVX      @DPTR,A
+        INC       DPTR
+        INC       A
+        MOVX      @DPTR,A
 //  448   _NIB.nwkLogicalChannel = 0;
-??CrossCallReturnLabel_0:
         INC       DPTR
         CLR       A
-        LCALL     ?Subroutine1 & 0xFFFF
+        MOVX      @DPTR,A
 //  449   _NIB.nwkCoordAddress = INVALID_NODE_ADDR;
+        INC       DPTR
+        MOV       A,#-0x2
+        MOVX      @DPTR,A
+        INC       DPTR
+        INC       A
+        MOVX      @DPTR,A
 //  450   osal_memset( _NIB.nwkCoordExtAddress, 0, Z_EXTADDR_LEN );
-??CrossCallReturnLabel_1:
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x8
         MOV       R5,#0x0
@@ -1672,37 +1608,14 @@ NIB_init:
         INC       DPTR
         MOVX      @DPTR,A
 //  481 }
-        LJMP      ?Subroutine0 & 0xFFFF
-          CFI EndBlock cfiBlock2
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI Function NIB_init
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI (cfiCond4) Function NIB_init
-          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond4) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond4) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond4) CFA_SP SP+-7
-          CFI Block cfiPicker5 Using cfiCommon1
-          CFI (cfiPicker5) NoFunction
-          CFI (cfiPicker5) Picker
-        MOVX      @DPTR,A
-        INC       DPTR
-        MOV       A,#-0x2
-        MOVX      @DPTR,A
-        INC       DPTR
-        INC       A
-        MOVX      @DPTR,A
-        RET
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiPicker5
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock1
 //  482 
 //  483 /*********************************************************************
 //  484  * @fn       nwk_Status()
@@ -1720,7 +1633,7 @@ NIB_init:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  495 void nwk_Status( uint16 statusCode, uint16 statusValue )
 nwk_Status:
-          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function nwk_Status
         CODE
 //  496 {
@@ -2047,7 +1960,7 @@ nwk_Status:
 ??nwk_Status_5:
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock6
+          CFI EndBlock cfiBlock2
 //  570 
 //  571 /*********************************************************************
 //  572  * @fn      nwk_adjustDelay()
@@ -2066,24 +1979,27 @@ nwk_Status:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  584 uint16 nwk_adjustDelay( uint16 existingDelay, uint8 confirmStatus, uint16 bufOptions )
 nwk_adjustDelay:
-          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function nwk_adjustDelay
         CODE
 //  585 {
         FUNCALL nwk_adjustDelay, osal_rand
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME XSTACK, 14, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME XSTACK, 14, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
         REQUIRE ?V1
-        MOV       A,#-0xa
+        REQUIRE ?V2
+        REQUIRE ?V4
+        REQUIRE ?V5
+        MOV       A,#-0xe
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -2091,26 +2007,31 @@ nwk_adjustDelay:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 10)
-        ; Saved register size: 10
+          CFI CFA_XSP16 add(XSP16, 14)
+        ; Saved register size: 14
         ; Auto size: 0
-        MOV       A,R1
-        MOV       R6,A
+        MOV       ?V2,R1
 //  586   uint16 result = existingDelay;
         MOV       A,R2
         MOV       R0,A
         MOV       A,R3
         MOV       R1,A
 //  587   uint16 mask = 0;       // Random mask
+        MOV       ?V0,#0x0
 //  588   uint16 startValue = 0; // Start value
+        MOV       R6,#0x0
 //  589 
 //  590   switch ( confirmStatus )
-        MOV       A,R6
+        MOV       A,?V2
         ADD       A,#0x1f
         JZ        ??nwk_adjustDelay_0
         ADD       A,#-0x10
@@ -2126,7 +2047,10 @@ nwk_adjustDelay:
 //  595       {
 //  596         // Delay 4 - 18 ms
 //  597         mask = 0x0007;
+        MOV       ?V0,#0x7
 //  598         startValue = 2;
+        INC       R6
+        INC       R6
 //  599       }
 //  600       break;
 //  601 
@@ -2141,29 +2065,34 @@ nwk_adjustDelay:
 //  610   }
 //  611 
 //  612   if ( (mask > 0) && (startValue > 0) )
+??nwk_adjustDelay_1:
+        MOV       A,?V0
+        JZ        ??nwk_adjustDelay_2
+        MOV       A,R6
+        JZ        ??nwk_adjustDelay_2
 //  613   {
 //  614     result = (osal_rand() & mask) + startValue;
         ; Setup parameters for call to function osal_rand
         LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
         MOV       A,R2
-        ANL       A,#0x7
-        MOV       R1,#0x0
-        ADD       A,#0x2
+        ANL       A,?V0
+        ADD       A,R6
         MOV       R0,A
-        JNC       ??nwk_adjustDelay_1
-        INC       R1
+        CLR       A
+        ADDC      A,#0x0
+        MOV       R1,A
 //  615   }
 //  616 
 //  617   return ( result );
-??nwk_adjustDelay_1:
+??nwk_adjustDelay_2:
         MOV       A,R0
         MOV       R2,A
         MOV       A,R1
         MOV       R3,A
-        MOV       R7,#0x2
+        MOV       R7,#0x6
         LJMP      ?BANKED_LEAVE_XDATA
 //  618 }
-          CFI EndBlock cfiBlock7
+          CFI EndBlock cfiBlock3
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for gMIN_TREE_LQI>`:
@@ -2208,7 +2137,7 @@ nwk_adjustDelay:
 //  620 /*********************************************************************
 //  621 *********************************************************************/
 // 
-//   437 bytes in segment BANKED_CODE
+//   458 bytes in segment BANKED_CODE
 //    24 bytes in segment BANK_RELAYS
 //   151 bytes in segment CODE_C
 //     2 bytes in segment XDATA_I
@@ -2218,7 +2147,7 @@ nwk_adjustDelay:
 // 
 //   177 bytes of CODE     memory
 //   178 bytes of CONST    memory
-//   437 bytes of HUGECODE memory
+//   458 bytes of HUGECODE memory
 // 1 411 bytes of XDATA    memory
 //
 //Errors: none

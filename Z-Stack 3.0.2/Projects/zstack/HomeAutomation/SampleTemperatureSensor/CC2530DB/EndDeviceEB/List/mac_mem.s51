@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  10:55:50
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:43
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWD846.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW67F0.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c" -D
 //        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 //        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
 //        xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 //        xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D
 //        ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -374,26 +376,15 @@ macMemReadRamByte:
         MOV       DPH,R3
         MOVX      A,@DPTR
         MOV       R1,A
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-//   71 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock1
+//   71 }
+          CFI EndBlock cfiBlock0
 //   72 
 //   73 
 //   74 /**************************************************************************************************
@@ -412,7 +403,7 @@ macMemReadRamByte:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //   86 MAC_INTERNAL_API void macMemWriteRam(macRam_t * pRam, uint8 * pData, uint8 len)
 macMemWriteRam:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function macMemWriteRam
         CODE
 //   87 {
@@ -452,8 +443,14 @@ macMemWriteRam:
         MOV       A,R1
         JNZ       ??macMemWriteRam_1
 //   95 }
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock2
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock1
 //   96 
 //   97 
 //   98 /**************************************************************************************************
@@ -472,7 +469,7 @@ macMemWriteRam:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  110 MAC_INTERNAL_API void macMemReadRam(macRam_t * pRam, uint8 * pData, uint8 len)
 macMemReadRam:
-          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function macMemReadRam
         CODE
 //  111 {
@@ -514,8 +511,14 @@ macMemReadRam:
         MOV       A,R1
         JNZ       ??macMemReadRam_1
 //  119 }
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock3
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
 //  120 
 //  121 
 //  122 /**************************************************************************************************
@@ -533,7 +536,7 @@ macMemReadRam:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  133 MAC_INTERNAL_API void macMemWriteTxFifo(uint8 * pData, uint8 len)
 macMemWriteTxFifo:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function macMemWriteTxFifo
         CODE
 //  134 {
@@ -594,29 +597,10 @@ macMemWriteTxFifo:
         MOV       A,?V0
         JNZ       ??macMemWriteTxFifo_0
 //  144 }
-          CFI EndBlock cfiBlock4
-        REQUIRE ?Subroutine1
-        REQUIRE RFD
-        ; // Fall through to label ?Subroutine1
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock5 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock5
+          CFI EndBlock cfiBlock3
+        REQUIRE RFD
 //  145 
 //  146 
 //  147 /**************************************************************************************************
@@ -634,7 +618,7 @@ macMemWriteTxFifo:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  158 MAC_INTERNAL_API void macMemReadRxFifo(uint8 * pData, uint8 len)
 macMemReadRxFifo:
-          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function macMemReadRxFifo
         CODE
 //  159 {
@@ -695,8 +679,9 @@ macMemReadRxFifo:
         MOV       A,?V0
         JNZ       ??macMemReadRxFifo_0
 //  169 }
-        SJMP      ?Subroutine1
-          CFI EndBlock cfiBlock6
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock4
         REQUIRE RFD
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
@@ -740,13 +725,13 @@ macMemReadRxFifo:
 //  172 /**************************************************************************************************
 //  173 */
 // 
-// 170 bytes in segment BANKED_CODE
+// 183 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 //   1 byte  in segment SFR_AN
 // 
 //  30 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 1 byte shared)
-// 170 bytes of HUGECODE memory
+// 183 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

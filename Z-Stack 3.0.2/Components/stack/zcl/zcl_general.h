@@ -370,6 +370,7 @@ extern "C"
 /****************************************/
   // Switch Information
 #define ATTRID_ON_OFF_SWITCH_TYPE                         0x0000
+#define ATTRID_ON_OFF_SWITCH                         0x0001
 
   // Switch Settings
 #define ATTRID_ON_OFF_SWITCH_MULTI_FUNCTION               0x0002

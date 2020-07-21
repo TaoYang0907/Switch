@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:25
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              21/Jul/2020  00:36:35
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\mt\MT_DEBUG.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWD4A2.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW1FE8.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mt\MT_DEBUG.c" -D BDB_REPORTING -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -240,73 +242,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 osal_mem_alloc      SYMBOL "osal_mem_alloc"
 `??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
@@ -767,8 +702,7 @@ MT_ProcessDebugMsg:
         MOV       DPL,?V0
         MOV       DPH,?V1
         MOVX      A,@DPTR
-        JNZ       $+5
-        LJMP      ??MT_ProcessDebugMsg_1 & 0xFFFF
+        JZ        ??MT_ProcessDebugMsg_1
 //  293     {
 //  294       *pBuf++ = LO_UINT16( msg->param1 );
         MOV       A,R6
@@ -806,6 +740,7 @@ MT_ProcessDebugMsg:
 //  296     }
 //  297 
 //  298     if ( msg->numParams >= 2 )
+??MT_ProcessDebugMsg_1:
         MOV       DPL,?V0
         MOV       DPH,?V1
         MOVX      A,@DPTR
@@ -816,36 +751,30 @@ MT_ProcessDebugMsg:
 //  300       *pBuf++ = LO_UINT16( msg->param2 );
         MOV       A,R6
         ADD       A,#0x7
-        MOV       R0,A
+        MOV       R4,A
         CLR       A
         ADDC      A,R7
-        MOV       R1,A
-        MOV       DPL,R0
+        MOV       R5,A
+        MOV       DPL,R4
         MOV       DPH,A
         MOVX      A,@DPTR
-        PUSH      A
-          CFI CFA_SP SP+-1
-        MOV       A,#0x5
-        LCALL     ?XSTACK_DISP0_8
-        POP       A
-          CFI CFA_SP SP+0
+        MOV       DPL,R0
+        MOV       DPH,R1
         MOVX      @DPTR,A
 //  301       *pBuf++ = HI_UINT16( msg->param2 );
+        MOV       DPL,R4
+        MOV       DPH,R5
+        INC       DPTR
+        MOVX      A,@DPTR
         MOV       DPL,R0
         MOV       DPH,R1
         INC       DPTR
-        MOVX      A,@DPTR
-        PUSH      A
-          CFI CFA_SP SP+-1
-        MOV       A,#0x6
-        LCALL     ?XSTACK_DISP0_8
-        POP       A
-          CFI CFA_SP SP+0
         MOVX      @DPTR,A
-        MOV       A,#0x7
-        LCALL     ?XSTACK_DISP0_8
-        MOV       R0,DPL
-        MOV       R1,DPH
+        MOV       A,R0
+        ADD       A,#0x2
+        MOV       R0,A
+        JNC       ??MT_ProcessDebugMsg_2
+        INC       R1
 //  302     }
 //  303 
 //  304     if ( msg->numParams == 3 )
@@ -854,27 +783,60 @@ MT_ProcessDebugMsg:
         MOV       DPH,?V1
         MOVX      A,@DPTR
         XRL       A,#0x3
-        JNZ       ??MT_ProcessDebugMsg_1
+        JNZ       ??MT_ProcessDebugMsg_3
 //  305     {
 //  306       *pBuf++ = LO_UINT16( msg->param3 );
         MOV       A,R6
         ADD       A,#0x9
-        LCALL     ?Subroutine0 & 0xFFFF
+        MOV       R4,A
+        CLR       A
+        ADDC      A,R7
+        MOV       R5,A
+        MOV       DPL,R4
+        MOV       DPH,A
+        MOVX      A,@DPTR
+        MOV       DPL,R0
+        MOV       DPH,R1
+        MOVX      @DPTR,A
 //  307       *pBuf++ = HI_UINT16( msg->param3 );
-//  308     }
-??CrossCallReturnLabel_0:
+        MOV       DPL,R4
+        MOV       DPH,R5
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPL,R0
+        MOV       DPH,R1
+        INC       DPTR
+        MOVX      @DPTR,A
         MOV       A,R0
         ADD       A,#0x2
         MOV       R0,A
-        JNC       ??MT_ProcessDebugMsg_1
+        JNC       ??MT_ProcessDebugMsg_3
         INC       R1
+//  308     }
 //  309 
 //  310     *pBuf++ = LO_UINT16( msg->timestamp );
-??MT_ProcessDebugMsg_1:
+??MT_ProcessDebugMsg_3:
         MOV       A,R6
         ADD       A,#0xb
-        LCALL     ?Subroutine0 & 0xFFFF
+        MOV       R4,A
+        CLR       A
+        ADDC      A,R7
+        MOV       R5,A
+        MOV       DPL,R4
+        MOV       DPH,A
+        MOVX      A,@DPTR
+        MOV       DPL,R0
+        MOV       DPH,R1
+        MOVX      @DPTR,A
 //  311     *pBuf = HI_UINT16( msg->timestamp );
+        MOV       DPL,R4
+        MOV       DPH,R5
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPL,R0
+        MOV       DPH,R1
+        INC       DPTR
+        MOVX      @DPTR,A
 //  312 
 //  313 #ifdef MT_UART_DEFAULT_PORT
 //  314     /* Debug message is set to AREQ CMD 0x80 for now */
@@ -882,7 +844,6 @@ MT_ProcessDebugMsg:
 //  316     MT_BuildAndSendZToolResponse(((uint8)MT_RPC_CMD_AREQ | (uint8)MT_RPC_SYS_DBG), 0x80, dataLen, buf);
 //  317 #endif
 //  318     osal_msg_deallocate( msg_ptr );
-??CrossCallReturnLabel_1:
         ; Setup parameters for call to function osal_msg_deallocate
         LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
 //  319   }
@@ -894,68 +855,6 @@ MT_ProcessDebugMsg:
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiCond1 Using cfiCommon0
-          CFI Function MT_ProcessDebugMsg
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 23)
-          CFI Block cfiCond2 Using cfiCommon0
-          CFI (cfiCond2) Function MT_ProcessDebugMsg
-          CFI (cfiCond2) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond2) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond2) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond2) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond2) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond2) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond2) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond2) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond2) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond2) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond2) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond2) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond2) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond2) CFA_SP SP+-2
-          CFI (cfiCond2) CFA_XSP16 add(XSP16, 23)
-          CFI Block cfiPicker3 Using cfiCommon1
-          CFI (cfiPicker3) NoFunction
-          CFI (cfiPicker3) Picker
-        MOV       R4,A
-        CLR       A
-        ADDC      A,R7
-        MOV       R5,A
-        MOV       DPL,R4
-        MOV       DPH,A
-        MOVX      A,@DPTR
-        MOV       DPL,R0
-        MOV       DPH,R1
-        MOVX      @DPTR,A
-        MOV       DPL,R4
-        MOV       DPH,R5
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       DPL,R0
-        MOV       DPH,R1
-        INC       DPTR
-        MOVX      @DPTR,A
-        RET
-          CFI EndBlock cfiCond1
-          CFI EndBlock cfiCond2
-          CFI EndBlock cfiPicker3
 //  321 
 //  322 /***************************************************************************************************
 //  323  * @fn      MT_ProcessDebugStr
@@ -970,7 +869,7 @@ MT_ProcessDebugMsg:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  331 void MT_ProcessDebugStr(mtDebugStr_t *dstr)
 MT_ProcessDebugStr:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function MT_ProcessDebugStr
         CODE
 //  332 {
@@ -1046,7 +945,7 @@ MT_ProcessDebugStr:
 ??MT_ProcessDebugStr_0:
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock4
+          CFI EndBlock cfiBlock1
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??MT_ProcessDebugMsg::?relay`:
@@ -1067,11 +966,11 @@ MT_ProcessDebugStr:
 //  348 /**************************************************************************************************
 //  349  */
 // 
-// 324 bytes in segment BANKED_CODE
+// 329 bytes in segment BANKED_CODE
 //  12 bytes in segment BANK_RELAYS
 // 
 //  12 bytes of CODE     memory
-// 324 bytes of HUGECODE memory
+// 329 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

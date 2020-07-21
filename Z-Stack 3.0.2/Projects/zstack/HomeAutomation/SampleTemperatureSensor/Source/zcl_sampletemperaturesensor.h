@@ -94,7 +94,8 @@ extern uint16 zclSampleTemperatureSensor_IdentifyTime;
 extern int16 zclSampleTemperatureSensor_MeasuredValue;
 extern const int16 zclSampleTemperatureSensor_MinMeasuredValue;
 extern const uint16 zclSampleTemperatureSensor_MaxMeasuredValue;
-
+extern uint8 Sw_Test[4];
+extern uint8 zclSampleLight_OnOff;
 /*********************************************************************
  * FUNCTIONS
  */

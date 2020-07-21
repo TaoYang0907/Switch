@@ -60,6 +60,8 @@
 #include "zcl_appliance_statistics.h"
 #include "zcl_hvac.h"
 
+#include "zcl_ms.h"
+
 #include "zcl_samplethermostat.h"
 
 /*********************************************************************
@@ -111,8 +113,12 @@ uint8 zclSampleThermostat_DeviceEnable;
 // Identify Cluster
 uint16 zclSampleThermostat_IdentifyTime = 0;
 
+//Control Cmd
+uint8 Contorl[2];
+
 // HVAC Thermostat Cluster
-int16 zclSampleThermostat_LocalTemperature;
+uint8 zclSampleThermostat_LocalTemperature;
+uint8 zclSampleThermostat_LocalTemperature1;
 int16 zclSampleThermostat_MinHeatSetpointLimit;
 int16 zclSampleThermostat_MaxHeatSetpointLimit;
 int16 zclSampleThermostat_MinCoolSetpointLimit;
@@ -253,6 +259,15 @@ CONST zclAttrRec_t zclSampleThermostat_Attrs[] =
       (void *)&zclSampleThermostat_clusterRevision_all
     }
   },
+  {
+    ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+    {  // Attribute record
+      TEST_CONTROL,
+      ZCL_DATATYPE_UINT16,
+      ACCESS_CONTROL_READ,
+      (void *)&Contorl
+    }
+  },
   // *** HVAC Thermostat Cluster Attributes *** //
 
   {
@@ -373,19 +388,24 @@ uint8 CONST zclSampleThermostat_NumAttributes = ( sizeof(zclSampleThermostat_Att
  */
 // This is the Cluster ID List and should be filled with Application
 // specific cluster IDs.
-#define ZCLSAMPLETHERMOSTAT_MAX_INCLUSTERS       3
+#define ZCLSAMPLETHERMOSTAT_MAX_INCLUSTERS       6
 const cId_t zclSampleThermostat_InClusterList[ZCLSAMPLETHERMOSTAT_MAX_INCLUSTERS] =
 {
   ZCL_CLUSTER_ID_GEN_BASIC,
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
-  ZCL_CLUSTER_ID_HVAC_THERMOSTAT
+  ZCL_CLUSTER_ID_HVAC_THERMOSTAT,
+  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
-#define ZCLSAMPLETHERMOSTAT_MAX_OUTCLUSTERS       2
+#define ZCLSAMPLETHERMOSTAT_MAX_OUTCLUSTERS       4
 const cId_t zclSampleThermostat_OutClusterList[ZCLSAMPLETHERMOSTAT_MAX_OUTCLUSTERS] =
 {
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
-  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT
+  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
 SimpleDescriptionFormat_t zclSampleThermostat_SimpleDesc =

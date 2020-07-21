@@ -103,6 +103,10 @@ extern "C"
 #define ATTRID_MS_TEMPERATURE_MAX_MEASURED_VALUE                         0x0002 // M, R, INT16
 #define ATTRID_MS_TEMPERATURE_TOLERANCE                                  0x0003 // O, R, UINT16
 
+  //test
+#define TEST                                          0x0004
+#define TEST_CONTROL                                  0x0005 
+  
   // Temperature Measurement Settings attributes set
 #define ATTRID_MS_TEMPERATURE_MIN_PERCENT_CHANGE                         0x0010
 #define ATTRID_MS_TEMPERATURE_MIN_ABSOLUTE_CHANGE                        0x0011

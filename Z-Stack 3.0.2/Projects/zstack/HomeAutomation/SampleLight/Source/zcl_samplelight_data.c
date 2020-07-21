@@ -767,28 +767,28 @@ const cId_t zclSampleLight_InClusterList[] =
   ZCL_CLUSTER_ID_GEN_GROUPS,
   ZCL_CLUSTER_ID_GEN_SCENES,
   ZCL_CLUSTER_ID_GEN_ON_OFF
-#ifdef ZCL_LEVEL_CTRL
-  , ZCL_CLUSTER_ID_GEN_LEVEL_CONTROL
-#endif
+};
+
+const cId_t zclSampleLight_OutClusterList[] =
+{
+//  ZCL_CLUSTER_ID_GEN_IDENTIFY
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
 #define ZCLSAMPLELIGHT_MAX_INCLUSTERS   (sizeof(zclSampleLight_InClusterList) / sizeof(zclSampleLight_InClusterList[0]))
+#define ZCLSAMPLELIGHT_MAX_OUTCLUSTERS   (sizeof(zclSampleLight_OutClusterList) / sizeof(zclSampleLight_OutClusterList[0]))
  
 SimpleDescriptionFormat_t zclSampleLight_SimpleDesc =
 {
   SAMPLELIGHT_ENDPOINT,                  //  int Endpoint;
   ZCL_HA_PROFILE_ID,                     //  uint16 AppProfId;
-#ifdef ZCL_LEVEL_CTRL
-  ZCL_HA_DEVICEID_DIMMABLE_LIGHT,        //  uint16 AppDeviceId;
-#else
   ZCL_HA_DEVICEID_ON_OFF_LIGHT,          //  uint16 AppDeviceId;
-#endif
   SAMPLELIGHT_DEVICE_VERSION,            //  int   AppDevVer:4;
   SAMPLELIGHT_FLAGS,                     //  int   AppFlags:4;
   ZCLSAMPLELIGHT_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
   (cId_t *)zclSampleLight_InClusterList, //  byte *pAppInClusterList;
-  0,        //  byte  AppNumInClusters;
-  NULL //  byte *pAppInClusterList;
+  ZCLSAMPLELIGHT_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
+  (cId_t *)zclSampleLight_OutClusterList  //  byte *pAppInClusterList;
 };
 
 // Added to include ZLL Target functionality 

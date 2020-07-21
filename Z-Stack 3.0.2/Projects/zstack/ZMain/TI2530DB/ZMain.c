@@ -76,7 +76,7 @@ static void zmain_lcd_init( void );
  * @brief   First function called after startup.
  * @return  don't care
  */
-int main( void )
+int main( void )             
 {
   // Turn off interrupts
   osal_int_disable( INTS_ALL );

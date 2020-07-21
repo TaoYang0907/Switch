@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:23
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:44
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_radio.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWCA56.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW6A24.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\mac_radio.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -335,73 +337,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 halAssertHandler    SYMBOL "halAssertHandler"
 `??halAssertHandler::?relay` SYMBOL "?relay", halAssertHandler
@@ -703,8 +638,15 @@ macRadioInit:
         MOVX      @DPTR,A
 //  116   reqTxPower    = MAC_RADIO_TX_POWER_INVALID;
         MOV       DPTR,#reqTxPower
-        SJMP      ??Subroutine3_0
+        MOVX      @DPTR,A
 //  117 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
 //  118 
 //  119 
@@ -763,7 +705,13 @@ macRadioReset:
         ; Setup parameters for call to function macRadioEnergyDetectStop
         LCALL     `??macRadioEnergyDetectStop::?relay`; Banked call to: macRadioEnergyDetectStop
 //  134 }
-        SJMP      ??Subroutine4_0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock1
 //  135 
 //  136 
@@ -807,51 +755,15 @@ macRadioRandomByte:
 //  149   return(MAC_RADIO_RANDOM_BYTE());
         ; Setup parameters for call to function macMcuRandomByte
         LCALL     `??macMcuRandomByte::?relay`; Banked call to: macMcuRandomByte
-        SJMP      ??Subroutine4_0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  150 }
           CFI EndBlock cfiBlock2
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOVX      @DPTR,A
-        MOV       A,R3
-        INC       DPTR
-          CFI EndBlock cfiBlock3
-        REQUIRE ??Subroutine3_0
-        ; // Fall through to label ??Subroutine3_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine3_0:
-          CFI Block cfiBlock4 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOVX      @DPTR,A
-          CFI EndBlock cfiBlock4
-        REQUIRE ??Subroutine4_0
-        ; // Fall through to label ??Subroutine4_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine4_0:
-          CFI Block cfiBlock5 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        POP       DPH
-          CFI CFA_SP SP+-4
-          CFI DPH0 SameValue
-        POP       DPL
-          CFI CFA_SP SP+-3
-          CFI DPL0 SameValue
-        LJMP      ?BRET
-          CFI EndBlock cfiBlock5
 //  151 
 //  152 
 //  153 /**************************************************************************************************
@@ -869,7 +781,7 @@ macRadioRandomByte:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  164 MAC_INTERNAL_API void macRadioSetPanCoordinator(uint8 panCoordFlag)
 macRadioSetPanCoordinator:
-          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function macRadioSetPanCoordinator
         CODE
 //  165 {
@@ -901,9 +813,16 @@ macRadioSetPanCoordinator:
         MOV       A,#-0x3
         ANL       A,R0
         ORL       A,R2
-        SJMP      ??Subroutine3_0
+        MOVX      @DPTR,A
 //  168 }
-          CFI EndBlock cfiBlock6
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock3
 //  169 
 //  170 
 //  171 /**************************************************************************************************
@@ -920,7 +839,7 @@ macRadioSetPanCoordinator:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  181 void macRadioSetPanID(uint16 panID)
 macRadioSetPanID:
-          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function macRadioSetPanID
         CODE
 //  182 {
@@ -936,9 +855,19 @@ macRadioSetPanID:
 //  184   MAC_RADIO_SET_PAN_ID(panID);
         MOV       A,R2
         MOV       DPTR,#0x6172
-        SJMP      ?Subroutine0
+        MOVX      @DPTR,A
+        MOV       A,R3
+        INC       DPTR
+        MOVX      @DPTR,A
 //  185 }
-          CFI EndBlock cfiBlock7
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock4
 //  186 
 //  187 
 //  188 /**************************************************************************************************
@@ -955,7 +884,7 @@ macRadioSetPanID:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  198 MAC_INTERNAL_API void macRadioSetShortAddr(uint16 shortAddr)
 macRadioSetShortAddr:
-          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function macRadioSetShortAddr
         CODE
 //  199 {
@@ -971,9 +900,19 @@ macRadioSetShortAddr:
 //  201   MAC_RADIO_SET_SHORT_ADDR(shortAddr);
         MOV       A,R2
         MOV       DPTR,#0x6174
-        SJMP      ?Subroutine0
+        MOVX      @DPTR,A
+        MOV       A,R3
+        INC       DPTR
+        MOVX      @DPTR,A
 //  202 }
-          CFI EndBlock cfiBlock8
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock5
 //  203 
 //  204 
 //  205 /**************************************************************************************************
@@ -991,7 +930,7 @@ macRadioSetShortAddr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  216 MAC_INTERNAL_API void macRadioSetIEEEAddr(uint8 * pIEEEAddr)
 macRadioSetIEEEAddr:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function macRadioSetIEEEAddr
         CODE
 //  217 {
@@ -1026,8 +965,14 @@ macRadioSetIEEEAddr:
         MOV       R3,#0x61
         LCALL     `??macMemWriteRam::?relay`; Banked call to: macMemWriteRam
 //  220 }
-        SJMP      ??Subroutine4_0
-          CFI EndBlock cfiBlock9
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock6
 //  221 
 //  222 
 //  223 /**************************************************************************************************
@@ -1050,7 +995,7 @@ macRadioSetIEEEAddr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  239 MAC_INTERNAL_API uint8 macRadioSetTxPower(uint8 txPower)
 macRadioSetTxPower:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function macRadioSetTxPower
         CODE
 //  240 {
@@ -1182,11 +1127,15 @@ macRadioSetTxPower:
         CLR       A
         MOVC      A,@A+DPTR
         MOV       DPTR,#reqTxPower
-        LCALL     ?Subroutine2 & 0xFFFF
+        MOVX      @DPTR,A
 //  277 
 //  278     /* abstracted boost mode selection */
 //  279     MAC_RADIO_SELECT_BOOST_MODE(reqTxPower);
-??CrossCallReturnLabel_0:
+        MOV       DPTR,#0x7803
+        MOVX      A,@DPTR
+        MOV       R0,A
+        MOV       A,#-0x6b
+        XRL       A,R0
         JZ        ??macRadioSetTxPower_5
         MOV       A,#0x34
         XRL       A,R0
@@ -1218,8 +1167,9 @@ macRadioSetTxPower:
 //  286   return txPower;
         MOV       A,R6
         MOV       R1,A
-        LJMP      ?Subroutine1 & 0xFFFF
-          CFI EndBlock cfiBlock10
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock7
         REQUIRE _A_IEN0
 //  287 }
 //  288 
@@ -1260,7 +1210,7 @@ macRadioSetTxPower:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  322 MAC_INTERNAL_API void macRadioUpdateTxPower(void)
 macRadioUpdateTxPower:
-          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function macRadioUpdateTxPower
         CODE
 //  323 {
@@ -1316,9 +1266,13 @@ macRadioUpdateTxPower:
         MOV       DPTR,#reqTxPower
         MOVX      A,@DPTR
         MOV       DPTR,#macPhyTxPower
-        LCALL     ?Subroutine2 & 0xFFFF
+        MOVX      @DPTR,A
 //  346       MAC_RADIO_SET_TX_POWER(macPhyTxPower);
-??CrossCallReturnLabel_1:
+        MOV       DPTR,#0x7803
+        MOVX      A,@DPTR
+        MOV       R0,A
+        MOV       A,#-0x6b
+        XRL       A,R0
         JZ        ??macRadioUpdateTxPower_1
         MOV       A,#0x34
         XRL       A,R0
@@ -1357,45 +1311,15 @@ macRadioUpdateTxPower:
         MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  350 }
-        LJMP      ??Subroutine4_0 & 0xFFFF
-          CFI EndBlock cfiBlock11
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock8
         REQUIRE _A_IEN0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiCond12 Using cfiCommon0
-          CFI Function macRadioSetTxPower
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiCond13 Using cfiCommon0
-          CFI (cfiCond13) Function macRadioUpdateTxPower
-          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond13) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond13) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond13) CFA_SP SP+-7
-          CFI Block cfiPicker14 Using cfiCommon1
-          CFI (cfiPicker14) NoFunction
-          CFI (cfiPicker14) Picker
-        MOVX      @DPTR,A
-        MOV       DPTR,#0x7803
-        MOVX      A,@DPTR
-        MOV       R0,A
-        MOV       A,#-0x6b
-        XRL       A,R0
-        RET
-          CFI EndBlock cfiCond12
-          CFI EndBlock cfiCond13
-          CFI EndBlock cfiPicker14
 //  351 
 //  352 
 //  353 /**************************************************************************************************
@@ -1413,7 +1337,7 @@ macRadioUpdateTxPower:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  364 MAC_INTERNAL_API void macRadioSetChannel(uint8 channel)
 macRadioSetChannel:
-          CFI Block cfiBlock15 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function macRadioSetChannel
         CODE
 //  365 {
@@ -1502,8 +1426,9 @@ macRadioSetChannel:
         MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  386 }
-        LJMP      ?Subroutine1 & 0xFFFF
-          CFI EndBlock cfiBlock15
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock9
         REQUIRE _A_IEN0
 //  387 
 //  388 
@@ -1521,7 +1446,7 @@ macRadioSetChannel:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  399 MAC_INTERNAL_API void macRadioUpdateChannel(void)
 macRadioUpdateChannel:
-          CFI Block cfiBlock16 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function macRadioUpdateChannel
         CODE
 //  400 {
@@ -1648,8 +1573,14 @@ macRadioUpdateChannel:
 //  426   }
 //  427 }
 ??macRadioUpdateChannel_2:
-        LJMP      ??Subroutine4_0 & 0xFFFF
-          CFI EndBlock cfiBlock16
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock10
         REQUIRE _A_IEN0
 //  428 
 //  429 
@@ -1667,7 +1598,7 @@ macRadioUpdateChannel:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  440 MAC_INTERNAL_API void macRadioStartScan(uint8 scanMode)
 macRadioStartScan:
-          CFI Block cfiBlock17 Using cfiCommon0
+          CFI Block cfiBlock11 Using cfiCommon0
           CFI Function macRadioStartScan
         CODE
 //  441 {
@@ -1791,28 +1722,9 @@ macRadioStartScan:
         MOVX      @DPTR,A
 //  467   }
 //  468 }
-          CFI EndBlock cfiBlock17
-        REQUIRE ?Subroutine1
-        ; // Fall through to label ?Subroutine1
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock18 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock18
+          CFI EndBlock cfiBlock11
 //  469 
 //  470 
 //  471 /**************************************************************************************************
@@ -1829,7 +1741,7 @@ macRadioStartScan:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  481 MAC_INTERNAL_API void macRadioStopScan(void)
 macRadioStopScan:
-          CFI Block cfiBlock19 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function macRadioStopScan
         CODE
 //  482 {
@@ -1855,9 +1767,16 @@ macRadioStopScan:
         MOV       DPTR,#macPib + 30
         MOVX      A,@DPTR
         MOV       DPTR,#0x6173
-        LJMP      ??Subroutine3_0 & 0xFFFF
+        MOVX      @DPTR,A
 //  487 }
-          CFI EndBlock cfiBlock19
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock12
 //  488 
 //  489 
 //  490 /**************************************************************************************************
@@ -1875,7 +1794,7 @@ macRadioStopScan:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  501 void macRadioEnergyDetectStart(void)
 macRadioEnergyDetectStart:
-          CFI Block cfiBlock20 Using cfiCommon0
+          CFI Block cfiBlock13 Using cfiCommon0
           CFI Function macRadioEnergyDetectStart
         CODE
 //  502 {
@@ -1902,8 +1821,14 @@ macRadioEnergyDetectStart:
         ; Setup parameters for call to function macMcuRecordMaxRssiStart
         LCALL     `??macMcuRecordMaxRssiStart::?relay`; Banked call to: macMcuRecordMaxRssiStart
 //  504 }
-        LJMP      ??Subroutine4_0 & 0xFFFF
-          CFI EndBlock cfiBlock20
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock13
 //  505 
 //  506 
 //  507 /**************************************************************************************************
@@ -1921,7 +1846,7 @@ macRadioEnergyDetectStart:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  518 uint8 macRadioEnergyDetectStop(void)
 macRadioEnergyDetectStop:
-          CFI Block cfiBlock21 Using cfiCommon0
+          CFI Block cfiBlock14 Using cfiCommon0
           CFI Function macRadioEnergyDetectStop
         CODE
 //  519 {
@@ -1959,20 +1884,26 @@ macRadioEnergyDetectStop:
 //  521   uint8 energyDetectMeasurement;
 //  522 
 //  523   rssiDbm = MAC_RADIO_RECORD_MAX_RSSI_STOP() + MAC_RADIO_RSSI_OFFSET;
-//  524   MAC_RADIO_RSSI_LNA_OFFSET(rssiDbm);
-//  525   energyDetectMeasurement = radioComputeED(rssiDbm);
-//  526 
-//  527   return(energyDetectMeasurement);
-        ; Setup parameters for call to function radioComputeED
         ; Setup parameters for call to function macMcuRecordMaxRssiStop
         LCALL     `??macMcuRecordMaxRssiStop::?relay`; Banked call to: macMcuRecordMaxRssiStop
         MOV       A,R1
         ADD       A,#-0x49
         MOV       R1,A
+//  524   MAC_RADIO_RSSI_LNA_OFFSET(rssiDbm);
+//  525   energyDetectMeasurement = radioComputeED(rssiDbm);
+//  526 
+//  527   return(energyDetectMeasurement);
+        ; Setup parameters for call to function radioComputeED
         LCALL     `??radioComputeED::?relay`; Banked call to: radioComputeED
-        LJMP      ??Subroutine4_0 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  528 }
-          CFI EndBlock cfiBlock21
+          CFI EndBlock cfiBlock14
 //  529 
 //  530 /*=================================================================================================
 //  531  * @fn          radioComputeED
@@ -1988,7 +1919,7 @@ macRadioEnergyDetectStop:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  540 static uint8 radioComputeED(int8 rssiDbm)
 radioComputeED:
-          CFI Block cfiBlock22 Using cfiCommon0
+          CFI Block cfiBlock15 Using cfiCommon0
           CFI Function radioComputeED
         CODE
 //  541 {
@@ -2071,7 +2002,7 @@ radioComputeED:
         MOV       R1,A
         LJMP      ?BRET
 //  573 }
-          CFI EndBlock cfiBlock22
+          CFI EndBlock cfiBlock15
 //  574 
 //  575 
 //  576 /**************************************************************************************************
@@ -2089,7 +2020,7 @@ radioComputeED:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  587 MAC_INTERNAL_API uint8 macRadioComputeLQI(int8 rssiDbm, uint8 corr)
 macRadioComputeLQI:
-          CFI Block cfiBlock23 Using cfiCommon0
+          CFI Block cfiBlock16 Using cfiCommon0
           CFI Function macRadioComputeLQI
         CODE
 //  588 {
@@ -2129,9 +2060,10 @@ macRadioComputeLQI:
 //  596   return(radioComputeED(rssiDbm));
         ; Setup parameters for call to function radioComputeED
         LCALL     `??radioComputeED::?relay`; Banked call to: radioComputeED
-        LJMP      ?Subroutine1 & 0xFFFF
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
 //  597 }
-          CFI EndBlock cfiBlock23
+          CFI EndBlock cfiBlock16
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macRadioInit::?relay`:
@@ -2258,14 +2190,14 @@ macRadioComputeLQI:
 //  600 /**************************************************************************************************
 //  601 */
 // 
-// 713 bytes in segment BANKED_CODE
+// 776 bytes in segment BANKED_CODE
 // 102 bytes in segment BANK_RELAYS
 //   1 byte  in segment SFR_AN
 //   4 bytes in segment XDATA_Z
 // 
 // 102 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 1 byte shared)
-// 713 bytes of HUGECODE memory
+// 776 bytes of HUGECODE memory
 //   4 bytes of XDATA    memory
 //
 //Errors: none

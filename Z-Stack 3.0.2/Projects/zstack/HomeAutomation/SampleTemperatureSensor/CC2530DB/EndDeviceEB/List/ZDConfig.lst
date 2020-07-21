@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:56:04
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:09
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,14 +13,15 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWEB3.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW9756.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\zdo\ZDConfig.c" -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -231,13 +233,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
    \   000007                ; Setup parameters for call to function ZDConfig_UpdatePowerDescriptor
    \   000007   12....       LCALL     `??ZDConfig_UpdatePowerDescriptor::?relay`; Banked call to: ZDConfig_UpdatePowerDescriptor
      99          }
-   \   00000A   80..         SJMP      ??Subroutine1_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine1_0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
     100          
     101          /*********************************************************************
     102           * @fn      ZDConfig_UpdateNodeDescriptor()
@@ -350,15 +348,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
     169            ZDO_Config_Node_Descriptor.DescriptorCapability = 0;
    \   000032   90....       MOV       DPTR,#ZDO_Config_Node_Descriptor + 12
    \   000035   E4           CLR       A
-   \   000036                REQUIRE ?Subroutine0
-   \   000036                ; // Fall through to label ?Subroutine0
+   \   000036   F0           MOVX      @DPTR,A
     170          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001                REQUIRE ??Subroutine1_0
-   \   000001                ; // Fall through to label ??Subroutine1_0
+   \   000037   D083         POP       DPH
+   \   000039   D082         POP       DPL
+   \   00003B   02....       LJMP      ?BRET
     171          
     172          /*********************************************************************
     173           * @fn      ZDConfig_UpdatePowerDescriptor()
@@ -396,41 +390,47 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
    \   00000C   4A           ORL       A,R2
    \   00000D   4B           ORL       A,R3
    \   00000E   90....       MOV       DPTR,#ZDO_Config_Power_Descriptor
-   \   000011   6008         JZ        ??ZDConfig_UpdatePowerDescriptor_0
+   \   000011   6009         JZ        ??ZDConfig_UpdatePowerDescriptor_0
     194                ZDO_Config_Power_Descriptor.PowerMode = NODECURPWR_RCVR_AUTO;
    \   000013   E0           MOVX      A,@DPTR
    \   000014   54F0         ANL       A,#0xf0
    \   000016   F0           MOVX      @DPTR,A
-   \   000017   4401         ORL       A,#0x1
-   \   000019   8006         SJMP      ??ZDConfig_UpdatePowerDescriptor_1
+   \   000017   E0           MOVX      A,@DPTR
+   \   000018   4401         ORL       A,#0x1
+   \   00001A   8007         SJMP      ??ZDConfig_UpdatePowerDescriptor_1
     195              else
     196                ZDO_Config_Power_Descriptor.PowerMode = NODECURPWR_RCVR_STIM;
    \                     ??ZDConfig_UpdatePowerDescriptor_0:
-   \   00001B   E0           MOVX      A,@DPTR
-   \   00001C   54F0         ANL       A,#0xf0
-   \   00001E   F0           MOVX      @DPTR,A
-   \   00001F   4402         ORL       A,#0x2
+   \   00001C   E0           MOVX      A,@DPTR
+   \   00001D   54F0         ANL       A,#0xf0
+   \   00001F   F0           MOVX      @DPTR,A
+   \   000020   E0           MOVX      A,@DPTR
+   \   000021   4402         ORL       A,#0x2
    \                     ??ZDConfig_UpdatePowerDescriptor_1:
-   \   000021   F0           MOVX      @DPTR,A
+   \   000023   F0           MOVX      @DPTR,A
     197          
     198              ZDO_Config_Power_Descriptor.AvailablePowerSources = NODEAVAILPWR_RECHARGE;
     199              ZDO_Config_Power_Descriptor.CurrentPowerSource = NODEAVAILPWR_RECHARGE;
     200              ZDO_Config_Power_Descriptor.CurrentPowerSourceLevel = NODEPOWER_LEVEL_66;
-   \   000022   E0           MOVX      A,@DPTR
-   \   000023   540F         ANL       A,#0xf
-   \   000025   F0           MOVX      @DPTR,A
-   \   000026   A3           INC       DPTR
-   \   000027   E4           CLR       A
-   \   000028   F0           MOVX      @DPTR,A
-   \   000029   90....       MOV       DPTR,#ZDO_Config_Power_Descriptor
-   \   00002C   E0           MOVX      A,@DPTR
-   \   00002D   4420         ORL       A,#0x20
-   \   00002F   F0           MOVX      @DPTR,A
-   \   000030   A3           INC       DPTR
-   \   000031   7482         MOV       A,#-0x7e
-   \   000033   80..         SJMP      ?Subroutine0
+   \   000024   E0           MOVX      A,@DPTR
+   \   000025   540F         ANL       A,#0xf
+   \   000027   F0           MOVX      @DPTR,A
+   \   000028   A3           INC       DPTR
+   \   000029   E4           CLR       A
+   \   00002A   F0           MOVX      @DPTR,A
+   \   00002B   90....       MOV       DPTR,#ZDO_Config_Power_Descriptor
+   \   00002E   E0           MOVX      A,@DPTR
+   \   00002F   4420         ORL       A,#0x20
+   \   000031   F0           MOVX      @DPTR,A
+   \   000032   A3           INC       DPTR
+   \   000033   E0           MOVX      A,@DPTR
+   \   000034   4482         ORL       A,#0x82
+   \   000036   F0           MOVX      @DPTR,A
     201            }
     202          }
+   \   000037   D083         POP       DPH
+   \   000039   D082         POP       DPL
+   \   00003B   02....       LJMP      ?BRET
     203          
     204          /*********************************************************************
     205          *********************************************************************/
@@ -452,22 +452,20 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDConfig.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ??Subroutine1_0
-       1  ?Subroutine0
-      12  ZDConfig_InitDescriptors
-      54  ZDConfig_UpdateNodeDescriptor
-      53  ZDConfig_UpdatePowerDescriptor
+      17  ZDConfig_InitDescriptors
+      62  ZDConfig_UpdateNodeDescriptor
+      62  ZDConfig_UpdatePowerDescriptor
       13  ZDO_Config_Node_Descriptor
        2  ZDO_Config_Power_Descriptor
       18  -- Other
 
  
- 127 bytes in segment BANKED_CODE
+ 141 bytes in segment BANKED_CODE
   18 bytes in segment BANK_RELAYS
   15 bytes in segment XDATA_Z
  
   18 bytes of CODE     memory
- 127 bytes of HUGECODE memory
+ 141 bytes of HUGECODE memory
   15 bytes of XDATA    memory
 
 Errors: none

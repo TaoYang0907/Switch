@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:22
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:43
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_csp_tx.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWC62C.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW65E9.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_csp_tx.c" -D
 //        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 //        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
 //        xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 //        xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D
 //        ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -130,8 +132,7 @@
         RSEG XSTACK:XDATA:NOROOT(0)
 
         EXTERN ?V0
-        EXTERN ?V2
-        EXTERN ?V3
+        EXTERN ?V1
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
@@ -141,6 +142,8 @@
 
         FUNCTION `??cspPrepForTxProgram::?relay`,0203H
         FUNCTION `??cspReadCountSymbols::?relay`,0203H
+        FUNCTION `??cspWeventSetTriggerNow::?relay`,0203H
+        FUNCTION `??cspWeventSetTriggerSymbols::?relay`,0203H
         PUBLIC `??macCspForceTxDoneIfPending::?relay`
         FUNCTION `??macCspForceTxDoneIfPending::?relay`,0203H
         PUBLIC `??macCspTxCancelAckTimeoutCallback::?relay`
@@ -183,9 +186,19 @@
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
         FUNCTION cspReadCountSymbols,0203H
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION cspWeventSetTriggerNow,0203H
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 2, STACK
+        FUNCTION cspWeventSetTriggerSymbols,0a1203H
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 10, STACK
         PUBLIC macCspForceTxDoneIfPending
         FUNCTION macCspForceTxDoneIfPending,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -231,7 +244,7 @@
         PUBLIC macCspTxRequestAckTimeoutCallback
         FUNCTION macCspTxRequestAckTimeoutCallback,0a1203H
         ARGFRAME XSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         PUBLIC macCspTxReset
         FUNCTION macCspTxReset,0203H
         ARGFRAME XSTACK, 0, STACK
@@ -329,73 +342,6 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
-        
 halAssertHandler    SYMBOL "halAssertHandler"
 `??halAssertHandler::?relay` SYMBOL "?relay", halAssertHandler
 macRxHardDisable    SYMBOL "macRxHardDisable"
@@ -455,7 +401,7 @@ macCspTxStopIsr     SYMBOL "macCspTxStopIsr"
         FUNCTION halAssertHandler,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN macChipVersion
@@ -791,25 +737,20 @@ macCspTxReset:
 //  204   MAC_MCU_CSP_INT_DISABLE_INTERRUPT();
         MOVX      A,@DPTR
         CLR       0xE0 /* A   */.3
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine2
-        REQUIRE RFST
-        ; // Fall through to label ?Subroutine2
-//  205   CSP_STOP_AND_CLEAR_PROGRAM();
-//  206 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine2:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         MOVX      @DPTR,A
+//  205   CSP_STOP_AND_CLEAR_PROGRAM();
         MOV       0xe1,#-0x1e
         MOV       0xe1,#-0x1
-        LJMP      ??Subroutine7_0 & 0xFFFF
-          CFI EndBlock cfiBlock1
+//  206 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock0
+        REQUIRE RFST
 //  207 
 //  208 
 //  209 /*=================================================================================================
@@ -822,33 +763,85 @@ macCspTxReset:
 //  216  * @return      symbols
 //  217  *=================================================================================================
 //  218  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  219 static void cspWeventSetTriggerNow(void)
+cspWeventSetTriggerNow:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function cspWeventSetTriggerNow
+        CODE
 //  220 {
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 0
 //  221   halIntState_t  s;
 //  222   uint8          temp0, temp1;
 //  223 
 //  224   /* Clear the compare interrupt flag for debugging purpose. */
 //  225   CSP_WEVENT_CLEAR_TRIGGER();
+        MOV       0xa1,#-0x3
 //  226 
 //  227   /* copy current timer count to compare */
 //  228   HAL_ENTER_CRITICAL_SECTION(s);
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R2,A
+        CLR       0xa8.7
 //  229   MAC_MCU_T2_ACCESS_COUNT_VALUE();
+        MOV       0xc3,#0x0
 //  230   temp0 = T2M0;
+        MOV       R0,0xa2+0x0
 //  231   temp1 = T2M1;
+        MOV       R1,0xa3+0x0
 //  232 
 //  233   /* MAC timer bug on the cc2530 PG1 made it impossible to use
 //  234    * compare = 0 for both the timer and the overflow counter.
 //  235    */
 //  236   if ((macChipVersion <= REV_B) && (temp0 == 0) && (temp1 == 0))
+        MOV       DPTR,#macChipVersion
+        MOVX      A,@DPTR
+        SUBB      A,#0x12
+        JNC       ??cspWeventSetTriggerNow_0
+        MOV       A,R0
+        JNZ       ??cspWeventSetTriggerNow_0
+        MOV       A,R1
+        JNZ       ??cspWeventSetTriggerNow_0
 //  237   {
 //  238     temp0++;
+        MOV       R0,#0x1
 //  239   }
 //  240 
 //  241   MAC_MCU_T2_ACCESS_CMP1_VALUE();
+??cspWeventSetTriggerNow_0:
+        MOV       0xc3,#0x3
 //  242   T2M0 = temp0;
+        MOV       0xa2,R0
 //  243   T2M1 = temp1;
+        MOV       0xa3,R1
 //  244   HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R2
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  245 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock1
+        REQUIRE T2IRQF
+        REQUIRE _A_IEN0
+        REQUIRE T2MSEL
+        REQUIRE T2M0
+        REQUIRE T2M1
 //  246 
 //  247 
 //  248 /*=================================================================================================
@@ -861,31 +854,114 @@ macCspTxReset:
 //  255  * @return      none
 //  256  *=================================================================================================
 //  257  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  258 static void cspWeventSetTriggerSymbols(uint8 symbols)
+cspWeventSetTriggerSymbols:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Function cspWeventSetTriggerSymbols
+        CODE
 //  259 {
+        FUNCALL cspWeventSetTriggerSymbols, halAssertHandler
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 0
+        MOV       A,R1
+        MOV       R6,A
 //  260   halIntState_t  s;
 //  261   uint16         cmp;
 //  262 
 //  263   MAC_ASSERT(symbols <= MAC_A_UNIT_BACKOFF_PERIOD);
+        CLR       C
+        SUBB      A,#0x15
+        JC        ??cspWeventSetTriggerSymbols_0
+        ; Setup parameters for call to function halAssertHandler
+        LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
 //  264 
 //  265   /* Clear the compare interrupt flag for debugging purpose. */
 //  266   CSP_WEVENT_CLEAR_TRIGGER();
+??cspWeventSetTriggerSymbols_0:
+        MOV       0xa1,#-0x3
 //  267 
 //  268   HAL_ENTER_CRITICAL_SECTION(s);
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R2,A
+        CLR       0xa8.7
 //  269   MAC_MCU_T2_ACCESS_CMP1_VALUE();
+        MOV       0xc3,#0x3
 //  270   cmp  = (symbols) * MAC_RADIO_TIMER_TICKS_PER_SYMBOL();
+        MOV       A,R6
+        MOV       ?V0,A
+        MOV       ?V1,#0x0
+        MOV       A,#0x9
+        MOV       R0,#?V0
+        LCALL     ?S_SHL
+        MOV       R0,A
+        MOV       R1,?V1
 //  271 
 //  272   /* MAC timer bug on the cc2530 PG1 made it impossible to use
 //  273    * compare = 0 for both the timer and the overflow counter.
 //  274    */
 //  275   if ((macChipVersion <= REV_B) && (cmp == 0))
+        MOV       DPTR,#macChipVersion
+        MOVX      A,@DPTR
+        CLR       C
+        SUBB      A,#0x12
+        JNC       ??cspWeventSetTriggerSymbols_1
+        MOV       A,R1
+        JNZ       ??cspWeventSetTriggerSymbols_1
 //  276   {
 //  277     cmp++;
+        INC       R0
+        MOV       R1,#0x0
 //  278   }
 //  279   T2M0 = (cmp & 0xFF);
+??cspWeventSetTriggerSymbols_1:
+        MOV       A,R0
+        MOV       0xa2,A
 //  280   T2M1 = (cmp >> 8);
+        MOV       A,R1
+        MOV       0xa3,A
 //  281   HAL_EXIT_CRITICAL_SECTION(s);
+        MOV       A,R2
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
 //  282 }
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock2
+        REQUIRE T2IRQF
+        REQUIRE _A_IEN0
+        REQUIRE T2MSEL
+        REQUIRE T2M0
+        REQUIRE T2M1
 //  283 
 //  284 
 //  285 /*=================================================================================================
@@ -902,7 +978,7 @@ macCspTxReset:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  295 static uint8 cspReadCountSymbols(void)
 cspReadCountSymbols:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function cspReadCountSymbols
         CODE
 //  296 {
@@ -912,7 +988,10 @@ cspReadCountSymbols:
 //  298   halIntState_t  s;
 //  299 
 //  300   HAL_ENTER_CRITICAL_SECTION(s);
-        MOV       R1,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R1,A
         CLR       0xa8.7
 //  301   MAC_MCU_T2_ACCESS_COUNT_VALUE();
         MOV       0xc3,#0x0
@@ -921,8 +1000,7 @@ cspReadCountSymbols:
 //  303   countHigh = T2M1;
         MOV       R0,0xa3+0x0
 //  304   HAL_EXIT_CRITICAL_SECTION(s);
-        MOV       A,R1
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  305 
 //  306   return (((countHigh << 8) | countLow) / MAC_RADIO_TIMER_TICKS_PER_SYMBOL());
@@ -936,7 +1014,7 @@ cspReadCountSymbols:
         MOV       A,R0
         MOV       R1,A
         LJMP      ?BRET
-          CFI EndBlock cfiBlock2
+          CFI EndBlock cfiBlock3
         REQUIRE _A_IEN0
         REQUIRE T2MSEL
         REQUIRE T2M0
@@ -959,7 +1037,7 @@ cspReadCountSymbols:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  321 static void cspPrepForTxProgram(void)
 cspPrepForTxProgram:
-          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function cspPrepForTxProgram
         CODE
 //  322 {
@@ -1006,24 +1084,34 @@ cspPrepForTxProgram:
         MOV       0xe1,#-0x1e
         MOV       0xe1,#-0x1
 //  333   MAC_MCU_CSP_STOP_CLEAR_INTERRUPT();
-        MOV       R0,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R0,A
         CLR       0xa8.7
         MOV       0x9b,#0x0
         MOV       0x91,#-0x11
-        MOV       A,R0
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  334   MAC_MCU_CSP_INT_CLEAR_INTERRUPT();
-        MOV       R0,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R0,A
         CLR       0xa8.7
         MOV       0x9b,#0x0
         MOV       0x91,#-0x9
-        MOV       A,R0
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  335 }
-        LJMP      ??Subroutine7_0 & 0xFFFF
-          CFI EndBlock cfiBlock3
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock4
         REQUIRE T2CSPCFG
         REQUIRE RFST
         REQUIRE _A_IEN0
@@ -1045,7 +1133,7 @@ cspPrepForTxProgram:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  348 MAC_INTERNAL_API void macCspTxPrepCsmaUnslotted(void)
 macCspTxPrepCsmaUnslotted:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock5 Using cfiCommon0
           CFI Function macCspTxPrepCsmaUnslotted
         CODE
 //  349 {
@@ -1070,7 +1158,7 @@ macCspTxPrepCsmaUnslotted:
         ; Auto size: 0
 //  350   cspPrepForTxProgram();
         ; Setup parameters for call to function cspPrepForTxProgram
-        LCALL     ?Subroutine3 & 0xFFFF
+        LCALL     `??cspPrepForTxProgram::?relay`; Banked call to: cspPrepForTxProgram
 //  351 
 //  352   /*----------------------------------------------------------------------
 //  353    *  Load CSP program :  Unslotted CSMA transmit
@@ -1081,8 +1169,8 @@ macCspTxPrepCsmaUnslotted:
 //  358    *  to reach value set for WEVENT1.
 //  359    */
 //  360   RFST = WAITX;
+        MOV       0xe1,#-0x44
 //  361   RFST = WEVENT1;
-??CrossCallReturnLabel_0:
         MOV       0xe1,#-0x48
 //  362 
 //  363   /* wait until RSSI is valid */
@@ -1103,13 +1191,13 @@ macCspTxPrepCsmaUnslotted:
 //  373 
 //  374   /* sample CCA, if it fails exit from here, CSPZ indicates result */
 //  375   RFST = SKIP(1, C_CCA_IS_VALID);
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock4
-        REQUIRE RFST
+        MOV       0xe1,#0x10
 //  376   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  377   
 //  378   /* CSMA has passed so transmit (actual frame starts one backoff from when strobe is sent) */
 //  379   RFST = STXON;
+        MOV       0xe1,#-0x27
 //  380 
 //  381   /*
 //  382    *  Wait for the start of frame delimiter of the transmitted frame.  If SFD happens to
@@ -1119,7 +1207,9 @@ macCspTxPrepCsmaUnslotted:
 //  386    *  for it to go active.
 //  387    */
 //  388   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  389   RFST = WHILE(C_SFD_IS_INACTIVE);
+        MOV       0xe1,#0x9
 //  390 
 //  391   /*
 //  392    *  Record the timestamp.  The INT instruction causes an interrupt to fire.
@@ -1127,19 +1217,32 @@ macCspTxPrepCsmaUnslotted:
 //  394    *  when SFD went high).
 //  395    */
 //  396   RFST = INT;
+        MOV       0xe1,#-0x46
 //  397 
 //  398   /*
 //  399    *  Wait for SFD to go inactive which is the end of transmit.  Decrement CSPZ to indicate
 //  400    *  the transmit was successful.
 //  401    */
 //  402   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  403   RFST = DECZ;
+        MOV       0xe1,#-0x3b
 //  404 
 //  405   /*
 //  406    * CC2530 requires SSTOP to generate CSP_STOP interrupt.
 //  407    */
 //  408   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  409 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock5
+        REQUIRE RFST
 //  410 
 //  411 
 //  412 /**************************************************************************************************
@@ -1156,7 +1259,7 @@ macCspTxPrepCsmaUnslotted:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  422 MAC_INTERNAL_API void macCspTxPrepCsmaSlotted(void)
 macCspTxPrepCsmaSlotted:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock6 Using cfiCommon0
           CFI Function macCspTxPrepCsmaSlotted
         CODE
 //  423 {
@@ -1181,7 +1284,7 @@ macCspTxPrepCsmaSlotted:
         ; Auto size: 0
 //  424   cspPrepForTxProgram();
         ; Setup parameters for call to function cspPrepForTxProgram
-        LCALL     ?Subroutine3 & 0xFFFF
+        LCALL     `??cspPrepForTxProgram::?relay`; Banked call to: cspPrepForTxProgram
 //  425 
 //  426   /*----------------------------------------------------------------------
 //  427    *  Load CSP program :  Slotted CSMA transmit
@@ -1189,10 +1292,10 @@ macCspTxPrepCsmaSlotted:
 //  429 
 //  430   /* wait for X number of backoffs */
 //  431   RFST = WAITX;
+        MOV       0xe1,#-0x44
 //  432   
 //  433   /* sample RSSI, if it is valid then skip one extra backoff. */
 //  434   RFST = SKIP(1, C_RSSI_IS_VALID);
-??CrossCallReturnLabel_1:
         MOV       0xe1,#0x17
 //  435   
 //  436   /* wait for one backoff to guarantee receiver has been on at least that long */
@@ -1211,13 +1314,13 @@ macCspTxPrepCsmaSlotted:
 //  445 
 //  446   /* sample CCA again, if it fails exit from here, CSPZ indicates result */
 //  447   RFST = SKIP(1, C_CCA_IS_VALID);
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock5
-        REQUIRE RFST
+        MOV       0xe1,#0x10
 //  448   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  449 
 //  450   /* CSMA has passed so transmit */
 //  451   RFST = STXON;
+        MOV       0xe1,#-0x27
 //  452 
 //  453   /*
 //  454    *  Wait for the start of frame delimiter of the transmitted frame.  If SFD happens to
@@ -1227,7 +1330,9 @@ macCspTxPrepCsmaSlotted:
 //  458    *  for it to go active.
 //  459    */
 //  460   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  461   RFST = WHILE(C_SFD_IS_INACTIVE);
+        MOV       0xe1,#0x9
 //  462 
 //  463   /*
 //  464    *  Record the timestamp.  The INT instruction causes an interrupt to fire.
@@ -1235,50 +1340,32 @@ macCspTxPrepCsmaSlotted:
 //  466    *  when SFD went high).
 //  467    */
 //  468   RFST = INT;
+        MOV       0xe1,#-0x46
 //  469 
 //  470   /*
 //  471    *  Wait for SFD to go inactive which is the end of transmit.  Decrement CSPZ to indicate
 //  472    *  the transmit was successful.
 //  473    */
 //  474   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  475   RFST = DECZ;
+        MOV       0xe1,#-0x3b
 //  476 
 //  477   /*
 //  478    * CC2530 requires SSTOP to generate CSP_STOP interrupt.
 //  479    */
 //  480   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  481 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine3:
-          CFI Block cfiCond6 Using cfiCommon0
-          CFI Function macCspTxPrepCsmaUnslotted
-          CFI Conditional ??CrossCallReturnLabel_0
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond7 Using cfiCommon0
-          CFI (cfiCond7) Function macCspTxPrepCsmaSlotted
-          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_1
-          CFI (cfiCond7) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond7) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond7) CFA_SP SP+-7
-          CFI Block cfiCond8 Using cfiCommon0
-          CFI (cfiCond8) Function macCspTxPrepSlotted
-          CFI (cfiCond8) Conditional ??CrossCallReturnLabel_2
-          CFI (cfiCond8) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond8) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond8) CFA_SP SP+-7
-          CFI Block cfiPicker9 Using cfiCommon1
-          CFI (cfiPicker9) NoFunction
-          CFI (cfiPicker9) Picker
-        LCALL     `??cspPrepForTxProgram::?relay`; Banked call to: cspPrepForTxProgram
-        MOV       0xe1,#-0x44
-        RET
-          CFI EndBlock cfiCond6
-          CFI EndBlock cfiCond7
-          CFI EndBlock cfiCond8
-          CFI EndBlock cfiPicker9
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock6
+        REQUIRE RFST
 //  482 
 //  483 
 //  484 /**************************************************************************************************
@@ -1298,10 +1385,21 @@ macCspTxPrepCsmaSlotted:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  497 MAC_INTERNAL_API void macCspTxGoCsma(void)
 macCspTxGoCsma:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock7 Using cfiCommon0
           CFI Function macCspTxGoCsma
         CODE
 //  498 {
+        FUNCALL macCspTxGoCsma, cspWeventSetTriggerNow
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 0, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL macCspTxGoCsma, macRxOn
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1335,31 +1433,8 @@ macCspTxGoCsma:
 //  506    *  unslotted CSMA to transmit just a little bit sooner.
 //  507    */
 //  508   CSP_WEVENT_SET_TRIGGER_NOW();
-        MOV       0xa1,#-0x3
-        MOV       C,0xa8.7
-        CLR       A
-        RLC       A
-        MOV       R2,A
-        CLR       0xa8.7
-        MOV       0xc3,#0x0
-        MOV       R0,0xa2+0x0
-        MOV       R1,0xa3+0x0
-        MOV       DPTR,#macChipVersion
-        MOVX      A,@DPTR
-        SUBB      A,#0x12
-        JNC       ??macCspTxGoCsma_0
-        MOV       A,R0
-        JNZ       ??macCspTxGoCsma_0
-        MOV       A,R1
-        JNZ       ??macCspTxGoCsma_0
-        MOV       R0,#0x1
-??macCspTxGoCsma_0:
-        MOV       0xc3,#0x3
-        MOV       0xa2,R0
-        MOV       0xa3,R1
-        MOV       A,R2
-        MOV       C,0xE0 /* A   */.0
-        MOV       0xa8.7,C
+        ; Setup parameters for call to function cspWeventSetTriggerNow
+        LCALL     `??cspWeventSetTriggerNow::?relay`; Banked call to: cspWeventSetTriggerNow
 //  509 
 //  510   /*
 //  511    *  Enable interrupt that fires when CSP program stops.
@@ -1367,100 +1442,36 @@ macCspTxGoCsma:
 //  513    *  is executed.
 //  514    */
 //  515   MAC_MCU_CSP_STOP_ENABLE_INTERRUPT();
-          CFI EndBlock cfiBlock10
-        REQUIRE ?Subroutine1
-        REQUIRE RFST
-        REQUIRE T2IRQF
-        REQUIRE _A_IEN0
-        REQUIRE T2MSEL
-        REQUIRE T2M0
-        REQUIRE T2M1
-        ; // Fall through to label ?Subroutine1
+        MOV       DPTR,#0x61a4
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.4
+        MOVX      @DPTR,A
 //  516   MAC_MCU_CSP_INT_ENABLE_INTERRUPT();
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.3
+        MOVX      @DPTR,A
 //  517 
 //  518   /*
 //  519    *  Turn on the receiver if it is not already on.  Receiver must be 'on' for at
 //  520    *  least one backoff before performing clear channel assessment (CCA).
 //  521    */
 //  522   macRxOn();
+        ; Setup parameters for call to function macRxOn
+        LCALL     `??macRxOn::?relay`; Banked call to: macRxOn
 //  523 
 //  524   /* start the CSP program */
 //  525   CSP_START_PROGRAM();
-//  526 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock11 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        LCALL     ?Subroutine4 & 0xFFFF
-??CrossCallReturnLabel_3:
-        ; Setup parameters for call to function macRxOn
-        ; Setup parameters for call to function macRxOn
-        LCALL     `??macRxOn::?relay`; Banked call to: macRxOn
         MOV       0xe1,#-0x1f
-        SJMP      ??Subroutine7_0
-          CFI EndBlock cfiBlock11
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock12 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOV       0xe1,#0x10
-        MOV       0xe1,#-0x2e
-          CFI EndBlock cfiBlock12
-        REQUIRE ??Subroutine5_0
-        ; // Fall through to label ??Subroutine5_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine5_0:
-          CFI Block cfiBlock13 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOV       0xe1,#-0x27
-        MOV       0xe1,#0x1
-        MOV       0xe1,#0x9
-        MOV       0xe1,#-0x46
-        MOV       0xe1,#0x1
-          CFI EndBlock cfiBlock13
-        REQUIRE ??Subroutine6_0
-        ; // Fall through to label ??Subroutine6_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine6_0:
-          CFI Block cfiBlock14 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOV       0xe1,#-0x3b
-        MOV       0xe1,#-0x2e
-          CFI EndBlock cfiBlock14
-        REQUIRE ??Subroutine7_0
-        ; // Fall through to label ??Subroutine7_0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-??Subroutine7_0:
-          CFI Block cfiBlock15 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
+//  526 }
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock15
+          CFI EndBlock cfiBlock7
+        REQUIRE RFST
 //  527 
 //  528 
 //  529 /**************************************************************************************************
@@ -1478,7 +1489,7 @@ macCspTxGoCsma:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  540 MAC_INTERNAL_API void macCspTxPrepSlotted(void)
 macCspTxPrepSlotted:
-          CFI Block cfiBlock16 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function macCspTxPrepSlotted
         CODE
 //  541 {
@@ -1503,7 +1514,7 @@ macCspTxPrepSlotted:
         ; Auto size: 0
 //  542   cspPrepForTxProgram();
         ; Setup parameters for call to function cspPrepForTxProgram
-        LCALL     ?Subroutine3 & 0xFFFF
+        LCALL     `??cspPrepForTxProgram::?relay`; Banked call to: cspPrepForTxProgram
 //  543 
 //  544   /*----------------------------------------------------------------------
 //  545    *  Load CSP program :  Slotted transmit (no CSMA)
@@ -1511,13 +1522,11 @@ macCspTxPrepSlotted:
 //  547 
 //  548   /* wait for X number of backoffs */
 //  549   RFST = WAITX;
+        MOV       0xe1,#-0x44
 //  550 
 //  551   /* just transmit, no CSMA required */
 //  552   RFST = STXON;
-??CrossCallReturnLabel_2:
-        SJMP      ??Subroutine5_0
-          CFI EndBlock cfiBlock16
-        REQUIRE RFST
+        MOV       0xe1,#-0x27
 //  553 
 //  554   /*
 //  555    *  Wait for the start of frame delimiter of the transmitted frame.  If SFD happens to
@@ -1527,7 +1536,9 @@ macCspTxPrepSlotted:
 //  559    *  for it to go active.
 //  560    */
 //  561   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  562   RFST = WHILE(C_SFD_IS_INACTIVE);
+        MOV       0xe1,#0x9
 //  563 
 //  564   /*
 //  565    *  Record the timestamp.  The INT instruction causes an interrupt to fire.
@@ -1535,20 +1546,33 @@ macCspTxPrepSlotted:
 //  567    *  when SFD went high).
 //  568    */
 //  569   RFST = INT;
+        MOV       0xe1,#-0x46
 //  570 
 //  571   /*
 //  572    *  Wait for SFD to go inactive which is the end of transmit.  Decrement CSPZ to indicate
 //  573    *  the transmit was successful.
 //  574    */
 //  575   RFST = WHILE(C_SFD_IS_ACTIVE);
+        MOV       0xe1,#0x1
 //  576   RFST = DECZ;
+        MOV       0xe1,#-0x3b
 //  577 
 //  578   /*
 //  579    * CC2530 requires SSTOP to generate CSP_STOP interrupt.
 //  580    */
 //  581   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  582 
 //  583 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock8
+        REQUIRE RFST
 //  584 
 //  585 
 //  586 /**************************************************************************************************
@@ -1567,7 +1591,7 @@ macCspTxPrepSlotted:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  598 MAC_INTERNAL_API void macCspTxGoSlotted(void)
 macCspTxGoSlotted:
-          CFI Block cfiBlock17 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function macCspTxGoSlotted
         CODE
 //  599 {
@@ -1608,12 +1632,17 @@ macCspTxGoSlotted:
 //  607    *  is executed.
 //  608    */
 //  609   MAC_MCU_CSP_STOP_ENABLE_INTERRUPT();
-        LCALL     ?Subroutine4 & 0xFFFF
+        MOV       DPTR,#0x61a4
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.4
+        MOVX      @DPTR,A
 //  610   MAC_MCU_CSP_INT_ENABLE_INTERRUPT();
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.3
+        MOVX      @DPTR,A
 //  611 
 //  612   /* critical section needed for timer accesses */
 //  613   HAL_ENTER_CRITICAL_SECTION(s);
-??CrossCallReturnLabel_4:
         MOV       C,0xa8.7
         CLR       A
         RLC       A
@@ -1728,56 +1757,12 @@ macCspTxGoSlotted:
 //  686 }
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock17
+          CFI EndBlock cfiBlock9
         REQUIRE _A_IEN0
         REQUIRE T2MSEL
         REQUIRE T2M0
         REQUIRE T2MOVF0
         REQUIRE RFST
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine4:
-          CFI Block cfiCond18 Using cfiCommon0
-          CFI Function macCspTxGoCsma
-          CFI Conditional ??CrossCallReturnLabel_3
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-          CFI CFA_SP SP+-7
-          CFI Block cfiCond19 Using cfiCommon0
-          CFI (cfiCond19) Function macCspTxGoGreenPower
-          CFI (cfiCond19) Conditional ??CrossCallReturnLabel_3
-          CFI (cfiCond19) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond19) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond19) CFA_SP SP+-7
-          CFI Block cfiCond20 Using cfiCommon0
-          CFI (cfiCond20) Function macCspTxGoSlotted
-          CFI (cfiCond20) Conditional ??CrossCallReturnLabel_4
-          CFI (cfiCond20) R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond20) VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond20) V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond20) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond20) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond20) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond20) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond20) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond20) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond20) CFA_SP SP+-2
-          CFI (cfiCond20) CFA_XSP16 add(XSP16, 9)
-          CFI Block cfiPicker21 Using cfiCommon1
-          CFI (cfiPicker21) NoFunction
-          CFI (cfiPicker21) Picker
-        MOV       DPTR,#0x61a4
-        MOVX      A,@DPTR
-        SETB      0xE0 /* A   */.4
-        MOVX      @DPTR,A
-        MOVX      A,@DPTR
-        SETB      0xE0 /* A   */.3
-        MOVX      @DPTR,A
-        RET
-          CFI EndBlock cfiCond18
-          CFI EndBlock cfiCond19
-          CFI EndBlock cfiCond20
-          CFI EndBlock cfiPicker21
 //  687 
 //  688 
 //  689 /**************************************************************************************************
@@ -1794,7 +1779,7 @@ macCspTxGoSlotted:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  699 MAC_INTERNAL_API void macCspTxPrepGreenPower(void)
 macCspTxPrepGreenPower:
-          CFI Block cfiBlock22 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function macCspTxPrepGreenPower
         CODE
 //  700 {
@@ -1876,15 +1861,23 @@ macCspTxPrepGreenPower:
 //  742   
 //  743   /* Clear the busy status */
 //  744   RFST = DECZ;
-        LJMP      ??Subroutine6_0 & 0xFFFF
-          CFI EndBlock cfiBlock22
-        REQUIRE RFST
+        MOV       0xe1,#-0x3b
 //  745   
 //  746   /*
 //  747    * CC2530 requires SSTOP to generate CSP_STOP interrupt.
 //  748    */
 //  749   RFST = SSTOP;
+        MOV       0xe1,#-0x2e
 //  750 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock10
+        REQUIRE RFST
 //  751 
 //  752 
 //  753 /**************************************************************************************************
@@ -1903,7 +1896,7 @@ macCspTxPrepGreenPower:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  765 MAC_INTERNAL_API void macCspTxGoGreenPower(void)
 macCspTxGoGreenPower:
-          CFI Block cfiBlock23 Using cfiCommon0
+          CFI Block cfiBlock11 Using cfiCommon0
           CFI Function macCspTxGoGreenPower
         CODE
 //  766 {
@@ -1941,20 +1934,36 @@ macCspTxGoGreenPower:
 //  775    *  is executed.
 //  776    */
 //  777   MAC_MCU_CSP_STOP_ENABLE_INTERRUPT();
-        LJMP      ?Subroutine1 & 0xFFFF
-          CFI EndBlock cfiBlock23
-        REQUIRE RFST
+        MOV       DPTR,#0x61a4
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.4
+        MOVX      @DPTR,A
 //  778   MAC_MCU_CSP_INT_ENABLE_INTERRUPT();
+        MOVX      A,@DPTR
+        SETB      0xE0 /* A   */.3
+        MOVX      @DPTR,A
 //  779 
 //  780   /*
 //  781    *  Turn on the receiver if it is not already on.  Receiver must be 'on' for at
 //  782    *  least one backoff before performing clear channel assessment (CCA).
 //  783    */
 //  784   macRxOn();
+        ; Setup parameters for call to function macRxOn
+        LCALL     `??macRxOn::?relay`; Banked call to: macRxOn
 //  785 
 //  786   /* start the CSP program */
 //  787   CSP_START_PROGRAM();
+        MOV       0xe1,#-0x1f
 //  788 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock11
+        REQUIRE RFST
 //  789 
 //  790 
 //  791 /**************************************************************************************************
@@ -1973,7 +1982,7 @@ macCspTxGoGreenPower:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  803 MAC_INTERNAL_API void macCspForceTxDoneIfPending(void)
 macCspForceTxDoneIfPending:
-          CFI Block cfiBlock24 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function macCspForceTxDoneIfPending
         CODE
 //  804 {
@@ -2036,8 +2045,14 @@ macCspForceTxDoneIfPending:
 //  813   }
 //  814 }
 ??macCspForceTxDoneIfPending_0:
-        LJMP      ??Subroutine7_0 & 0xFFFF
-          CFI EndBlock cfiBlock24
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock12
 //  815 
 //  816 
 //  817 /**************************************************************************************************
@@ -2055,69 +2070,67 @@ macCspForceTxDoneIfPending:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  828 MAC_INTERNAL_API void macCspTxRequestAckTimeoutCallback(void)
 macCspTxRequestAckTimeoutCallback:
-          CFI Block cfiBlock25 Using cfiCommon0
+          CFI Block cfiBlock13 Using cfiCommon0
           CFI Function macCspTxRequestAckTimeoutCallback
         CODE
 //  829 {
         FUNCALL macCspTxRequestAckTimeoutCallback, halAssertHandler
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL macCspTxRequestAckTimeoutCallback, cspReadCountSymbols
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL macCspTxRequestAckTimeoutCallback, halAssertHandler
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL macCspTxRequestAckTimeoutCallback, halAssertHandler
+        FUNCALL macCspTxRequestAckTimeoutCallback, cspWeventSetTriggerSymbols
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL macCspTxRequestAckTimeoutCallback, cspReadCountSymbols
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 12, STACK
+        LOCFRAME XSTACK, 9, STACK
         LOCFRAME IOVERLAY, 0, STATIC
         LOCFRAME DOVERLAY, 0, STATIC
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 12, STACK
+        ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         REQUIRE ?V0
-        REQUIRE ?V2
-        REQUIRE ?V3
-        MOV       A,#-0xc
+        MOV       A,#-0x9
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -2125,15 +2138,12 @@ macCspTxRequestAckTimeoutCallback:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 12)
-        ; Saved register size: 12
+          CFI CFA_XSP16 add(XSP16, 9)
+        ; Saved register size: 9
         ; Auto size: 0
 //  830   uint8 startSymbol;
 //  831   uint8 symbols;
@@ -2205,57 +2215,24 @@ macCspTxRequestAckTimeoutCallback:
         MOV       DPTR,#0x61e2
         MOVX      @DPTR,A
 //  860   CSP_WEVENT_SET_TRIGGER_SYMBOLS(symbols);
+        ; Setup parameters for call to function cspWeventSetTriggerSymbols
         MOV       A,R6
-        CLR       C
-        SUBB      A,#0x15
-        JC        ??macCspTxRequestAckTimeoutCallback_2
-        ; Setup parameters for call to function halAssertHandler
-        LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
-??macCspTxRequestAckTimeoutCallback_2:
-        MOV       0xa1,#-0x3
-        MOV       C,0xa8.7
-        CLR       A
-        RLC       A
-        MOV       R2,A
-        CLR       0xa8.7
-        MOV       0xc3,#0x3
-        MOV       A,R6
-        MOV       ?V2,A
-        MOV       ?V3,#0x0
-        MOV       A,#0x9
-        MOV       R0,#?V2
-        LCALL     ?S_SHL
-        MOV       R0,A
-        MOV       R1,?V3
-        MOV       DPTR,#macChipVersion
-        MOVX      A,@DPTR
-        CLR       C
-        SUBB      A,#0x12
-        JNC       ??macCspTxRequestAckTimeoutCallback_3
-        MOV       A,R1
-        JNZ       ??macCspTxRequestAckTimeoutCallback_3
-        INC       R0
-        MOV       R1,#0x0
-??macCspTxRequestAckTimeoutCallback_3:
-        MOV       A,R0
-        MOV       0xa2,A
-        MOV       A,R1
-        MOV       0xa3,A
-        MOV       A,R2
-        MOV       C,0xE0 /* A   */.0
-        MOV       0xa8.7,C
+        MOV       R1,A
+        LCALL     `??cspWeventSetTriggerSymbols::?relay`; Banked call to: cspWeventSetTriggerSymbols
 //  861 
 //  862   /* clear the currently loaded CSP, this generates a stop interrupt which must be cleared */
 //  863   CSP_STOP_AND_CLEAR_PROGRAM();
         MOV       0xe1,#-0x1e
         MOV       0xe1,#-0x1
 //  864   MAC_MCU_CSP_STOP_CLEAR_INTERRUPT();
-        MOV       R0,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R0,A
         CLR       0xa8.7
         MOV       0x9b,#0x0
         MOV       0x91,#-0x11
-        MOV       A,R0
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  865 
 //  866   /*--------------------------
@@ -2294,14 +2271,14 @@ macCspTxRequestAckTimeoutCallback:
         MOV       A,R1
         CLR       C
         SUBB      A,?V0
-        JNC       ??macCspTxRequestAckTimeoutCallback_4
+        JNC       ??macCspTxRequestAckTimeoutCallback_2
 //  889   {
 //  890     /* a rollover has occurred, make sure it was accounted for */
 //  891     if (CSPX == rollovers)
         MOV       DPTR,#0x61e2
         MOVX      A,@DPTR
         XRL       A,R7
-        JNZ       ??macCspTxRequestAckTimeoutCallback_4
+        JNZ       ??macCspTxRequestAckTimeoutCallback_2
 //  892     {
 //  893       /*
 //  894        *  Rollover event missed, manually decrement CSPX to adjust.
@@ -2321,18 +2298,14 @@ macCspTxRequestAckTimeoutCallback:
 //  905     }
 //  906   }
 //  907 }
-??macCspTxRequestAckTimeoutCallback_4:
-        MOV       R7,#0x4
+??macCspTxRequestAckTimeoutCallback_2:
+        MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock25
+          CFI EndBlock cfiBlock13
         REQUIRE RFST
         REQUIRE _A_IEN0
         REQUIRE S1CON
         REQUIRE RFIRQF1
-        REQUIRE T2IRQF
-        REQUIRE T2MSEL
-        REQUIRE T2M0
-        REQUIRE T2M1
 //  908 
 //  909 
 //  910 /**************************************************************************************************
@@ -2349,7 +2322,7 @@ macCspTxRequestAckTimeoutCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  920 MAC_INTERNAL_API void macCspTxCancelAckTimeoutCallback(void)
 macCspTxCancelAckTimeoutCallback:
-          CFI Block cfiBlock26 Using cfiCommon0
+          CFI Block cfiBlock14 Using cfiCommon0
           CFI Function macCspTxCancelAckTimeoutCallback
         CODE
 //  921 {
@@ -2365,11 +2338,20 @@ macCspTxCancelAckTimeoutCallback:
         MOV       DPTR,#0x61a4
         MOVX      A,@DPTR
         CLR       0xE0 /* A   */.4
-        LJMP      ?Subroutine2 & 0xFFFF
-          CFI EndBlock cfiBlock26
-        REQUIRE RFST
+        MOVX      @DPTR,A
 //  923   CSP_STOP_AND_CLEAR_PROGRAM();
+        MOV       0xe1,#-0x1e
+        MOV       0xe1,#-0x1
 //  924 }
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock14
+        REQUIRE RFST
 //  925 
 //  926 
 //  927 /**************************************************************************************************
@@ -2390,7 +2372,7 @@ macCspTxCancelAckTimeoutCallback:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  941 MAC_INTERNAL_API void macCspTxIntIsr(void)
 macCspTxIntIsr:
-          CFI Block cfiBlock27 Using cfiCommon0
+          CFI Block cfiBlock15 Using cfiCommon0
           CFI Function macCspTxIntIsr
         CODE
 //  942 {
@@ -2424,8 +2406,14 @@ macCspTxIntIsr:
         ; Setup parameters for call to function macTxTimestampCallback
         LCALL     `??macTxTimestampCallback::?relay`; Banked call to: macTxTimestampCallback
 //  947 }
-        LJMP      ??Subroutine7_0 & 0xFFFF
-          CFI EndBlock cfiBlock27
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock15
 //  948 
 //  949 
 //  950 /**************************************************************************************************
@@ -2448,7 +2436,7 @@ macCspTxIntIsr:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  966 MAC_INTERNAL_API void macCspTxStopIsr(void)
 macCspTxStopIsr:
-          CFI Block cfiBlock28 Using cfiCommon0
+          CFI Block cfiBlock16 Using cfiCommon0
           CFI Function macCspTxStopIsr
         CODE
 //  967 {
@@ -2547,8 +2535,14 @@ macCspTxStopIsr:
 //  982   }
 //  983 }
 ??macCspTxStopIsr_1:
-        LJMP      ??Subroutine7_0 & 0xFFFF
-          CFI EndBlock cfiBlock28
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock16
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macCspTxReset::?relay`:
@@ -2556,6 +2550,20 @@ macCspTxStopIsr:
         LCALL   ?BDISPATCH
         DATA24
         DC24    macCspTxReset
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??cspWeventSetTriggerNow::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    cspWeventSetTriggerNow
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??cspWeventSetTriggerSymbols::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    cspWeventSetTriggerSymbols
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??cspReadCountSymbols::?relay`:
@@ -2696,13 +2704,13 @@ macCspTxStopIsr:
 // 1021 /**************************************************************************************************
 // 1022 */
 // 
-// 745 bytes in segment BANKED_CODE
-//  90 bytes in segment BANK_RELAYS
+// 912 bytes in segment BANKED_CODE
+// 102 bytes in segment BANK_RELAYS
 //  10 bytes in segment SFR_AN
 // 
-//  90 bytes of CODE     memory
+// 102 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 10 bytes shared)
-// 745 bytes of HUGECODE memory
+// 912 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

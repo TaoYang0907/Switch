@@ -1660,6 +1660,7 @@ static ZStatus_t zclGeneral_HdlInSpecificCommands( zclIncoming_t *pInMsg )
 #ifdef ZCL_ON_OFF
     case ZCL_CLUSTER_ID_GEN_ON_OFF:
       stat = zclGeneral_ProcessInOnOff( pInMsg, pCBs );
+      //stat = zclGeneral_ProcessInOnOffTest( pInMsg );
       break;
 #endif // ZCL_ON_OFF
 

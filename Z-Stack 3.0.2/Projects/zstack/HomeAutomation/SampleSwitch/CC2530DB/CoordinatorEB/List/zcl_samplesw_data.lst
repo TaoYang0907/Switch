@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               14/Jul/2020  01:19:58
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  23:42:23
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,14 +15,15 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_samplesw_data.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWEA0F.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWC789.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_samplesw_data.c"
-#        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xZTOOL_P1
-#        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
-#        xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
-#        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
-#        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_GROUPS -D
-#        ZCL_REPORTING_DEVICE -lC "D:\AA\Z-Stack
+#        -D BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
+#        xNV_RESTORE -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
+#        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
+#        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
+#        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
+#        -D ZCL_GROUPS -D ZCL_REPORT -D ZCL_REPORTING_DEVICE -D
+#        ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\CoordinatorEB\List"
@@ -597,83 +598,87 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_sampl
    \   000000   0000         DW 0
    \   000002   0300         DW 3
    \   000004   0700         DW 7
+   \   000006   0600         DW 6
     289          {
     290            ZCL_CLUSTER_ID_GEN_BASIC,
     291            ZCL_CLUSTER_ID_GEN_IDENTIFY,
-    292            ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG
-    293          };
-    294          
-    295          #define ZCLSAMPLESW_MAX_INCLUSTERS    ( sizeof( zclSampleSw_InClusterList ) / sizeof( zclSampleSw_InClusterList[0] ))
-    296          
+    292            ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+    293            ZCL_CLUSTER_ID_GEN_ON_OFF
+    294          };
+    295          
+    296          #define ZCLSAMPLESW_MAX_INCLUSTERS    ( sizeof( zclSampleSw_InClusterList ) / sizeof( zclSampleSw_InClusterList[0] ))
+    297          
 
    \                                 In  segment XDATA_ROM_C, align 1
-    297          const cId_t zclSampleSw_OutClusterList[] =
+    298          const cId_t zclSampleSw_OutClusterList[] =
    \                     zclSampleSw_OutClusterList:
    \   000000   0300         DW 3
    \   000002   0600         DW 6
    \   000004   0400         DW 4
-    298          {
-    299            ZCL_CLUSTER_ID_GEN_IDENTIFY,
-    300            ZCL_CLUSTER_ID_GEN_ON_OFF,
-    301            ZCL_CLUSTER_ID_GEN_GROUPS,
-    302          };
-    303          
-    304          #define ZCLSAMPLESW_MAX_OUTCLUSTERS   ( sizeof( zclSampleSw_OutClusterList ) / sizeof( zclSampleSw_OutClusterList[0] ))
+   \   000006   0700         DW 7
+    299          {
+    300            ZCL_CLUSTER_ID_GEN_IDENTIFY,
+    301            ZCL_CLUSTER_ID_GEN_ON_OFF,
+    302            ZCL_CLUSTER_ID_GEN_GROUPS,
+    303            ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG
+    304          };
     305          
+    306          #define ZCLSAMPLESW_MAX_OUTCLUSTERS   ( sizeof( zclSampleSw_OutClusterList ) / sizeof( zclSampleSw_OutClusterList[0] ))
+    307          
 
    \                                 In  segment XDATA_I, align 1, keep-with-next
-    306          SimpleDescriptionFormat_t zclSampleSw_SimpleDesc =
+    308          SimpleDescriptionFormat_t zclSampleSw_SimpleDesc =
    \                     zclSampleSw_SimpleDesc:
    \   000000                DS 12
    \   00000C                REQUIRE `?<Initializer for zclSampleSw_SimpleDesc>`
    \   00000C                REQUIRE __INIT_XDATA_I
-    307          {
-    308            SAMPLESW_ENDPOINT,                  //  int Endpoint;
-    309            ZCL_HA_PROFILE_ID,                  //  uint16 AppProfId[2];
-    310            ZCL_HA_DEVICEID_ON_OFF_LIGHT_SWITCH,//  uint16 AppDeviceId[2];
-    311            SAMPLESW_DEVICE_VERSION,            //  int   AppDevVer:4;
-    312            SAMPLESW_FLAGS,                     //  int   AppFlags:4;
-    313            ZCLSAMPLESW_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
-    314            (cId_t *)zclSampleSw_InClusterList, //  byte *pAppInClusterList;
-    315            ZCLSAMPLESW_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
-    316            (cId_t *)zclSampleSw_OutClusterList //  byte *pAppInClusterList;
-    317          };
-    318          
-    319          /*********************************************************************
-    320           * GLOBAL FUNCTIONS
-    321           */
-    322          
-    323          /*********************************************************************
-    324           * LOCAL FUNCTIONS
-    325           */
-    326          
-    327          /*********************************************************************
-    328           * @fn      zclSampleLight_ResetAttributesToDefaultValues
-    329           *
-    330           * @brief   Reset all writable attributes to their default values.
+    309          {
+    310            SW1_ENDPOINT,                  //  int Endpoint;
+    311            ZCL_HA_PROFILE_ID,                  //  uint16 AppProfId[2];
+    312            ZCL_HA_DEVICEID_ON_OFF_LIGHT_SWITCH,//  uint16 AppDeviceId[2];
+    313            SAMPLESW_DEVICE_VERSION,            //  int   AppDevVer:4;
+    314            SAMPLESW_FLAGS,                     //  int   AppFlags:4;
+    315            ZCLSAMPLESW_MAX_INCLUSTERS,         //  byte  AppNumInClusters;
+    316            (cId_t *)zclSampleSw_InClusterList, //  byte *pAppInClusterList;
+    317            ZCLSAMPLESW_MAX_OUTCLUSTERS,        //  byte  AppNumInClusters;
+    318            (cId_t *)zclSampleSw_OutClusterList //  byte *pAppInClusterList;
+    319          };
+    320          
+    321          /*********************************************************************
+    322           * GLOBAL FUNCTIONS
+    323           */
+    324          
+    325          /*********************************************************************
+    326           * LOCAL FUNCTIONS
+    327           */
+    328          
+    329          /*********************************************************************
+    330           * @fn      zclSampleLight_ResetAttributesToDefaultValues
     331           *
-    332           * @param   none
+    332           * @brief   Reset all writable attributes to their default values.
     333           *
-    334           * @return  none
-    335           */
+    334           * @param   none
+    335           *
+    336           * @return  none
+    337           */
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
-    336          void zclSampleSw_ResetAttributesToDefaultValues(void)
+    338          void zclSampleSw_ResetAttributesToDefaultValues(void)
    \                     zclSampleSw_ResetAttributesToDefaultValues:
-    337          {
+    339          {
    \   000000   C082         PUSH      DPL
    \   000002   C083         PUSH      DPH
    \   000004                ; Saved register size: 2
    \   000004                ; Auto size: 0
-    338            int i;
-    339            
-    340            zclSampleSw_LocationDescription[0] = 16;
+    340            int i;
+    341            
+    342            zclSampleSw_LocationDescription[0] = 16;
    \   000004   90....       MOV       DPTR,#zclSampleSw_LocationDescription
    \   000007   7410         MOV       A,#0x10
    \   000009   F0           MOVX      @DPTR,A
-    341            for (i = 1; i <= 16; i++)
-    342            {
-    343              zclSampleSw_LocationDescription[i] = ' ';
+    343            for (i = 1; i <= 16; i++)
+    344            {
+    345              zclSampleSw_LocationDescription[i] = ' ';
    \   00000A   7420         MOV       A,#0x20
    \   00000C   A3           INC       DPTR
    \   00000D   7810         MOV       R0,#0x10
@@ -681,29 +686,29 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_sampl
    \   00000F   F0           MOVX      @DPTR,A
    \   000010   A3           INC       DPTR
    \   000011   D8FC         DJNZ      R0,??zclSampleSw_ResetAttributesToDefaultValues_0
-    344            }
-    345            
-    346            zclSampleSw_PhysicalEnvironment = DEFAULT_PHYSICAL_ENVIRONMENT;
+    346            }
+    347            
+    348            zclSampleSw_PhysicalEnvironment = DEFAULT_PHYSICAL_ENVIRONMENT;
    \   000013   90....       MOV       DPTR,#zclSampleSw_PhysicalEnvironment
    \   000016   E4           CLR       A
    \   000017   F0           MOVX      @DPTR,A
-    347            zclSampleSw_DeviceEnable = DEFAULT_DEVICE_ENABLE_STATE;
+    349            zclSampleSw_DeviceEnable = DEFAULT_DEVICE_ENABLE_STATE;
    \   000018   90....       MOV       DPTR,#zclSampleSw_DeviceEnable
    \   00001B   04           INC       A
    \   00001C   F0           MOVX      @DPTR,A
-    348            
-    349            zclSampleSw_IdentifyTime = DEFAULT_IDENTIFY_TIME;
+    350            
+    351            zclSampleSw_IdentifyTime = DEFAULT_IDENTIFY_TIME;
    \   00001D   90....       MOV       DPTR,#zclSampleSw_IdentifyTime
    \   000020   E4           CLR       A
    \   000021   F0           MOVX      @DPTR,A
    \   000022   A3           INC       DPTR
    \   000023   F0           MOVX      @DPTR,A
-    350            
-    351            zclSampleSw_OnOffSwitchActions = ON_OFF_SWITCH_ACTIONS_TOGGLE; //note that the default specified by the zcl spec is ON_OFF_SWITCH_ACTIONS_ON, but for backward compatibility with TI's legacy sample-switch, we use here ON_OFF_SWITCH_ACTIONS_TOGGLE
+    352            
+    353            zclSampleSw_OnOffSwitchActions = ON_OFF_SWITCH_ACTIONS_TOGGLE; //note that the default specified by the zcl spec is ON_OFF_SWITCH_ACTIONS_ON, but for backward compatibility with TI's legacy sample-switch, we use here ON_OFF_SWITCH_ACTIONS_TOGGLE
    \   000024   90....       MOV       DPTR,#zclSampleSw_OnOffSwitchActions
    \   000027   7402         MOV       A,#0x2
    \   000029   F0           MOVX      @DPTR,A
-    352          }
+    354          }
    \   00002A   D083         POP       DPH
    \   00002C   D082         POP       DPL
    \   00002E   02....       LJMP      ?BRET
@@ -718,15 +723,15 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_sampl
    \   000001   0401         DW 260
    \   000003   0301         DW 259
    \   000005   01           DB 1
-   \   000006   03           DB 3
+   \   000006   04           DB 4
    \   000007   ....         DW zclSampleSw_InClusterList
-   \   000009   03           DB 3
+   \   000009   04           DB 4
    \   00000A   ....         DW zclSampleSw_OutClusterList
-    353          
-    354          /****************************************************************************
-    355          ****************************************************************************/
-    356          
-    357          
+    355          
+    356          /****************************************************************************
+    357          ****************************************************************************/
+    358          
+    359          
 
    Maximum stack usage in bytes:
 
@@ -746,12 +751,12 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_sampl
        1  zclSampleSw_DeviceEnable
        1  zclSampleSw_HWRevision
        2  zclSampleSw_IdentifyTime
-       6  zclSampleSw_InClusterList
+       8  zclSampleSw_InClusterList
       17  zclSampleSw_LocationDescription
       17  zclSampleSw_ManufacturerName
       17  zclSampleSw_ModelId
        1  zclSampleSw_NumAttributes
-       6  zclSampleSw_OutClusterList
+       8  zclSampleSw_OutClusterList
        1  zclSampleSw_PhysicalEnvironment
        1  zclSampleSw_PowerSource
       49  zclSampleSw_ResetAttributesToDefaultValues
@@ -766,11 +771,11 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\zcl_sampl
  137 bytes in segment CODE_C
   13 bytes in segment XDATA_I
   13 bytes in segment XDATA_ID
-  68 bytes in segment XDATA_ROM_C
+  72 bytes in segment XDATA_ROM_C
   20 bytes in segment XDATA_Z
  
  156 bytes of CODE     memory
-  68 bytes of CONST    memory
+  72 bytes of CONST    memory
   49 bytes of HUGECODE memory
   33 bytes of XDATA    memory
 

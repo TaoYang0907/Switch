@@ -169,14 +169,14 @@
 #else
 #if !defined HAL_UART_DMA_RX_MAX
 //#define HAL_UART_DMA_RX_MAX        256
-#define HAL_UART_DMA_RX_MAX        20
+#define HAL_UART_DMA_RX_MAX        16
 #endif
 #if !defined HAL_UART_DMA_TX_MAX
 #define HAL_UART_DMA_TX_MAX        HAL_UART_DMA_RX_MAX
 #endif
 #if !defined HAL_UART_DMA_HIGH
 //#define HAL_UART_DMA_HIGH         (HAL_UART_DMA_RX_MAX / 2 - 16)
-#define HAL_UART_DMA_HIGH         (HAL_UART_DMA_RX_MAX / 2 - 8)
+#define HAL_UART_DMA_HIGH         (HAL_UART_DMA_RX_MAX / 2 -6)
 #endif
 #if !defined HAL_UART_DMA_IDLE
 #define HAL_UART_DMA_IDLE         (1 * HAL_UART_MSECS_TO_TICKS)
@@ -184,7 +184,7 @@
 #endif
 #if !defined HAL_UART_DMA_FULL
 //#define HAL_UART_DMA_FULL         (HAL_UART_DMA_RX_MAX - 16)
-#define HAL_UART_DMA_FULL         (HAL_UART_DMA_RX_MAX - 8)
+#define HAL_UART_DMA_FULL         (HAL_UART_DMA_RX_MAX - 6)
 #endif
 
 #if defined HAL_BOARD_CC2430EB || defined HAL_BOARD_CC2430DB || defined HAL_BOARD_CC2430BB

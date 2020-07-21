@@ -87,6 +87,10 @@
 #include "hal_led.h"
 #include "hal_key.h"
 
+/* UART */
+#include "uart0.h"
+#include "user_printf.h"
+
 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
 #include "zcl_ota.h"
 #include "hal_ota.h"
@@ -125,16 +129,10 @@ uint8 zclSampleSw_OnOffSwitchActions;
  * LOCAL VARIABLES
  */
 afAddrType_t zclSampleSw_DstAddr;
+afAddrType_t SW_DstAddr;
 
+uint16 SourceAddr;
 // Endpoint to allow SYS_APP_MSGs
-static endPointDesc_t sampleSw_TestEp =
-{
-  SAMPLESW_ENDPOINT,                  // endpoint
-  0,
-  &zclSampleSw_TaskID,
-  (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
-  (afNetworkLatencyReq_t)0            // No Network Latency req
-};
 
 //static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
 
@@ -148,7 +146,9 @@ devStates_t zclSampleSw_NwkState = DEV_INIT;
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
-static void Send_Test( void );
+static void Send_To_SW1( void );
+static void Send_To_SW2( void );
+static void Send_To_SW3( void );
 
 static void zclSampleSw_HandleKeys( byte shift, byte keys );
 static void zclSampleSw_BasicResetCB( void );
@@ -157,6 +157,8 @@ static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bd
 
 
 // Functions to process ZCL Foundation incoming Command/Response messages
+static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg );
+
 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *msg );
 #ifdef ZCL_READ
 static uint8 zclSampleSw_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
@@ -243,17 +245,23 @@ void zclSampleSw_Init( byte task_id )
   zclSampleSw_DstAddr.endPoint = 0;
   zclSampleSw_DstAddr.addr.shortAddr = 0;
 
+  //Initialize the Uart0
+  Uart0_Init(HAL_UART_BR_115200);
+
+  // Register the Uart0
+  RegisterForUart0( zclSampleSw_TaskID );
+
   // Register the Simple Descriptor for this application
   bdb_RegisterSimpleDescriptor( &zclSampleSw_SimpleDesc );
 
   // Register the ZCL General Cluster Library callback functions
-  zclGeneral_RegisterCmdCallbacks( SAMPLESW_ENDPOINT, &zclSampleSw_CmdCallbacks );
+  zclGeneral_RegisterCmdCallbacks( SW1_ENDPOINT, &zclSampleSw_CmdCallbacks );
 
   zclSampleSw_ResetAttributesToDefaultValues();
   
   // Register the application's attribute list
-  zcl_registerAttrList( SAMPLESW_ENDPOINT, zclSampleSw_NumAttributes, zclSampleSw_Attrs );
-
+  zcl_registerAttrList( SW1_ENDPOINT, zclSampleSw_NumAttributes, zclSampleSw_Attrs );
+  
   // Register the Application to receive the unprocessed Foundation command/response messages
   zcl_registerForMsg( zclSampleSw_TaskID );
   
@@ -264,9 +272,6 @@ void zclSampleSw_Init( byte task_id )
   RegisterForKeys( zclSampleSw_TaskID );
   
   bdb_RegisterCommissioningStatusCB( zclSampleSw_ProcessCommissioningStatus );
-
-  // Register for a test endpoint
-  afRegister( &sampleSw_TestEp );
   
 #ifdef ZCL_DIAGNOSTIC
   // Register the application's callback function to read/write attribute data.
@@ -286,6 +291,7 @@ void zclSampleSw_Init( byte task_id )
 
   zdpExternalStateTaskID = zclSampleSw_TaskID;
 
+  printf("init successful\r\n");
 }
 
 /*********************************************************************
@@ -306,13 +312,13 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
   if( events & SAMPLESW_TOGGLE_TEST_EVT )
   {
     osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
-    zclGeneral_SendOnOff_CmdToggle( SAMPLESW_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
+    zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
     
     // return unprocessed events
     return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
   }
   
-  
+
   if ( events & SYS_EVENT_MSG )
   {
     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleSw_TaskID )) )
@@ -394,9 +400,9 @@ static void zclSampleSw_HandleKeys( byte shift, byte keys )
   }    
   if ( keys & HAL_KEY_SW_5 ) //key2
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
-    //zclGeneral_SendOnOff_CmdToggle( SAMPLESW_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
-    Send_Test();
+    Send_To_SW1();
+    HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
+    Send_To_SW2();
   }
 }
 
@@ -561,7 +567,7 @@ static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
       break;
 
     case ZCL_CMD_REPORT:
-      //zclSampleSw_ProcessInReportCmd( pInMsg );
+      zclSampleSw_ProcessInReportCmd( pInMsg );
       break;
 #endif
     case ZCL_CMD_DEFAULT_RSP:
@@ -786,27 +792,50 @@ static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg )
 
 /****************************************************************************
 ****************************************************************************/
-static void Send_Test( void )
+static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
 {
-  zclReportCmd_t *pReportCmd;
+//  HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
   
-  pReportCmd = osal_mem_alloc( sizeof(zclReportCmd_t) + sizeof(zclReport_t) );
+  zclReportCmd_t *pInTempSensorReport;
+
+  uint8 On_Off_State;
+  uint16 Dev_Nwk_ID;
+  uint8 End_Point;
   
-  if ( pReportCmd != NULL )
-  {
-    pReportCmd->numAttr = 1;
-    pReportCmd->attrList[0].attrID = ATTRID_CLUSTER_REVISION;
-    pReportCmd->attrList[0].dataType = ZCL_DATATYPE_UINT16;
-    pReportCmd->attrList[0].attrData = (void *)(&zclSampleSw_clusterRevision_all);
-    zcl_SendReportCmd(SAMPLESW_ENDPOINT, 
-                      &zclSampleSw_DstAddr,
-                      ZCL_CLUSTER_ID_GEN_ON_OFF,
-                      pReportCmd, ZCL_FRAME_SERVER_CLIENT_DIR, TRUE, zclSampleSwSeqNum++);
-  }
+  Dev_Nwk_ID = pInMsg->srcAddr.addr.shortAddr;
+  End_Point = pInMsg->srcAddr.endPoint;
+  SourceAddr = Dev_Nwk_ID;
+    
+  pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
+  
+  On_Off_State = pInTempSensorReport->attrList[0].attrData[0];
+//  zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[1], pInTempSensorReport->attrList[0].attrData[2]);
 
-  osal_mem_free( pReportCmd );  
-
+  printf( "0x%04X", Dev_Nwk_ID );
+  printf( " %d", End_Point);
+  printf( " %d\n", On_Off_State );
 }
 
+static void Send_To_SW1( void )
+{
+  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  SW_DstAddr.endPoint = SW1_ENDPOINT;
+  SW_DstAddr.addr.shortAddr = SourceAddr; 
+  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+}
 
+static void Send_To_SW2( void )
+{
+  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  SW_DstAddr.endPoint = SW2_ENDPOINT;
+  SW_DstAddr.addr.shortAddr = SourceAddr; 
+  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+}
 
+static void Send_To_SW3( void )
+{
+  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+  SW_DstAddr.endPoint = SW3_ENDPOINT;
+  SW_DstAddr.addr.shortAddr = SourceAddr; 
+  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+}

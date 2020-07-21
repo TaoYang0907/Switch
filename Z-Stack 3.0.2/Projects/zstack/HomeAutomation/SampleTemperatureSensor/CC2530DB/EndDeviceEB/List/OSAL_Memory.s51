@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:28
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:50
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWE018.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW82D6.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\osal\common\OSAL_Memory.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -714,7 +716,10 @@ osal_mem_kick:
         LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
 //  289   HAL_ENTER_CRITICAL_SECTION(intState);  // Hold off interrupts.
 ??osal_mem_kick_0:
-        MOV       ?V0,0xa8+0x0
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       ?V0,A
         CLR       0xa8.7
 //  290 
 //  291   /* All long-lived allocations have filled the LL block reserved in the small-block bucket.
@@ -748,7 +753,7 @@ osal_mem_kick:
 //  298 
 //  299   HAL_EXIT_CRITICAL_SECTION(intState);  // Re-enable interrupts.
         MOV       A,?V0
-        MOV       C,0xE0 /* A   */.7
+        MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  300 }
         MOV       R7,#0x2
@@ -893,15 +898,14 @@ osal_mem_alloc:
 //  361     {
 //  362       coal = 0;
         MOV       R6,#0x0
-        LJMP      ??osal_mem_alloc_4 & 0xFFFF
+        SJMP      ??osal_mem_alloc_4
 //  363     }
 //  364     else
 //  365     {
 //  366       if ( coal != 0 )
 ??osal_mem_alloc_3:
         MOV       A,R6
-        MOV       C,0xE0 /* A   */.0
-        JNC       ??osal_mem_alloc_5
+        JZ        ??osal_mem_alloc_5
 //  367       {
 //  368 #if ( OSALMEM_METRICS )
 //  369         blkCnt--;
@@ -952,25 +956,69 @@ osal_mem_alloc:
         MOV       A,R5
         MOV       R1,A
 //  378           break;
+        SJMP      ??osal_mem_alloc_6
 //  379         }
 //  380       }
 //  381       else
 //  382       {
 //  383         if ( hdr->hdr.len >= size )
+??osal_mem_alloc_5:
+        MOV       A,?V1
+        ANL       A,#0x7f
+        MOV       R5,A
+        CLR       C
+        MOV       A,?V0
+        SUBB      A,R2
+        MOV       A,R5
+        SUBB      A,R3
+        JNC       ??osal_mem_alloc_6
 //  384         {
 //  385           break;
 //  386         }
 //  387 
 //  388         coal = 1;
+        MOV       R6,#0x1
 //  389         prev = hdr;
+        MOV       A,R0
+        MOV       R4,A
+        MOV       A,R1
+        MOV       R5,A
 //  390       }
 //  391     }
 //  392 
 //  393     hdr = (osalMemHdr_t *)((uint8 *)hdr + hdr->hdr.len);
+??osal_mem_alloc_4:
+        MOV       DPL,R0
+        MOV       DPH,R1
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        ANL       A,#0x7f
+        MOV       ?V1,A
+        MOV       A,R0
+        ADD       A,?V0
+        MOV       R0,A
+        MOV       A,R1
+        ADDC      A,?V1
+        MOV       R1,A
 //  394 
 //  395     if ( hdr->val == 0 )
+        MOV       DPL,R0
+        MOV       DPH,A
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V1,A
+        MOV       A,?V0
+        ORL       A,?V1
+        JZ        $+5
+        LJMP      ??osal_mem_alloc_2 & 0xFFFF
 //  396     {
 //  397       hdr = NULL;
+        MOV       R0,#0x0
+        MOV       R1,#0x0
 //  398       break;
 //  399     }
 //  400   } while (1);
@@ -979,8 +1027,7 @@ osal_mem_alloc:
 ??osal_mem_alloc_6:
         MOV       A,R0
         ORL       A,R1
-        JNZ       $+5
-        LJMP      ??osal_mem_alloc_7 & 0xFFFF
+        JZ        ??osal_mem_alloc_7
 //  403   {
 //  404     uint16 tmp = hdr->hdr.len - size;
         MOV       DPL,R0
@@ -1043,50 +1090,6 @@ osal_mem_alloc:
 //  420       memAlo += size;
 //  421 #endif
 //  422     }
-??osal_mem_alloc_5:
-        MOV       A,?V1
-        ANL       A,#0x7f
-        MOV       R5,A
-        CLR       C
-        MOV       A,?V0
-        SUBB      A,R2
-        MOV       A,R5
-        SUBB      A,R3
-        JNC       ??osal_mem_alloc_6
-        MOV       R6,#0x1
-        MOV       A,R0
-        MOV       R4,A
-        MOV       A,R1
-        MOV       R5,A
-??osal_mem_alloc_4:
-        MOV       DPL,R0
-        MOV       DPH,R1
-        MOVX      A,@DPTR
-        MOV       ?V0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        ANL       A,#0x7f
-        MOV       ?V1,A
-        MOV       A,R0
-        ADD       A,?V0
-        MOV       R0,A
-        MOV       A,R1
-        ADDC      A,?V1
-        MOV       R1,A
-        MOV       DPL,R0
-        MOV       DPH,A
-        MOVX      A,@DPTR
-        MOV       ?V0,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       ?V1,A
-        MOV       A,?V0
-        ORL       A,?V1
-        JZ        $+5
-        LJMP      ??osal_mem_alloc_2 & 0xFFFF
-        MOV       R0,#0x0
-        MOV       R1,#0x0
-        SJMP      ??osal_mem_alloc_7
 //  423     else
 //  424     {
 //  425 #if ( OSALMEM_METRICS )
@@ -1510,14 +1513,14 @@ osal_mem_free:
 //  641 /**************************************************************************************************
 //  642 */
 // 
-//   566 bytes in segment BANKED_CODE
+//   563 bytes in segment BANKED_CODE
 //    24 bytes in segment BANK_RELAYS
 //     1 byte  in segment SFR_AN
 // 2 051 bytes in segment XDATA_Z
 // 
 //    24 bytes of CODE     memory
 //     0 bytes of DATA     memory (+ 1 byte shared)
-//   566 bytes of HUGECODE memory
+//   563 bytes of HUGECODE memory
 // 2 051 bytes of XDATA    memory
 //
 //Errors: none

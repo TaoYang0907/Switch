@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:56:04
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:10
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,14 +13,15 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZDiags.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW103A.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW98FD.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\sys\ZDiags.c" -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -278,11 +280,6 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZDiags.c
     153          #endif // FEATURE_SYSTEM_STATS
     154          
     155            return ( retValue );
-   \   000000                REQUIRE ?Subroutine0
-   \   000000                ; // Fall through to label ?Subroutine0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
    \   000000   7A00         MOV       R2,#0x0
    \   000002   7B00         MOV       R3,#0x0
    \   000004   7C00         MOV       R4,#0x0
@@ -609,7 +606,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZDiags.c
     463          #endif // FEATURE_SYSTEM_STATS
     464          
     465            return ( diagsValue );
-   \   000000   80..         SJMP      ?Subroutine0
+   \   000000   7A00         MOV       R2,#0x0
+   \   000002   7B00         MOV       R3,#0x0
+   \   000004   7C00         MOV       R4,#0x0
+   \   000006   7D00         MOV       R5,#0x0
+   \   000008   02....       LJMP      ?BRET
     466          }
     467          
     468          /****************************************************************************
@@ -735,7 +736,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZDiags.c
     568          
     569            // returns the System Time
     570            return ( sysClock );
-   \   000000   80..         SJMP      ?Subroutine0
+   \   000000   7A00         MOV       R2,#0x0
+   \   000002   7B00         MOV       R3,#0x0
+   \   000004   7C00         MOV       R4,#0x0
+   \   000006   7D00         MOV       R5,#0x0
+   \   000008   02....       LJMP      ?BRET
     571          }
     572          
     573          /****************************************************************************
@@ -758,22 +763,21 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZDiags.c
 
    Bytes  Function/Label
    -----  --------------
-      11  ?Subroutine0
-       0  ZDiagsClearStats
-       2  ZDiagsGetStatsAttr
+      11  ZDiagsClearStats
+      11  ZDiagsGetStatsAttr
        7  ZDiagsGetStatsTable
        5  ZDiagsInitStats
        5  ZDiagsRestoreStatsFromNV
-       2  ZDiagsSaveStatsToNV
+      11  ZDiagsSaveStatsToNV
        3  ZDiagsUpdateStats
       42  -- Other
 
  
- 35 bytes in segment BANKED_CODE
+ 53 bytes in segment BANKED_CODE
  42 bytes in segment BANK_RELAYS
  
  42 bytes of CODE     memory
- 35 bytes of HUGECODE memory
+ 53 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

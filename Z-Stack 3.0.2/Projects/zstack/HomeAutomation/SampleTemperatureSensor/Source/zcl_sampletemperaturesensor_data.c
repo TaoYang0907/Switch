@@ -95,6 +95,8 @@ uint8 zclSampleTemperatureSensor_LocationDescription[17];
 uint8 zclSampleTemperatureSensor_PhysicalEnvironment;
 uint8 zclSampleTemperatureSensor_DeviceEnable;
 
+uint8  zclSampleLight_OnOff;
+
 // Identify Cluster
 uint16 zclSampleTemperatureSensor_IdentifyTime;
 
@@ -103,6 +105,8 @@ int16 zclSampleTemperatureSensor_MeasuredValue;
 const int16 zclSampleTemperatureSensor_MinMeasuredValue = SAMPLETEMPERATURESENSOR_MIN_MEASURED_VALUE; 
 const uint16 zclSampleTemperatureSensor_MaxMeasuredValue = SAMPLETEMPERATURESENSOR_MAX_MEASURED_VALUE;
 
+//TEST
+uint8 Sw_Test[4];
 /*********************************************************************
  * ATTRIBUTE DEFINITIONS - Uses REAL cluster IDs
  */
@@ -261,6 +265,26 @@ CONST zclAttrRec_t zclSampleTemperatureSensor_Attrs[] =
       (void *)&zclSampleTemperatureSensor_clusterRevision_all
     }
   },
+  //test
+  {
+    //ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+    ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+    {  // 
+      TEST,
+      ZCL_DATATYPE_UINT32,
+      ACCESS_CONTROL_READ | ACCESS_REPORTABLE,
+      (void *)&Sw_Test
+    }
+  },
+  {
+    ZCL_CLUSTER_ID_GEN_ON_OFF,
+    { // Attribute record
+      ATTRID_ON_OFF,
+      ZCL_DATATYPE_BOOLEAN,
+      ACCESS_CONTROL_READ | ACCESS_REPORTABLE,
+      (void *)&zclSampleLight_OnOff
+    }
+  },
 };
 
 uint8 CONST zclSampleTemperatureSensor_NumAttributes = ( sizeof(zclSampleTemperatureSensor_Attrs) / sizeof(zclSampleTemperatureSensor_Attrs[0]) );
@@ -270,18 +294,23 @@ uint8 CONST zclSampleTemperatureSensor_NumAttributes = ( sizeof(zclSampleTempera
  */
 // This is the Cluster ID List and should be filled with Application
 // specific cluster IDs.
-#define ZCLSAMPLETEMPERATURESENSOR_MAX_INCLUSTERS       3
+#define ZCLSAMPLETEMPERATURESENSOR_MAX_INCLUSTERS       5
 const cId_t zclSampleTemperatureSensor_InClusterList[ZCLSAMPLETEMPERATURESENSOR_MAX_INCLUSTERS] =
 {
   ZCL_CLUSTER_ID_GEN_BASIC,
   ZCL_CLUSTER_ID_GEN_IDENTIFY,
-  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT
+  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
-#define ZCLSAMPLETEMPERATURESENSOR_MAX_OUTCLUSTERS       1
+#define ZCLSAMPLETEMPERATURESENSOR_MAX_OUTCLUSTERS       4
 const cId_t zclSampleTemperatureSensor_OutClusterList[ZCLSAMPLETEMPERATURESENSOR_MAX_OUTCLUSTERS] =
 {
-  ZCL_CLUSTER_ID_GEN_IDENTIFY
+  ZCL_CLUSTER_ID_GEN_IDENTIFY,
+  ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT,
+  ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG,
+  ZCL_CLUSTER_ID_GEN_ON_OFF
 };
 
 SimpleDescriptionFormat_t zclSampleTemperatureSensor_SimpleDesc =
@@ -332,7 +361,12 @@ void zclSampleTemperatureSensor_ResetAttributesToDefaultValues(void)
 #endif
   
   zclSampleTemperatureSensor_MeasuredValue = SAMPLETEMPERATURESENSOR_MEASURED_VALUE;
-  
+  Sw_Test[0] = 10;
+  Sw_Test[1] = 0;
+  Sw_Test[2] = 15;
+  Sw_Test[3] = 20;
+ // Sw_Test[2] = 0;
+  zclSampleLight_OnOff = 0;
 }
 
 /****************************************************************************

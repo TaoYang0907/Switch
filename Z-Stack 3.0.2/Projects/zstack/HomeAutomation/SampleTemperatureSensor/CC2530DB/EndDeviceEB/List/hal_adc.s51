@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:18
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:39
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_adc.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWB90F.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW58E9.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_adc.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -442,9 +444,7 @@ HalAdcInit:
 //  119   adcRef = HAL_ADC_REF_VOLT;
         MOV       DPTR,#adcRef
         MOV       A,#-0x80
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
+        MOVX      @DPTR,A
 //  120 #ifdef ADC_CAL
 //  121   {
 //  122     vdd3InfoPg = ((INFO_CAL_H << 8) | INFO_CAL_L) >> 4;
@@ -453,23 +453,14 @@ HalAdcInit:
 //  125 #endif //ADC_CAL
 //  126 #endif
 //  127 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOVX      @DPTR,A
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock1
+          CFI EndBlock cfiBlock0
 //  128 
 //  129 #ifdef ADC_CAL
 //  130 /**************************************************************************************************
@@ -533,7 +524,7 @@ HalAdcInit:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  187 uint16 HalAdcRead (uint8 channel, uint8 resolution)
 HalAdcRead:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function HalAdcRead
         CODE
 //  188 {
@@ -668,9 +659,9 @@ HalAdcRead:
 //  240 
 //  241   /* Read the result */
 //  242   reading = (int16) (ADCL);
-        MOV       A,0xba+0x0
-//  243   reading |= (int16) (ADCH << 8);
+        MOV       A,0xba
         MOV       R2,A
+//  243   reading |= (int16) (ADCH << 8);
         MOV       R1,0xbb
         MOV       A,R1
         MOV       R3,A
@@ -747,7 +738,7 @@ HalAdcRead:
 //  273   return ((uint16)reading);
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock2
+          CFI EndBlock cfiBlock1
         REQUIRE ADCCFG
         REQUIRE ADCCON3
         REQUIRE ADCCON1
@@ -769,7 +760,7 @@ HalAdcRead:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  286 void HalAdcSetReference ( uint8 reference )
 HalAdcSetReference:
-          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function HalAdcSetReference
         CODE
 //  287 {
@@ -785,10 +776,17 @@ HalAdcSetReference:
 //  289   adcRef = reference;
         MOV       A,R1
         MOV       DPTR,#adcRef
-        LJMP      ?Subroutine0 & 0xFFFF
+        MOVX      @DPTR,A
 //  290 #endif
 //  291 }
-          CFI EndBlock cfiBlock3
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
 //  292 
 //  293 /*********************************************************************
 //  294  * @fn      HalAdcCheckVdd
@@ -805,7 +803,7 @@ HalAdcSetReference:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  304 bool HalAdcCheckVdd(uint8 vdd)
 HalAdcCheckVdd:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function HalAdcCheckVdd
         CODE
 //  305 {
@@ -838,7 +836,7 @@ HalAdcCheckVdd:
         MOV       R1,#0x0
 ??HalAdcCheckVdd_2:
         LJMP      ?BRET
-          CFI EndBlock cfiBlock4
+          CFI EndBlock cfiBlock3
         REQUIRE ADCCON3
         REQUIRE ADCCON1
         REQUIRE ADCH
@@ -859,7 +857,7 @@ HalAdcCheckVdd:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  331 uint8 HalAdcCheckVddRaw( void )
 HalAdcCheckVddRaw:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function HalAdcCheckVddRaw
         CODE
 //  332 {
@@ -885,7 +883,7 @@ HalAdcCheckVddRaw:
         MOV       A,0xbb
         MOV       R1,A
         LJMP      ?BRET
-          CFI EndBlock cfiBlock5
+          CFI EndBlock cfiBlock4
         REQUIRE ADCCON3
         REQUIRE ADCCON1
         REQUIRE ADCH
@@ -932,14 +930,14 @@ HalAdcCheckVddRaw:
 //  348 /**************************************************************************************************
 //  349 **************************************************************************************************/
 // 
-// 225 bytes in segment BANKED_CODE
+// 230 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 //   5 bytes in segment SFR_AN
 //   1 byte  in segment XDATA_Z
 // 
 //  30 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 5 bytes shared)
-// 225 bytes of HUGECODE memory
+// 230 bytes of HUGECODE memory
 //   1 byte  of XDATA    memory
 //
 //Errors: none

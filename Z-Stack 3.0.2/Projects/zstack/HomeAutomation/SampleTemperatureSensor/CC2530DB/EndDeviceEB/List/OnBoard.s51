@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:27
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  17:08:05
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWDC7B.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW8528.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -134,8 +136,6 @@
         EXTERN ?V3
         EXTERN ?V4
         EXTERN ?V5
-        EXTERN ?V6
-        EXTERN ?V7
         EXTERN ?ALLOC_XSTACK8
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
@@ -154,6 +154,7 @@
         FUNCTION `??BigLight_On::?relay`,0203H
         PUBLIC `??BuzzerControl::?relay`
         FUNCTION `??BuzzerControl::?relay`,0203H
+        FUNCTION `??ChkReset::?relay`,0203H
         PUBLIC `??Dimmer::?relay`
         FUNCTION `??Dimmer::?relay`,0203H
         PUBLIC `??GetUserDipSw::?relay`
@@ -187,6 +188,11 @@
         PUBLIC BuzzerControl
         FUNCTION BuzzerControl,0203H
         ARGFRAME XSTACK, 0, STACK
+        FUNCTION ChkReset,021203H
+        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME ISTACK, 2, STACK
         PUBWEAK DMAARM
         PUBLIC Dimmer
         FUNCTION Dimmer,0203H
@@ -241,7 +247,7 @@
         FUNCTION _itoa,080203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 1, STACK
-        LOCFRAME XSTACK, 21, STACK
+        LOCFRAME XSTACK, 19, STACK
         PUBLIC _lockBits
         PUBLIC _nvIEEE
         PUBLIC _reserved
@@ -477,9 +483,9 @@ _itoa               SYMBOL "_itoa"
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN halAssertHandler
         FUNCTION halAssertHandler,0202H
-        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 9, STACK
+        ARGFRAME XSTACK, 0, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN macMcuRandomWord
@@ -711,7 +717,7 @@ InitBoard:
         ARGFRAME XSTACK, 9, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL InitBoard, halAssertHandler
+        FUNCALL InitBoard, ChkReset
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 9, STACK
@@ -764,18 +770,8 @@ InitBoard:
         LCALL     `??osal_int_disable::?relay`; Banked call to: osal_int_disable
 //  134     // Check for Brown-Out reset
 //  135     ChkReset();
-        MOV       A,0x9d
-        ANL       A,#0x18
-        MOV       R0,A
-        JZ        ??InitBoard_1
-        MOV       A,#0x8
-        XRL       A,R0
-        JZ        ??InitBoard_1
-        MOV       A,#0x10
-        XRL       A,R0
-        JZ        ??InitBoard_1
-        ; Setup parameters for call to function halAssertHandler
-        LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
+        ; Setup parameters for call to function ChkReset
+        LCALL     `??ChkReset::?relay`; Banked call to: ChkReset
         SJMP      ??InitBoard_1
 //  136   }
 //  137   else  // !OB_COLD
@@ -791,29 +787,9 @@ InitBoard:
 //  141   }
 //  142 }
 ??InitBoard_1:
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        REQUIRE SLEEPSTA
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 9)
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock1
+          CFI EndBlock cfiBlock0
 //  143 
 //  144 /*********************************************************************
 //  145  * @fn      ChkReset()
@@ -823,30 +799,77 @@ InitBoard:
 //  149  * @param   None
 //  150  * @return  None
 //  151  *********************************************************************/
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  152 void ChkReset( void )
+ChkReset:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function ChkReset
+        CODE
 //  153 {
+        FUNCALL ChkReset, halAssertHandler
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 0, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        PUSH      DPL
+          CFI DPL0 Frame(CFA_SP, 4)
+          CFI CFA_SP SP+-4
+        PUSH      DPH
+          CFI DPH0 Frame(CFA_SP, 5)
+          CFI CFA_SP SP+-5
+        ; Saved register size: 2
+        ; Auto size: 0
 //  154   uint8 rib;
 //  155 
 //  156   // Isolate reset indicator bits
 //  157   rib = SLEEPSTA & LRESET;
+        MOV       A,0x9d
+        ANL       A,#0x18
+        MOV       R0,A
 //  158 
 //  159   if ( rib == RESETPO )
+        JZ        ??ChkReset_0
 //  160   {
 //  161     // Put code here to handle Power-On reset
 //  162   }
 //  163   else if ( rib == RESETEX )
+        MOV       A,#0x8
+        XRL       A,R0
+        JZ        ??ChkReset_0
 //  164   {
 //  165     // Put code here to handle External reset
 //  166   }
 //  167   else if ( rib == RESETWD )
+        MOV       A,#0x10
+        XRL       A,R0
+        JZ        ??ChkReset_0
 //  168   {
 //  169     // Put code here to handle WatchDog reset
 //  170   }
 //  171   else  // Unknown reason - not expected.
 //  172   {
 //  173     HAL_ASSERT(0);
+        ; Setup parameters for call to function halAssertHandler
+        LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
 //  174   }
 //  175 }
+??ChkReset_0:
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock1
+        REQUIRE SLEEPSTA
 //  176 
 //  177 /*********************************************************************
 //  178  *                        "Keyboard" Support
@@ -896,7 +919,13 @@ RegisterForKeys:
 ??RegisterForKeys_0:
         MOV       R1,#0x0
 ??RegisterForKeys_1:
-        LJMP      ?Subroutine1 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  200 }
           CFI EndBlock cfiBlock2
 //  201 
@@ -1102,7 +1131,8 @@ OnBoard_KeyCallback:
 //  276     }
 //  277   }
 //  278 }
-        SJMP      ?Subroutine0
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock4
 //  279 
 //  280 /*********************************************************************
@@ -1142,7 +1172,13 @@ RegisterVoltageWarningCB:
         MOV       A,R3
         MOVX      @DPTR,A
 //  296 }
-        LJMP      ?Subroutine1 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock5
 //  297 
 //  298 /*********************************************************************
@@ -1201,29 +1237,32 @@ OnBoard_CheckVoltage:
 //  315   if ( voltageMeasured > VDD_MIN_GOOD )
         CLR       C
         SUBB      A,#0x53
-        JNC       ??OnBoard_CheckVoltage_0
+        JC        ??OnBoard_CheckVoltage_0
 //  316   {
 //  317     howGood = VOLT_LEVEL_GOOD;
+        MOV       R6,#0x2
+        SJMP      ??OnBoard_CheckVoltage_1
 //  318   }
 //  319   else if ( voltageMeasured > VDD_MIN_NV )
+??OnBoard_CheckVoltage_0:
         MOV       A,R1
         CLR       C
         SUBB      A,#0x4f
-        JC        ??OnBoard_CheckVoltage_1
+        JC        ??OnBoard_CheckVoltage_2
 //  320   {
 //  321     howGood = VOLT_LEVEL_CAUTIOUS;
         MOV       R6,#0x1
-        SJMP      ??OnBoard_CheckVoltage_2
+        SJMP      ??OnBoard_CheckVoltage_1
 //  322   }
 //  323   else
 //  324   {
 //  325     howGood = VOLT_LEVEL_BAD;
-??OnBoard_CheckVoltage_1:
+??OnBoard_CheckVoltage_2:
         MOV       R6,#0x0
 //  326   }
 //  327     
 //  328   if ( gpLowVoltageWarning )
-??OnBoard_CheckVoltage_2:
+??OnBoard_CheckVoltage_1:
         MOV       DPTR,#gpLowVoltageWarning
         MOVX      A,@DPTR
         MOV       R0,A
@@ -1235,11 +1274,19 @@ OnBoard_CheckVoltage:
         JZ        ??OnBoard_CheckVoltage_3
 //  329   {
 //  330     if ( howGood < VOLT_LEVEL_GOOD )
+        MOV       A,R6
+        CLR       C
+        SUBB      A,#0x2
+        JNC       ??OnBoard_CheckVoltage_3
 //  331     {
 //  332       gpLowVoltageWarning( howGood );
         ; Setup parameters for indirect call
         MOV       A,R6
         MOV       R1,A
+        MOV       DPTR,#gpLowVoltageWarning
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
         MOVX      A,@DPTR
         MOV       DPH,A
         MOV       DPL,R0
@@ -1251,13 +1298,13 @@ OnBoard_CheckVoltage:
 ??OnBoard_CheckVoltage_3:
         MOV       A,R6
         JZ        ??OnBoard_CheckVoltage_4
-??OnBoard_CheckVoltage_0:
         MOV       R1,#0x1
         SJMP      ??OnBoard_CheckVoltage_5
 ??OnBoard_CheckVoltage_4:
         MOV       R1,#0x0
 ??OnBoard_CheckVoltage_5:
-        LJMP      ?Subroutine0 & 0xFFFF
+        MOV       R7,#0x1
+        LJMP      ?BANKED_LEAVE_XDATA
 //  337 }
           CFI EndBlock cfiBlock6
 //  338 
@@ -1353,26 +1400,15 @@ OnBoard_stack_used:
         CLR       A
         ADDC      A,R1
         MOV       R3,A
-          CFI EndBlock cfiBlock7
-        REQUIRE ?Subroutine1
-        ; // Fall through to label ?Subroutine1
-//  370 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiBlock8 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock8
+//  370 }
+          CFI EndBlock cfiBlock7
 //  371 
 //  372 /*********************************************************************
 //  373  * @fn      _itoa
@@ -1390,7 +1426,7 @@ OnBoard_stack_used:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  384 void _itoa(uint16 num, uint8 *buf, uint8 radix)
 _itoa:
-          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Block cfiBlock8 Using cfiCommon0
           CFI Function _itoa
         CODE
 //  385 {
@@ -1400,9 +1436,7 @@ _itoa:
         REQUIRE ?V3
         REQUIRE ?V4
         REQUIRE ?V5
-        REQUIRE ?V6
-        REQUIRE ?V7
-        MOV       A,#-0x10
+        MOV       A,#-0xe
         LCALL     ?BANKED_ENTER_XDATA
           CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
           CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
@@ -1410,23 +1444,21 @@ _itoa:
           CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
           CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
           CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-14)))
           CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 16)
-        ; Saved register size: 16
+          CFI CFA_XSP16 add(XSP16, 14)
+        ; Saved register size: 14
         ; Auto size: 5
         MOV       A,#-0x5
         LCALL     ?ALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 21)
+          CFI CFA_XSP16 add(XSP16, 19)
         MOV       A,R2
         MOV       R6,A
         MOV       A,R3
@@ -1442,12 +1474,22 @@ _itoa:
         MOV       ?V1,R1
 //  390   for ( i=0; i<5; i++,p++ )
         MOV       ?V2,#0x0
+        SJMP      ??_itoa_0
+??_itoa_1:
+        INC       ?V2
+        INC       DPTR
+        MOV       ?V0,DPL
+        MOV       ?V1,DPH
+??_itoa_0:
+        MOV       A,?V2
+        CLR       C
+        SUBB      A,#0x5
+        JNC       ??_itoa_2
+//  391   {
+//  392     c = num % radix;  // Isolate a digit
         MOV       A,?V3
         MOV       ?V4,A
         MOV       ?V5,#0x0
-//  391   {
-//  392     c = num % radix;  // Isolate a digit
-??_itoa_0:
         MOV       A,R6
         MOV       R0,A
         MOV       A,R7
@@ -1459,14 +1501,14 @@ _itoa:
         MOV       R0,A
 //  393     *p = c + (( c < 10 ) ? '0' : '7');  // Convert to Ascii
         SUBB      A,#0xa
-        JNC       ??_itoa_1
-        MOV       R1,#0x30
-        SJMP      ??_itoa_2
-??_itoa_1:
-        MOV       R1,#0x37
-??_itoa_2:
+        JNC       ??_itoa_3
+        MOV       R2,#0x30
+        SJMP      ??_itoa_4
+??_itoa_3:
+        MOV       R2,#0x37
+??_itoa_4:
         MOV       A,R2
-        ADD       A,R1
+        ADD       A,R0
         MOV       DPL,?V0
         MOV       DPH,?V1
         MOVX      @DPTR,A
@@ -1478,29 +1520,23 @@ _itoa:
         MOV       R2,?V4
         MOV       R3,?V5
         LCALL     ?US_DIV_MOD
-        MOV       ?V6,R0
-        MOV       ?V7,R1
-        MOV       R6,?V6
-        MOV       R7,?V7
+        MOV       ?V4,R0
+        MOV       ?V5,R1
+        MOV       R6,?V4
+        MOV       R7,?V5
 //  395     if ( !num )
         MOV       A,R0
         ORL       A,R7
-        JZ        ??_itoa_3
+        JNZ       ??_itoa_1
 //  396       break;
 //  397   }
-        INC       ?V2
-        INC       DPTR
-        MOV       ?V0,DPL
-        MOV       ?V1,DPH
-        MOV       A,?V2
-        SUBB      A,#0x5
-        JC        ??_itoa_0
 //  398 
 //  399   for ( c=0 ; c<=i; c++ )
-??_itoa_3:
+??_itoa_2:
         MOV       R0,#0x0
+        SJMP      ??_itoa_5
 //  400     *buf++ = *p--;  // Reverse character order
-??_itoa_4:
+??_itoa_6:
         MOV       DPL,?V0
         MOV       DPH,?V1
         MOVX      A,@DPTR
@@ -1517,21 +1553,24 @@ _itoa:
         MOV       R4,DPL
         MOV       R5,DPH
         INC       R0
+??_itoa_5:
         MOV       A,?V2
         CLR       C
         SUBB      A,R0
-        JNC       ??_itoa_4
+        JNC       ??_itoa_6
 //  401 
 //  402   *buf = '\0';
+        MOV       DPL,R4
+        MOV       DPH,R5
         CLR       A
         MOVX      @DPTR,A
 //  403 }
         MOV       A,#0x5
         LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 16)
-        MOV       R7,#0x8
+          CFI CFA_XSP16 add(XSP16, 14)
+        MOV       R7,#0x6
         LJMP      ?BANKED_LEAVE_XDATA
-          CFI EndBlock cfiBlock9
+          CFI EndBlock cfiBlock8
 //  404 
 //  405 /*********************************************************************
 //  406  * @fn        Onboard_rand
@@ -1547,7 +1586,7 @@ _itoa:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  415 uint16 Onboard_rand( void )
 Onboard_rand:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock9 Using cfiCommon0
           CFI Function Onboard_rand
         CODE
 //  416 {
@@ -1573,9 +1612,15 @@ Onboard_rand:
 //  417   return ( MAC_RADIO_RANDOM_WORD() );
         ; Setup parameters for call to function macMcuRandomWord
         LCALL     `??macMcuRandomWord::?relay`; Banked call to: macMcuRandomWord
-        LJMP      ?Subroutine1 & 0xFFFF
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
 //  418 }
-          CFI EndBlock cfiBlock10
+          CFI EndBlock cfiBlock9
 //  419 
 //  420 /*********************************************************************
 //  421  * @fn        Onboard_wait
@@ -1591,7 +1636,7 @@ Onboard_rand:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  430 void Onboard_wait( uint16 timeout )
 Onboard_wait:
-          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Block cfiBlock10 Using cfiCommon0
           CFI Function Onboard_wait
         CODE
 //  431 {
@@ -1624,7 +1669,7 @@ Onboard_wait:
         JNZ       ??Onboard_wait_1
 //  438 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock11
+          CFI EndBlock cfiBlock10
 //  439 
 //  440 /*********************************************************************
 //  441  * @fn      Onboard_soft_reset
@@ -1640,7 +1685,7 @@ Onboard_wait:
         RSEG NEAR_CODE:CODE:NOROOT(0)
 //  450 __near_func void Onboard_soft_reset( void )
 Onboard_soft_reset:
-          CFI Block cfiBlock12 Using cfiCommon1
+          CFI Block cfiBlock11 Using cfiCommon1
           CFI Function Onboard_soft_reset
         CODE
 //  451 {
@@ -1656,7 +1701,7 @@ Onboard_soft_reset:
         LJMP 0x0
 //  457 }
         RET
-          CFI EndBlock cfiBlock12
+          CFI EndBlock cfiBlock11
         REQUIRE _A_IEN0
         REQUIRE DMAARM
 //  458 
@@ -1715,7 +1760,7 @@ Onboard_soft_reset:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  510 void BigLight_On( void )
 BigLight_On:
-          CFI Block cfiBlock13 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function BigLight_On
         CODE
 //  511 {
@@ -1724,13 +1769,13 @@ BigLight_On:
 //  512   // Put code here to turn on an external light
 //  513 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock13
+          CFI EndBlock cfiBlock12
 //  514 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  515 void BigLight_Off( void )
 BigLight_Off:
-          CFI Block cfiBlock14 Using cfiCommon0
+          CFI Block cfiBlock13 Using cfiCommon0
           CFI Function BigLight_Off
         CODE
 //  516 {
@@ -1739,13 +1784,13 @@ BigLight_Off:
 //  517   // Put code here to turn off an external light
 //  518 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock14
+          CFI EndBlock cfiBlock13
 //  519 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  520 void BuzzerControl( uint8 on )
 BuzzerControl:
-          CFI Block cfiBlock15 Using cfiCommon0
+          CFI Block cfiBlock14 Using cfiCommon0
           CFI Function BuzzerControl
         CODE
 //  521 {
@@ -1755,13 +1800,13 @@ BuzzerControl:
 //  523   (void)on;
 //  524 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock15
+          CFI EndBlock cfiBlock14
 //  525 
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  526 void Dimmer( uint8 lvl )
 Dimmer:
-          CFI Block cfiBlock16 Using cfiCommon0
+          CFI Block cfiBlock15 Using cfiCommon0
           CFI Function Dimmer
         CODE
 //  527 {
@@ -1771,14 +1816,14 @@ Dimmer:
 //  529   (void)lvl;
 //  530 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock16
+          CFI EndBlock cfiBlock15
 //  531 
 //  532 // No dip switches on this board
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  533 uint8 GetUserDipSw( void )
 GetUserDipSw:
-          CFI Block cfiBlock17 Using cfiCommon0
+          CFI Block cfiBlock16 Using cfiCommon0
           CFI Function GetUserDipSw
         CODE
 //  534 {
@@ -1788,7 +1833,7 @@ GetUserDipSw:
         MOV       R1,#0x0
         LJMP      ?BRET
 //  536 }
-          CFI EndBlock cfiBlock17
+          CFI EndBlock cfiBlock16
 
         RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for registeredKeysTaskID>`:
@@ -1801,6 +1846,13 @@ GetUserDipSw:
         LCALL   ?BDISPATCH
         DATA24
         DC24    InitBoard
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??ChkReset::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    ChkReset
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??RegisterForKeys::?relay`:
@@ -1907,8 +1959,8 @@ GetUserDipSw:
 //  538 /*********************************************************************
 //  539 *********************************************************************/
 // 
-//   521 bytes in segment BANKED_CODE
-//    90 bytes in segment BANK_RELAYS
+//   577 bytes in segment BANKED_CODE
+//    96 bytes in segment BANK_RELAYS
 //     8 bytes in segment IEEE_ADDRESS_SPACE
 //    16 bytes in segment LOCK_BITS_ADDRESS_SPACE
 //     9 bytes in segment NEAR_CODE
@@ -1918,9 +1970,9 @@ GetUserDipSw:
 //     1 byte  in segment XDATA_ID
 //    10 bytes in segment XDATA_Z
 // 
-//   100 bytes of CODE     memory
+//   106 bytes of CODE     memory
 //     0 bytes of DATA     memory (+ 3 bytes shared)
-//   521 bytes of HUGECODE memory
+//   577 bytes of HUGECODE memory
 // 1 967 bytes of XDATA    memory
 //
 //Errors: none

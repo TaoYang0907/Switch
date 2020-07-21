@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              16/Jul/2020  10:56:02
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              21/Jul/2020  00:36:38
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,14 +13,15 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW940.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW29C1.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\zcl\zcl_ms.c" -D BDB_REPORTING -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -130,26 +132,69 @@
         EXTERN ?V0
         EXTERN ?V2
         EXTERN ?V3
+        EXTERN ?V1
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
         EXTERN ?BRET
         EXTERN ?DEALLOC_XSTACK8
         EXTERN ?PUSH_XSTACK_I_TWO
+        EXTERN ?US_SWITCH_DENSE
         EXTERN __INIT_XDATA_Z
 
         FUNCTION `??zclMS_FindCallbacks::?relay`,0203H
+        FUNCTION `??zclMS_HdlInSpecificCommands::?relay`,0203H
         FUNCTION `??zclMS_HdlIncoming::?relay`,0203H
+        FUNCTION `??zclMS_ProcessIn_FlowMeasurementCmds::?relay`,0203H
+        FUNCTION `??zclMS_ProcessIn_IlluminanceLevelSensingCmds::`,0203H
+        FUNCTION `??zclMS_ProcessIn_IlluminanceMeasurementCmds::?`,0203H
+        FUNCTION `??zclMS_ProcessIn_OccupancySensingCmds::?relay`,0203H
+        FUNCTION `??zclMS_ProcessIn_PressureMeasurementCmds::?rel`,0203H
+        FUNCTION `??zclMS_ProcessIn_RelativeHumidityCmds::?relay`,0203H
+        FUNCTION `??zclMS_ProcessIn_TemperatureMeasurementCmds::?`,0203H
         PUBLIC `??zclMS_RegisterCmdCallbacks::?relay`
         FUNCTION `??zclMS_RegisterCmdCallbacks::?relay`,0203H
         FUNCTION zclMS_FindCallbacks,0203H
-        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME ISTACK, 2, STACK
+        FUNCTION zclMS_HdlInSpecificCommands,0a1203H
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        LOCFRAME XSTACK, 10, STACK
         FUNCTION zclMS_HdlIncoming,021603H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
+        FUNCTION zclMS_ProcessIn_FlowMeasurementCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_IlluminanceLevelSensingCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_IlluminanceMeasurementCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_OccupancySensingCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_PressureMeasurementCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_RelativeHumidityCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCTION zclMS_ProcessIn_TemperatureMeasurementCmds,0203H
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         PUBLIC zclMS_RegisterCmdCallbacks
         FUNCTION zclMS_RegisterCmdCallbacks,0a1203H
         ARGFRAME XSTACK, 0, STACK
@@ -243,73 +288,6 @@
           CFI ?RET_HIGH Frame(CFA_SP, 2)
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
-        
-        
-          CFI Common cfiCommon1 Using cfiNames0
-          CFI CodeAlign 1
-          CFI DataAlign -1
-          CFI ReturnAddress ?RET CODE
-          CFI CFA_DOVERLAY Used
-          CFI CFA_IOVERLAY Used
-          CFI CFA_SP SP+-2
-          CFI CFA_PSP16 PSP16+0
-          CFI CFA_XSP16 XSP16+0
-          CFI `PSW.CY` SameValue
-          CFI `B.BR0` SameValue
-          CFI `B.BR1` SameValue
-          CFI `B.BR2` SameValue
-          CFI `B.BR3` SameValue
-          CFI `B.BR4` SameValue
-          CFI `B.BR5` SameValue
-          CFI `B.BR6` SameValue
-          CFI `B.BR7` SameValue
-          CFI `VB.BR8` SameValue
-          CFI `VB.BR9` SameValue
-          CFI `VB.BR10` SameValue
-          CFI `VB.BR11` SameValue
-          CFI `VB.BR12` SameValue
-          CFI `VB.BR13` SameValue
-          CFI `VB.BR14` SameValue
-          CFI `VB.BR15` SameValue
-          CFI VB SameValue
-          CFI B SameValue
-          CFI A SameValue
-          CFI PSW SameValue
-          CFI DPL0 SameValue
-          CFI DPH0 SameValue
-          CFI R0 SameValue
-          CFI R1 SameValue
-          CFI R2 SameValue
-          CFI R3 SameValue
-          CFI R4 SameValue
-          CFI R5 SameValue
-          CFI R6 SameValue
-          CFI R7 SameValue
-          CFI V0 SameValue
-          CFI V1 SameValue
-          CFI V2 SameValue
-          CFI V3 SameValue
-          CFI V4 SameValue
-          CFI V5 SameValue
-          CFI V6 SameValue
-          CFI V7 SameValue
-          CFI V8 SameValue
-          CFI V9 SameValue
-          CFI V10 SameValue
-          CFI V11 SameValue
-          CFI V12 SameValue
-          CFI V13 SameValue
-          CFI V14 SameValue
-          CFI V15 SameValue
-          CFI PSPH Undefined
-          CFI PSPL Undefined
-          CFI XSPH Undefined
-          CFI XSPL Undefined
-          CFI ?RET Concat
-          CFI ?BRET_EXT SameValue
-          CFI ?RET_HIGH Frame(CFA_SP, 2)
-          CFI ?RET_LOW Frame(CFA_SP, 1)
-          CFI EndCommon cfiCommon1
         
 osal_mem_alloc      SYMBOL "osal_mem_alloc"
 `??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
@@ -594,8 +572,13 @@ zclMS_RegisterCmdCallbacks:
 //  131   // Find spot in list
 //  132   if ( zclMSCBs == NULL )
         MOV       DPTR,#zclMSCBs
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_1:
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        MOV       A,R2
+        ORL       A,R3
         MOV       DPTR,#zclMSCBs
         JZ        ??zclMS_RegisterCmdCallbacks_3
 //  133   {
@@ -620,8 +603,13 @@ zclMS_RegisterCmdCallbacks:
         MOV       R5,A
         MOV       DPL,R4
         MOV       DPH,R5
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_2:
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        MOV       A,R2
+        ORL       A,R3
         JNZ       ??zclMS_RegisterCmdCallbacks_5
 //  142 
 //  143     // Put new item at end of list
@@ -678,8 +666,13 @@ zclMS_FindCallbacks:
 //  166       return ( pCBs->CBs );
 //  167     pCBs = pCBs->next;
 ??zclMS_FindCallbacks_0:
-        LCALL     ?Subroutine1 & 0xFFFF
-??CrossCallReturnLabel_0:
+        MOVX      A,@DPTR
+        MOV       R2,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R3,A
+        MOV       A,R2
+        ORL       A,R3
         JZ        ??zclMS_FindCallbacks_1
         MOV       DPL,R2
         MOV       DPH,R3
@@ -705,84 +698,15 @@ zclMS_FindCallbacks:
         MOV       R2,#0x0
         MOV       R3,#0x0
 ??zclMS_FindCallbacks_2:
-          CFI EndBlock cfiBlock1
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-//  170 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock2 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock2
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine1:
-          CFI Block cfiCond3 Using cfiCommon0
-          CFI Function zclMS_RegisterCmdCallbacks
-          CFI Conditional ??CrossCallReturnLabel_1
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI CFA_SP SP+-2
-          CFI CFA_XSP16 add(XSP16, 12)
-          CFI Block cfiCond4 Using cfiCommon0
-          CFI (cfiCond4) Function zclMS_RegisterCmdCallbacks
-          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_2
-          CFI (cfiCond4) R6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
-          CFI (cfiCond4) VB load(1, XDATA, add(CFA_XSP16, literal(-11)))
-          CFI (cfiCond4) V0 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI (cfiCond4) V1 load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI (cfiCond4) V2 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI (cfiCond4) V3 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI (cfiCond4) R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI (cfiCond4) ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI (cfiCond4) ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI (cfiCond4) ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI (cfiCond4) DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI (cfiCond4) DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI (cfiCond4) CFA_SP SP+-2
-          CFI (cfiCond4) CFA_XSP16 add(XSP16, 12)
-          CFI Block cfiCond5 Using cfiCommon0
-          CFI (cfiCond5) Function zclMS_FindCallbacks
-          CFI (cfiCond5) Conditional ??CrossCallReturnLabel_0
-          CFI (cfiCond5) DPL0 Frame(CFA_SP, 4)
-          CFI (cfiCond5) DPH0 Frame(CFA_SP, 5)
-          CFI (cfiCond5) CFA_SP SP+-7
-          CFI Block cfiPicker6 Using cfiCommon1
-          CFI (cfiPicker6) NoFunction
-          CFI (cfiPicker6) Picker
-        MOVX      A,@DPTR
-        MOV       R2,A
-        INC       DPTR
-        MOVX      A,@DPTR
-        MOV       R3,A
-        MOV       A,R2
-        ORL       A,R3
-        RET
-          CFI EndBlock cfiCond3
-          CFI EndBlock cfiCond4
-          CFI EndBlock cfiCond5
-          CFI EndBlock cfiPicker6
+//  170 }
+          CFI EndBlock cfiBlock1
 //  171 
 //  172 /*********************************************************************
 //  173  * @fn      zclMS_HdlIncoming
@@ -800,11 +724,11 @@ zclMS_FindCallbacks:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  184 static ZStatus_t zclMS_HdlIncoming( zclIncoming_t *pInMsg )
 zclMS_HdlIncoming:
-          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function zclMS_HdlIncoming
         CODE
 //  185 {
-        FUNCALL zclMS_HdlIncoming, zclMS_FindCallbacks
+        FUNCALL zclMS_HdlIncoming, zclMS_HdlInSpecificCommands
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 0, STACK
@@ -843,9 +767,173 @@ zclMS_HdlIncoming:
 //  195     if ( pInMsg->hdr.fc.manuSpecific == 0 ) 
 //  196     {
 //  197       stat = zclMS_HdlInSpecificCommands( pInMsg );
+        ; Setup parameters for call to function zclMS_HdlInSpecificCommands
+        LCALL     `??zclMS_HdlInSpecificCommands::?relay`; Banked call to: zclMS_HdlInSpecificCommands
+        MOV       A,R1
+        MOV       R1,A
+        SJMP      ??zclMS_HdlIncoming_1
+//  198     }
+//  199     else
+//  200     {
+//  201       // We don't support any manufacturer specific command -- ignore it.
+//  202       stat = ZFailure;
+//  203     }
+//  204   }
+//  205   else
+//  206   {
+//  207     // Handle all the normal (Read, Write...) commands
+//  208     stat = ZFailure;
+??zclMS_HdlIncoming_0:
+        MOV       R1,#0x1
+//  209   }
+//  210   return ( stat );
+??zclMS_HdlIncoming_1:
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+//  211 }
+          CFI EndBlock cfiBlock2
+//  212 
+//  213 /*********************************************************************
+//  214  * @fn      zclMS_HdlInSpecificCommands
+//  215  *
+//  216  * @brief   Callback from ZCL to process incoming Commands specific
+//  217  *          to this cluster library
+//  218  *
+//  219  * @param   pInMsg - pointer to the incoming message
+//  220  *
+//  221  * @return  ZStatus_t
+//  222  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  223 static ZStatus_t zclMS_HdlInSpecificCommands( zclIncoming_t *pInMsg )
+zclMS_HdlInSpecificCommands:
+          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Function zclMS_HdlInSpecificCommands
+        CODE
+//  224 {
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_FindCallbacks
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_IlluminanceMeasurementCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_IlluminanceLevelSensingCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_TemperatureMeasurementCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_PressureMeasurementCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_FlowMeasurementCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_RelativeHumidityCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL zclMS_HdlInSpecificCommands, zclMS_ProcessIn_OccupancySensingCmds
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        MOV       A,#-0xa
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 10)
+        ; Saved register size: 10
+        ; Auto size: 0
+        MOV       A,R2
+        MOV       R6,A
+        MOV       A,R3
+        MOV       R7,A
+//  225   ZStatus_t stat = ZSuccess;
+//  226   zclMS_AppCallbacks_t *pCBs;
+//  227   
+//  228   // make sure endpoint exists
+//  229   pCBs = (void*)zclMS_FindCallbacks( pInMsg->msg->endPoint );
         ; Setup parameters for call to function zclMS_FindCallbacks
         MOV       DPL,R2
-        MOV       DPH,R3
+        MOV       DPH,A
         MOVX      A,@DPTR
         MOV       R0,A
         INC       DPTR
@@ -859,24 +947,455 @@ zclMS_HdlIncoming:
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??zclMS_FindCallbacks::?relay`; Banked call to: zclMS_FindCallbacks
-//  198     }
-//  199     else
-//  200     {
-//  201       // We don't support any manufacturer specific command -- ignore it.
-//  202       stat = ZFailure;
-//  203     }
-//  204   }
-//  205   else
-//  206   {
-//  207     // Handle all the normal (Read, Write...) commands
-//  208     stat = ZFailure;
-//  209   }
-//  210   return ( stat );
-??zclMS_HdlIncoming_0:
+        MOV       ?V1,R3
+        MOV       R1,?V1
+//  230   if ( pCBs == NULL )
+        MOV       A,R2
+        ORL       A,R1
+        JZ        ??zclMS_HdlInSpecificCommands_0
+//  231     return ( ZFailure );
+//  232   
+//  233   switch ( pInMsg->msg->clusterId )			
+        MOV       DPL,R6
+        MOV       DPH,R7
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       DPH,A
+        MOV       DPL,R0
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       ?V1,A
+        MOV       R0,#?V0
+        LCALL     ?US_SWITCH_DENSE
+`?<Jumptable for zclMS_HdlInSpecificCommands>_0`:
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        1024
+        DATA
+        DATA8
+        DATA
+        DATA8
+        DB        6
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_0
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_1
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_2
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_3
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_4
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_5
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_6
+        DATA
+        DATA16
+        DATA
+        DATA16
+        DW        ??zclMS_HdlInSpecificCommands_7
+        CODE
+//  234   {
+//  235     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_MEASUREMENT:
+//  236       stat = zclMS_ProcessIn_IlluminanceMeasurementCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_1:
+        ; Setup parameters for call to function zclMS_ProcessIn_IlluminanceMeasurementCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_IlluminanceMeasurementCmds::?`; Banked call to: zclMS_ProcessIn_IlluminanceMeasurementCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  237       break;
+//  238 
+//  239     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_LEVEL_SENSING_CONFIG:
+//  240       stat = zclMS_ProcessIn_IlluminanceLevelSensingCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_2:
+        ; Setup parameters for call to function zclMS_ProcessIn_IlluminanceLevelSensingCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_IlluminanceLevelSensingCmds::`; Banked call to: zclMS_ProcessIn_IlluminanceLevelSensingCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  241       break;
+//  242 
+//  243     case ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT:
+//  244       stat = zclMS_ProcessIn_TemperatureMeasurementCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_3:
+        ; Setup parameters for call to function zclMS_ProcessIn_TemperatureMeasurementCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_TemperatureMeasurementCmds::?`; Banked call to: zclMS_ProcessIn_TemperatureMeasurementCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  245       break;
+//  246 
+//  247     case ZCL_CLUSTER_ID_MS_PRESSURE_MEASUREMENT:
+//  248       stat = zclMS_ProcessIn_PressureMeasurementCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_4:
+        ; Setup parameters for call to function zclMS_ProcessIn_PressureMeasurementCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_PressureMeasurementCmds::?rel`; Banked call to: zclMS_ProcessIn_PressureMeasurementCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  249       break;
+//  250 
+//  251     case ZCL_CLUSTER_ID_MS_FLOW_MEASUREMENT:
+//  252       stat = zclMS_ProcessIn_FlowMeasurementCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_5:
+        ; Setup parameters for call to function zclMS_ProcessIn_FlowMeasurementCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_FlowMeasurementCmds::?relay`; Banked call to: zclMS_ProcessIn_FlowMeasurementCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  253       break;
+//  254 
+//  255     case ZCL_CLUSTER_ID_MS_RELATIVE_HUMIDITY:
+//  256       stat = zclMS_ProcessIn_RelativeHumidityCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_6:
+        ; Setup parameters for call to function zclMS_ProcessIn_RelativeHumidityCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_RelativeHumidityCmds::?relay`; Banked call to: zclMS_ProcessIn_RelativeHumidityCmds
+        SJMP      ??zclMS_HdlInSpecificCommands_8
+//  257       break;
+//  258       
+//  259     case ZCL_CLUSTER_ID_MS_OCCUPANCY_SENSING:
+//  260       stat = zclMS_ProcessIn_OccupancySensingCmds( pInMsg );
+??zclMS_HdlInSpecificCommands_7:
+        ; Setup parameters for call to function zclMS_ProcessIn_OccupancySensingCmds
+        MOV       A,R6
+        MOV       R2,A
+        MOV       A,R7
+        MOV       R3,A
+        LCALL     `??zclMS_ProcessIn_OccupancySensingCmds::?relay`; Banked call to: zclMS_ProcessIn_OccupancySensingCmds
+??zclMS_HdlInSpecificCommands_8:
+        MOV       A,R1
+        MOV       R1,A
+//  261       break;
+        SJMP      ??zclMS_HdlInSpecificCommands_9
+//  262 
+//  263     default:
+//  264       stat = ZFailure;
+??zclMS_HdlInSpecificCommands_0:
         MOV       R1,#0x1
-        SJMP      ?Subroutine0
-//  211 }
+//  265       break;
+//  266   }
+//  267 
+//  268   return ( stat );
+??zclMS_HdlInSpecificCommands_9:
+        MOV       R7,#0x2
+        LJMP      ?BANKED_LEAVE_XDATA
+//  269 }
+          CFI EndBlock cfiBlock3
+//  270 
+//  271 /*********************************************************************
+//  272  * @fn      zclMS_ProcessIn_IlluminanceMeasurementCmds
+//  273  *
+//  274  * @brief   Callback from ZCL to process incoming Commands specific
+//  275  *          to this cluster library on a command ID basis
+//  276  *
+//  277  * @param   pInMsg - pointer to the incoming message
+//  278  *
+//  279  * @return  ZStatus_t
+//  280  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  281 static ZStatus_t zclMS_ProcessIn_IlluminanceMeasurementCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_IlluminanceMeasurementCmds:
+          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_IlluminanceMeasurementCmds
+        CODE
+//  282 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  283   ZStatus_t stat = ZFailure;
+//  284 
+//  285   // there are no specific command for this cluster yet.
+//  286   // instead of suppressing a compiler warnings( for a code porting reasons )
+//  287   // fake unused call here and keep the code skeleton intact
+//  288  (void)pInMsg;
+//  289   if ( stat != ZFailure )
+//  290     zclMS_FindCallbacks( 0 );
+//  291 
+//  292   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  293 }
+          CFI EndBlock cfiBlock4
+//  294 
+//  295 /*********************************************************************
+//  296  * @fn      zclMS_ProcessIn_IlluminanceLevelSensingCmds
+//  297  *
+//  298  * @brief   Callback from ZCL to process incoming Commands specific
+//  299  *          to this cluster library on a command ID basis
+//  300  *
+//  301  * @param   pInMsg - pointer to the incoming message
+//  302  *
+//  303  * @return  ZStatus_t
+//  304  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  305 static ZStatus_t zclMS_ProcessIn_IlluminanceLevelSensingCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_IlluminanceLevelSensingCmds:
+          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_IlluminanceLevelSensingCmds
+        CODE
+//  306 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  307   ZStatus_t stat = ZSuccess;
+//  308   uint8 cmdID;
+//  309 
+//  310   cmdID = pInMsg->hdr.commandID;
+//  311 
+//  312   switch ( cmdID )				
+//  313   {
+//  314 
+//  315     default:
+//  316       stat = ZFailure;
+//  317       break;
+//  318   }
+//  319 
+//  320   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  321 }
+          CFI EndBlock cfiBlock5
+//  322 
+//  323 /*********************************************************************
+//  324  * @fn      zclMS_ProcessIn_TemperatureMeasurementCmds
+//  325  *
+//  326  * @brief   Callback from ZCL to process incoming Commands specific
+//  327  *          to this cluster library on a command ID basis
+//  328  *
+//  329  * @param   pInMsg - pointer to the incoming message
+//  330  *
+//  331  * @return  ZStatus_t
+//  332  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  333 static ZStatus_t zclMS_ProcessIn_TemperatureMeasurementCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_TemperatureMeasurementCmds:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_TemperatureMeasurementCmds
+        CODE
+//  334 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  335   ZStatus_t stat = ZSuccess;
+//  336   uint8 cmdID;
+//  337 
+//  338   cmdID = pInMsg->hdr.commandID;
+//  339 
+//  340   switch ( cmdID )				
+//  341   {
+//  342 
+//  343     default:
+//  344       stat = ZFailure;
+//  345       break;
+//  346   }
+//  347 
+//  348   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  349 }
+          CFI EndBlock cfiBlock6
+//  350 
+//  351 /*********************************************************************
+//  352  * @fn      zclMS_ProcessIn_PressureMeasurementCmds
+//  353  *
+//  354  * @brief   Callback from ZCL to process incoming Commands specific
+//  355  *          to this cluster library on a command ID basis
+//  356  *
+//  357  * @param   pInMsg - pointer to the incoming message
+//  358  *
+//  359  * @return  ZStatus_t
+//  360  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  361 static ZStatus_t zclMS_ProcessIn_PressureMeasurementCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_PressureMeasurementCmds:
+          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_PressureMeasurementCmds
+        CODE
+//  362 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  363   ZStatus_t stat = ZSuccess;
+//  364   uint8 cmdID;
+//  365 
+//  366   cmdID = pInMsg->hdr.commandID;
+//  367 
+//  368   switch ( cmdID )				
+//  369   {
+//  370     default:
+//  371       stat = ZFailure;
+//  372       break;
+//  373   }
+//  374 
+//  375   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  376 }
           CFI EndBlock cfiBlock7
+//  377 
+//  378 /*********************************************************************
+//  379  * @fn      zclMS_ProcessIn_FlowMeasurementCmds
+//  380  *
+//  381  * @brief   Callback from ZCL to process incoming Commands specific
+//  382  *          to this cluster library on a command ID basis
+//  383  *
+//  384  * @param   pInMsg - pointer to the incoming message
+//  385  *
+//  386  * @return  ZStatus_t
+//  387  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  388 static ZStatus_t zclMS_ProcessIn_FlowMeasurementCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_FlowMeasurementCmds:
+          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_FlowMeasurementCmds
+        CODE
+//  389 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  390   ZStatus_t stat = ZSuccess;
+//  391   uint8 cmdID;
+//  392 
+//  393   cmdID = pInMsg->hdr.commandID;
+//  394 
+//  395   switch ( cmdID )				
+//  396   {
+//  397 
+//  398     default:
+//  399       stat = ZFailure;
+//  400       break;
+//  401   }
+//  402 
+//  403   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  404 }
+          CFI EndBlock cfiBlock8
+//  405 
+//  406 /*********************************************************************
+//  407  * @fn      zclMS_ProcessIn_RelativeHumidityCmds
+//  408  *
+//  409  * @brief   Callback from ZCL to process incoming Commands specific
+//  410  *          to this cluster library on a command ID basis
+//  411  *
+//  412  * @param   pInMsg - pointer to the incoming message
+//  413  *
+//  414  * @return  ZStatus_t
+//  415  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  416 static ZStatus_t zclMS_ProcessIn_RelativeHumidityCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_RelativeHumidityCmds:
+          CFI Block cfiBlock9 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_RelativeHumidityCmds
+        CODE
+//  417 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  418   ZStatus_t stat = ZSuccess;
+//  419   uint8 cmdID;
+//  420 
+//  421   cmdID = pInMsg->hdr.commandID;
+//  422 
+//  423   switch ( cmdID )				
+//  424   {
+//  425 
+//  426     default:
+//  427       stat = ZFailure;
+//  428       break;
+//  429   }
+//  430 
+//  431   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  432 }
+          CFI EndBlock cfiBlock9
+//  433 
+//  434 /*********************************************************************
+//  435  * @fn      zclMS_ProcessIn_OccupancySensingCmds
+//  436  *
+//  437  * @brief   Callback from ZCL to process incoming Commands specific
+//  438  *          to this cluster library on a command ID basis
+//  439  *
+//  440  * @param   pInMsg - pointer to the incoming message
+//  441  *
+//  442  * @return  ZStatus_t
+//  443  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  444 static ZStatus_t zclMS_ProcessIn_OccupancySensingCmds( zclIncoming_t *pInMsg )
+zclMS_ProcessIn_OccupancySensingCmds:
+          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Function zclMS_ProcessIn_OccupancySensingCmds
+        CODE
+//  445 {
+        ; Saved register size: 0
+        ; Auto size: 0
+//  446   ZStatus_t stat = ZSuccess;
+//  447   uint8 cmdID;
+//  448 
+//  449   cmdID = pInMsg->hdr.commandID;
+//  450 
+//  451   switch ( cmdID )				
+//  452   {
+//  453 
+//  454     default:
+//  455       stat = ZFailure;
+//  456       break;
+//  457   }
+//  458 
+//  459   return ( stat );
+        MOV       R1,#0x1
+        LJMP      ?BRET
+//  460 }
+          CFI EndBlock cfiBlock10
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??zclMS_RegisterCmdCallbacks::?relay`:
@@ -899,267 +1418,74 @@ zclMS_HdlIncoming:
         DATA24
         DC24    zclMS_HdlIncoming
 
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_HdlInSpecificCommands::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_HdlInSpecificCommands
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_IlluminanceMeasurementCmds::?`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_IlluminanceMeasurementCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_IlluminanceLevelSensingCmds::`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_IlluminanceLevelSensingCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_TemperatureMeasurementCmds::?`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_TemperatureMeasurementCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_PressureMeasurementCmds::?rel`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_PressureMeasurementCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_FlowMeasurementCmds::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_FlowMeasurementCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_RelativeHumidityCmds::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_RelativeHumidityCmds
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??zclMS_ProcessIn_OccupancySensingCmds::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    zclMS_ProcessIn_OccupancySensingCmds
+
         END
-//  212 
-//  213 /*********************************************************************
-//  214  * @fn      zclMS_HdlInSpecificCommands
-//  215  *
-//  216  * @brief   Callback from ZCL to process incoming Commands specific
-//  217  *          to this cluster library
-//  218  *
-//  219  * @param   pInMsg - pointer to the incoming message
-//  220  *
-//  221  * @return  ZStatus_t
-//  222  */
-//  223 static ZStatus_t zclMS_HdlInSpecificCommands( zclIncoming_t *pInMsg )
-//  224 {
-//  225   ZStatus_t stat = ZSuccess;
-//  226   zclMS_AppCallbacks_t *pCBs;
-//  227   
-//  228   // make sure endpoint exists
-//  229   pCBs = (void*)zclMS_FindCallbacks( pInMsg->msg->endPoint );
-//  230   if ( pCBs == NULL )
-//  231     return ( ZFailure );
-//  232   
-//  233   switch ( pInMsg->msg->clusterId )			
-//  234   {
-//  235     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_MEASUREMENT:
-//  236       stat = zclMS_ProcessIn_IlluminanceMeasurementCmds( pInMsg );
-//  237       break;
-//  238 
-//  239     case ZCL_CLUSTER_ID_MS_ILLUMINANCE_LEVEL_SENSING_CONFIG:
-//  240       stat = zclMS_ProcessIn_IlluminanceLevelSensingCmds( pInMsg );
-//  241       break;
-//  242 
-//  243     case ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT:
-//  244       stat = zclMS_ProcessIn_TemperatureMeasurementCmds( pInMsg );
-//  245       break;
-//  246 
-//  247     case ZCL_CLUSTER_ID_MS_PRESSURE_MEASUREMENT:
-//  248       stat = zclMS_ProcessIn_PressureMeasurementCmds( pInMsg );
-//  249       break;
-//  250 
-//  251     case ZCL_CLUSTER_ID_MS_FLOW_MEASUREMENT:
-//  252       stat = zclMS_ProcessIn_FlowMeasurementCmds( pInMsg );
-//  253       break;
-//  254 
-//  255     case ZCL_CLUSTER_ID_MS_RELATIVE_HUMIDITY:
-//  256       stat = zclMS_ProcessIn_RelativeHumidityCmds( pInMsg );
-//  257       break;
-//  258       
-//  259     case ZCL_CLUSTER_ID_MS_OCCUPANCY_SENSING:
-//  260       stat = zclMS_ProcessIn_OccupancySensingCmds( pInMsg );
-//  261       break;
-//  262 
-//  263     default:
-//  264       stat = ZFailure;
-//  265       break;
-//  266   }
-//  267 
-//  268   return ( stat );
-//  269 }
-//  270 
-//  271 /*********************************************************************
-//  272  * @fn      zclMS_ProcessIn_IlluminanceMeasurementCmds
-//  273  *
-//  274  * @brief   Callback from ZCL to process incoming Commands specific
-//  275  *          to this cluster library on a command ID basis
-//  276  *
-//  277  * @param   pInMsg - pointer to the incoming message
-//  278  *
-//  279  * @return  ZStatus_t
-//  280  */
-//  281 static ZStatus_t zclMS_ProcessIn_IlluminanceMeasurementCmds( zclIncoming_t *pInMsg )
-//  282 {
-//  283   ZStatus_t stat = ZFailure;
-//  284 
-//  285   // there are no specific command for this cluster yet.
-//  286   // instead of suppressing a compiler warnings( for a code porting reasons )
-//  287   // fake unused call here and keep the code skeleton intact
-//  288  (void)pInMsg;
-//  289   if ( stat != ZFailure )
-//  290     zclMS_FindCallbacks( 0 );
-//  291 
-//  292   return ( stat );
-//  293 }
-//  294 
-//  295 /*********************************************************************
-//  296  * @fn      zclMS_ProcessIn_IlluminanceLevelSensingCmds
-//  297  *
-//  298  * @brief   Callback from ZCL to process incoming Commands specific
-//  299  *          to this cluster library on a command ID basis
-//  300  *
-//  301  * @param   pInMsg - pointer to the incoming message
-//  302  *
-//  303  * @return  ZStatus_t
-//  304  */
-//  305 static ZStatus_t zclMS_ProcessIn_IlluminanceLevelSensingCmds( zclIncoming_t *pInMsg )
-//  306 {
-//  307   ZStatus_t stat = ZSuccess;
-//  308   uint8 cmdID;
-//  309 
-//  310   cmdID = pInMsg->hdr.commandID;
-//  311 
-//  312   switch ( cmdID )				
-//  313   {
-//  314 
-//  315     default:
-//  316       stat = ZFailure;
-//  317       break;
-//  318   }
-//  319 
-//  320   return ( stat );
-//  321 }
-//  322 
-//  323 /*********************************************************************
-//  324  * @fn      zclMS_ProcessIn_TemperatureMeasurementCmds
-//  325  *
-//  326  * @brief   Callback from ZCL to process incoming Commands specific
-//  327  *          to this cluster library on a command ID basis
-//  328  *
-//  329  * @param   pInMsg - pointer to the incoming message
-//  330  *
-//  331  * @return  ZStatus_t
-//  332  */
-//  333 static ZStatus_t zclMS_ProcessIn_TemperatureMeasurementCmds( zclIncoming_t *pInMsg )
-//  334 {
-//  335   ZStatus_t stat = ZSuccess;
-//  336   uint8 cmdID;
-//  337 
-//  338   cmdID = pInMsg->hdr.commandID;
-//  339 
-//  340   switch ( cmdID )				
-//  341   {
-//  342 
-//  343     default:
-//  344       stat = ZFailure;
-//  345       break;
-//  346   }
-//  347 
-//  348   return ( stat );
-//  349 }
-//  350 
-//  351 /*********************************************************************
-//  352  * @fn      zclMS_ProcessIn_PressureMeasurementCmds
-//  353  *
-//  354  * @brief   Callback from ZCL to process incoming Commands specific
-//  355  *          to this cluster library on a command ID basis
-//  356  *
-//  357  * @param   pInMsg - pointer to the incoming message
-//  358  *
-//  359  * @return  ZStatus_t
-//  360  */
-//  361 static ZStatus_t zclMS_ProcessIn_PressureMeasurementCmds( zclIncoming_t *pInMsg )
-//  362 {
-//  363   ZStatus_t stat = ZSuccess;
-//  364   uint8 cmdID;
-//  365 
-//  366   cmdID = pInMsg->hdr.commandID;
-//  367 
-//  368   switch ( cmdID )				
-//  369   {
-//  370     default:
-//  371       stat = ZFailure;
-//  372       break;
-//  373   }
-//  374 
-//  375   return ( stat );
-//  376 }
-//  377 
-//  378 /*********************************************************************
-//  379  * @fn      zclMS_ProcessIn_FlowMeasurementCmds
-//  380  *
-//  381  * @brief   Callback from ZCL to process incoming Commands specific
-//  382  *          to this cluster library on a command ID basis
-//  383  *
-//  384  * @param   pInMsg - pointer to the incoming message
-//  385  *
-//  386  * @return  ZStatus_t
-//  387  */
-//  388 static ZStatus_t zclMS_ProcessIn_FlowMeasurementCmds( zclIncoming_t *pInMsg )
-//  389 {
-//  390   ZStatus_t stat = ZSuccess;
-//  391   uint8 cmdID;
-//  392 
-//  393   cmdID = pInMsg->hdr.commandID;
-//  394 
-//  395   switch ( cmdID )				
-//  396   {
-//  397 
-//  398     default:
-//  399       stat = ZFailure;
-//  400       break;
-//  401   }
-//  402 
-//  403   return ( stat );
-//  404 }
-//  405 
-//  406 /*********************************************************************
-//  407  * @fn      zclMS_ProcessIn_RelativeHumidityCmds
-//  408  *
-//  409  * @brief   Callback from ZCL to process incoming Commands specific
-//  410  *          to this cluster library on a command ID basis
-//  411  *
-//  412  * @param   pInMsg - pointer to the incoming message
-//  413  *
-//  414  * @return  ZStatus_t
-//  415  */
-//  416 static ZStatus_t zclMS_ProcessIn_RelativeHumidityCmds( zclIncoming_t *pInMsg )
-//  417 {
-//  418   ZStatus_t stat = ZSuccess;
-//  419   uint8 cmdID;
-//  420 
-//  421   cmdID = pInMsg->hdr.commandID;
-//  422 
-//  423   switch ( cmdID )				
-//  424   {
-//  425 
-//  426     default:
-//  427       stat = ZFailure;
-//  428       break;
-//  429   }
-//  430 
-//  431   return ( stat );
-//  432 }
-//  433 
-//  434 /*********************************************************************
-//  435  * @fn      zclMS_ProcessIn_OccupancySensingCmds
-//  436  *
-//  437  * @brief   Callback from ZCL to process incoming Commands specific
-//  438  *          to this cluster library on a command ID basis
-//  439  *
-//  440  * @param   pInMsg - pointer to the incoming message
-//  441  *
-//  442  * @return  ZStatus_t
-//  443  */
-//  444 static ZStatus_t zclMS_ProcessIn_OccupancySensingCmds( zclIncoming_t *pInMsg )
-//  445 {
-//  446   ZStatus_t stat = ZSuccess;
-//  447   uint8 cmdID;
-//  448 
-//  449   cmdID = pInMsg->hdr.commandID;
-//  450 
-//  451   switch ( cmdID )				
-//  452   {
-//  453 
-//  454     default:
-//  455       stat = ZFailure;
-//  456       break;
-//  457   }
-//  458 
-//  459   return ( stat );
-//  460 }
 //  461 
 //  462 /****************************************************************************
 //  463 ****************************************************************************/
 //  464 
 // 
-// 246 bytes in segment BANKED_CODE
-//  18 bytes in segment BANK_RELAYS
+// 433 bytes in segment BANKED_CODE
+//  66 bytes in segment BANK_RELAYS
 //   3 bytes in segment XDATA_Z
 // 
-//  18 bytes of CODE     memory
-// 246 bytes of HUGECODE memory
+//  66 bytes of CODE     memory
+// 433 bytes of HUGECODE memory
 //   3 bytes of XDATA    memory
 //
 //Errors: none

@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               16/Jul/2020  10:56:02
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  00:36:38
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,14 +13,15 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW940.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW29C1.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\zcl\zcl_ms.c" -D BDB_REPORTING -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS
-#        -lC "D:\AA\Z-Stack
+#        -D ZCL_ON_OFF -D ZCL_REPORT -D ZCL_REPORT_DESTINATION_DEVICE -lC
+#        "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -99,7 +100,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -292,7 +294,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
    \   000043   7004         JNZ       ??zclMS_RegisterCmdCallbacks_1
     125              return (ZMemError);
    \   000045   7910         MOV       R1,#0x10
-   \   000047   8046         SJMP      ??zclMS_RegisterCmdCallbacks_2
+   \   000047   804E         SJMP      ??zclMS_RegisterCmdCallbacks_2
     126          
     127            pNewItem->next = (zclMSCBRec_t *)NULL;
    \                     ??zclMS_RegisterCmdCallbacks_1:
@@ -324,10 +326,15 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     131            // Find spot in list
     132            if ( zclMSCBs == NULL )
    \   000066   90....       MOV       DPTR,#zclMSCBs
-   \   000069   12....       LCALL     ?Subroutine1 & 0xFFFF
-   \                     ??CrossCallReturnLabel_1:
-   \   00006C   90....       MOV       DPTR,#zclMSCBs
-   \   00006F   6017         JZ        ??zclMS_RegisterCmdCallbacks_3
+   \   000069   E0           MOVX      A,@DPTR
+   \   00006A   FA           MOV       R2,A
+   \   00006B   A3           INC       DPTR
+   \   00006C   E0           MOVX      A,@DPTR
+   \   00006D   FB           MOV       R3,A
+   \   00006E   EA           MOV       A,R2
+   \   00006F   4B           ORL       A,R3
+   \   000070   90....       MOV       DPTR,#zclMSCBs
+   \   000073   601B         JZ        ??zclMS_RegisterCmdCallbacks_3
     133            {
     134              zclMSCBs = pNewItem;
     135            }
@@ -335,53 +342,47 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     137            {
     138              // Look for end of list
     139              pLoop = zclMSCBs;
-   \   000071   E0           MOVX      A,@DPTR
-   \   000072   FC           MOV       R4,A
-   \   000073   A3           INC       DPTR
-   \   000074   E0           MOVX      A,@DPTR
-   \   000075   8003         SJMP      ??zclMS_RegisterCmdCallbacks_4
+   \   000075   E0           MOVX      A,@DPTR
+   \   000076   FC           MOV       R4,A
+   \   000077   A3           INC       DPTR
+   \   000078   E0           MOVX      A,@DPTR
+   \   000079   8003         SJMP      ??zclMS_RegisterCmdCallbacks_4
     140              while ( pLoop->next != NULL )
     141                pLoop = pLoop->next;
    \                     ??zclMS_RegisterCmdCallbacks_5:
-   \   000077   EA           MOV       A,R2
-   \   000078   FC           MOV       R4,A
-   \   000079   EB           MOV       A,R3
+   \   00007B   EA           MOV       A,R2
+   \   00007C   FC           MOV       R4,A
+   \   00007D   EB           MOV       A,R3
    \                     ??zclMS_RegisterCmdCallbacks_4:
-   \   00007A   FD           MOV       R5,A
-   \   00007B   8C82         MOV       DPL,R4
-   \   00007D   8D83         MOV       DPH,R5
-   \   00007F   12....       LCALL     ?Subroutine1 & 0xFFFF
-   \                     ??CrossCallReturnLabel_2:
-   \   000082   70F3         JNZ       ??zclMS_RegisterCmdCallbacks_5
+   \   00007E   FD           MOV       R5,A
+   \   00007F   8C82         MOV       DPL,R4
+   \   000081   8D83         MOV       DPH,R5
+   \   000083   E0           MOVX      A,@DPTR
+   \   000084   FA           MOV       R2,A
+   \   000085   A3           INC       DPTR
+   \   000086   E0           MOVX      A,@DPTR
+   \   000087   FB           MOV       R3,A
+   \   000088   EA           MOV       A,R2
+   \   000089   4B           ORL       A,R3
+   \   00008A   70EF         JNZ       ??zclMS_RegisterCmdCallbacks_5
     142          
     143              // Put new item at end of list
     144              pLoop->next = pNewItem;
-   \   000084   8C82         MOV       DPL,R4
-   \   000086   8D83         MOV       DPH,R5
+   \   00008C   8C82         MOV       DPL,R4
+   \   00008E   8D83         MOV       DPH,R5
    \                     ??zclMS_RegisterCmdCallbacks_3:
-   \   000088   E8           MOV       A,R0
-   \   000089   F0           MOVX      @DPTR,A
-   \   00008A   A3           INC       DPTR
-   \   00008B   E9           MOV       A,R1
-   \   00008C   F0           MOVX      @DPTR,A
+   \   000090   E8           MOV       A,R0
+   \   000091   F0           MOVX      @DPTR,A
+   \   000092   A3           INC       DPTR
+   \   000093   E9           MOV       A,R1
+   \   000094   F0           MOVX      @DPTR,A
     145            }
     146            return ( ZSuccess );
-   \   00008D   7900         MOV       R1,#0x0
+   \   000095   7900         MOV       R1,#0x0
    \                     ??zclMS_RegisterCmdCallbacks_2:
-   \   00008F   7F04         MOV       R7,#0x4
-   \   000091   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000097   7F04         MOV       R7,#0x4
+   \   000099   02....       LJMP      ?BANKED_LEAVE_XDATA
     147          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   E0           MOVX      A,@DPTR
-   \   000001   FA           MOV       R2,A
-   \   000002   A3           INC       DPTR
-   \   000003   E0           MOVX      A,@DPTR
-   \   000004   FB           MOV       R3,A
-   \   000005   EA           MOV       A,R2
-   \   000006   4B           ORL       A,R3
-   \   000007   22           RET
     148          
     149          /*********************************************************************
     150           * @fn      zclMS_FindCallbacks
@@ -411,42 +412,42 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     166                return ( pCBs->CBs );
     167              pCBs = pCBs->next;
    \                     ??zclMS_FindCallbacks_0:
-   \   000007   12....       LCALL     ?Subroutine1 & 0xFFFF
-   \                     ??CrossCallReturnLabel_0:
-   \   00000A   6018         JZ        ??zclMS_FindCallbacks_1
-   \   00000C   8A82         MOV       DPL,R2
-   \   00000E   8B83         MOV       DPH,R3
-   \   000010   A3           INC       DPTR
-   \   000011   A3           INC       DPTR
-   \   000012   E0           MOVX      A,@DPTR
-   \   000013   69           XRL       A,R1
-   \   000014   8A82         MOV       DPL,R2
-   \   000016   8B83         MOV       DPH,R3
-   \   000018   70ED         JNZ       ??zclMS_FindCallbacks_0
-   \   00001A   A3           INC       DPTR
-   \   00001B   A3           INC       DPTR
-   \   00001C   A3           INC       DPTR
-   \   00001D   E0           MOVX      A,@DPTR
-   \   00001E   FA           MOV       R2,A
+   \   000007   E0           MOVX      A,@DPTR
+   \   000008   FA           MOV       R2,A
+   \   000009   A3           INC       DPTR
+   \   00000A   E0           MOVX      A,@DPTR
+   \   00000B   FB           MOV       R3,A
+   \   00000C   EA           MOV       A,R2
+   \   00000D   4B           ORL       A,R3
+   \   00000E   6018         JZ        ??zclMS_FindCallbacks_1
+   \   000010   8A82         MOV       DPL,R2
+   \   000012   8B83         MOV       DPH,R3
+   \   000014   A3           INC       DPTR
+   \   000015   A3           INC       DPTR
+   \   000016   E0           MOVX      A,@DPTR
+   \   000017   69           XRL       A,R1
+   \   000018   8A82         MOV       DPL,R2
+   \   00001A   8B83         MOV       DPH,R3
+   \   00001C   70E9         JNZ       ??zclMS_FindCallbacks_0
+   \   00001E   A3           INC       DPTR
    \   00001F   A3           INC       DPTR
-   \   000020   E0           MOVX      A,@DPTR
-   \   000021   FB           MOV       R3,A
-   \   000022   8004         SJMP      ??zclMS_FindCallbacks_2
+   \   000020   A3           INC       DPTR
+   \   000021   E0           MOVX      A,@DPTR
+   \   000022   FA           MOV       R2,A
+   \   000023   A3           INC       DPTR
+   \   000024   E0           MOVX      A,@DPTR
+   \   000025   FB           MOV       R3,A
+   \   000026   8004         SJMP      ??zclMS_FindCallbacks_2
     168            }
     169            return ( (zclMS_AppCallbacks_t *)NULL );
    \                     ??zclMS_FindCallbacks_1:
-   \   000024   7A00         MOV       R2,#0x0
-   \   000026   7B00         MOV       R3,#0x0
+   \   000028   7A00         MOV       R2,#0x0
+   \   00002A   7B00         MOV       R3,#0x0
    \                     ??zclMS_FindCallbacks_2:
-   \   000028                REQUIRE ?Subroutine0
-   \   000028                ; // Fall through to label ?Subroutine0
+   \   00002C   D083         POP       DPH
+   \   00002E   D082         POP       DPL
+   \   000030   02....       LJMP      ?BRET
     170          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
     171          
     172          /*********************************************************************
     173           * @fn      zclMS_HdlIncoming
@@ -483,28 +484,17 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
    \   00000A   E0           MOVX      A,@DPTR
    \   00000B   5407         ANL       A,#0x7
    \   00000D   6401         XRL       A,#0x1
-   \   00000F   7016         JNZ       ??zclMS_HdlIncoming_0
+   \   00000F   7007         JNZ       ??zclMS_HdlIncoming_0
     193            {
     194              // Is this a manufacturer specific command?
     195              if ( pInMsg->hdr.fc.manuSpecific == 0 ) 
     196              {
     197                stat = zclMS_HdlInSpecificCommands( pInMsg );
-   \   000011                ; Setup parameters for call to function zclMS_FindCallbacks
-   \   000011   8A82         MOV       DPL,R2
-   \   000013   8B83         MOV       DPH,R3
-   \   000015   E0           MOVX      A,@DPTR
-   \   000016   F8           MOV       R0,A
-   \   000017   A3           INC       DPTR
-   \   000018   E0           MOVX      A,@DPTR
-   \   000019   C8           XCH       A,R0
-   \   00001A   2414         ADD       A,#0x14
-   \   00001C   F582         MOV       DPL,A
-   \   00001E   E4           CLR       A
-   \   00001F   38           ADDC      A,R0
-   \   000020   F583         MOV       DPH,A
-   \   000022   E0           MOVX      A,@DPTR
-   \   000023   F9           MOV       R1,A
-   \   000024   12....       LCALL     `??zclMS_FindCallbacks::?relay`; Banked call to: zclMS_FindCallbacks
+   \   000011                ; Setup parameters for call to function zclMS_HdlInSpecificCommands
+   \   000011   12....       LCALL     `??zclMS_HdlInSpecificCommands::?relay`; Banked call to: zclMS_HdlInSpecificCommands
+   \   000014   E9           MOV       A,R1
+   \   000015   F9           MOV       R1,A
+   \   000016   8002         SJMP      ??zclMS_HdlIncoming_1
     198              }
     199              else
     200              {
@@ -516,11 +506,14 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     206            {
     207              // Handle all the normal (Read, Write...) commands
     208              stat = ZFailure;
+   \                     ??zclMS_HdlIncoming_0:
+   \   000018   7901         MOV       R1,#0x1
     209            }
     210            return ( stat );
-   \                     ??zclMS_HdlIncoming_0:
-   \   000027   7901         MOV       R1,#0x1
-   \   000029   80..         SJMP      ?Subroutine0
+   \                     ??zclMS_HdlIncoming_1:
+   \   00001A   D083         POP       DPH
+   \   00001C   D082         POP       DPL
+   \   00001E   02....       LJMP      ?BRET
     211          }
     212          
     213          /*********************************************************************
@@ -533,52 +526,180 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     220           *
     221           * @return  ZStatus_t
     222           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     223          static ZStatus_t zclMS_HdlInSpecificCommands( zclIncoming_t *pInMsg )
+   \                     zclMS_HdlInSpecificCommands:
     224          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000   74F6         MOV       A,#-0xa
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 10
+   \   000005                ; Auto size: 0
+   \   000005   EA           MOV       A,R2
+   \   000006   FE           MOV       R6,A
+   \   000007   EB           MOV       A,R3
+   \   000008   FF           MOV       R7,A
     225            ZStatus_t stat = ZSuccess;
     226            zclMS_AppCallbacks_t *pCBs;
     227            
     228            // make sure endpoint exists
     229            pCBs = (void*)zclMS_FindCallbacks( pInMsg->msg->endPoint );
+   \   000009                ; Setup parameters for call to function zclMS_FindCallbacks
+   \   000009   8A82         MOV       DPL,R2
+   \   00000B   F583         MOV       DPH,A
+   \   00000D   E0           MOVX      A,@DPTR
+   \   00000E   F8           MOV       R0,A
+   \   00000F   A3           INC       DPTR
+   \   000010   E0           MOVX      A,@DPTR
+   \   000011   C8           XCH       A,R0
+   \   000012   2414         ADD       A,#0x14
+   \   000014   F582         MOV       DPL,A
+   \   000016   E4           CLR       A
+   \   000017   38           ADDC      A,R0
+   \   000018   F583         MOV       DPH,A
+   \   00001A   E0           MOVX      A,@DPTR
+   \   00001B   F9           MOV       R1,A
+   \   00001C   12....       LCALL     `??zclMS_FindCallbacks::?relay`; Banked call to: zclMS_FindCallbacks
+   \   00001F   8B..         MOV       ?V1,R3
+   \   000021   A9..         MOV       R1,?V1
     230            if ( pCBs == NULL )
+   \   000023   EA           MOV       A,R2
+   \   000024   49           ORL       A,R1
+   \   000025   6070         JZ        ??zclMS_HdlInSpecificCommands_0
     231              return ( ZFailure );
     232            
     233            switch ( pInMsg->msg->clusterId )			
+   \   000027   8E82         MOV       DPL,R6
+   \   000029   8F83         MOV       DPH,R7
+   \   00002B   E0           MOVX      A,@DPTR
+   \   00002C   F8           MOV       R0,A
+   \   00002D   A3           INC       DPTR
+   \   00002E   E0           MOVX      A,@DPTR
+   \   00002F   F583         MOV       DPH,A
+   \   000031   8882         MOV       DPL,R0
+   \   000033   A3           INC       DPTR
+   \   000034   A3           INC       DPTR
+   \   000035   A3           INC       DPTR
+   \   000036   A3           INC       DPTR
+   \   000037   E0           MOVX      A,@DPTR
+   \   000038   F5..         MOV       ?V0,A
+   \   00003A   A3           INC       DPTR
+   \   00003B   E0           MOVX      A,@DPTR
+   \   00003C   F5..         MOV       ?V1,A
+   \   00003E   78..         MOV       R0,#?V0
+   \   000040   12....       LCALL     ?US_SWITCH_DENSE
+   \                     `?<Jumptable for zclMS_HdlInSpecificCommands>_0`:
+   \   000043   0004         DW        1024
+   \   000045   06           DB        6
+   \   000046   ....         DW        ??zclMS_HdlInSpecificCommands_0
+   \   000048   ....         DW        ??zclMS_HdlInSpecificCommands_1
+   \   00004A   ....         DW        ??zclMS_HdlInSpecificCommands_2
+   \   00004C   ....         DW        ??zclMS_HdlInSpecificCommands_3
+   \   00004E   ....         DW        ??zclMS_HdlInSpecificCommands_4
+   \   000050   ....         DW        ??zclMS_HdlInSpecificCommands_5
+   \   000052   ....         DW        ??zclMS_HdlInSpecificCommands_6
+   \   000054   ....         DW        ??zclMS_HdlInSpecificCommands_7
     234            {
     235              case ZCL_CLUSTER_ID_MS_ILLUMINANCE_MEASUREMENT:
     236                stat = zclMS_ProcessIn_IlluminanceMeasurementCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_1:
+   \   000056                ; Setup parameters for call to function zclMS_ProcessIn_IlluminanceMeasurementCmds
+   \   000056   EE           MOV       A,R6
+   \   000057   FA           MOV       R2,A
+   \   000058   EF           MOV       A,R7
+   \   000059   FB           MOV       R3,A
+   \   00005A   12....       LCALL     `??zclMS_ProcessIn_IlluminanceMeasurementCmds::?`; Banked call to: zclMS_ProcessIn_IlluminanceMeasurementCmds
+   \   00005D   8034         SJMP      ??zclMS_HdlInSpecificCommands_8
     237                break;
     238          
     239              case ZCL_CLUSTER_ID_MS_ILLUMINANCE_LEVEL_SENSING_CONFIG:
     240                stat = zclMS_ProcessIn_IlluminanceLevelSensingCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_2:
+   \   00005F                ; Setup parameters for call to function zclMS_ProcessIn_IlluminanceLevelSensingCmds
+   \   00005F   EE           MOV       A,R6
+   \   000060   FA           MOV       R2,A
+   \   000061   EF           MOV       A,R7
+   \   000062   FB           MOV       R3,A
+   \   000063   12....       LCALL     `??zclMS_ProcessIn_IlluminanceLevelSensingCmds::`; Banked call to: zclMS_ProcessIn_IlluminanceLevelSensingCmds
+   \   000066   802B         SJMP      ??zclMS_HdlInSpecificCommands_8
     241                break;
     242          
     243              case ZCL_CLUSTER_ID_MS_TEMPERATURE_MEASUREMENT:
     244                stat = zclMS_ProcessIn_TemperatureMeasurementCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_3:
+   \   000068                ; Setup parameters for call to function zclMS_ProcessIn_TemperatureMeasurementCmds
+   \   000068   EE           MOV       A,R6
+   \   000069   FA           MOV       R2,A
+   \   00006A   EF           MOV       A,R7
+   \   00006B   FB           MOV       R3,A
+   \   00006C   12....       LCALL     `??zclMS_ProcessIn_TemperatureMeasurementCmds::?`; Banked call to: zclMS_ProcessIn_TemperatureMeasurementCmds
+   \   00006F   8022         SJMP      ??zclMS_HdlInSpecificCommands_8
     245                break;
     246          
     247              case ZCL_CLUSTER_ID_MS_PRESSURE_MEASUREMENT:
     248                stat = zclMS_ProcessIn_PressureMeasurementCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_4:
+   \   000071                ; Setup parameters for call to function zclMS_ProcessIn_PressureMeasurementCmds
+   \   000071   EE           MOV       A,R6
+   \   000072   FA           MOV       R2,A
+   \   000073   EF           MOV       A,R7
+   \   000074   FB           MOV       R3,A
+   \   000075   12....       LCALL     `??zclMS_ProcessIn_PressureMeasurementCmds::?rel`; Banked call to: zclMS_ProcessIn_PressureMeasurementCmds
+   \   000078   8019         SJMP      ??zclMS_HdlInSpecificCommands_8
     249                break;
     250          
     251              case ZCL_CLUSTER_ID_MS_FLOW_MEASUREMENT:
     252                stat = zclMS_ProcessIn_FlowMeasurementCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_5:
+   \   00007A                ; Setup parameters for call to function zclMS_ProcessIn_FlowMeasurementCmds
+   \   00007A   EE           MOV       A,R6
+   \   00007B   FA           MOV       R2,A
+   \   00007C   EF           MOV       A,R7
+   \   00007D   FB           MOV       R3,A
+   \   00007E   12....       LCALL     `??zclMS_ProcessIn_FlowMeasurementCmds::?relay`; Banked call to: zclMS_ProcessIn_FlowMeasurementCmds
+   \   000081   8010         SJMP      ??zclMS_HdlInSpecificCommands_8
     253                break;
     254          
     255              case ZCL_CLUSTER_ID_MS_RELATIVE_HUMIDITY:
     256                stat = zclMS_ProcessIn_RelativeHumidityCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_6:
+   \   000083                ; Setup parameters for call to function zclMS_ProcessIn_RelativeHumidityCmds
+   \   000083   EE           MOV       A,R6
+   \   000084   FA           MOV       R2,A
+   \   000085   EF           MOV       A,R7
+   \   000086   FB           MOV       R3,A
+   \   000087   12....       LCALL     `??zclMS_ProcessIn_RelativeHumidityCmds::?relay`; Banked call to: zclMS_ProcessIn_RelativeHumidityCmds
+   \   00008A   8007         SJMP      ??zclMS_HdlInSpecificCommands_8
     257                break;
     258                
     259              case ZCL_CLUSTER_ID_MS_OCCUPANCY_SENSING:
     260                stat = zclMS_ProcessIn_OccupancySensingCmds( pInMsg );
+   \                     ??zclMS_HdlInSpecificCommands_7:
+   \   00008C                ; Setup parameters for call to function zclMS_ProcessIn_OccupancySensingCmds
+   \   00008C   EE           MOV       A,R6
+   \   00008D   FA           MOV       R2,A
+   \   00008E   EF           MOV       A,R7
+   \   00008F   FB           MOV       R3,A
+   \   000090   12....       LCALL     `??zclMS_ProcessIn_OccupancySensingCmds::?relay`; Banked call to: zclMS_ProcessIn_OccupancySensingCmds
+   \                     ??zclMS_HdlInSpecificCommands_8:
+   \   000093   E9           MOV       A,R1
+   \   000094   F9           MOV       R1,A
     261                break;
+   \   000095   8002         SJMP      ??zclMS_HdlInSpecificCommands_9
     262          
     263              default:
     264                stat = ZFailure;
+   \                     ??zclMS_HdlInSpecificCommands_0:
+   \   000097   7901         MOV       R1,#0x1
     265                break;
     266            }
     267          
     268            return ( stat );
+   \                     ??zclMS_HdlInSpecificCommands_9:
+   \   000099   7F02         MOV       R7,#0x2
+   \   00009B   02....       LJMP      ?BANKED_LEAVE_XDATA
     269          }
     270          
     271          /*********************************************************************
@@ -591,8 +712,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     278           *
     279           * @return  ZStatus_t
     280           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     281          static ZStatus_t zclMS_ProcessIn_IlluminanceMeasurementCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_IlluminanceMeasurementCmds:
     282          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     283            ZStatus_t stat = ZFailure;
     284          
     285            // there are no specific command for this cluster yet.
@@ -603,6 +729,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     290              zclMS_FindCallbacks( 0 );
     291          
     292            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     293          }
     294          
     295          /*********************************************************************
@@ -615,8 +743,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     302           *
     303           * @return  ZStatus_t
     304           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     305          static ZStatus_t zclMS_ProcessIn_IlluminanceLevelSensingCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_IlluminanceLevelSensingCmds:
     306          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     307            ZStatus_t stat = ZSuccess;
     308            uint8 cmdID;
     309          
@@ -631,6 +764,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     318            }
     319          
     320            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     321          }
     322          
     323          /*********************************************************************
@@ -643,8 +778,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     330           *
     331           * @return  ZStatus_t
     332           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     333          static ZStatus_t zclMS_ProcessIn_TemperatureMeasurementCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_TemperatureMeasurementCmds:
     334          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     335            ZStatus_t stat = ZSuccess;
     336            uint8 cmdID;
     337          
@@ -659,6 +799,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     346            }
     347          
     348            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     349          }
     350          
     351          /*********************************************************************
@@ -671,8 +813,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     358           *
     359           * @return  ZStatus_t
     360           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     361          static ZStatus_t zclMS_ProcessIn_PressureMeasurementCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_PressureMeasurementCmds:
     362          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     363            ZStatus_t stat = ZSuccess;
     364            uint8 cmdID;
     365          
@@ -686,6 +833,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     373            }
     374          
     375            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     376          }
     377          
     378          /*********************************************************************
@@ -698,8 +847,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     385           *
     386           * @return  ZStatus_t
     387           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     388          static ZStatus_t zclMS_ProcessIn_FlowMeasurementCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_FlowMeasurementCmds:
     389          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     390            ZStatus_t stat = ZSuccess;
     391            uint8 cmdID;
     392          
@@ -714,6 +868,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     401            }
     402          
     403            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     404          }
     405          
     406          /*********************************************************************
@@ -726,8 +882,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     413           *
     414           * @return  ZStatus_t
     415           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     416          static ZStatus_t zclMS_ProcessIn_RelativeHumidityCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_RelativeHumidityCmds:
     417          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     418            ZStatus_t stat = ZSuccess;
     419            uint8 cmdID;
     420          
@@ -742,6 +903,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     429            }
     430          
     431            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     432          }
     433          
     434          /*********************************************************************
@@ -754,8 +917,13 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     441           *
     442           * @return  ZStatus_t
     443           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     444          static ZStatus_t zclMS_ProcessIn_OccupancySensingCmds( zclIncoming_t *pInMsg )
+   \                     zclMS_ProcessIn_OccupancySensingCmds:
     445          {
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
     446            ZStatus_t stat = ZSuccess;
     447            uint8 cmdID;
     448          
@@ -770,6 +938,8 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
     457            }
     458          
     459            return ( stat );
+   \   000000   7901         MOV       R1,#0x1
+   \   000002   02....       LJMP      ?BRET
     460          }
     461          
     462          /****************************************************************************
@@ -780,9 +950,25 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
 
    ISTACK XSTACK Function
    ------ ------ --------
-      2      0   zclMS_FindCallbacks
+      2     10   zclMS_FindCallbacks
+      0     10   zclMS_HdlInSpecificCommands
+        0     10   -> zclMS_FindCallbacks
+        0     10   -> zclMS_ProcessIn_FlowMeasurementCmds
+        0     10   -> zclMS_ProcessIn_IlluminanceLevelSensingCmds
+        0     10   -> zclMS_ProcessIn_IlluminanceMeasurementCmds
+        0     10   -> zclMS_ProcessIn_OccupancySensingCmds
+        0     10   -> zclMS_ProcessIn_PressureMeasurementCmds
+        0     10   -> zclMS_ProcessIn_RelativeHumidityCmds
+        0     10   -> zclMS_ProcessIn_TemperatureMeasurementCmds
       2      0   zclMS_HdlIncoming
-        2      0   -> zclMS_FindCallbacks
+        2      0   -> zclMS_HdlInSpecificCommands
+      0     10   zclMS_ProcessIn_FlowMeasurementCmds
+      0     10   zclMS_ProcessIn_IlluminanceLevelSensingCmds
+      0     10   zclMS_ProcessIn_IlluminanceMeasurementCmds
+      0     10   zclMS_ProcessIn_OccupancySensingCmds
+      0     10   zclMS_ProcessIn_PressureMeasurementCmds
+      0     10   zclMS_ProcessIn_RelativeHumidityCmds
+      0     10   zclMS_ProcessIn_TemperatureMeasurementCmds
       1     14   zclMS_RegisterCmdCallbacks
         0     12   -> osal_mem_alloc
         0     14   -> zcl_registerPlugin
@@ -792,22 +978,28 @@ D:\AA\Z-Stack 3.0.2\Components\stack\zcl\zcl_ms.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ?Subroutine0
-       8  ?Subroutine1
        2  zclMSCBs
        1  zclMSPluginRegisted
-      40  zclMS_FindCallbacks
-      43  zclMS_HdlIncoming
-     148  zclMS_RegisterCmdCallbacks
-      18  -- Other
+      51  zclMS_FindCallbacks
+     158  zclMS_HdlInSpecificCommands
+      33  zclMS_HdlIncoming
+       5  zclMS_ProcessIn_FlowMeasurementCmds
+       5  zclMS_ProcessIn_IlluminanceLevelSensingCmds
+       5  zclMS_ProcessIn_IlluminanceMeasurementCmds
+       5  zclMS_ProcessIn_OccupancySensingCmds
+       5  zclMS_ProcessIn_PressureMeasurementCmds
+       5  zclMS_ProcessIn_RelativeHumidityCmds
+       5  zclMS_ProcessIn_TemperatureMeasurementCmds
+     156  zclMS_RegisterCmdCallbacks
+      66  -- Other
 
  
- 246 bytes in segment BANKED_CODE
-  18 bytes in segment BANK_RELAYS
+ 433 bytes in segment BANKED_CODE
+  66 bytes in segment BANK_RELAYS
    3 bytes in segment XDATA_Z
  
-  18 bytes of CODE     memory
- 246 bytes of HUGECODE memory
+  66 bytes of CODE     memory
+ 433 bytes of HUGECODE memory
    3 bytes of XDATA    memory
 
 Errors: none

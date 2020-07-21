@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:23
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:44
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,14 +15,15 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWCA67.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW6B3E.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c" -D
 //        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 //        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
 //        xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 //        xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D
 //        ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -101,7 +102,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -876,12 +878,7 @@ MAC_SetRadioRegTable:
 //  495   paLnaChip = PA_LNA_NONE;
         MOV       DPTR,#paLnaChip
         CLR       A
-          CFI EndBlock cfiBlock0
-        REQUIRE ?Subroutine0
-        REQUIRE P0DIR
-        REQUIRE P1DIR
-        REQUIRE _A_P1
-        ; // Fall through to label ?Subroutine0
+        MOVX      @DPTR,A
 //  496 #endif
 //  497   
 //  498   if (paLnaChip == PA_LNA_SE2431L)
@@ -898,23 +895,17 @@ MAC_SetRadioRegTable:
 //  509     HAL_PA_LNA_RX_CSD_HIGH();
 //  510   }  
 //  511 }
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock1 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
-        MOVX      @DPTR,A
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock1
+          CFI EndBlock cfiBlock0
+        REQUIRE P0DIR
+        REQUIRE P1DIR
+        REQUIRE _A_P1
 //  512 
 //  513 
 //  514 /**************************************************************************************************
@@ -931,7 +922,7 @@ MAC_SetRadioRegTable:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  524 MAC_INTERNAL_API void macRadioTurnOnPower(void)
 macRadioTurnOnPower:
-          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Block cfiBlock1 Using cfiCommon0
           CFI Function macRadioTurnOnPower
         CODE
 //  525 {
@@ -1061,9 +1052,16 @@ macRadioTurnOnPower:
         MOVX      @DPTR,A
         MOVX      A,@DPTR
         ORL       A,#0x9
-        SJMP      ?Subroutine0
+        MOVX      @DPTR,A
 //  595 }
-          CFI EndBlock cfiBlock2
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock1
 //  596 
 //  597 
 //  598 /**************************************************************************************************
@@ -1080,7 +1078,7 @@ macRadioTurnOnPower:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  608 MAC_INTERNAL_API void macRadioTurnOffPower(void)
 macRadioTurnOffPower:
-          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Block cfiBlock2 Using cfiCommon0
           CFI Function macRadioTurnOffPower
         CODE
 //  609 {
@@ -1127,9 +1125,16 @@ macRadioTurnOffPower:
         MOV       DPTR,#0x61a5
         MOVX      A,@DPTR
         CLR       0xE0 /* A   */.2
-        SJMP      ?Subroutine0
+        MOVX      @DPTR,A
 //  642 }
-          CFI EndBlock cfiBlock3
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock2
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??MAC_SetRadioRegTable::?relay`:
@@ -1194,7 +1199,7 @@ macRadioTurnOffPower:
 //  681 /**************************************************************************************************
 //  682  */
 // 
-// 103 bytes in segment BANKED_CODE
+// 115 bytes in segment BANKED_CODE
 //  18 bytes in segment BANK_RELAYS
 //  58 bytes in segment CODE_C
 //   3 bytes in segment SFR_AN
@@ -1202,7 +1207,7 @@ macRadioTurnOffPower:
 // 
 //  76 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 3 bytes shared)
-// 103 bytes of HUGECODE memory
+// 115 bytes of HUGECODE memory
 //   2 bytes of XDATA    memory
 //
 //Errors: none

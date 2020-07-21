@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:28
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  15:06:50
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWE018.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW82D6.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\osal\common\OSAL_Memory.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -482,46 +484,49 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
    \   000018   12....       LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
     289            HAL_ENTER_CRITICAL_SECTION(intState);  // Hold off interrupts.
    \                     ??osal_mem_kick_0:
-   \   00001B   85A8..       MOV       ?V0,0xa8+0x0
-   \   00001E   C2AF         CLR       0xa8.7
+   \   00001B   A2AF         MOV       C,0xa8.7
+   \   00001D   E4           CLR       A
+   \   00001E   33           RLC       A
+   \   00001F   F5..         MOV       ?V0,A
+   \   000021   C2AF         CLR       0xa8.7
     290          
     291            /* All long-lived allocations have filled the LL block reserved in the small-block bucket.
     292             * Set 'osalMemStat' so searching for memory in this bucket from here onward will only be done
     293             * for sizes meeting the OSALMEM_SMALL_BLKSZ criteria.
     294             */
     295            ff1 = tmp - 1;       // Set 'ff1' to point to the first available memory after the LL block.
-   \   000020   EE           MOV       A,R6
-   \   000021   24FE         ADD       A,#-0x2
-   \   000023   F8           MOV       R0,A
-   \   000024   EF           MOV       A,R7
-   \   000025   34FF         ADDC      A,#-0x1
-   \   000027   F9           MOV       R1,A
-   \   000028   90....       MOV       DPTR,#ff1
-   \   00002B   E8           MOV       A,R0
-   \   00002C   F0           MOVX      @DPTR,A
-   \   00002D   A3           INC       DPTR
-   \   00002E   E9           MOV       A,R1
+   \   000023   EE           MOV       A,R6
+   \   000024   24FE         ADD       A,#-0x2
+   \   000026   F8           MOV       R0,A
+   \   000027   EF           MOV       A,R7
+   \   000028   34FF         ADDC      A,#-0x1
+   \   00002A   F9           MOV       R1,A
+   \   00002B   90....       MOV       DPTR,#ff1
+   \   00002E   E8           MOV       A,R0
    \   00002F   F0           MOVX      @DPTR,A
+   \   000030   A3           INC       DPTR
+   \   000031   E9           MOV       A,R1
+   \   000032   F0           MOVX      @DPTR,A
     296            osal_mem_free(tmp);
-   \   000030                ; Setup parameters for call to function osal_mem_free
-   \   000030   EE           MOV       A,R6
-   \   000031   FA           MOV       R2,A
-   \   000032   EF           MOV       A,R7
-   \   000033   FB           MOV       R3,A
-   \   000034   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
+   \   000033                ; Setup parameters for call to function osal_mem_free
+   \   000033   EE           MOV       A,R6
+   \   000034   FA           MOV       R2,A
+   \   000035   EF           MOV       A,R7
+   \   000036   FB           MOV       R3,A
+   \   000037   12....       LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
     297            osalMemStat = 0x01;  // Set 'osalMemStat' after the free because it enables memory profiling.
-   \   000037   90....       MOV       DPTR,#osalMemStat
-   \   00003A   7401         MOV       A,#0x1
-   \   00003C   F0           MOVX      @DPTR,A
+   \   00003A   90....       MOV       DPTR,#osalMemStat
+   \   00003D   7401         MOV       A,#0x1
+   \   00003F   F0           MOVX      @DPTR,A
     298          
     299            HAL_EXIT_CRITICAL_SECTION(intState);  // Re-enable interrupts.
-   \   00003D   E5..         MOV       A,?V0
-   \   00003F   A2E7         MOV       C,0xE0 /* A   */.7
-   \   000041   92AF         MOV       0xa8.7,C
+   \   000040   E5..         MOV       A,?V0
+   \   000042   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000044   92AF         MOV       0xa8.7,C
     300          }
-   \   000043   7F02         MOV       R7,#0x2
-   \   000045   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \   000048                REQUIRE _A_IEN0
+   \   000046   7F02         MOV       R7,#0x2
+   \   000048   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00004B                REQUIRE _A_IEN0
     301          
     302          /**************************************************************************************************
     303           * @fn          osal_mem_alloc
@@ -637,19 +642,18 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
    \   00003D   E0           MOVX      A,@DPTR
    \   00003E   F5..         MOV       ?V1,A
    \   000040   5480         ANL       A,#0x80
-   \   000042   6005         JZ        ??osal_mem_alloc_3
+   \   000042   6004         JZ        ??osal_mem_alloc_3
     361              {
     362                coal = 0;
    \   000044   7E00         MOV       R6,#0x0
-   \   000046   02....       LJMP      ??osal_mem_alloc_4 & 0xFFFF
+   \   000046   8057         SJMP      ??osal_mem_alloc_4
     363              }
     364              else
     365              {
     366                if ( coal != 0 )
    \                     ??osal_mem_alloc_3:
-   \   000049   EE           MOV       A,R6
-   \   00004A   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00004C   507C         JNC       ??osal_mem_alloc_5
+   \   000048   EE           MOV       A,R6
+   \   000049   6041         JZ        ??osal_mem_alloc_5
     367                {
     368          #if ( OSALMEM_METRICS )
     369                  blkCnt--;
@@ -657,130 +661,173 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
     371          #endif
     372          
     373                  prev->hdr.len += hdr->hdr.len;
-   \   00004E   8C82         MOV       DPL,R4
-   \   000050   8D83         MOV       DPH,R5
-   \   000052   E0           MOVX      A,@DPTR
-   \   000053   F5..         MOV       ?V2,A
-   \   000055   A3           INC       DPTR
-   \   000056   E0           MOVX      A,@DPTR
-   \   000057   F5..         MOV       ?V3,A
-   \   000059   5480         ANL       A,#0x80
-   \   00005B   F5..         MOV       ?V5,A
-   \   00005D   E5..         MOV       A,?V2
-   \   00005F   25..         ADD       A,?V0
-   \   000061   F5..         MOV       ?V0,A
-   \   000063   E5..         MOV       A,?V3
-   \   000065   35..         ADDC      A,?V1
-   \   000067   547F         ANL       A,#0x7f
-   \   000069   F5..         MOV       ?V1,A
-   \   00006B   E5..         MOV       A,?V5
-   \   00006D   45..         ORL       A,?V1
-   \   00006F   F5..         MOV       ?V1,A
-   \   000071   8C82         MOV       DPL,R4
-   \   000073   8D83         MOV       DPH,R5
-   \   000075   E5..         MOV       A,?V0
-   \   000077   F0           MOVX      @DPTR,A
-   \   000078   A3           INC       DPTR
-   \   000079   E5..         MOV       A,?V1
-   \   00007B   F0           MOVX      @DPTR,A
+   \   00004B   8C82         MOV       DPL,R4
+   \   00004D   8D83         MOV       DPH,R5
+   \   00004F   E0           MOVX      A,@DPTR
+   \   000050   F5..         MOV       ?V2,A
+   \   000052   A3           INC       DPTR
+   \   000053   E0           MOVX      A,@DPTR
+   \   000054   F5..         MOV       ?V3,A
+   \   000056   5480         ANL       A,#0x80
+   \   000058   F5..         MOV       ?V5,A
+   \   00005A   E5..         MOV       A,?V2
+   \   00005C   25..         ADD       A,?V0
+   \   00005E   F5..         MOV       ?V0,A
+   \   000060   E5..         MOV       A,?V3
+   \   000062   35..         ADDC      A,?V1
+   \   000064   547F         ANL       A,#0x7f
+   \   000066   F5..         MOV       ?V1,A
+   \   000068   E5..         MOV       A,?V5
+   \   00006A   45..         ORL       A,?V1
+   \   00006C   F5..         MOV       ?V1,A
+   \   00006E   8C82         MOV       DPL,R4
+   \   000070   8D83         MOV       DPH,R5
+   \   000072   E5..         MOV       A,?V0
+   \   000074   F0           MOVX      @DPTR,A
+   \   000075   A3           INC       DPTR
+   \   000076   E5..         MOV       A,?V1
+   \   000078   F0           MOVX      @DPTR,A
     374          
     375                  if ( prev->hdr.len >= size )
-   \   00007C   547F         ANL       A,#0x7f
-   \   00007E   F5..         MOV       ?V1,A
-   \   000080   C3           CLR       C
-   \   000081   E5..         MOV       A,?V0
-   \   000083   9A           SUBB      A,R2
-   \   000084   E5..         MOV       A,?V1
-   \   000086   9B           SUBB      A,R3
-   \   000087   4054         JC        ??osal_mem_alloc_4
+   \   000079   547F         ANL       A,#0x7f
+   \   00007B   F5..         MOV       ?V1,A
+   \   00007D   C3           CLR       C
+   \   00007E   E5..         MOV       A,?V0
+   \   000080   9A           SUBB      A,R2
+   \   000081   E5..         MOV       A,?V1
+   \   000083   9B           SUBB      A,R3
+   \   000084   4019         JC        ??osal_mem_alloc_4
     376                  {
     377                    hdr = prev;
-   \   000089   EC           MOV       A,R4
-   \   00008A   F8           MOV       R0,A
-   \   00008B   ED           MOV       A,R5
-   \   00008C   F9           MOV       R1,A
+   \   000086   EC           MOV       A,R4
+   \   000087   F8           MOV       R0,A
+   \   000088   ED           MOV       A,R5
+   \   000089   F9           MOV       R1,A
     378                    break;
+   \   00008A   8040         SJMP      ??osal_mem_alloc_6
     379                  }
     380                }
     381                else
     382                {
     383                  if ( hdr->hdr.len >= size )
+   \                     ??osal_mem_alloc_5:
+   \   00008C   E5..         MOV       A,?V1
+   \   00008E   547F         ANL       A,#0x7f
+   \   000090   FD           MOV       R5,A
+   \   000091   C3           CLR       C
+   \   000092   E5..         MOV       A,?V0
+   \   000094   9A           SUBB      A,R2
+   \   000095   ED           MOV       A,R5
+   \   000096   9B           SUBB      A,R3
+   \   000097   5033         JNC       ??osal_mem_alloc_6
     384                  {
     385                    break;
     386                  }
     387          
     388                  coal = 1;
+   \   000099   7E01         MOV       R6,#0x1
     389                  prev = hdr;
+   \   00009B   E8           MOV       A,R0
+   \   00009C   FC           MOV       R4,A
+   \   00009D   E9           MOV       A,R1
+   \   00009E   FD           MOV       R5,A
     390                }
     391              }
     392          
     393              hdr = (osalMemHdr_t *)((uint8 *)hdr + hdr->hdr.len);
+   \                     ??osal_mem_alloc_4:
+   \   00009F   8882         MOV       DPL,R0
+   \   0000A1   8983         MOV       DPH,R1
+   \   0000A3   E0           MOVX      A,@DPTR
+   \   0000A4   F5..         MOV       ?V0,A
+   \   0000A6   A3           INC       DPTR
+   \   0000A7   E0           MOVX      A,@DPTR
+   \   0000A8   547F         ANL       A,#0x7f
+   \   0000AA   F5..         MOV       ?V1,A
+   \   0000AC   E8           MOV       A,R0
+   \   0000AD   25..         ADD       A,?V0
+   \   0000AF   F8           MOV       R0,A
+   \   0000B0   E9           MOV       A,R1
+   \   0000B1   35..         ADDC      A,?V1
+   \   0000B3   F9           MOV       R1,A
     394          
     395              if ( hdr->val == 0 )
+   \   0000B4   8882         MOV       DPL,R0
+   \   0000B6   F583         MOV       DPH,A
+   \   0000B8   E0           MOVX      A,@DPTR
+   \   0000B9   F5..         MOV       ?V0,A
+   \   0000BB   A3           INC       DPTR
+   \   0000BC   E0           MOVX      A,@DPTR
+   \   0000BD   F5..         MOV       ?V1,A
+   \   0000BF   E5..         MOV       A,?V0
+   \   0000C1   45..         ORL       A,?V1
+   \   0000C3   6003         JZ        $+5
+   \   0000C5   02....       LJMP      ??osal_mem_alloc_2 & 0xFFFF
     396              {
     397                hdr = NULL;
+   \   0000C8   7800         MOV       R0,#0x0
+   \   0000CA   7900         MOV       R1,#0x0
     398                break;
     399              }
     400            } while (1);
     401          
     402            if ( hdr != NULL )
    \                     ??osal_mem_alloc_6:
-   \   00008D   E8           MOV       A,R0
-   \   00008E   49           ORL       A,R1
-   \   00008F   7003         JNZ       $+5
-   \   000091   02....       LJMP      ??osal_mem_alloc_7 & 0xFFFF
+   \   0000CC   E8           MOV       A,R0
+   \   0000CD   49           ORL       A,R1
+   \   0000CE   6075         JZ        ??osal_mem_alloc_7
     403            {
     404              uint16 tmp = hdr->hdr.len - size;
-   \   000094   8882         MOV       DPL,R0
-   \   000096   8983         MOV       DPH,R1
-   \   000098   E0           MOVX      A,@DPTR
-   \   000099   FC           MOV       R4,A
-   \   00009A   A3           INC       DPTR
-   \   00009B   E0           MOVX      A,@DPTR
-   \   00009C   547F         ANL       A,#0x7f
-   \   00009E   FD           MOV       R5,A
-   \   00009F   EC           MOV       A,R4
-   \   0000A0   C3           CLR       C
-   \   0000A1   9A           SUBB      A,R2
-   \   0000A2   FC           MOV       R4,A
-   \   0000A3   ED           MOV       A,R5
-   \   0000A4   9B           SUBB      A,R3
-   \   0000A5   FD           MOV       R5,A
+   \   0000D0   8882         MOV       DPL,R0
+   \   0000D2   8983         MOV       DPH,R1
+   \   0000D4   E0           MOVX      A,@DPTR
+   \   0000D5   FC           MOV       R4,A
+   \   0000D6   A3           INC       DPTR
+   \   0000D7   E0           MOVX      A,@DPTR
+   \   0000D8   547F         ANL       A,#0x7f
+   \   0000DA   FD           MOV       R5,A
+   \   0000DB   EC           MOV       A,R4
+   \   0000DC   C3           CLR       C
+   \   0000DD   9A           SUBB      A,R2
+   \   0000DE   FC           MOV       R4,A
+   \   0000DF   ED           MOV       A,R5
+   \   0000E0   9B           SUBB      A,R3
+   \   0000E1   FD           MOV       R5,A
     405          
     406              // Determine whether the threshold for splitting is met.
     407              if ( tmp >= OSALMEM_MIN_BLKSZ )
-   \   0000A6   C3           CLR       C
-   \   0000A7   EC           MOV       A,R4
-   \   0000A8   9404         SUBB      A,#0x4
-   \   0000AA   ED           MOV       A,R5
-   \   0000AB   9400         SUBB      A,#0x0
-   \   0000AD   405D         JC        ??osal_mem_alloc_8
+   \   0000E2   C3           CLR       C
+   \   0000E3   EC           MOV       A,R4
+   \   0000E4   9404         SUBB      A,#0x4
+   \   0000E6   ED           MOV       A,R5
+   \   0000E7   9400         SUBB      A,#0x0
+   \   0000E9   401B         JC        ??osal_mem_alloc_8
     408              {
     409                // Split the block before allocating it.
     410                osalMemHdr_t *next = (osalMemHdr_t *)((uint8 *)hdr + size);
     411                next->val = tmp;                     // Set 'len' & clear 'inUse' field.
-   \   0000AF   E8           MOV       A,R0
-   \   0000B0   2A           ADD       A,R2
-   \   0000B1   F582         MOV       DPL,A
-   \   0000B3   E9           MOV       A,R1
-   \   0000B4   3B           ADDC      A,R3
-   \   0000B5   F583         MOV       DPH,A
-   \   0000B7   EC           MOV       A,R4
-   \   0000B8   F0           MOVX      @DPTR,A
-   \   0000B9   A3           INC       DPTR
-   \   0000BA   ED           MOV       A,R5
-   \   0000BB   F0           MOVX      @DPTR,A
+   \   0000EB   E8           MOV       A,R0
+   \   0000EC   2A           ADD       A,R2
+   \   0000ED   F582         MOV       DPL,A
+   \   0000EF   E9           MOV       A,R1
+   \   0000F0   3B           ADDC      A,R3
+   \   0000F1   F583         MOV       DPH,A
+   \   0000F3   EC           MOV       A,R4
+   \   0000F4   F0           MOVX      @DPTR,A
+   \   0000F5   A3           INC       DPTR
+   \   0000F6   ED           MOV       A,R5
+   \   0000F7   F0           MOVX      @DPTR,A
     412                hdr->val = (size | OSALMEM_IN_USE);  // Set 'len' & 'inUse' field.
-   \   0000BC   EB           MOV       A,R3
-   \   0000BD   4480         ORL       A,#0x80
-   \   0000BF   FB           MOV       R3,A
-   \   0000C0   8882         MOV       DPL,R0
-   \   0000C2   8983         MOV       DPH,R1
-   \   0000C4   EA           MOV       A,R2
-   \   0000C5   F0           MOVX      @DPTR,A
-   \   0000C6   A3           INC       DPTR
-   \   0000C7   EB           MOV       A,R3
-   \   0000C8   804A         SJMP      ??osal_mem_alloc_9
+   \   0000F8   EB           MOV       A,R3
+   \   0000F9   4480         ORL       A,#0x80
+   \   0000FB   FB           MOV       R3,A
+   \   0000FC   8882         MOV       DPL,R0
+   \   0000FE   8983         MOV       DPH,R1
+   \   000100   EA           MOV       A,R2
+   \   000101   F0           MOVX      @DPTR,A
+   \   000102   A3           INC       DPTR
+   \   000103   EB           MOV       A,R3
+   \   000104   8008         SJMP      ??osal_mem_alloc_9
     413          
     414          #if ( OSALMEM_METRICS )
     415                blkCnt++;
@@ -791,50 +838,6 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
     420                memAlo += size;
     421          #endif
     422              }
-   \                     ??osal_mem_alloc_5:
-   \   0000CA   E5..         MOV       A,?V1
-   \   0000CC   547F         ANL       A,#0x7f
-   \   0000CE   FD           MOV       R5,A
-   \   0000CF   C3           CLR       C
-   \   0000D0   E5..         MOV       A,?V0
-   \   0000D2   9A           SUBB      A,R2
-   \   0000D3   ED           MOV       A,R5
-   \   0000D4   9B           SUBB      A,R3
-   \   0000D5   50B6         JNC       ??osal_mem_alloc_6
-   \   0000D7   7E01         MOV       R6,#0x1
-   \   0000D9   E8           MOV       A,R0
-   \   0000DA   FC           MOV       R4,A
-   \   0000DB   E9           MOV       A,R1
-   \   0000DC   FD           MOV       R5,A
-   \                     ??osal_mem_alloc_4:
-   \   0000DD   8882         MOV       DPL,R0
-   \   0000DF   8983         MOV       DPH,R1
-   \   0000E1   E0           MOVX      A,@DPTR
-   \   0000E2   F5..         MOV       ?V0,A
-   \   0000E4   A3           INC       DPTR
-   \   0000E5   E0           MOVX      A,@DPTR
-   \   0000E6   547F         ANL       A,#0x7f
-   \   0000E8   F5..         MOV       ?V1,A
-   \   0000EA   E8           MOV       A,R0
-   \   0000EB   25..         ADD       A,?V0
-   \   0000ED   F8           MOV       R0,A
-   \   0000EE   E9           MOV       A,R1
-   \   0000EF   35..         ADDC      A,?V1
-   \   0000F1   F9           MOV       R1,A
-   \   0000F2   8882         MOV       DPL,R0
-   \   0000F4   F583         MOV       DPH,A
-   \   0000F6   E0           MOVX      A,@DPTR
-   \   0000F7   F5..         MOV       ?V0,A
-   \   0000F9   A3           INC       DPTR
-   \   0000FA   E0           MOVX      A,@DPTR
-   \   0000FB   F5..         MOV       ?V1,A
-   \   0000FD   E5..         MOV       A,?V0
-   \   0000FF   45..         ORL       A,?V1
-   \   000101   6003         JZ        $+5
-   \   000103   02....       LJMP      ??osal_mem_alloc_2 & 0xFFFF
-   \   000106   7800         MOV       R0,#0x0
-   \   000108   7900         MOV       R1,#0x0
-   \   00010A   803F         SJMP      ??osal_mem_alloc_7
     423              else
     424              {
     425          #if ( OSALMEM_METRICS )
@@ -844,13 +847,13 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
     429          
     430                hdr->hdr.inUse = TRUE;
    \                     ??osal_mem_alloc_8:
-   \   00010C   8882         MOV       DPL,R0
-   \   00010E   8983         MOV       DPH,R1
-   \   000110   A3           INC       DPTR
-   \   000111   E0           MOVX      A,@DPTR
-   \   000112   4480         ORL       A,#0x80
+   \   000106   8882         MOV       DPL,R0
+   \   000108   8983         MOV       DPH,R1
+   \   00010A   A3           INC       DPTR
+   \   00010B   E0           MOVX      A,@DPTR
+   \   00010C   4480         ORL       A,#0x80
    \                     ??osal_mem_alloc_9:
-   \   000114   F0           MOVX      @DPTR,A
+   \   00010E   F0           MOVX      @DPTR,A
     431              }
     432          
     433          #if ( OSALMEM_METRICS )
@@ -899,60 +902,60 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
     476          #endif
     477          
     478              if ((osalMemStat != 0) && (ff1 == hdr))
-   \   000115   90....       MOV       DPTR,#osalMemStat
+   \   00010F   90....       MOV       DPTR,#osalMemStat
+   \   000112   E0           MOVX      A,@DPTR
+   \   000113   6029         JZ        ??osal_mem_alloc_10
+   \   000115   90....       MOV       DPTR,#ff1
    \   000118   E0           MOVX      A,@DPTR
-   \   000119   6029         JZ        ??osal_mem_alloc_10
-   \   00011B   90....       MOV       DPTR,#ff1
-   \   00011E   E0           MOVX      A,@DPTR
-   \   00011F   FA           MOV       R2,A
-   \   000120   A3           INC       DPTR
-   \   000121   E0           MOVX      A,@DPTR
-   \   000122   FB           MOV       R3,A
-   \   000123   E8           MOV       A,R0
-   \   000124   6A           XRL       A,R2
-   \   000125   7002         JNZ       ??osal_mem_alloc_11
-   \   000127   E9           MOV       A,R1
-   \   000128   6B           XRL       A,R3
+   \   000119   FA           MOV       R2,A
+   \   00011A   A3           INC       DPTR
+   \   00011B   E0           MOVX      A,@DPTR
+   \   00011C   FB           MOV       R3,A
+   \   00011D   E8           MOV       A,R0
+   \   00011E   6A           XRL       A,R2
+   \   00011F   7002         JNZ       ??osal_mem_alloc_11
+   \   000121   E9           MOV       A,R1
+   \   000122   6B           XRL       A,R3
    \                     ??osal_mem_alloc_11:
-   \   000129   7019         JNZ       ??osal_mem_alloc_10
+   \   000123   7019         JNZ       ??osal_mem_alloc_10
     479              {
     480                ff1 = (osalMemHdr_t *)((uint8 *)hdr + hdr->hdr.len);
-   \   00012B   8882         MOV       DPL,R0
-   \   00012D   8983         MOV       DPH,R1
-   \   00012F   E0           MOVX      A,@DPTR
-   \   000130   FA           MOV       R2,A
-   \   000131   A3           INC       DPTR
-   \   000132   E0           MOVX      A,@DPTR
-   \   000133   547F         ANL       A,#0x7f
+   \   000125   8882         MOV       DPL,R0
+   \   000127   8983         MOV       DPH,R1
+   \   000129   E0           MOVX      A,@DPTR
+   \   00012A   FA           MOV       R2,A
+   \   00012B   A3           INC       DPTR
+   \   00012C   E0           MOVX      A,@DPTR
+   \   00012D   547F         ANL       A,#0x7f
+   \   00012F   FB           MOV       R3,A
+   \   000130   E8           MOV       A,R0
+   \   000131   2A           ADD       A,R2
+   \   000132   FA           MOV       R2,A
+   \   000133   E9           MOV       A,R1
+   \   000134   3B           ADDC      A,R3
    \   000135   FB           MOV       R3,A
-   \   000136   E8           MOV       A,R0
-   \   000137   2A           ADD       A,R2
-   \   000138   FA           MOV       R2,A
-   \   000139   E9           MOV       A,R1
-   \   00013A   3B           ADDC      A,R3
-   \   00013B   FB           MOV       R3,A
-   \   00013C   90....       MOV       DPTR,#ff1
-   \   00013F   EA           MOV       A,R2
-   \   000140   F0           MOVX      @DPTR,A
-   \   000141   A3           INC       DPTR
-   \   000142   EB           MOV       A,R3
-   \   000143   F0           MOVX      @DPTR,A
+   \   000136   90....       MOV       DPTR,#ff1
+   \   000139   EA           MOV       A,R2
+   \   00013A   F0           MOVX      @DPTR,A
+   \   00013B   A3           INC       DPTR
+   \   00013C   EB           MOV       A,R3
+   \   00013D   F0           MOVX      @DPTR,A
     481              }
     482          
     483              hdr++;
    \                     ??osal_mem_alloc_10:
-   \   000144   E8           MOV       A,R0
-   \   000145   2402         ADD       A,#0x2
-   \   000147   F8           MOV       R0,A
-   \   000148   5001         JNC       ??osal_mem_alloc_7
-   \   00014A   09           INC       R1
+   \   00013E   E8           MOV       A,R0
+   \   00013F   2402         ADD       A,#0x2
+   \   000141   F8           MOV       R0,A
+   \   000142   5001         JNC       ??osal_mem_alloc_7
+   \   000144   09           INC       R1
     484            }
     485          
     486            HAL_EXIT_CRITICAL_SECTION( intState );  // Re-enable interrupts.
    \                     ??osal_mem_alloc_7:
-   \   00014B   EF           MOV       A,R7
-   \   00014C   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00014E   92AF         MOV       0xa8.7,C
+   \   000145   EF           MOV       A,R7
+   \   000146   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000148   92AF         MOV       0xa8.7,C
     487          
     488            HAL_ASSERT(((size_t)hdr % sizeof(halDataAlign_t)) == 0);
     489          
@@ -960,13 +963,13 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
     491            dprintf("osal_mem_alloc(%u)->%lx:%s:%u\n", size, (unsigned) hdr, fname, lnum);
     492          #endif /* DPRINTF_OSALHEAPTRACE */
     493            return (void *)hdr;
-   \   000150   E8           MOV       A,R0
-   \   000151   FA           MOV       R2,A
-   \   000152   E9           MOV       A,R1
-   \   000153   FB           MOV       R3,A
-   \   000154   7F06         MOV       R7,#0x6
-   \   000156   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \   000159                REQUIRE _A_IEN0
+   \   00014A   E8           MOV       A,R0
+   \   00014B   FA           MOV       R2,A
+   \   00014C   E9           MOV       A,R1
+   \   00014D   FB           MOV       R3,A
+   \   00014E   7F06         MOV       R7,#0x6
+   \   000150   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000153                REQUIRE _A_IEN0
     494          }
     495          
     496          /**************************************************************************************************
@@ -1211,22 +1214,22 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Memory.c
        1  _A_IEN0
        2  ff1
        1  osalMemStat
-     345  osal_mem_alloc
+     339  osal_mem_alloc
       95  osal_mem_free
       54  osal_mem_init
-      72  osal_mem_kick
+      75  osal_mem_kick
     2048  theHeap
       24  -- Other
 
  
-   566 bytes in segment BANKED_CODE
+   563 bytes in segment BANKED_CODE
     24 bytes in segment BANK_RELAYS
      1 byte  in segment SFR_AN
  2 051 bytes in segment XDATA_Z
  
     24 bytes of CODE     memory
      0 bytes of DATA     memory (+ 1 byte shared)
-   566 bytes of HUGECODE memory
+   563 bytes of HUGECODE memory
  2 051 bytes of XDATA    memory
 
 Errors: none

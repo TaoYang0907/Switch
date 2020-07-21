@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:27
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:05
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWDC7B.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW8528.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -294,7 +296,7 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   000005                ; Auto size: 0
    \   000005   E9           MOV       A,R1
     128            if ( level == OB_COLD )
-   \   000006   7020         JNZ       ??InitBoard_0
+   \   000006   700F         JNZ       ??InitBoard_0
     129            {
     130              // IAR does not zero-out this byte below the XSTACK.
     131              *(uint8 *)0x0 = 0;
@@ -308,41 +310,25 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   00000F   12....       LCALL     `??osal_int_disable::?relay`; Banked call to: osal_int_disable
     134              // Check for Brown-Out reset
     135              ChkReset();
-   \   000012   E59D         MOV       A,0x9d
-   \   000014   5418         ANL       A,#0x18
-   \   000016   F8           MOV       R0,A
-   \   000017   6018         JZ        ??InitBoard_1
-   \   000019   7408         MOV       A,#0x8
-   \   00001B   68           XRL       A,R0
-   \   00001C   6013         JZ        ??InitBoard_1
-   \   00001E   7410         MOV       A,#0x10
-   \   000020   68           XRL       A,R0
-   \   000021   600E         JZ        ??InitBoard_1
-   \   000023                ; Setup parameters for call to function halAssertHandler
-   \   000023   12....       LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
-   \   000026   8009         SJMP      ??InitBoard_1
+   \   000012                ; Setup parameters for call to function ChkReset
+   \   000012   12....       LCALL     `??ChkReset::?relay`; Banked call to: ChkReset
+   \   000015   8009         SJMP      ??InitBoard_1
     136            }
     137            else  // !OB_COLD
     138            {
     139              /* Initialize Key stuff */
     140              HalKeyConfig(HAL_KEY_INTERRUPT_ENABLE , OnBoard_KeyCallback);
    \                     ??InitBoard_0:
-   \   000028                ; Setup parameters for call to function HalKeyConfig
-   \   000028   7A..         MOV       R2,#`??OnBoard_KeyCallback::?relay` & 0xff
-   \   00002A   7B..         MOV       R3,#(`??OnBoard_KeyCallback::?relay` >> 8) & 0xff
-   \   00002C   7901         MOV       R1,#0x1
-   \   00002E   12....       LCALL     `??HalKeyConfig::?relay`; Banked call to: HalKeyConfig
+   \   000017                ; Setup parameters for call to function HalKeyConfig
+   \   000017   7A..         MOV       R2,#`??OnBoard_KeyCallback::?relay` & 0xff
+   \   000019   7B..         MOV       R3,#(`??OnBoard_KeyCallback::?relay` >> 8) & 0xff
+   \   00001B   7901         MOV       R1,#0x1
+   \   00001D   12....       LCALL     `??HalKeyConfig::?relay`; Banked call to: HalKeyConfig
     141            }
     142          }
    \                     ??InitBoard_1:
-   \   000031                REQUIRE ?Subroutine0
-   \   000031                REQUIRE SLEEPSTA
-   \   000031                ; // Fall through to label ?Subroutine0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   7F01         MOV       R7,#0x1
-   \   000002   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000020   7F01         MOV       R7,#0x1
+   \   000022   02....       LJMP      ?BANKED_LEAVE_XDATA
     143          
     144          /*********************************************************************
     145           * @fn      ChkReset()
@@ -352,30 +338,54 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
     149           * @param   None
     150           * @return  None
     151           *********************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     152          void ChkReset( void )
+   \                     ChkReset:
     153          {
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
     154            uint8 rib;
     155          
     156            // Isolate reset indicator bits
     157            rib = SLEEPSTA & LRESET;
+   \   000004   E59D         MOV       A,0x9d
+   \   000006   5418         ANL       A,#0x18
+   \   000008   F8           MOV       R0,A
     158          
     159            if ( rib == RESETPO )
+   \   000009   600D         JZ        ??ChkReset_0
     160            {
     161              // Put code here to handle Power-On reset
     162            }
     163            else if ( rib == RESETEX )
+   \   00000B   7408         MOV       A,#0x8
+   \   00000D   68           XRL       A,R0
+   \   00000E   6008         JZ        ??ChkReset_0
     164            {
     165              // Put code here to handle External reset
     166            }
     167            else if ( rib == RESETWD )
+   \   000010   7410         MOV       A,#0x10
+   \   000012   68           XRL       A,R0
+   \   000013   6003         JZ        ??ChkReset_0
     168            {
     169              // Put code here to handle WatchDog reset
     170            }
     171            else  // Unknown reason - not expected.
     172            {
     173              HAL_ASSERT(0);
+   \   000015                ; Setup parameters for call to function halAssertHandler
+   \   000015   12....       LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
     174            }
     175          }
+   \                     ??ChkReset_0:
+   \   000018   D083         POP       DPH
+   \   00001A   D082         POP       DPL
+   \   00001C   02....       LJMP      ?BRET
+   \   00001F                REQUIRE SLEEPSTA
     176          
     177          /*********************************************************************
     178           *                        "Keyboard" Support
@@ -418,14 +428,10 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \                     ??RegisterForKeys_0:
    \   000011   7900         MOV       R1,#0x0
    \                     ??RegisterForKeys_1:
-   \   000013   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000013   D083         POP       DPH
+   \   000015   D082         POP       DPL
+   \   000017   02....       LJMP      ?BRET
     200          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
     201          
     202          /*********************************************************************
     203           * @fn      OnBoard_SendKeys
@@ -566,7 +572,8 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
     276              }
     277            }
     278          }
-   \   00000A   80..         SJMP      ?Subroutine0
+   \   00000A   7F01         MOV       R7,#0x1
+   \   00000C   02....       LJMP      ?BANKED_LEAVE_XDATA
     279          
     280          /*********************************************************************
     281           *                  Low Voltage Protectiion Support
@@ -598,7 +605,9 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   00000A   EB           MOV       A,R3
    \   00000B   F0           MOVX      @DPTR,A
     296          }
-   \   00000C   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   00000C   D083         POP       DPH
+   \   00000E   D082         POP       DPL
+   \   000010   02....       LJMP      ?BRET
     297          
     298          /*********************************************************************
     299           * @fn      OnBoard_CheckVoltage
@@ -631,63 +640,74 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
     315            if ( voltageMeasured > VDD_MIN_GOOD )
    \   00000A   C3           CLR       C
    \   00000B   9453         SUBB      A,#0x53
-   \   00000D   5025         JNC       ??OnBoard_CheckVoltage_0
+   \   00000D   4004         JC        ??OnBoard_CheckVoltage_0
     316            {
     317              howGood = VOLT_LEVEL_GOOD;
+   \   00000F   7E02         MOV       R6,#0x2
+   \   000011   800C         SJMP      ??OnBoard_CheckVoltage_1
     318            }
     319            else if ( voltageMeasured > VDD_MIN_NV )
-   \   00000F   E9           MOV       A,R1
-   \   000010   C3           CLR       C
-   \   000011   944F         SUBB      A,#0x4f
-   \   000013   4004         JC        ??OnBoard_CheckVoltage_1
+   \                     ??OnBoard_CheckVoltage_0:
+   \   000013   E9           MOV       A,R1
+   \   000014   C3           CLR       C
+   \   000015   944F         SUBB      A,#0x4f
+   \   000017   4004         JC        ??OnBoard_CheckVoltage_2
     320            {
     321              howGood = VOLT_LEVEL_CAUTIOUS;
-   \   000015   7E01         MOV       R6,#0x1
-   \   000017   8002         SJMP      ??OnBoard_CheckVoltage_2
+   \   000019   7E01         MOV       R6,#0x1
+   \   00001B   8002         SJMP      ??OnBoard_CheckVoltage_1
     322            }
     323            else
     324            {
     325              howGood = VOLT_LEVEL_BAD;
-   \                     ??OnBoard_CheckVoltage_1:
-   \   000019   7E00         MOV       R6,#0x0
+   \                     ??OnBoard_CheckVoltage_2:
+   \   00001D   7E00         MOV       R6,#0x0
     326            }
     327              
     328            if ( gpLowVoltageWarning )
-   \                     ??OnBoard_CheckVoltage_2:
-   \   00001B   90....       MOV       DPTR,#gpLowVoltageWarning
-   \   00001E   E0           MOVX      A,@DPTR
-   \   00001F   F8           MOV       R0,A
-   \   000020   A3           INC       DPTR
-   \   000021   E0           MOVX      A,@DPTR
-   \   000022   F9           MOV       R1,A
-   \   000023   E8           MOV       A,R0
-   \   000024   49           ORL       A,R1
-   \   000025   600A         JZ        ??OnBoard_CheckVoltage_3
+   \                     ??OnBoard_CheckVoltage_1:
+   \   00001F   90....       MOV       DPTR,#gpLowVoltageWarning
+   \   000022   E0           MOVX      A,@DPTR
+   \   000023   F8           MOV       R0,A
+   \   000024   A3           INC       DPTR
+   \   000025   E0           MOVX      A,@DPTR
+   \   000026   F9           MOV       R1,A
+   \   000027   E8           MOV       A,R0
+   \   000028   49           ORL       A,R1
+   \   000029   6016         JZ        ??OnBoard_CheckVoltage_3
     329            {
     330              if ( howGood < VOLT_LEVEL_GOOD )
+   \   00002B   EE           MOV       A,R6
+   \   00002C   C3           CLR       C
+   \   00002D   9402         SUBB      A,#0x2
+   \   00002F   5010         JNC       ??OnBoard_CheckVoltage_3
     331              {
     332                gpLowVoltageWarning( howGood );
-   \   000027                ; Setup parameters for indirect call
-   \   000027   EE           MOV       A,R6
-   \   000028   F9           MOV       R1,A
-   \   000029   E0           MOVX      A,@DPTR
-   \   00002A   F583         MOV       DPH,A
-   \   00002C   8882         MOV       DPL,R0
-   \   00002E   12....       LCALL     ?CALL_IND
+   \   000031                ; Setup parameters for indirect call
+   \   000031   EE           MOV       A,R6
+   \   000032   F9           MOV       R1,A
+   \   000033   90....       MOV       DPTR,#gpLowVoltageWarning
+   \   000036   E0           MOVX      A,@DPTR
+   \   000037   F8           MOV       R0,A
+   \   000038   A3           INC       DPTR
+   \   000039   E0           MOVX      A,@DPTR
+   \   00003A   F583         MOV       DPH,A
+   \   00003C   8882         MOV       DPL,R0
+   \   00003E   12....       LCALL     ?CALL_IND
     333              }
     334            }
     335          
     336            return ( howGood > VOLT_LEVEL_BAD );
    \                     ??OnBoard_CheckVoltage_3:
-   \   000031   EE           MOV       A,R6
-   \   000032   6004         JZ        ??OnBoard_CheckVoltage_4
-   \                     ??OnBoard_CheckVoltage_0:
-   \   000034   7901         MOV       R1,#0x1
-   \   000036   8002         SJMP      ??OnBoard_CheckVoltage_5
+   \   000041   EE           MOV       A,R6
+   \   000042   6004         JZ        ??OnBoard_CheckVoltage_4
+   \   000044   7901         MOV       R1,#0x1
+   \   000046   8002         SJMP      ??OnBoard_CheckVoltage_5
    \                     ??OnBoard_CheckVoltage_4:
-   \   000038   7900         MOV       R1,#0x0
+   \   000048   7900         MOV       R1,#0x0
    \                     ??OnBoard_CheckVoltage_5:
-   \   00003A   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   00004A   7F01         MOV       R7,#0x1
+   \   00004C   02....       LJMP      ?BANKED_LEAVE_XDATA
     337          }
     338          
     339          /*********************************************************************
@@ -775,8 +795,9 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   00004C   E4           CLR       A
    \   00004D   39           ADDC      A,R1
    \   00004E   FB           MOV       R3,A
-   \   00004F                REQUIRE ?Subroutine1
-   \   00004F                ; // Fall through to label ?Subroutine1
+   \   00004F   D083         POP       DPH
+   \   000051   D082         POP       DPL
+   \   000053   02....       LJMP      ?BRET
     370          }
     371          
     372          /*********************************************************************
@@ -802,11 +823,9 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   000000                REQUIRE ?V3
    \   000000                REQUIRE ?V4
    \   000000                REQUIRE ?V5
-   \   000000                REQUIRE ?V6
-   \   000000                REQUIRE ?V7
-   \   000000   74F0         MOV       A,#-0x10
+   \   000000   74F2         MOV       A,#-0xe
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 16
+   \   000005                ; Saved register size: 14
    \   000005                ; Auto size: 5
    \   000005   74FB         MOV       A,#-0x5
    \   000007   12....       LCALL     ?ALLOC_XSTACK8
@@ -825,94 +844,101 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    \   000016   89..         MOV       ?V1,R1
     390            for ( i=0; i<5; i++,p++ )
    \   000018   75..00       MOV       ?V2,#0x0
-   \   00001B   E5..         MOV       A,?V3
-   \   00001D   F5..         MOV       ?V4,A
-   \   00001F   75..00       MOV       ?V5,#0x0
+   \   00001B   8009         SJMP      ??_itoa_0
+   \                     ??_itoa_1:
+   \   00001D   05..         INC       ?V2
+   \   00001F   A3           INC       DPTR
+   \   000020   8582..       MOV       ?V0,DPL
+   \   000023   8583..       MOV       ?V1,DPH
+   \                     ??_itoa_0:
+   \   000026   E5..         MOV       A,?V2
+   \   000028   C3           CLR       C
+   \   000029   9405         SUBB      A,#0x5
+   \   00002B   503E         JNC       ??_itoa_2
     391            {
     392              c = num % radix;  // Isolate a digit
-   \                     ??_itoa_0:
-   \   000022   EE           MOV       A,R6
-   \   000023   F8           MOV       R0,A
-   \   000024   EF           MOV       A,R7
-   \   000025   F9           MOV       R1,A
-   \   000026   AA..         MOV       R2,?V4
-   \   000028   AB..         MOV       R3,?V5
-   \   00002A   12....       LCALL     ?US_DIV_MOD
-   \   00002D   EA           MOV       A,R2
-   \   00002E   F8           MOV       R0,A
+   \   00002D   E5..         MOV       A,?V3
+   \   00002F   F5..         MOV       ?V4,A
+   \   000031   75..00       MOV       ?V5,#0x0
+   \   000034   EE           MOV       A,R6
+   \   000035   F8           MOV       R0,A
+   \   000036   EF           MOV       A,R7
+   \   000037   F9           MOV       R1,A
+   \   000038   AA..         MOV       R2,?V4
+   \   00003A   AB..         MOV       R3,?V5
+   \   00003C   12....       LCALL     ?US_DIV_MOD
+   \   00003F   EA           MOV       A,R2
+   \   000040   F8           MOV       R0,A
     393              *p = c + (( c < 10 ) ? '0' : '7');  // Convert to Ascii
-   \   00002F   940A         SUBB      A,#0xa
-   \   000031   5004         JNC       ??_itoa_1
-   \   000033   7930         MOV       R1,#0x30
-   \   000035   8002         SJMP      ??_itoa_2
-   \                     ??_itoa_1:
-   \   000037   7937         MOV       R1,#0x37
-   \                     ??_itoa_2:
-   \   000039   EA           MOV       A,R2
-   \   00003A   29           ADD       A,R1
-   \   00003B   85..82       MOV       DPL,?V0
-   \   00003E   85..83       MOV       DPH,?V1
-   \   000041   F0           MOVX      @DPTR,A
+   \   000041   940A         SUBB      A,#0xa
+   \   000043   5004         JNC       ??_itoa_3
+   \   000045   7A30         MOV       R2,#0x30
+   \   000047   8002         SJMP      ??_itoa_4
+   \                     ??_itoa_3:
+   \   000049   7A37         MOV       R2,#0x37
+   \                     ??_itoa_4:
+   \   00004B   EA           MOV       A,R2
+   \   00004C   28           ADD       A,R0
+   \   00004D   85..82       MOV       DPL,?V0
+   \   000050   85..83       MOV       DPH,?V1
+   \   000053   F0           MOVX      @DPTR,A
     394              num /= radix;
-   \   000042   EE           MOV       A,R6
-   \   000043   F8           MOV       R0,A
-   \   000044   EF           MOV       A,R7
-   \   000045   F9           MOV       R1,A
-   \   000046   AA..         MOV       R2,?V4
-   \   000048   AB..         MOV       R3,?V5
-   \   00004A   12....       LCALL     ?US_DIV_MOD
-   \   00004D   88..         MOV       ?V6,R0
-   \   00004F   89..         MOV       ?V7,R1
-   \   000051   AE..         MOV       R6,?V6
-   \   000053   AF..         MOV       R7,?V7
+   \   000054   EE           MOV       A,R6
+   \   000055   F8           MOV       R0,A
+   \   000056   EF           MOV       A,R7
+   \   000057   F9           MOV       R1,A
+   \   000058   AA..         MOV       R2,?V4
+   \   00005A   AB..         MOV       R3,?V5
+   \   00005C   12....       LCALL     ?US_DIV_MOD
+   \   00005F   88..         MOV       ?V4,R0
+   \   000061   89..         MOV       ?V5,R1
+   \   000063   AE..         MOV       R6,?V4
+   \   000065   AF..         MOV       R7,?V5
     395              if ( !num )
-   \   000055   E8           MOV       A,R0
-   \   000056   4F           ORL       A,R7
-   \   000057   600F         JZ        ??_itoa_3
+   \   000067   E8           MOV       A,R0
+   \   000068   4F           ORL       A,R7
+   \   000069   70B2         JNZ       ??_itoa_1
     396                break;
     397            }
-   \   000059   05..         INC       ?V2
-   \   00005B   A3           INC       DPTR
-   \   00005C   8582..       MOV       ?V0,DPL
-   \   00005F   8583..       MOV       ?V1,DPH
-   \   000062   E5..         MOV       A,?V2
-   \   000064   9405         SUBB      A,#0x5
-   \   000066   40BA         JC        ??_itoa_0
     398          
     399            for ( c=0 ; c<=i; c++ )
-   \                     ??_itoa_3:
-   \   000068   7800         MOV       R0,#0x0
+   \                     ??_itoa_2:
+   \   00006B   7800         MOV       R0,#0x0
+   \   00006D   801E         SJMP      ??_itoa_5
     400              *buf++ = *p--;  // Reverse character order
-   \                     ??_itoa_4:
-   \   00006A   85..82       MOV       DPL,?V0
-   \   00006D   85..83       MOV       DPH,?V1
-   \   000070   E0           MOVX      A,@DPTR
-   \   000071   8C82         MOV       DPL,R4
-   \   000073   8D83         MOV       DPH,R5
-   \   000075   F0           MOVX      @DPTR,A
-   \   000076   E5..         MOV       A,?V0
-   \   000078   24FF         ADD       A,#-0x1
-   \   00007A   F5..         MOV       ?V0,A
-   \   00007C   E5..         MOV       A,?V1
-   \   00007E   34FF         ADDC      A,#-0x1
-   \   000080   F5..         MOV       ?V1,A
-   \   000082   A3           INC       DPTR
-   \   000083   AC82         MOV       R4,DPL
-   \   000085   AD83         MOV       R5,DPH
-   \   000087   08           INC       R0
-   \   000088   E5..         MOV       A,?V2
-   \   00008A   C3           CLR       C
-   \   00008B   98           SUBB      A,R0
-   \   00008C   50DC         JNC       ??_itoa_4
+   \                     ??_itoa_6:
+   \   00006F   85..82       MOV       DPL,?V0
+   \   000072   85..83       MOV       DPH,?V1
+   \   000075   E0           MOVX      A,@DPTR
+   \   000076   8C82         MOV       DPL,R4
+   \   000078   8D83         MOV       DPH,R5
+   \   00007A   F0           MOVX      @DPTR,A
+   \   00007B   E5..         MOV       A,?V0
+   \   00007D   24FF         ADD       A,#-0x1
+   \   00007F   F5..         MOV       ?V0,A
+   \   000081   E5..         MOV       A,?V1
+   \   000083   34FF         ADDC      A,#-0x1
+   \   000085   F5..         MOV       ?V1,A
+   \   000087   A3           INC       DPTR
+   \   000088   AC82         MOV       R4,DPL
+   \   00008A   AD83         MOV       R5,DPH
+   \   00008C   08           INC       R0
+   \                     ??_itoa_5:
+   \   00008D   E5..         MOV       A,?V2
+   \   00008F   C3           CLR       C
+   \   000090   98           SUBB      A,R0
+   \   000091   50DC         JNC       ??_itoa_6
     401          
     402            *buf = '\0';
-   \   00008E   E4           CLR       A
-   \   00008F   F0           MOVX      @DPTR,A
+   \   000093   8C82         MOV       DPL,R4
+   \   000095   8D83         MOV       DPH,R5
+   \   000097   E4           CLR       A
+   \   000098   F0           MOVX      @DPTR,A
     403          }
-   \   000090   7405         MOV       A,#0x5
-   \   000092   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000095   7F08         MOV       R7,#0x8
-   \   000097   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000099   7405         MOV       A,#0x5
+   \   00009B   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00009E   7F06         MOV       R7,#0x6
+   \   0000A0   02....       LJMP      ?BANKED_LEAVE_XDATA
     404          
     405          /*********************************************************************
     406           * @fn        Onboard_rand
@@ -936,7 +962,9 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
     417            return ( MAC_RADIO_RANDOM_WORD() );
    \   000004                ; Setup parameters for call to function macMcuRandomWord
    \   000004   12....       LCALL     `??macMcuRandomWord::?relay`; Banked call to: macMcuRandomWord
-   \   000007   02....       LJMP      ?Subroutine1 & 0xFFFF
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
     418          }
     419          
     420          /*********************************************************************
@@ -1138,11 +1166,13 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
       0      0   BigLight_Off
       0      0   BigLight_On
       0      0   BuzzerControl
+      2      9   ChkReset
+        2      0   -> halAssertHandler
       0      0   Dimmer
       0      0   GetUserDipSw
       0      9   InitBoard
+        0      9   -> ChkReset
         0      9   -> HalKeyConfig
-        0      9   -> halAssertHandler
         0      9   -> osal_int_disable
       0      9   OnBoard_CheckVoltage
         0      9   -> HalAdcCheckVddRaw
@@ -1158,7 +1188,7 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
       0      0   Onboard_wait
       2      0   RegisterForKeys
       2      0   RegisterVoltageWarningCB
-      1     21   _itoa
+      1     19   _itoa
 
 
    Segment part sizes:
@@ -1166,38 +1196,37 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
    Bytes  Function/Label
    -----  --------------
        1  ?<Initializer for registeredKeysTaskID>
-       5  ?Subroutine0
-       7  ?Subroutine1
        3  BigLight_Off
        3  BigLight_On
        3  BuzzerControl
+      31  ChkReset
        1  DMAARM
        3  Dimmer
        5  GetUserDipSw
-      49  InitBoard
-      61  OnBoard_CheckVoltage
-      12  OnBoard_KeyCallback
+      37  InitBoard
+      79  OnBoard_CheckVoltage
+      15  OnBoard_KeyCallback
       66  OnBoard_SendKeys
-      79  OnBoard_stack_used
-      10  Onboard_rand
+      86  OnBoard_stack_used
+      14  Onboard_rand
        9  Onboard_soft_reset
       24  Onboard_wait
-      22  RegisterForKeys
-      15  RegisterVoltageWarningCB
+      26  RegisterForKeys
+      19  RegisterVoltageWarningCB
        1  SLEEPSTA
        1  _A_IEN0
-     154  _itoa
+     163  _itoa
       16  _lockBits
        8  _nvIEEE
     1932  _reserved
        8  aExtendedAddress
        2  gpLowVoltageWarning
        1  registeredKeysTaskID
-      90  -- Other
+      96  -- Other
 
  
-   521 bytes in segment BANKED_CODE
-    90 bytes in segment BANK_RELAYS
+   577 bytes in segment BANKED_CODE
+    96 bytes in segment BANK_RELAYS
      8 bytes in segment IEEE_ADDRESS_SPACE
     16 bytes in segment LOCK_BITS_ADDRESS_SPACE
      9 bytes in segment NEAR_CODE
@@ -1207,9 +1236,9 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c
      1 byte  in segment XDATA_ID
     10 bytes in segment XDATA_Z
  
-   100 bytes of CODE     memory
+   106 bytes of CODE     memory
      0 bytes of DATA     memory (+ 3 bytes shared)
-   521 bytes of HUGECODE memory
+   577 bytes of HUGECODE memory
  1 967 bytes of XDATA    memory
 
 Errors: none

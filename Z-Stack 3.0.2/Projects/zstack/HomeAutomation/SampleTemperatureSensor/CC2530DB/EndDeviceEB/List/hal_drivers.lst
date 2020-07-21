@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:20
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               20/Jul/2020  17:08:01
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWBD77.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW7643.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\common\hal_drivers.c" -D BDB_REPORTING -D
 #        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D xPOWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -227,14 +229,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
      98            osal_start_reload_timer( Hal_TaskID, PERIOD_RSSI_RESET_EVT, PERIOD_RSSI_RESET_TIMEOUT );
      99          #endif
     100          }
-   \   000009                REQUIRE ?Subroutine0
-   \   000009                ; // Fall through to label ?Subroutine0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
+   \   000009   D083         POP       DPH
+   \   00000B   D082         POP       DPL
+   \   00000D   02....       LJMP      ?BRET
     101          
     102          /**************************************************************************************************
     103           * @fn      Hal_DriverInit
@@ -318,7 +315,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
     160            usbHidInit();
     161          #endif
     162          }
-   \   000019   80..         SJMP      ?Subroutine0
+   \   000019   D083         POP       DPH
+   \   00001B   D082         POP       DPL
+   \   00001D   02....       LJMP      ?BRET
     163          
     164          /**************************************************************************************************
     165           * @fn      Hal_ProcessEvent
@@ -537,7 +536,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
     291          #endif
     292           
     293          }
-   \   000007   02....       LJMP      ?Subroutine0 & 0xFFFF
+   \   000007   D083         POP       DPH
+   \   000009   D082         POP       DPL
+   \   00000B   02....       LJMP      ?BRET
 
    \                                 In  segment XDATA_ROM_C, align 1
    \                     __Constant_64:
@@ -574,24 +575,23 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ?Subroutine0
-      27  HalDriverInit
-       9  Hal_Init
+      32  HalDriverInit
+      16  Hal_Init
      104  Hal_ProcessEvent
-      10  Hal_ProcessPoll
+      14  Hal_ProcessPoll
        1  Hal_TaskID
        4  __Constant_64
       24  -- Other
 
  
- 157 bytes in segment BANKED_CODE
+ 166 bytes in segment BANKED_CODE
   24 bytes in segment BANK_RELAYS
    4 bytes in segment XDATA_ROM_C
    1 byte  in segment XDATA_Z
  
   24 bytes of CODE     memory
    0 bytes of CONST    memory (+ 4 bytes shared)
- 157 bytes of HUGECODE memory
+ 166 bytes of HUGECODE memory
    1 byte  of XDATA    memory
 
 Errors: none

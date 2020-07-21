@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:20
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:40
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWBD97.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW5BEB.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_flash.c" -D BDB_REPORTING -D
 //        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 //        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 //        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 //        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -576,11 +578,13 @@ HalFlashWrite:
         ANL       A,#0xfc
         MOV       DPTR,#dmaCh0 + 5
         MOVX      @DPTR,A
+        MOV       DPTR,#dmaCh0 + 4
+        CLR       A
+        MOVX      @DPTR,A
         MOV       A,#0x6
         MOV       R0,#?V0
         LCALL     ?US_SHR
         MOV       A,?V0
-        MOV       DPTR,#dmaCh0 + 4
         MOVX      @DPTR,A
 //  129   HAL_DMA_SET_WORD_SIZE(ch, HAL_DMA_WORDSIZE_BYTE);
 //  130   HAL_DMA_SET_TRIG_MODE(ch, HAL_DMA_TMODE_SINGLE);
@@ -707,13 +711,13 @@ HalFlashErase:
 //  170 /**************************************************************************************************
 //  171 */
 // 
-// 258 bytes in segment BANKED_CODE
+// 260 bytes in segment BANKED_CODE
 //  18 bytes in segment BANK_RELAYS
 //   4 bytes in segment SFR_AN
 // 
 //  18 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 4 bytes shared)
-// 258 bytes of HUGECODE memory
+// 260 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none

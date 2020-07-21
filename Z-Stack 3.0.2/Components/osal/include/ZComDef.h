@@ -467,6 +467,8 @@ typedef struct
 #define ZCL_KEY_ESTABLISH_IND     0x35    // ZCL Key Establishment Completion Indication
 #define ZCL_OTA_CALLBACK_IND      0x36    // ZCL OTA Completion Indication
 
+#define UART0_MESSAGE_SW1_ON      0x37
+#define UART0_MESSAGE_SW1_OFF      0x38
 
 // OSAL System Message IDs/Events Reserved for applications (user applications)
 // 0xE0 – 0xFC

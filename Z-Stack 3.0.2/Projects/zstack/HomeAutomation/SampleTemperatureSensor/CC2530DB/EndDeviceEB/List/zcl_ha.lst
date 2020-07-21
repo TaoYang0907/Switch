@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               17/Jul/2020  00:04:29
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               21/Jul/2020  00:36:37
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,14 +14,15 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWE433.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW27AD.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c" -D BDB_REPORTING
 #        -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE -D
 #        xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D
 #        xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
 #        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+#        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+#        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 #        -lA "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 #        -I "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-#        -Ohz --require_prototypes)
+#        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+#        --no_cross_call)
 #    Locale             =  Chinese (Simplified)_CHN.936
 #    List file          =  
 #        D:\AA\Z-Stack
@@ -294,14 +296,10 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
    \                     ??zclHA_isbit_2:
    \   00002E   7900         MOV       R1,#0x0
    \                     ??zclHA_isbit_3:
-   \   000030   80..         SJMP      ??Subroutine4_0
+   \   000030   D083         POP       DPH
+   \   000032   D082         POP       DPL
+   \   000034   02....       LJMP      ?BRET
     122          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ??Subroutine4_0:
-   \   000000   D083         POP       DPH
-   \   000002   D082         POP       DPL
-   \   000004   02....       LJMP      ?BRET
     123          
     124          /*********************************************************************
     125           * @fn      zclHA_setbit
@@ -325,47 +323,39 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
     136            uint8 bit;
     137            bit = ( 1 << ( bitIndex & 0x7 ) );
     138            pArray[bitIndex >> 3] |= bit;
-   \   000004   7407         MOV       A,#0x7
-   \   000006   59           ANL       A,R1
-   \   000007   F8           MOV       R0,A
-   \   000008   7401         MOV       A,#0x1
-   \   00000A   B80002       CJNE      R0,#0x0,??zclHA_setbit_0
-   \   00000D   8004         SJMP      ??zclHA_setbit_1
+   \   000004   7401         MOV       A,#0x1
+   \   000006   C0E0         PUSH      A
+   \   000008   7407         MOV       A,#0x7
+   \   00000A   59           ANL       A,R1
+   \   00000B   F8           MOV       R0,A
+   \   00000C   D0E0         POP       A
+   \   00000E   B80002       CJNE      R0,#0x0,??zclHA_setbit_0
+   \   000011   8004         SJMP      ??zclHA_setbit_1
    \                     ??zclHA_setbit_0:
-   \   00000F   C3           CLR       C
-   \   000010   33           RLC       A
-   \   000011   D8FC         DJNZ      R0,??zclHA_setbit_0
+   \   000013   C3           CLR       C
+   \   000014   33           RLC       A
+   \   000015   D8FC         DJNZ      R0,??zclHA_setbit_0
    \                     ??zclHA_setbit_1:
-   \   000013   12....       LCALL     ?Subroutine1 & 0xFFFF
-   \                     ??CrossCallReturnLabel_0:
-   \   000016   48           ORL       A,R0
-   \   000017                REQUIRE ?Subroutine0
-   \   000017                ; // Fall through to label ?Subroutine0
+   \   000017   F8           MOV       R0,A
+   \   000018   E9           MOV       A,R1
+   \   000019   13           RRC       A
+   \   00001A   13           RRC       A
+   \   00001B   13           RRC       A
+   \   00001C   541F         ANL       A,#0x1f
+   \   00001E   FC           MOV       R4,A
+   \   00001F   EA           MOV       A,R2
+   \   000020   2C           ADD       A,R4
+   \   000021   F582         MOV       DPL,A
+   \   000023   E4           CLR       A
+   \   000024   3B           ADDC      A,R3
+   \   000025   F583         MOV       DPH,A
+   \   000027   E0           MOVX      A,@DPTR
+   \   000028   48           ORL       A,R0
+   \   000029   F0           MOVX      @DPTR,A
     139          }
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine0:
-   \   000000   F0           MOVX      @DPTR,A
-   \   000001                REQUIRE ??Subroutine4_0
-   \   000001                ; // Fall through to label ??Subroutine4_0
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine1:
-   \   000000   F8           MOV       R0,A
-   \   000001   E9           MOV       A,R1
-   \   000002   13           RRC       A
-   \   000003   13           RRC       A
-   \   000004   13           RRC       A
-   \   000005   541F         ANL       A,#0x1f
-   \   000007   FC           MOV       R4,A
-   \   000008   EA           MOV       A,R2
-   \   000009   2C           ADD       A,R4
-   \   00000A   F582         MOV       DPL,A
-   \   00000C   E4           CLR       A
-   \   00000D   3B           ADDC      A,R3
-   \   00000E   F583         MOV       DPH,A
-   \   000010   E0           MOVX      A,@DPTR
-   \   000011   22           RET
+   \   00002A   D083         POP       DPH
+   \   00002C   D082         POP       DPL
+   \   00002E   02....       LJMP      ?BRET
     140          
     141          /*********************************************************************
     142           * @fn      zclHA_clearbit
@@ -389,23 +379,40 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
     153            uint8 bit;
     154            bit = ( 1 << ( bitIndex & 0x7 ) );
     155            pArray[bitIndex >> 3] &= (~(unsigned)bit);
-   \   000004   7407         MOV       A,#0x7
-   \   000006   59           ANL       A,R1
-   \   000007   F8           MOV       R0,A
-   \   000008   7401         MOV       A,#0x1
-   \   00000A   B80002       CJNE      R0,#0x0,??zclHA_clearbit_0
-   \   00000D   8004         SJMP      ??zclHA_clearbit_1
+   \   000004   7401         MOV       A,#0x1
+   \   000006   C0E0         PUSH      A
+   \   000008   7407         MOV       A,#0x7
+   \   00000A   59           ANL       A,R1
+   \   00000B   F8           MOV       R0,A
+   \   00000C   D0E0         POP       A
+   \   00000E   B80002       CJNE      R0,#0x0,??zclHA_clearbit_0
+   \   000011   8004         SJMP      ??zclHA_clearbit_1
    \                     ??zclHA_clearbit_0:
-   \   00000F   C3           CLR       C
-   \   000010   33           RLC       A
-   \   000011   D8FC         DJNZ      R0,??zclHA_clearbit_0
+   \   000013   C3           CLR       C
+   \   000014   33           RLC       A
+   \   000015   D8FC         DJNZ      R0,??zclHA_clearbit_0
    \                     ??zclHA_clearbit_1:
-   \   000013   F4           CPL       A
-   \   000014   12....       LCALL     ?Subroutine1 & 0xFFFF
-   \                     ??CrossCallReturnLabel_1:
-   \   000017   58           ANL       A,R0
-   \   000018   80..         SJMP      ?Subroutine0
+   \   000017   F4           CPL       A
+   \   000018   F8           MOV       R0,A
+   \   000019   E9           MOV       A,R1
+   \   00001A   13           RRC       A
+   \   00001B   13           RRC       A
+   \   00001C   13           RRC       A
+   \   00001D   541F         ANL       A,#0x1f
+   \   00001F   FC           MOV       R4,A
+   \   000020   EA           MOV       A,R2
+   \   000021   2C           ADD       A,R4
+   \   000022   F582         MOV       DPL,A
+   \   000024   E4           CLR       A
+   \   000025   3B           ADDC      A,R3
+   \   000026   F583         MOV       DPH,A
+   \   000028   E0           MOVX      A,@DPTR
+   \   000029   58           ANL       A,R0
+   \   00002A   F0           MOVX      @DPTR,A
     156          }
+   \   00002B   D083         POP       DPH
+   \   00002D   D082         POP       DPL
+   \   00002F   02....       LJMP      ?BRET
     157          
     158          /*********************************************************************
     159           * @fn      zclHA_uint16toa
@@ -437,64 +444,71 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
    \   000005   C3           CLR       C
    \   000006   EB           MOV       A,R3
    \   000007   9410         SUBB      A,#0x10
-   \   000009   5003         JNC       ??CrossCallReturnLabel_4
+   \   000009   500C         JNC       ??zclHA_uint16toa_0
     174            {
     175              *string++ = '0';
-   \   00000B   12....       LCALL     ?Subroutine3 & 0xFFFF
+   \   00000B   8C82         MOV       DPL,R4
+   \   00000D   8D83         MOV       DPH,R5
+   \   00000F   7430         MOV       A,#0x30
+   \   000011   F0           MOVX      @DPTR,A
+   \   000012   A3           INC       DPTR
+   \   000013   AC82         MOV       R4,DPL
+   \   000015   AD83         MOV       R5,DPH
     176            }
     177          
     178            if ( u < 0x0100 )
-   \                     ??CrossCallReturnLabel_4:
-   \   00000E   C3           CLR       C
-   \   00000F   EB           MOV       A,R3
-   \   000010   9401         SUBB      A,#0x1
-   \   000012   5003         JNC       ??CrossCallReturnLabel_5
+   \                     ??zclHA_uint16toa_0:
+   \   000017   C3           CLR       C
+   \   000018   EB           MOV       A,R3
+   \   000019   9401         SUBB      A,#0x1
+   \   00001B   500C         JNC       ??zclHA_uint16toa_1
     179            {
     180              *string++ = '0';
-   \   000014   12....       LCALL     ?Subroutine3 & 0xFFFF
+   \   00001D   8C82         MOV       DPL,R4
+   \   00001F   8D83         MOV       DPH,R5
+   \   000021   7430         MOV       A,#0x30
+   \   000023   F0           MOVX      @DPTR,A
+   \   000024   A3           INC       DPTR
+   \   000025   AC82         MOV       R4,DPL
+   \   000027   AD83         MOV       R5,DPH
     181            }
     182          
     183            if ( u < 0x0010 )
-   \                     ??CrossCallReturnLabel_5:
-   \   000017   C3           CLR       C
-   \   000018   EA           MOV       A,R2
-   \   000019   9410         SUBB      A,#0x10
-   \   00001B   EB           MOV       A,R3
-   \   00001C   9400         SUBB      A,#0x0
-   \   00001E   5003         JNC       ??CrossCallReturnLabel_6
+   \                     ??zclHA_uint16toa_1:
+   \   000029   C3           CLR       C
+   \   00002A   EA           MOV       A,R2
+   \   00002B   9410         SUBB      A,#0x10
+   \   00002D   EB           MOV       A,R3
+   \   00002E   9400         SUBB      A,#0x0
+   \   000030   500C         JNC       ??zclHA_uint16toa_2
     184            {
     185              *string++ = '0';
-   \   000020   12....       LCALL     ?Subroutine3 & 0xFFFF
+   \   000032   8C82         MOV       DPL,R4
+   \   000034   8D83         MOV       DPH,R5
+   \   000036   7430         MOV       A,#0x30
+   \   000038   F0           MOVX      @DPTR,A
+   \   000039   A3           INC       DPTR
+   \   00003A   AC82         MOV       R4,DPL
+   \   00003C   AD83         MOV       R5,DPH
     186            }
     187          
     188            _ltoa((unsigned long)u, (unsigned char *)string, 16);
-   \                     ??CrossCallReturnLabel_6:
-   \   000023                ; Setup parameters for call to function _ltoa
-   \   000023   8C..         MOV       ?V0,R4
-   \   000025   8D..         MOV       ?V1,R5
-   \   000027   78..         MOV       R0,#?V0
-   \   000029   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00002C   7910         MOV       R1,#0x10
-   \   00002E   E4           CLR       A
-   \   00002F   FC           MOV       R4,A
-   \   000030   FD           MOV       R5,A
-   \   000031   12....       LCALL     `??_ltoa::?relay`; Banked call to: _ltoa
-   \   000034   7402         MOV       A,#0x2
-   \   000036   12....       LCALL     ?DEALLOC_XSTACK8
+   \                     ??zclHA_uint16toa_2:
+   \   00003E                ; Setup parameters for call to function _ltoa
+   \   00003E   8C..         MOV       ?V0,R4
+   \   000040   8D..         MOV       ?V1,R5
+   \   000042   78..         MOV       R0,#?V0
+   \   000044   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   000047   7910         MOV       R1,#0x10
+   \   000049   E4           CLR       A
+   \   00004A   FC           MOV       R4,A
+   \   00004B   FD           MOV       R5,A
+   \   00004C   12....       LCALL     `??_ltoa::?relay`; Banked call to: _ltoa
+   \   00004F   7402         MOV       A,#0x2
+   \   000051   12....       LCALL     ?DEALLOC_XSTACK8
     189          }
-   \   000039   7F04         MOV       R7,#0x4
-   \   00003B   02....       LJMP      ?BANKED_LEAVE_XDATA
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine3:
-   \   000000   8C82         MOV       DPL,R4
-   \   000002   8D83         MOV       DPH,R5
-   \   000004   7430         MOV       A,#0x30
-   \   000006   F0           MOVX      @DPTR,A
-   \   000007   A3           INC       DPTR
-   \   000008   AC82         MOV       R4,DPL
-   \   00000A   AD83         MOV       R5,DPH
-   \   00000C   22           RET
+   \   000054   7F04         MOV       R7,#0x4
+   \   000056   02....       LJMP      ?BANKED_LEAVE_XDATA
     190          
     191          /*********************************************************************
     192           * @fn      zclHA_uint8toa
@@ -559,7 +573,7 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
    \   00003A   84           DIV       AB
    \   00003B   FE           MOV       R6,A
     209            if( b )
-   \   00003C   6022         JZ        ??zclHA_uint8toa_0
+   \   00003C   6013         JZ        ??zclHA_uint8toa_0
     210            {
     211              string[1] = '0' + (b % 10);  // 10s
    \   00003E   75F00A       MOV       B,#0xa
@@ -576,21 +590,23 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
    \   000050   FE           MOV       R6,A
     213            }
     214            if( b )
-   \   000051   600D         JZ        ??zclHA_uint8toa_0
+   \                     ??zclHA_uint8toa_0:
+   \   000051   EE           MOV       A,R6
+   \   000052   600D         JZ        ??zclHA_uint8toa_1
     215            {
     216             string[0] = '0' + (b % 10);  // 100s
-   \   000053   75F00A       MOV       B,#0xa
-   \   000056   84           DIV       AB
-   \   000057   E5F0         MOV       A,B
-   \   000059   2430         ADD       A,#0x30
-   \   00005B   8A82         MOV       DPL,R2
-   \   00005D   8B83         MOV       DPH,R3
-   \   00005F   F0           MOVX      @DPTR,A
+   \   000054   75F00A       MOV       B,#0xa
+   \   000057   84           DIV       AB
+   \   000058   E5F0         MOV       A,B
+   \   00005A   2430         ADD       A,#0x30
+   \   00005C   8A82         MOV       DPL,R2
+   \   00005E   8B83         MOV       DPH,R3
+   \   000060   F0           MOVX      @DPTR,A
     217            }
     218          }
-   \                     ??zclHA_uint8toa_0:
-   \   000060   7F01         MOV       R7,#0x1
-   \   000062   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \                     ??zclHA_uint8toa_1:
+   \   000061   7F01         MOV       R7,#0x1
+   \   000063   02....       LJMP      ?BANKED_LEAVE_XDATA
     219          
     220          /*********************************************************************
     221           * @fn      zclHA_LcdStatusLine1
@@ -670,71 +686,69 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
    \   000048   AC82         MOV       R4,DPL
    \   00004A   AD83         MOV       R5,DPH
    \   00004C   90....       MOV       DPTR,#_NIB + 33
-   \   00004F   12....       LCALL     ?Subroutine2 & 0xFFFF
+   \   00004F   E0           MOVX      A,@DPTR
+   \   000050   FA           MOV       R2,A
+   \   000051   A3           INC       DPTR
+   \   000052   E0           MOVX      A,@DPTR
+   \   000053   FB           MOV       R3,A
+   \   000054   12....       LCALL     `??zclHA_uint16toa::?relay`; Banked call to: zclHA_uint16toa
     247            szLine[8] = ' ';
-   \                     ??CrossCallReturnLabel_2:
-   \   000052   7408         MOV       A,#0x8
-   \   000054   12....       LCALL     ?XSTACK_DISP0_8
-   \   000057   7420         MOV       A,#0x20
-   \   000059   F0           MOVX      @DPTR,A
+   \   000057   7408         MOV       A,#0x8
+   \   000059   12....       LCALL     ?XSTACK_DISP0_8
+   \   00005C   7420         MOV       A,#0x20
+   \   00005E   F0           MOVX      @DPTR,A
     248          
     249            _ltoa( _NIB.nwkLogicalChannel, (void *)(&szLine[9]), 10 );
-   \   00005A                ; Setup parameters for call to function _ltoa
-   \   00005A   7409         MOV       A,#0x9
-   \   00005C   12....       LCALL     ?XSTACK_DISP0_8
-   \   00005F   8582..       MOV       ?V0,DPL
-   \   000062   8583..       MOV       ?V1,DPH
-   \   000065   78..         MOV       R0,#?V0
-   \   000067   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   00006A   790A         MOV       R1,#0xa
-   \   00006C   90....       MOV       DPTR,#_NIB + 22
-   \   00006F   E0           MOVX      A,@DPTR
-   \   000070   FA           MOV       R2,A
-   \   000071   E4           CLR       A
-   \   000072   FB           MOV       R3,A
-   \   000073   FC           MOV       R4,A
-   \   000074   FD           MOV       R5,A
-   \   000075   12....       LCALL     `??_ltoa::?relay`; Banked call to: _ltoa
-   \   000078   7402         MOV       A,#0x2
-   \   00007A   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00005F                ; Setup parameters for call to function _ltoa
+   \   00005F   7409         MOV       A,#0x9
+   \   000061   12....       LCALL     ?XSTACK_DISP0_8
+   \   000064   8582..       MOV       ?V0,DPL
+   \   000067   8583..       MOV       ?V1,DPH
+   \   00006A   78..         MOV       R0,#?V0
+   \   00006C   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   00006F   790A         MOV       R1,#0xa
+   \   000071   90....       MOV       DPTR,#_NIB + 22
+   \   000074   E0           MOVX      A,@DPTR
+   \   000075   FA           MOV       R2,A
+   \   000076   E4           CLR       A
+   \   000077   FB           MOV       R3,A
+   \   000078   FC           MOV       R4,A
+   \   000079   FD           MOV       R5,A
+   \   00007A   12....       LCALL     `??_ltoa::?relay`; Banked call to: _ltoa
+   \   00007D   7402         MOV       A,#0x2
+   \   00007F   12....       LCALL     ?DEALLOC_XSTACK8
     250            szLine[11] = ' ';
-   \   00007D   740B         MOV       A,#0xb
-   \   00007F   12....       LCALL     ?XSTACK_DISP0_8
-   \   000082   7420         MOV       A,#0x20
-   \   000084   F0           MOVX      @DPTR,A
+   \   000082   740B         MOV       A,#0xb
+   \   000084   12....       LCALL     ?XSTACK_DISP0_8
+   \   000087   7420         MOV       A,#0x20
+   \   000089   F0           MOVX      @DPTR,A
     251          
     252            zclHA_uint16toa( _NIB.nwkDevAddress, &szLine[12] );
-   \   000085                ; Setup parameters for call to function zclHA_uint16toa
-   \   000085   740C         MOV       A,#0xc
-   \   000087   12....       LCALL     ?XSTACK_DISP0_8
-   \   00008A   AC82         MOV       R4,DPL
-   \   00008C   AD83         MOV       R5,DPH
-   \   00008E   90....       MOV       DPTR,#_NIB + 20
-   \   000091   12....       LCALL     ?Subroutine2 & 0xFFFF
+   \   00008A                ; Setup parameters for call to function zclHA_uint16toa
+   \   00008A   740C         MOV       A,#0xc
+   \   00008C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00008F   AC82         MOV       R4,DPL
+   \   000091   AD83         MOV       R5,DPH
+   \   000093   90....       MOV       DPTR,#_NIB + 20
+   \   000096   E0           MOVX      A,@DPTR
+   \   000097   FA           MOV       R2,A
+   \   000098   A3           INC       DPTR
+   \   000099   E0           MOVX      A,@DPTR
+   \   00009A   FB           MOV       R3,A
+   \   00009B   12....       LCALL     `??zclHA_uint16toa::?relay`; Banked call to: zclHA_uint16toa
     253            HalLcdWriteString( (char*)szLine, HAL_LCD_LINE_1 );
-   \                     ??CrossCallReturnLabel_3:
-   \   000094                ; Setup parameters for call to function HalLcdWriteString
-   \   000094   7901         MOV       R1,#0x1
-   \   000096   AA..         MOV       R2,?XSP + 0
-   \   000098   AB..         MOV       R3,?XSP + 1
-   \   00009A   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
+   \   00009E                ; Setup parameters for call to function HalLcdWriteString
+   \   00009E   7901         MOV       R1,#0x1
+   \   0000A0   AA..         MOV       R2,?XSP + 0
+   \   0000A2   AB..         MOV       R3,?XSP + 1
+   \   0000A4   12....       LCALL     `??HalLcdWriteString::?relay`; Banked call to: HalLcdWriteString
     254          #endif
     255          }
    \                     ??zclHA_LcdStatusLine1_0:
-   \   00009D   7414         MOV       A,#0x14
-   \   00009F   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0000A2   7F03         MOV       R7,#0x3
-   \   0000A4   02....       LJMP      ?BANKED_LEAVE_XDATA
-
-   \                                 In  segment BANKED_CODE, align 1, keep-with-next
-   \                     ?Subroutine2:
-   \   000000   E0           MOVX      A,@DPTR
-   \   000001   FA           MOV       R2,A
-   \   000002   A3           INC       DPTR
-   \   000003   E0           MOVX      A,@DPTR
-   \   000004   FB           MOV       R3,A
-   \   000005   12....       LCALL     `??zclHA_uint16toa::?relay`; Banked call to: zclHA_uint16toa
-   \   000008   22           RET
+   \   0000A7   7414         MOV       A,#0x14
+   \   0000A9   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0000AC   7F03         MOV       R7,#0x3
+   \   0000AE   02....       LJMP      ?BANKED_LEAVE_XDATA
     256          
     257          /*********************************************************************
     258          *********************************************************************/
@@ -760,31 +774,26 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c
 
    Bytes  Function/Label
    -----  --------------
-       7  ??Subroutine4_0
-       1  ?Subroutine0
-      18  ?Subroutine1
-       9  ?Subroutine2
-      13  ?Subroutine3
        6  NwkInfoStrs
        5  NwkInfoZcStr
        5  NwkInfoZedStr
        5  NwkInfoZrStr
-     167  zclHA_LcdStatusLine1
-      26  zclHA_clearbit
-      50  zclHA_isbit
-      23  zclHA_setbit
-      62  zclHA_uint16toa
-     101  zclHA_uint8toa
+     177  zclHA_LcdStatusLine1
+      50  zclHA_clearbit
+      55  zclHA_isbit
+      49  zclHA_setbit
+      89  zclHA_uint16toa
+     102  zclHA_uint8toa
       36  -- Other
 
  
- 477 bytes in segment BANKED_CODE
+ 522 bytes in segment BANKED_CODE
   36 bytes in segment BANK_RELAYS
   21 bytes in segment XDATA_ROM_C
  
   36 bytes of CODE     memory
   21 bytes of CONST    memory
- 477 bytes of HUGECODE memory
+ 522 bytes of HUGECODE memory
 
 Errors: none
 Warnings: none

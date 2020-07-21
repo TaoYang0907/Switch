@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              17/Jul/2020  00:04:22
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              20/Jul/2020  15:06:43
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,14 +14,15 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\mac\low_level\srf04\mac_low_level.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWC727.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW6657.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\mac\low_level\srf04\mac_low_level.c" -D
 //        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D
 //        xNV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
 //        xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 //        xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D
 //        ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D
-//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -lC "D:\AA\Z-Stack
+//        ZCL_TEMPERATURE_MEASUREMENT -D ZCL_GROUPS -D ZCL_ON_OFF -D ZCL_REPORT
+//        -D ZCL_REPORT_DESTINATION_DEVICE -lC "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
 //        -lA "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\EndDeviceEB\List"
@@ -100,7 +101,8 @@
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\"
 //        -I "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleTemperatureSensor\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
-//        -Ohz --require_prototypes)
+//        -Om --require_prototypes --no_unroll --no_inline --no_tbaa
+//        --no_cross_call)
 //    Locale             =  Chinese (Simplified)_CHN.936
 //    List file          =  
 //        D:\AA\Z-Stack
@@ -618,7 +620,13 @@ macLowLevelInit:
         ; Setup parameters for call to function macBackoffTimerInit
         LCALL     `??macBackoffTimerInit::?relay`; Banked call to: macBackoffTimerInit
 //  130 }
-        SJMP      ?Subroutine0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock0
 //  131 
 //  132 
@@ -741,7 +749,13 @@ macLowLevelReset:
         MOV       A,#0x1
         MOVX      @DPTR,A
 //  162 }
-        SJMP      ?Subroutine0
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
           CFI EndBlock cfiBlock1
         REQUIRE _A_IEN0
 //  163 
@@ -794,25 +808,14 @@ macLowLevelResume:
         ; Setup parameters for call to function macRadioInit
         LCALL     `??macRadioInit::?relay`; Banked call to: macRadioInit
 //  185 }
-          CFI EndBlock cfiBlock2
-        REQUIRE ?Subroutine0
-        ; // Fall through to label ?Subroutine0
-
-        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-?Subroutine0:
-          CFI Block cfiBlock3 Using cfiCommon0
-          CFI NoFunction
-          CFI CFA_SP SP+-5
-          CFI DPL0 Frame(CFA_SP, 4)
-          CFI DPH0 Frame(CFA_SP, 5)
         POP       DPH
-          CFI CFA_SP SP+-4
           CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
         POP       DPL
-          CFI CFA_SP SP+-3
           CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
         LJMP      ?BRET
-          CFI EndBlock cfiBlock3
+          CFI EndBlock cfiBlock2
 //  186 
 //  187 
 //  188 /**************************************************************************************************
@@ -835,7 +838,7 @@ macLowLevelResume:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  204 MAC_INTERNAL_API bool macLowLevelYield(void)
 macLowLevelYield:
-          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Block cfiBlock3 Using cfiCommon0
           CFI Function macLowLevelYield
         CODE
 //  205 {
@@ -884,8 +887,14 @@ macLowLevelYield:
         MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
 //  217   return rtrn;
-        SJMP      ?Subroutine0
-          CFI EndBlock cfiBlock4
+        POP       DPH
+          CFI DPH0 SameValue
+          CFI CFA_SP SP+-4
+        POP       DPL
+          CFI DPL0 SameValue
+          CFI CFA_SP SP+-3
+        LJMP      ?BRET
+          CFI EndBlock cfiBlock3
         REQUIRE _A_IEN0
 //  218 }
 //  219 
@@ -904,7 +913,7 @@ macLowLevelYield:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  231 MAC_INTERNAL_API void macLowLevelDiags( uint8 pibAttribute )
 macLowLevelDiags:
-          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Block cfiBlock4 Using cfiCommon0
           CFI Function macLowLevelDiags
         CODE
 //  232 {
@@ -924,7 +933,7 @@ macLowLevelDiags:
 //  244 #endif
 //  245 }
         LJMP      ?BRET
-          CFI EndBlock cfiBlock5
+          CFI EndBlock cfiBlock4
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??macLowLevelInit::?relay`:
@@ -967,13 +976,13 @@ macLowLevelDiags:
 //  248 /**************************************************************************************************
 //  249 */
 // 
-// 126 bytes in segment BANKED_CODE
+// 141 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 //   1 byte  in segment SFR_AN
 // 
 //  30 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 1 byte shared)
-// 126 bytes of HUGECODE memory
+// 141 bytes of HUGECODE memory
 //
 //Errors: none
 //Warnings: none
