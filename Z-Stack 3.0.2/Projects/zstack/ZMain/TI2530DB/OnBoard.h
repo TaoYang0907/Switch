@@ -270,6 +270,8 @@ typedef struct
    */
   extern uint8 RegisterForKeys( uint8 task_id );
 
+  extern uint8 RegisterSW2ForKeys( uint8 task_id );
+
 /* Keypad Control Functions */
 
   /*

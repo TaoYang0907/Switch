@@ -149,6 +149,8 @@ uint8 zclSampleLightSeqNum;
  */
 afAddrType_t zclSampleLight_DstAddr;
 
+bool NetState = false;
+
 // Test Endpoint to allow SYS_APP_MSGs
 //static endPointDesc_t sampleLight_TestEp =
 //{
@@ -460,24 +462,38 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
 static void zclSampleLight_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_6 )  // Switch 6
-  {     
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
-    bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
-  }
-  if ( keys & HAL_KEY_SW_5 )  // Switch 5
-  {     
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_BLINK );
-    if ( zclSampleLight_OnOff == LIGHT_OFF )
+  {
+    if ( NetState )
     {
-      zclSampleLight_OnOff = LIGHT_ON;
+      if ( zclSampleLight_OnOff == LIGHT_OFF )
+      {
+        zclSampleLight_OnOff = LIGHT_ON;
+      }
+      else
+      {
+        zclSampleLight_OnOff = LIGHT_OFF;
+      }
+      
+      zclSampleLight_UpdateLedState();
     }
     else
     {
-      zclSampleLight_OnOff = LIGHT_OFF;
+      bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
     }
-    zclSampleLight_UpdateLedState();
-//    bdb_RepChangedAttrValue(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
   }
+//  if ( keys & HAL_KEY_SW_5 )  // Switch 5
+//  {     
+//    HalLedSet ( HAL_LED_2, HAL_LED_MODE_BLINK );
+//    if ( zclSampleLight_OnOff == LIGHT_OFF )
+//    {
+//      zclSampleLight_OnOff = LIGHT_ON;
+//    }
+//    else
+//    {
+//      zclSampleLight_OnOff = LIGHT_OFF;
+//    }
+//    zclSampleLight_UpdateLedState();
+//  }
 }
 
 //GP_UPDATE
@@ -560,6 +576,7 @@ static void zclSampleLight_ProcessCommissioningStatus(bdbCommissioningModeMsg_t 
       {
         //YOUR JOB:
         //We are on the nwk, what now?
+        NetState = true;
         HalLedSet ( HAL_LED_1, HAL_LED_MODE_FLASH );
       }
       else
@@ -1329,8 +1346,6 @@ void zclSampleLight_UpdateLedState(void)
   }
   bdb_RepChangedAttrValue(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
 }
-
-
 
 /****************************************************************************
 ****************************************************************************/

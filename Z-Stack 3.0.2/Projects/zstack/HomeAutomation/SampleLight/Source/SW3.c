@@ -1,5 +1,5 @@
 /**************************************************************************************************
-  Filename:       SW2.c
+  Filename:       SW3.c
   Revised:        $Date: 2014-10-24 16:04:46 -0700 (Fri, 24 Oct 2014) $
   Revision:       $Revision: 40796 $
 
@@ -93,7 +93,7 @@
 #include "zcl_ha.h"
 #include "zcl_diagnostic.h"
 
-#include "SW2.h"
+#include "SW3.h"
    
 #include "bdb.h"
 #include "bdb_interface.h"
@@ -137,8 +137,8 @@
 /*********************************************************************
  * GLOBAL VARIABLES
  */
-byte SW2_TaskID;
-uint8 SW2SeqNum;
+byte SW3_TaskID;
+uint8 SW3SeqNum;
 
 /*********************************************************************
  * GLOBAL FUNCTIONS
@@ -147,46 +147,46 @@ uint8 SW2SeqNum;
 /*********************************************************************
  * LOCAL VARIABLES
  */
-afAddrType_t SW2_DstAddr;
+afAddrType_t SW3_DstAddr;
 
 // Test Endpoint to allow SYS_APP_MSGs
 //static endPointDesc_t sampleLight_TestEp =
 //{
 //  SAMPLELIGHT_ENDPOINT,
 //  0,
-//  &SW2_TaskID,
+//  &SW3_TaskID,
 //  (SimpleDescriptionFormat_t *)NULL,  // No Simple description for this test endpoint
 //  (afNetworkLatencyReq_t)0            // No Network Latency req
 //};
 
 #ifdef ZCL_LEVEL_CTRL
-uint8 SW2_WithOnOff;       // set to TRUE if state machine should set light on/off
-uint8 SW2_NewLevel;        // new level when done moving
-uint8 SW2_LevelChangeCmd; // current level change was triggered by an on/off command
-bool  SW2_NewLevelUp;      // is direction to new level up or down?
-int32 SW2_CurrentLevel32;  // current level, fixed point (e.g. 192.456)
-int32 SW2_Rate32;          // rate in units, fixed point (e.g. 16.123)
-uint8 SW2_LevelLastLevel;  // to save the Current Level before the light was turned OFF
+uint8 SW3_WithOnOff;       // set to TRUE if state machine should set light on/off
+uint8 SW3_NewLevel;        // new level when done moving
+uint8 SW3_LevelChangeCmd; // current level change was triggered by an on/off command
+bool  SW3_NewLevelUp;      // is direction to new level up or down?
+int32 SW3_CurrentLevel32;  // current level, fixed point (e.g. 192.456)
+int32 SW3_Rate32;          // rate in units, fixed point (e.g. 16.123)
+uint8 SW3_LevelLastLevel;  // to save the Current Level before the light was turned OFF
 #endif
 
 #ifdef BDB_REPORTING
 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 8
-  uint8 reportableChangeSW2[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  uint8 reportableChangeSW3[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 #endif
 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 4
-  uint8 reportableChangeSW2[] = {0x00, 0x00, 0x00, 0x00};     
+  uint8 reportableChangeSW3[] = {0x00, 0x00, 0x00, 0x00};     
 #endif 
 #if BDBREPORTING_MAX_ANALOG_ATTR_SIZE == 2
-  uint8 reportableChangeSW2[] = {0x00, 0x00};
+  uint8 reportableChangeSW3[] = {0x00, 0x00};
 #endif 
 #endif
 
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
-static void SW2_HandleKeys( byte shift, byte keys );
-static void SW2_BasicResetCB( void );
-static void SW2_OnOffCB( uint8 cmd );
+static void SW3_HandleKeys( byte shift, byte keys );
+static void SW3_BasicResetCB( void );
+static void SW3_OnOffCB( uint8 cmd );
 //GP_UPDATE
 #if (ZG_BUILD_RTR_TYPE)
 static void gp_CommissioningMode(bool isEntering);
@@ -194,40 +194,40 @@ static uint8 gp_ChangeChannelReq(void);
 #endif
 
 
-//static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
+//static void SW3_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
 
 
 #ifdef ZCL_LEVEL_CTRL
-static void SW2_LevelControlMoveToLevelCB( zclLCMoveToLevel_t *pCmd );
-static void SW2_LevelControlMoveCB( zclLCMove_t *pCmd );
-static void SW2_LevelControlStepCB( zclLCStep_t *pCmd );
-static void SW2_LevelControlStopCB( void );
-static void SW2_DefaultMove( uint8 OnOff );
-static uint32 SW2_TimeRateHelper( uint8 newLevel );
-static uint16 SW2_GetTime ( uint8 level, uint16 time );
-static void SW2_MoveBasedOnRate( uint8 newLevel, uint32 rate );
-static void SW2_MoveBasedOnTime( uint8 newLevel, uint16 time );
-static void SW2_AdjustLightLevel( void );
+static void SW3_LevelControlMoveToLevelCB( zclLCMoveToLevel_t *pCmd );
+static void SW3_LevelControlMoveCB( zclLCMove_t *pCmd );
+static void SW3_LevelControlStepCB( zclLCStep_t *pCmd );
+static void SW3_LevelControlStopCB( void );
+static void SW3_DefaultMove( uint8 OnOff );
+static uint32 SW3_TimeRateHelper( uint8 newLevel );
+static uint16 SW3_GetTime ( uint8 level, uint16 time );
+static void SW3_MoveBasedOnRate( uint8 newLevel, uint32 rate );
+static void SW3_MoveBasedOnTime( uint8 newLevel, uint16 time );
+static void SW3_AdjustLightLevel( void );
 #endif
 
 // Functions to process ZCL Foundation incoming Command/Response messages
-static void SW2_ProcessIncomingMsg( zclIncomingMsg_t *msg );
+static void SW3_ProcessIncomingMsg( zclIncomingMsg_t *msg );
 #ifdef ZCL_READ
-static uint8 SW2_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg );
 #endif
 #ifdef ZCL_WRITE
-static uint8 SW2_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg );
 #endif
-static uint8 SW2_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg );
 #ifdef ZCL_DISCOVER
-static uint8 SW2_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg );
-static uint8 SW2_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg );
-static uint8 SW2_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg );
+static uint8 SW3_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg );
 #endif
 
 static void zclSampleApp_BatteryWarningCB( uint8 voltLevel);
 
-void SW2_UpdateLedState(void);
+void SW3_UpdateLedState(void);
 
 /*********************************************************************
  * CONSTANTS
@@ -250,19 +250,19 @@ extern int16 zdpExternalStateTaskID;
 /*********************************************************************
  * ZCL General Profile Callback table
  */
-static zclGeneral_AppCallbacks_t SW2_CmdCallbacks =
+static zclGeneral_AppCallbacks_t SW3_CmdCallbacks =
 {
-  SW2_BasicResetCB,            // Basic Cluster Reset command
+  SW3_BasicResetCB,            // Basic Cluster Reset command
   NULL,                                   // Identify Trigger Effect command
-  SW2_OnOffCB,                 // On/Off cluster commands
+  SW3_OnOffCB,                 // On/Off cluster commands
   NULL,                                   // On/Off cluster enhanced command Off with Effect
   NULL,                                   // On/Off cluster enhanced command On with Recall Global Scene
   NULL,                                   // On/Off cluster enhanced command On with Timed Off
 #ifdef ZCL_LEVEL_CTRL
-  SW2_LevelControlMoveToLevelCB, // Level Control Move to Level command
-  SW2_LevelControlMoveCB,        // Level Control Move command
-  SW2_LevelControlStepCB,        // Level Control Step command
-  SW2_LevelControlStopCB,        // Level Control Stop command
+  SW3_LevelControlMoveToLevelCB, // Level Control Move to Level command
+  SW3_LevelControlMoveCB,        // Level Control Move command
+  SW3_LevelControlStepCB,        // Level Control Step command
+  SW3_LevelControlStopCB,        // Level Control Stop command
 #endif
 #ifdef ZCL_GROUPS
   NULL,                                   // Group Response commands
@@ -284,7 +284,7 @@ static zclGeneral_AppCallbacks_t SW2_CmdCallbacks =
 };
 
 /*********************************************************************
- * @fn          SW2_Init
+ * @fn          SW3_Init
  *
  * @brief       Initialization function for the zclGeneral layer.
  *
@@ -292,50 +292,50 @@ static zclGeneral_AppCallbacks_t SW2_CmdCallbacks =
  *
  * @return      none
  */
-void SW2_Init( byte task_id )
+void SW3_Init( byte task_id )
 {
-  SW2_TaskID = task_id;
+  SW3_TaskID = task_id;
 
   // Set destination address to indirect
-  SW2_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
-  SW2_DstAddr.endPoint = 0;
-  SW2_DstAddr.addr.shortAddr = 0;
+  SW3_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+  SW3_DstAddr.endPoint = 0;
+  SW3_DstAddr.addr.shortAddr = 0;
 
   // Register the Simple Descriptor for this application
-  bdb_RegisterSimpleDescriptor( &SW2_SimpleDesc );
+  bdb_RegisterSimpleDescriptor( &SW3_SimpleDesc );
 
   // Register the ZCL General Cluster Library callback functions
-  zclGeneral_RegisterCmdCallbacks( SW2_ENDPOINT, &SW2_CmdCallbacks );
+  zclGeneral_RegisterCmdCallbacks( SW3_ENDPOINT, &SW3_CmdCallbacks );
 
   // Register the application's attribute list
-  SW2_ResetAttributesToDefaultValues();
-  zcl_registerAttrList( SW2_ENDPOINT, SW2_NumAttributes, SW2_Attrs );
+  SW3_ResetAttributesToDefaultValues();
+  zcl_registerAttrList( SW3_ENDPOINT, SW3_NumAttributes, SW3_Attrs );
 
 #ifdef ZCL_LEVEL_CTRL
-  SW2_LevelLastLevel = SW2_LevelCurrentLevel;
+  SW3_LevelLastLevel = SW3_LevelCurrentLevel;
 #endif
 
   // Register the Application to receive the unprocessed Foundation command/response messages
-  zcl_registerForMsg( SW2_TaskID );
+  zcl_registerForMsg( SW3_TaskID );
 
 #ifdef ZCL_DISCOVER
   // Register the application's command list
-  zcl_registerCmdList( SW2_ENDPOINT, zclCmdsArraySize, SW2_Cmds );
+  zcl_registerCmdList( SW3_ENDPOINT, zclCmdsArraySize, SW3_Cmds );
 #endif
 
   // Register low voltage NV memory protection application callback
   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
 
   // Register for all key events - This app will handle all key events
-  RegisterSW2ForKeys( SW2_TaskID );
+//  RegisterSW3ForKeys( SW3_TaskID );
   
-//  bdb_RegisterCommissioningStatusCB( SW2_ProcessCommissioningStatus );
+//  bdb_RegisterCommissioningStatusCB( SW3_ProcessCommissioningStatus );
   
 
 #ifdef ZCL_DIAGNOSTIC
   // Register the application's callback function to read/write attribute data.
   // This is only required when the attribute data format is unknown to ZCL.
-  zcl_registerReadWriteCB( SW2_ENDPOINT, zclDiagnostic_ReadWriteAttrCB, NULL );
+  zcl_registerReadWriteCB( SW3_ENDPOINT, zclDiagnostic_ReadWriteAttrCB, NULL );
 
   if ( zclDiagnostic_InitStats() == ZSuccess )
   {
@@ -349,9 +349,9 @@ void SW2_Init( byte task_id )
   gp_RegisterGPChangeChannelReqCB(gp_ChangeChannelReq);
 #endif
   
-  zdpExternalStateTaskID = SW2_TaskID;
+  zdpExternalStateTaskID = SW3_TaskID;
   
-  bdb_RepAddAttrCfgRecordDefaultToList(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xFF, reportableChangeSW2);
+  bdb_RepAddAttrCfgRecordDefaultToList(SW3_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xFF, reportableChangeSW3);
   
 //  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, ATTRID_ON_OFF, 0, 10, reportableChangeTest);
 }
@@ -365,7 +365,7 @@ void SW2_Init( byte task_id )
  *
  * @return      none
  */
-uint16 SW2_event_loop( uint8 task_id, uint16 events )
+uint16 SW3_event_loop( uint8 task_id, uint16 events )
 {
   afIncomingMSGPacket_t *MSGpkt;
 
@@ -373,17 +373,17 @@ uint16 SW2_event_loop( uint8 task_id, uint16 events )
 
   if ( events & SYS_EVENT_MSG )
   {
-    while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SW2_TaskID )) )
+    while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( SW3_TaskID )) )
     {
       switch ( MSGpkt->hdr.event )
       {
         case ZCL_INCOMING_MSG:
           // Incoming ZCL Foundation command/response messages
-          SW2_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
+          SW3_ProcessIncomingMsg( (zclIncomingMsg_t *)MSGpkt );
           break;
 
         case KEY_CHANGE:
-          SW2_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
+          SW3_HandleKeys( ((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys );
           break;
 
         case ZDO_STATE_CHANGE:
@@ -404,7 +404,7 @@ uint16 SW2_event_loop( uint8 task_id, uint16 events )
 #ifdef ZCL_LEVEL_CTRL
   if ( events & SAMPLELIGHT_LEVEL_CTRL_EVT )
   {
-    SW2_AdjustLightLevel();
+    SW3_AdjustLightLevel();
     return ( events ^ SAMPLELIGHT_LEVEL_CTRL_EVT );
   }
 #endif
@@ -433,7 +433,7 @@ uint16 SW2_event_loop( uint8 task_id, uint16 events )
 
 
 /*********************************************************************
- * @fn      SW2_HandleKeys
+ * @fn      SW3_HandleKeys
  *
  * @brief   Handles all key events for this device.
  *
@@ -446,19 +446,19 @@ uint16 SW2_event_loop( uint8 task_id, uint16 events )
  *
  * @return  none
  */
-static void SW2_HandleKeys( byte shift, byte keys )
+static void SW3_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_5 )  // Switch 5
   {     
-    if ( SW2_OnOff == LIGHT_OFF )
+    if ( SW3_OnOff == LIGHT_OFF )
     {
-      SW2_OnOff = LIGHT_ON;
+      SW3_OnOff = LIGHT_ON;
     }
     else
     {
-      SW2_OnOff = LIGHT_OFF;
+      SW3_OnOff = LIGHT_OFF;
     }
-    SW2_UpdateLedState();
+    SW3_UpdateLedState();
   }
 }
 
@@ -513,7 +513,7 @@ static uint8 gp_ChangeChannelReq(void)
 
 
 /*********************************************************************
- * @fn      SW2_ProcessCommissioningStatus
+ * @fn      SW3_ProcessCommissioningStatus
  *
  * @brief   Callback in which the status of the commissioning process are reported
  *
@@ -521,7 +521,7 @@ static uint8 gp_ChangeChannelReq(void)
  *
  * @return  none
  */
-//static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
+//static void SW3_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
 //{
 //  switch(bdbCommissioningModeMsg->bdbCommissioningMode)
 //  {
@@ -579,7 +579,7 @@ static uint8 gp_ChangeChannelReq(void)
 //      else
 //      {
 //        //Parent not found, attempt to rejoin again after a fixed delay
-//        osal_start_timerEx(SW2_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+//        osal_start_timerEx(SW3_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
 //      }
 //    break;
 //#endif 
@@ -588,7 +588,7 @@ static uint8 gp_ChangeChannelReq(void)
 //}
 
 /*********************************************************************
- * @fn      SW2_BasicResetCB
+ * @fn      SW3_BasicResetCB
  *
  * @brief   Callback from the ZCL General Cluster Library
  *          to set all the Basic Cluster attributes to default values.
@@ -597,17 +597,17 @@ static uint8 gp_ChangeChannelReq(void)
  *
  * @return  none
  */
-static void SW2_BasicResetCB( void )
+static void SW3_BasicResetCB( void )
 {
   //Reset every attribute in all supported cluster to their default value.
 
-  SW2_ResetAttributesToDefaultValues();
+  SW3_ResetAttributesToDefaultValues();
 
-  SW2_UpdateLedState();
+  SW3_UpdateLedState();
 }
 
 /*********************************************************************
- * @fn      SW2_OnOffCB
+ * @fn      SW3_OnOffCB
  *
  * @brief   Callback from the ZCL General Cluster Library when
  *          it received an On/Off Command for this application.
@@ -616,13 +616,13 @@ static void SW2_BasicResetCB( void )
  *
  * @return  none
  */
-static void SW2_OnOffCB( uint8 cmd )
+static void SW3_OnOffCB( uint8 cmd )
 {
   afIncomingMSGPacket_t *pPtr = zcl_getRawAFMsg();
 
   uint8 OnOff;
 
-  SW2_DstAddr.addr.shortAddr = pPtr->srcAddr.addr.shortAddr;
+  SW3_DstAddr.addr.shortAddr = pPtr->srcAddr.addr.shortAddr;
 
 
   // Turn on the light
@@ -639,9 +639,9 @@ static void SW2_OnOffCB( uint8 cmd )
   else if ( cmd == COMMAND_TOGGLE )
   {
 #ifdef ZCL_LEVEL_CTRL
-    if (SW2_LevelRemainingTime > 0) 
+    if (SW3_LevelRemainingTime > 0) 
     {
-      if (SW2_NewLevelUp)
+      if (SW3_NewLevelUp)
       {
         OnOff = LIGHT_OFF;
       }
@@ -652,7 +652,7 @@ static void SW2_OnOffCB( uint8 cmd )
     }
     else
     {
-      if (SW2_OnOff == LIGHT_ON)
+      if (SW3_OnOff == LIGHT_ON)
       {
         OnOff = LIGHT_OFF;
       }
@@ -662,7 +662,7 @@ static void SW2_OnOffCB( uint8 cmd )
       }
     }
 #else
-    if (SW2_OnOff == LIGHT_ON)
+    if (SW3_OnOff == LIGHT_ON)
     {
       OnOff = LIGHT_OFF;
     }
@@ -674,52 +674,52 @@ static void SW2_OnOffCB( uint8 cmd )
   }
 
 #ifdef ZCL_LEVEL_CTRL
-  SW2_LevelChangeCmd = (OnOff == LIGHT_ON ? LEVEL_CHANGED_BY_ON_CMD : LEVEL_CHANGED_BY_OFF_CMD);
+  SW3_LevelChangeCmd = (OnOff == LIGHT_ON ? LEVEL_CHANGED_BY_ON_CMD : LEVEL_CHANGED_BY_OFF_CMD);
 
-  SW2_DefaultMove(OnOff);
+  SW3_DefaultMove(OnOff);
 #else
-  SW2_OnOff = OnOff;
+  SW3_OnOff = OnOff;
 #endif
-  SW2_UpdateLedState();
+  SW3_UpdateLedState();
 }
 
 #ifdef ZCL_LEVEL_CTRL
 /*********************************************************************
- * @fn      SW2_TimeRateHelper
+ * @fn      SW3_TimeRateHelper
  *
  * @brief   Calculate time based on rate, and startup level state machine
  *
  * @param   newLevel - new level for current level
  *
- * @return  diff (directly), SW2_CurrentLevel32 and SW2_NewLevel, SW2_NewLevelUp
+ * @return  diff (directly), SW3_CurrentLevel32 and SW3_NewLevel, SW3_NewLevelUp
  */
-static uint32 SW2_TimeRateHelper( uint8 newLevel )
+static uint32 SW3_TimeRateHelper( uint8 newLevel )
 {
   uint32 diff;
   uint32 newLevel32;
 
   // remember current and new level
-  SW2_NewLevel = newLevel;
-  SW2_CurrentLevel32 = (uint32)1000 * SW2_LevelCurrentLevel;
+  SW3_NewLevel = newLevel;
+  SW3_CurrentLevel32 = (uint32)1000 * SW3_LevelCurrentLevel;
 
   // calculate diff
   newLevel32 = (uint32)1000 * newLevel;
-  if ( SW2_LevelCurrentLevel > newLevel )
+  if ( SW3_LevelCurrentLevel > newLevel )
   {
-    diff = SW2_CurrentLevel32 - newLevel32;
-    SW2_NewLevelUp = FALSE;  // moving down
+    diff = SW3_CurrentLevel32 - newLevel32;
+    SW3_NewLevelUp = FALSE;  // moving down
   }
   else
   {
-    diff = newLevel32 - SW2_CurrentLevel32;
-    SW2_NewLevelUp = TRUE;   // moving up
+    diff = newLevel32 - SW3_CurrentLevel32;
+    SW3_NewLevelUp = TRUE;   // moving up
   }
 
   return ( diff );
 }
 
 /*********************************************************************
- * @fn      SW2_MoveBasedOnRate
+ * @fn      SW3_MoveBasedOnRate
  *
  * @brief   Calculate time based on rate, and startup level state machine
  *
@@ -728,24 +728,24 @@ static uint32 SW2_TimeRateHelper( uint8 newLevel )
  *
  * @return  none
  */
-static void SW2_MoveBasedOnRate( uint8 newLevel, uint32 rate )
+static void SW3_MoveBasedOnRate( uint8 newLevel, uint32 rate )
 {
   uint32 diff;
 
   // determine how much time (in 10ths of seconds) based on the difference and rate
-  SW2_Rate32 = rate;
-  diff = SW2_TimeRateHelper( newLevel );
-  SW2_LevelRemainingTime = diff / rate;
-  if ( !SW2_LevelRemainingTime )
+  SW3_Rate32 = rate;
+  diff = SW3_TimeRateHelper( newLevel );
+  SW3_LevelRemainingTime = diff / rate;
+  if ( !SW3_LevelRemainingTime )
   {
-    SW2_LevelRemainingTime = 1;
+    SW3_LevelRemainingTime = 1;
   }
 
-  osal_start_timerEx( SW2_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
+  osal_start_timerEx( SW3_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
 }
 
 /*********************************************************************
- * @fn      SW2_MoveBasedOnTime
+ * @fn      SW3_MoveBasedOnTime
  *
  * @brief   Calculate rate based on time, and startup level state machine
  *
@@ -754,20 +754,20 @@ static void SW2_MoveBasedOnRate( uint8 newLevel, uint32 rate )
  *
  * @return  none
  */
-static void SW2_MoveBasedOnTime( uint8 newLevel, uint16 time )
+static void SW3_MoveBasedOnTime( uint8 newLevel, uint16 time )
 {
   uint16 diff;
 
   // determine rate (in units) based on difference and time
-  diff = SW2_TimeRateHelper( newLevel );
-  SW2_LevelRemainingTime = SW2_GetTime( newLevel, time );
-  SW2_Rate32 = diff / time;
+  diff = SW3_TimeRateHelper( newLevel );
+  SW3_LevelRemainingTime = SW3_GetTime( newLevel, time );
+  SW3_Rate32 = diff / time;
 
-  osal_start_timerEx( SW2_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
+  osal_start_timerEx( SW3_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
 }
 
 /*********************************************************************
- * @fn      SW2_GetTime
+ * @fn      SW3_GetTime
  *
  * @brief   Determine amount of time that MoveXXX will take to complete.
  *
@@ -776,7 +776,7 @@ static void SW2_MoveBasedOnTime( uint8 newLevel, uint16 time )
  *
  * @return  none
  */
-static uint16 SW2_GetTime( uint8 newLevel, uint16 time )
+static uint16 SW3_GetTime( uint8 newLevel, uint16 time )
 {
   // there is a hiearchy of the amount of time to use for transistioning
   // check each one in turn. If none of defaults are set, then use fastest
@@ -784,19 +784,19 @@ static uint16 SW2_GetTime( uint8 newLevel, uint16 time )
   if ( time == 0xFFFF )
   {
     // use On or Off Transition Time if set (not 0xffff)
-    if ( SW2_LevelCurrentLevel > newLevel )
+    if ( SW3_LevelCurrentLevel > newLevel )
     {
-      time = SW2_LevelOffTransitionTime;
+      time = SW3_LevelOffTransitionTime;
     }
     else
     {
-      time = SW2_LevelOnTransitionTime;
+      time = SW3_LevelOnTransitionTime;
     }
 
     // else use OnOffTransitionTime if set (not 0xffff)
     if ( time == 0xFFFF )
     {
-      time = SW2_LevelOnOffTransitionTime;
+      time = SW3_LevelOnOffTransitionTime;
     }
 
     // else as fast as possible
@@ -815,15 +815,15 @@ static uint16 SW2_GetTime( uint8 newLevel, uint16 time )
 }
 
 /*********************************************************************
- * @fn      SW2_DefaultMove
+ * @fn      SW3_DefaultMove
  *
  * @brief   We were turned on/off. Use default time to move to on or off.
  *
- * @param   SW2_OnOff - must be set prior to calling this function.
+ * @param   SW3_OnOff - must be set prior to calling this function.
  *
  * @return  none
  */
-static void SW2_DefaultMove( uint8 OnOff )
+static void SW3_DefaultMove( uint8 OnOff )
 {
   uint8  newLevel;
   uint32 rate;      // fixed point decimal (3 places, eg. 16.345)
@@ -832,35 +832,35 @@ static void SW2_DefaultMove( uint8 OnOff )
   // if moving to on position, move to on level
   if ( OnOff )
   {
-    if (SW2_OnOff == LIGHT_OFF)
+    if (SW3_OnOff == LIGHT_OFF)
     {
-      SW2_LevelCurrentLevel = ATTR_LEVEL_MIN_LEVEL;
+      SW3_LevelCurrentLevel = ATTR_LEVEL_MIN_LEVEL;
     }
     
-    if ( SW2_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT )
+    if ( SW3_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT )
     {
       // The last Level (before going OFF) should be used)
-      newLevel = SW2_LevelLastLevel;
+      newLevel = SW3_LevelLastLevel;
     }
     else
     {
-      newLevel = SW2_LevelOnLevel;
+      newLevel = SW3_LevelOnLevel;
     }
 
-    time = SW2_LevelOnTransitionTime;
+    time = SW3_LevelOnTransitionTime;
 
   }
   else
   {
     newLevel = ATTR_LEVEL_MIN_LEVEL;
 
-    time = SW2_LevelOffTransitionTime;
+    time = SW3_LevelOffTransitionTime;
   }
 
   // else use OnOffTransitionTime if set (not 0xffff)
   if ( time == 0xFFFF )
   {
-    time = SW2_LevelOnOffTransitionTime;
+    time = SW3_LevelOnOffTransitionTime;
   }
 
   // else as fast as possible
@@ -873,12 +873,12 @@ static void SW2_DefaultMove( uint8 OnOff )
   rate = 255000 / time;    // units per tick, fixed point, 3 decimal places (e.g. 8500 = 8.5 units per tick)
 
   // start up state machine.
-  SW2_WithOnOff = TRUE;
-  SW2_MoveBasedOnRate( newLevel, rate );
+  SW3_WithOnOff = TRUE;
+  SW3_MoveBasedOnRate( newLevel, rate );
 }
 
 /*********************************************************************
- * @fn      SW2_AdjustLightLevel
+ * @fn      SW3_AdjustLightLevel
  *
  * @brief   Called each 10th of a second while state machine running
  *
@@ -886,75 +886,75 @@ static void SW2_DefaultMove( uint8 OnOff )
  *
  * @return  none
  */
-static void SW2_AdjustLightLevel( void )
+static void SW3_AdjustLightLevel( void )
 {
   // one tick (10th of a second) less
-  if ( SW2_LevelRemainingTime )
+  if ( SW3_LevelRemainingTime )
   {
-    --SW2_LevelRemainingTime;
+    --SW3_LevelRemainingTime;
   }
 
   // no time left, done
-  if ( SW2_LevelRemainingTime == 0)
+  if ( SW3_LevelRemainingTime == 0)
   {
-    SW2_LevelCurrentLevel = SW2_NewLevel;
+    SW3_LevelCurrentLevel = SW3_NewLevel;
   }
 
   // still time left, keep increment/decrementing
   else
   {
-    if ( SW2_NewLevelUp )
+    if ( SW3_NewLevelUp )
     {
-      SW2_CurrentLevel32 += SW2_Rate32;
+      SW3_CurrentLevel32 += SW3_Rate32;
     }
     else
     {
-      SW2_CurrentLevel32 -= SW2_Rate32;
+      SW3_CurrentLevel32 -= SW3_Rate32;
     }
-    SW2_LevelCurrentLevel = (uint8)( SW2_CurrentLevel32 / 1000 );
+    SW3_LevelCurrentLevel = (uint8)( SW3_CurrentLevel32 / 1000 );
   }
 
-  if (( SW2_LevelChangeCmd == LEVEL_CHANGED_BY_LEVEL_CMD ) && ( SW2_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT ))
+  if (( SW3_LevelChangeCmd == LEVEL_CHANGED_BY_LEVEL_CMD ) && ( SW3_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT ))
   {
-    SW2_LevelLastLevel = SW2_LevelCurrentLevel;
+    SW3_LevelLastLevel = SW3_LevelCurrentLevel;
   }
 
   // also affect on/off
-  if ( SW2_WithOnOff )
+  if ( SW3_WithOnOff )
   {
-    if ( SW2_LevelCurrentLevel > ATTR_LEVEL_MIN_LEVEL )
+    if ( SW3_LevelCurrentLevel > ATTR_LEVEL_MIN_LEVEL )
     {
-      SW2_OnOff = LIGHT_ON;
+      SW3_OnOff = LIGHT_ON;
     }
     else
     {
-      if (SW2_LevelChangeCmd != LEVEL_CHANGED_BY_ON_CMD)
+      if (SW3_LevelChangeCmd != LEVEL_CHANGED_BY_ON_CMD)
       {
-        SW2_OnOff = LIGHT_OFF;
+        SW3_OnOff = LIGHT_OFF;
       }
       else
       {
-        SW2_OnOff = LIGHT_ON;
+        SW3_OnOff = LIGHT_ON;
       }
       
-      if (( SW2_LevelChangeCmd != LEVEL_CHANGED_BY_LEVEL_CMD ) && ( SW2_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT ))
+      if (( SW3_LevelChangeCmd != LEVEL_CHANGED_BY_LEVEL_CMD ) && ( SW3_LevelOnLevel == ATTR_LEVEL_ON_LEVEL_NO_EFFECT ))
       {
-        SW2_LevelCurrentLevel = SW2_LevelLastLevel;
+        SW3_LevelCurrentLevel = SW3_LevelLastLevel;
       }
     }
   }
 
-  SW2_UpdateLedState();
+  SW3_UpdateLedState();
 
   // keep ticking away
-  if ( SW2_LevelRemainingTime )
+  if ( SW3_LevelRemainingTime )
   {
-    osal_start_timerEx( SW2_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
+    osal_start_timerEx( SW3_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT, 100 );
   }
 }
 
 /*********************************************************************
- * @fn      SW2_LevelControlMoveToLevelCB
+ * @fn      SW3_LevelControlMoveToLevelCB
  *
  * @brief   Callback from the ZCL General Cluster Library when
  *          it received a LevelControlMoveToLevel Command for this application.
@@ -963,16 +963,16 @@ static void SW2_AdjustLightLevel( void )
  *
  * @return  none
  */
-static void SW2_LevelControlMoveToLevelCB( zclLCMoveToLevel_t *pCmd )
+static void SW3_LevelControlMoveToLevelCB( zclLCMoveToLevel_t *pCmd )
 {
-  SW2_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
+  SW3_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
 
-  SW2_WithOnOff = pCmd->withOnOff;
-  SW2_MoveBasedOnTime( pCmd->level, pCmd->transitionTime );
+  SW3_WithOnOff = pCmd->withOnOff;
+  SW3_MoveBasedOnTime( pCmd->level, pCmd->transitionTime );
 }
 
 /*********************************************************************
- * @fn      SW2_LevelControlMoveCB
+ * @fn      SW3_LevelControlMoveCB
  *
  * @brief   Callback from the ZCL General Cluster Library when
  *          it received a LevelControlMove Command for this application.
@@ -981,14 +981,14 @@ static void SW2_LevelControlMoveToLevelCB( zclLCMoveToLevel_t *pCmd )
  *
  * @return  none
  */
-static void SW2_LevelControlMoveCB( zclLCMove_t *pCmd )
+static void SW3_LevelControlMoveCB( zclLCMove_t *pCmd )
 {
   uint8 newLevel;
   uint32 rate;
 
   // convert rate from units per second to units per tick (10ths of seconds)
   // and move at that right up or down
-  SW2_WithOnOff = pCmd->withOnOff;
+  SW3_WithOnOff = pCmd->withOnOff;
 
   if ( pCmd->moveMode == LEVEL_MOVE_UP )
   {
@@ -999,14 +999,14 @@ static void SW2_LevelControlMoveCB( zclLCMove_t *pCmd )
     newLevel = ATTR_LEVEL_MIN_LEVEL; // fully off
   }
 
-  SW2_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
+  SW3_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
 
   rate = (uint32)100 * pCmd->rate;
-  SW2_MoveBasedOnRate( newLevel, rate );
+  SW3_MoveBasedOnRate( newLevel, rate );
 }
 
 /*********************************************************************
- * @fn      SW2_LevelControlStepCB
+ * @fn      SW3_LevelControlStepCB
  *
  * @brief   Callback from the ZCL General Cluster Library when
  *          it received an On/Off Command for this application.
@@ -1015,43 +1015,43 @@ static void SW2_LevelControlMoveCB( zclLCMove_t *pCmd )
  *
  * @return  none
  */
-static void SW2_LevelControlStepCB( zclLCStep_t *pCmd )
+static void SW3_LevelControlStepCB( zclLCStep_t *pCmd )
 {
   uint8 newLevel;
 
   // determine new level, but don't exceed boundaries
   if ( pCmd->stepMode == LEVEL_MOVE_UP )
   {
-    if ( (uint16)SW2_LevelCurrentLevel + pCmd->amount > ATTR_LEVEL_MAX_LEVEL )
+    if ( (uint16)SW3_LevelCurrentLevel + pCmd->amount > ATTR_LEVEL_MAX_LEVEL )
     {
       newLevel = ATTR_LEVEL_MAX_LEVEL;
     }
     else
     {
-      newLevel = SW2_LevelCurrentLevel + pCmd->amount;
+      newLevel = SW3_LevelCurrentLevel + pCmd->amount;
     }
   }
   else
   {
-    if ( pCmd->amount >= SW2_LevelCurrentLevel )
+    if ( pCmd->amount >= SW3_LevelCurrentLevel )
     {
       newLevel = ATTR_LEVEL_MIN_LEVEL;
     }
     else
     {
-      newLevel = SW2_LevelCurrentLevel - pCmd->amount;
+      newLevel = SW3_LevelCurrentLevel - pCmd->amount;
     }
   }
   
-  SW2_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
+  SW3_LevelChangeCmd = LEVEL_CHANGED_BY_LEVEL_CMD;
 
   // move to the new level
-  SW2_WithOnOff = pCmd->withOnOff;
-  SW2_MoveBasedOnTime( newLevel, pCmd->transitionTime );
+  SW3_WithOnOff = pCmd->withOnOff;
+  SW3_MoveBasedOnTime( newLevel, pCmd->transitionTime );
 }
 
 /*********************************************************************
- * @fn      SW2_LevelControlStopCB
+ * @fn      SW3_LevelControlStopCB
  *
  * @brief   Callback from the ZCL General Cluster Library when
  *          it received an Level Control Stop Command for this application.
@@ -1060,11 +1060,11 @@ static void SW2_LevelControlStepCB( zclLCStep_t *pCmd )
  *
  * @return  none
  */
-static void SW2_LevelControlStopCB( void )
+static void SW3_LevelControlStopCB( void )
 {
   // stop immediately
-  osal_stop_timerEx( SW2_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT );
-  SW2_LevelRemainingTime = 0;
+  osal_stop_timerEx( SW3_TaskID, SAMPLELIGHT_LEVEL_CTRL_EVT );
+  SW3_LevelRemainingTime = 0;
 }
 #endif
 
@@ -1096,7 +1096,7 @@ void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
  *****************************************************************************/
 
 /*********************************************************************
- * @fn      SW2_ProcessIncomingMsg
+ * @fn      SW3_ProcessIncomingMsg
  *
  * @brief   Process ZCL Foundation incoming message
  *
@@ -1104,18 +1104,18 @@ void zclSampleApp_BatteryWarningCB( uint8 voltLevel )
  *
  * @return  none
  */
-static void SW2_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
+static void SW3_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
 {
   switch ( pInMsg->zclHdr.commandID )
   {
 #ifdef ZCL_READ
     case ZCL_CMD_READ_RSP:
-      SW2_ProcessInReadRspCmd( pInMsg );
+      SW3_ProcessInReadRspCmd( pInMsg );
       break;
 #endif
 #ifdef ZCL_WRITE
     case ZCL_CMD_WRITE_RSP:
-      SW2_ProcessInWriteRspCmd( pInMsg );
+      SW3_ProcessInWriteRspCmd( pInMsg );
       break;
 #endif
     case ZCL_CMD_CONFIG_REPORT:
@@ -1127,23 +1127,23 @@ static void SW2_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
       break;
 
     case ZCL_CMD_DEFAULT_RSP:
-      SW2_ProcessInDefaultRspCmd( pInMsg );
+      SW3_ProcessInDefaultRspCmd( pInMsg );
       break;
 #ifdef ZCL_DISCOVER
     case ZCL_CMD_DISCOVER_CMDS_RECEIVED_RSP:
-      SW2_ProcessInDiscCmdsRspCmd( pInMsg );
+      SW3_ProcessInDiscCmdsRspCmd( pInMsg );
       break;
 
     case ZCL_CMD_DISCOVER_CMDS_GEN_RSP:
-      SW2_ProcessInDiscCmdsRspCmd( pInMsg );
+      SW3_ProcessInDiscCmdsRspCmd( pInMsg );
       break;
 
     case ZCL_CMD_DISCOVER_ATTRS_RSP:
-      SW2_ProcessInDiscAttrsRspCmd( pInMsg );
+      SW3_ProcessInDiscAttrsRspCmd( pInMsg );
       break;
 
     case ZCL_CMD_DISCOVER_ATTRS_EXT_RSP:
-      SW2_ProcessInDiscAttrsExtRspCmd( pInMsg );
+      SW3_ProcessInDiscAttrsExtRspCmd( pInMsg );
       break;
 #endif
     default:
@@ -1156,7 +1156,7 @@ static void SW2_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
 
 #ifdef ZCL_READ
 /*********************************************************************
- * @fn      SW2_ProcessInReadRspCmd
+ * @fn      SW3_ProcessInReadRspCmd
  *
  * @brief   Process the "Profile" Read Response Command
  *
@@ -1164,7 +1164,7 @@ static void SW2_ProcessIncomingMsg( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
 {
   zclReadRspCmd_t *readRspCmd;
   uint8 i;
@@ -1183,7 +1183,7 @@ static uint8 SW2_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
 
 #ifdef ZCL_WRITE
 /*********************************************************************
- * @fn      SW2_ProcessInWriteRspCmd
+ * @fn      SW3_ProcessInWriteRspCmd
  *
  * @brief   Process the "Profile" Write Response Command
  *
@@ -1191,7 +1191,7 @@ static uint8 SW2_ProcessInReadRspCmd( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
 {
   zclWriteRspCmd_t *writeRspCmd;
   uint8 i;
@@ -1208,7 +1208,7 @@ static uint8 SW2_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
 #endif // ZCL_WRITE
 
 /*********************************************************************
- * @fn      SW2_ProcessInDefaultRspCmd
+ * @fn      SW3_ProcessInDefaultRspCmd
  *
  * @brief   Process the "Profile" Default Response Command
  *
@@ -1216,7 +1216,7 @@ static uint8 SW2_ProcessInWriteRspCmd( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
 {
   // zclDefaultRspCmd_t *defaultRspCmd = (zclDefaultRspCmd_t *)pInMsg->attrCmd;
 
@@ -1228,7 +1228,7 @@ static uint8 SW2_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
 
 #ifdef ZCL_DISCOVER
 /*********************************************************************
- * @fn      SW2_ProcessInDiscCmdsRspCmd
+ * @fn      SW3_ProcessInDiscCmdsRspCmd
  *
  * @brief   Process the Discover Commands Response Command
  *
@@ -1236,7 +1236,7 @@ static uint8 SW2_ProcessInDefaultRspCmd( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
 {
   zclDiscoverCmdsCmdRsp_t *discoverRspCmd;
   uint8 i;
@@ -1251,7 +1251,7 @@ static uint8 SW2_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
 }
 
 /*********************************************************************
- * @fn      SW2_ProcessInDiscAttrsRspCmd
+ * @fn      SW3_ProcessInDiscAttrsRspCmd
  *
  * @brief   Process the "Profile" Discover Attributes Response Command
  *
@@ -1259,7 +1259,7 @@ static uint8 SW2_ProcessInDiscCmdsRspCmd( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
 {
   zclDiscoverAttrsRspCmd_t *discoverRspCmd;
   uint8 i;
@@ -1274,7 +1274,7 @@ static uint8 SW2_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
 }
 
 /*********************************************************************
- * @fn      SW2_ProcessInDiscAttrsExtRspCmd
+ * @fn      SW3_ProcessInDiscAttrsExtRspCmd
  *
  * @brief   Process the "Profile" Discover Attributes Extended Response Command
  *
@@ -1282,7 +1282,7 @@ static uint8 SW2_ProcessInDiscAttrsRspCmd( zclIncomingMsg_t *pInMsg )
  *
  * @return  none
  */
-static uint8 SW2_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
+static uint8 SW3_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
 {
   zclDiscoverAttrsExtRsp_t *discoverRspCmd;
   uint8 i;
@@ -1297,18 +1297,18 @@ static uint8 SW2_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
 }
 #endif // ZCL_DISCOVER
 
-void SW2_UpdateLedState(void)
+void SW3_UpdateLedState(void)
 {
   // set the LED3 based on light (on or off)
-  if ( SW2_OnOff == LIGHT_ON )
+  if ( SW3_OnOff == LIGHT_ON )
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
+    HalLedSet ( HAL_LED_3, HAL_LED_MODE_ON );
   }
   else
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_OFF );
+    HalLedSet ( HAL_LED_3, HAL_LED_MODE_OFF );
   }
-  bdb_RepChangedAttrValue(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
+  bdb_RepChangedAttrValue(SW3_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
 }
 
 

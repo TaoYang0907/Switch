@@ -80,7 +80,7 @@
 
 #include "zcl_samplelight.h"
 #include "SW2.h"
-
+#include "SW3.h"
 /*********************************************************************
  * GLOBAL VARIABLES
  */
@@ -119,7 +119,8 @@ const pTaskEventHandlerFn tasksArr[] = {
   zcl_event_loop,
   bdb_event_loop,
   zclSampleLight_event_loop,
-  SW2_event_loop
+  SW2_event_loop,
+  SW3_event_loop
 };
 
 const uint8 tasksCnt = sizeof( tasksArr ) / sizeof( tasksArr[0] );
@@ -177,7 +178,8 @@ void osalInitTasks( void )
   zcl_Init( taskID++ );
   bdb_Init( taskID++ );
   zclSampleLight_Init( taskID++ );
-  SW2_Init( taskID );
+  SW2_Init( taskID++ );
+  SW3_Init( taskID );
 }
 
 /*********************************************************************
