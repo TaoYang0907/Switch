@@ -402,7 +402,7 @@ static void zclSampleSw_HandleKeys( byte shift, byte keys )
   {
     Send_To_SW1();
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
-    Send_To_SW2();
+//    Send_To_SW2();
   }
 }
 

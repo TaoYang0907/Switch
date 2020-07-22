@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               22/Jul/2020  00:08:42
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               22/Jul/2020  11:21:52
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,7 +15,7 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleLight\Source\SW2.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWDDF4.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW2A76.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleLight\Source\SW2.c" -D
 #        BDB_REPORTING -D SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D xNV_RESTORE
 #        -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D
@@ -367,7 +367,7 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleLight\Source\SW2.c
     194          #endif
     195          
     196          
-    197          static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
+    197          //static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
     198          
     199          
     200          #ifdef ZCL_LEVEL_CTRL
@@ -608,13 +608,13 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleLight\Source\SW2.c
    \   000076   E4           CLR       A
    \   000077   F0           MOVX      @DPTR,A
     353            
-    354            bdb_RepAddAttrCfgRecordDefaultToList(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 7, reportableChangeSW2);
+    354            bdb_RepAddAttrCfgRecordDefaultToList(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xFF, reportableChangeSW2);
    \   000078                ; Setup parameters for call to function bdb_RepAddAttrCfgRecordDefaultToList
    \   000078   75....       MOV       ?V0,#reportableChangeSW2 & 0xff
    \   00007B   75....       MOV       ?V1,#(reportableChangeSW2 >> 8) & 0xff
    \   00007E   78..         MOV       R0,#?V0
    \   000080   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000083   75..07       MOV       ?V0,#0x7
+   \   000083   75..FF       MOV       ?V0,#-0x1
    \   000086   75..00       MOV       ?V1,#0x0
    \   000089   78..         MOV       R0,#?V0
    \   00008B   12....       LCALL     ?PUSH_XSTACK_I_TWO
@@ -902,74 +902,71 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleLight\Source\SW2.c
     529           *
     530           * @return  none
     531           */
-    532          static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
-                             ^
-Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
-          never referenced
-    533          {
-    534            switch(bdbCommissioningModeMsg->bdbCommissioningMode)
-    535            {
-    536              case BDB_COMMISSIONING_FORMATION:
-    537                if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-    538                {
-    539                  //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
-    540                  bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
-    541                }
-    542                else
-    543                {
-    544                  //Want to try other channels?
-    545                  //try with bdb_setChannelAttribute
-    546                }
-    547              break;
-    548              case BDB_COMMISSIONING_NWK_STEERING:
-    549                if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-    550                {
-    551                  //YOUR JOB:
-    552                  //We are on the nwk, what now?
-    553                }
-    554                else
-    555                {
-    556                  //See the possible errors for nwk steering procedure
-    557                  //No suitable networks found
-    558                  //Want to try other channels?
-    559                  //try with bdb_setChannelAttribute
-    560                }
-    561              break;
-    562              case BDB_COMMISSIONING_FINDING_BINDING:
-    563                if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-    564                {
-    565                  //YOUR JOB:
-    566                }
-    567                else
-    568                {
-    569                  //YOUR JOB:
-    570                  //retry?, wait for user interaction?
-    571                }
-    572              break;
-    573              case BDB_COMMISSIONING_INITIALIZATION:
-    574                //Initialization notification can only be successful. Failure on initialization 
-    575                //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
-    576                
-    577                //YOUR JOB:
-    578                //We are on a network, what now?
-    579                
-    580              break;
-    581          #if ZG_BUILD_ENDDEVICE_TYPE    
-    582              case BDB_COMMISSIONING_PARENT_LOST:
-    583                if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
-    584                {
-    585                  //We did recover from losing parent
-    586                }
-    587                else
-    588                {
-    589                  //Parent not found, attempt to rejoin again after a fixed delay
-    590                  osal_start_timerEx(SW2_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
-    591                }
-    592              break;
-    593          #endif 
-    594            }
-    595          
-    596          }
+    532          //static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
+    533          //{
+    534          //  switch(bdbCommissioningModeMsg->bdbCommissioningMode)
+    535          //  {
+    536          //    case BDB_COMMISSIONING_FORMATION:
+    537          //      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+    538          //      {
+    539          //        //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
+    540          //        bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+    541          //      }
+    542          //      else
+    543          //      {
+    544          //        //Want to try other channels?
+    545          //        //try with bdb_setChannelAttribute
+    546          //      }
+    547          //    break;
+    548          //    case BDB_COMMISSIONING_NWK_STEERING:
+    549          //      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+    550          //      {
+    551          //        //YOUR JOB:
+    552          //        //We are on the nwk, what now?
+    553          //      }
+    554          //      else
+    555          //      {
+    556          //        //See the possible errors for nwk steering procedure
+    557          //        //No suitable networks found
+    558          //        //Want to try other channels?
+    559          //        //try with bdb_setChannelAttribute
+    560          //      }
+    561          //    break;
+    562          //    case BDB_COMMISSIONING_FINDING_BINDING:
+    563          //      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+    564          //      {
+    565          //        //YOUR JOB:
+    566          //      }
+    567          //      else
+    568          //      {
+    569          //        //YOUR JOB:
+    570          //        //retry?, wait for user interaction?
+    571          //      }
+    572          //    break;
+    573          //    case BDB_COMMISSIONING_INITIALIZATION:
+    574          //      //Initialization notification can only be successful. Failure on initialization 
+    575          //      //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
+    576          //      
+    577          //      //YOUR JOB:
+    578          //      //We are on a network, what now?
+    579          //      
+    580          //    break;
+    581          //#if ZG_BUILD_ENDDEVICE_TYPE    
+    582          //    case BDB_COMMISSIONING_PARENT_LOST:
+    583          //      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
+    584          //      {
+    585          //        //We did recover from losing parent
+    586          //      }
+    587          //      else
+    588          //      {
+    589          //        //Parent not found, attempt to rejoin again after a fixed delay
+    590          //        osal_start_timerEx(SW2_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+    591          //      }
+    592          //    break;
+    593          //#endif 
+    594          //  }
+    595          //
+    596          //}
     597          
     598          /*********************************************************************
     599           * @fn      SW2_BasicResetCB
@@ -1213,12 +1210,19 @@ Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
     688          #else
     689            SW2_OnOff = OnOff;
     690          #endif
-    691          
+    691            bdb_RepChangedAttrValue(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
+   \   0000C2                ; Setup parameters for call to function bdb_RepChangedAttrValue
+   \   0000C2   7C00         MOV       R4,#0x0
+   \   0000C4   7D00         MOV       R5,#0x0
+   \   0000C6   7A06         MOV       R2,#0x6
+   \   0000C8   7B00         MOV       R3,#0x0
+   \   0000CA   7909         MOV       R1,#0x9
+   \   0000CC   12....       LCALL     `??bdb_RepChangedAttrValue::?relay`; Banked call to: bdb_RepChangedAttrValue
     692            SW2_UpdateLedState();
-   \   0000C2                ; Setup parameters for call to function SW2_UpdateLedState
-   \   0000C2   12....       LCALL     `??SW2_UpdateLedState::?relay`; Banked call to: SW2_UpdateLedState
+   \   0000CF                ; Setup parameters for call to function SW2_UpdateLedState
+   \   0000CF   12....       LCALL     `??SW2_UpdateLedState::?relay`; Banked call to: SW2_UpdateLedState
     693          }
-   \   0000C5   02....       LJMP      ??Subroutine11_0 & 0xFFFF
+   \   0000D2   02....       LJMP      ??Subroutine11_0 & 0xFFFF
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
    \                     ??Subroutine11_0:
@@ -2713,6 +2717,7 @@ Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
       0     16   SW2_OnOffCB
         0     16   -> SW2_MoveBasedOnRate
         0     16   -> SW2_UpdateLedState
+        0     16   -> bdb_RepChangedAttrValue
         0     16   -> zcl_getRawAFMsg
       2      9   SW2_ProcessInDiscCmdsRspCmd
       0     21   SW2_ProcessIncomingMsg
@@ -2767,7 +2772,7 @@ Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
      123  SW2_MoveBasedOnTime
        1  SW2_NewLevel
        1  SW2_NewLevelUp
-     200  SW2_OnOffCB
+     213  SW2_OnOffCB
       37  SW2_ProcessInDiscCmdsRspCmd
      137  SW2_ProcessIncomingMsg
        4  SW2_Rate32
@@ -2785,7 +2790,7 @@ Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
      108  -- Other
 
  
- 1 545 bytes in segment BANKED_CODE
+ 1 558 bytes in segment BANKED_CODE
    108 bytes in segment BANK_RELAYS
     32 bytes in segment XDATA_I
     32 bytes in segment XDATA_ID
@@ -2794,8 +2799,8 @@ Warning[Pe177]: function "SW2_ProcessCommissioningStatus" was declared but
  
    140 bytes of CODE     memory
      0 bytes of CONST    memory (+ 8 bytes shared)
- 1 545 bytes of HUGECODE memory
+ 1 558 bytes of HUGECODE memory
     63 bytes of XDATA    memory
 
 Errors: none
-Warnings: 1
+Warnings: none

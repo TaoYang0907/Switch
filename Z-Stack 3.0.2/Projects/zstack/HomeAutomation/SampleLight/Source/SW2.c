@@ -194,7 +194,7 @@ static uint8 gp_ChangeChannelReq(void);
 #endif
 
 
-static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
+//static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg);
 
 
 #ifdef ZCL_LEVEL_CTRL
@@ -351,7 +351,7 @@ void SW2_Init( byte task_id )
   
   zdpExternalStateTaskID = SW2_TaskID;
   
-  bdb_RepAddAttrCfgRecordDefaultToList(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 7, reportableChangeSW2);
+  bdb_RepAddAttrCfgRecordDefaultToList(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xFF, reportableChangeSW2);
   
 //  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, ATTRID_ON_OFF, 0, 10, reportableChangeTest);
 }
@@ -529,71 +529,71 @@ static uint8 gp_ChangeChannelReq(void)
  *
  * @return  none
  */
-static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
-{
-  switch(bdbCommissioningModeMsg->bdbCommissioningMode)
-  {
-    case BDB_COMMISSIONING_FORMATION:
-      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-      {
-        //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
-        bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
-      }
-      else
-      {
-        //Want to try other channels?
-        //try with bdb_setChannelAttribute
-      }
-    break;
-    case BDB_COMMISSIONING_NWK_STEERING:
-      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-      {
-        //YOUR JOB:
-        //We are on the nwk, what now?
-      }
-      else
-      {
-        //See the possible errors for nwk steering procedure
-        //No suitable networks found
-        //Want to try other channels?
-        //try with bdb_setChannelAttribute
-      }
-    break;
-    case BDB_COMMISSIONING_FINDING_BINDING:
-      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
-      {
-        //YOUR JOB:
-      }
-      else
-      {
-        //YOUR JOB:
-        //retry?, wait for user interaction?
-      }
-    break;
-    case BDB_COMMISSIONING_INITIALIZATION:
-      //Initialization notification can only be successful. Failure on initialization 
-      //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
-      
-      //YOUR JOB:
-      //We are on a network, what now?
-      
-    break;
-#if ZG_BUILD_ENDDEVICE_TYPE    
-    case BDB_COMMISSIONING_PARENT_LOST:
-      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
-      {
-        //We did recover from losing parent
-      }
-      else
-      {
-        //Parent not found, attempt to rejoin again after a fixed delay
-        osal_start_timerEx(SW2_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
-      }
-    break;
-#endif 
-  }
-
-}
+//static void SW2_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg)
+//{
+//  switch(bdbCommissioningModeMsg->bdbCommissioningMode)
+//  {
+//    case BDB_COMMISSIONING_FORMATION:
+//      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//      {
+//        //After formation, perform nwk steering again plus the remaining commissioning modes that has not been process yet
+//        bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+//      }
+//      else
+//      {
+//        //Want to try other channels?
+//        //try with bdb_setChannelAttribute
+//      }
+//    break;
+//    case BDB_COMMISSIONING_NWK_STEERING:
+//      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//      {
+//        //YOUR JOB:
+//        //We are on the nwk, what now?
+//      }
+//      else
+//      {
+//        //See the possible errors for nwk steering procedure
+//        //No suitable networks found
+//        //Want to try other channels?
+//        //try with bdb_setChannelAttribute
+//      }
+//    break;
+//    case BDB_COMMISSIONING_FINDING_BINDING:
+//      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
+//      {
+//        //YOUR JOB:
+//      }
+//      else
+//      {
+//        //YOUR JOB:
+//        //retry?, wait for user interaction?
+//      }
+//    break;
+//    case BDB_COMMISSIONING_INITIALIZATION:
+//      //Initialization notification can only be successful. Failure on initialization 
+//      //only happens for ZED and is notified as BDB_COMMISSIONING_PARENT_LOST notification
+//      
+//      //YOUR JOB:
+//      //We are on a network, what now?
+//      
+//    break;
+//#if ZG_BUILD_ENDDEVICE_TYPE    
+//    case BDB_COMMISSIONING_PARENT_LOST:
+//      if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_NETWORK_RESTORED)
+//      {
+//        //We did recover from losing parent
+//      }
+//      else
+//      {
+//        //Parent not found, attempt to rejoin again after a fixed delay
+//        osal_start_timerEx(SW2_TaskID, SAMPLEAPP_END_DEVICE_REJOIN_EVT, SAMPLEAPP_END_DEVICE_REJOIN_DELAY);
+//      }
+//    break;
+//#endif 
+//  }
+//
+//}
 
 /*********************************************************************
  * @fn      SW2_BasicResetCB
@@ -688,7 +688,7 @@ static void SW2_OnOffCB( uint8 cmd )
 #else
   SW2_OnOff = OnOff;
 #endif
-
+  bdb_RepChangedAttrValue(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
   SW2_UpdateLedState();
 }
 

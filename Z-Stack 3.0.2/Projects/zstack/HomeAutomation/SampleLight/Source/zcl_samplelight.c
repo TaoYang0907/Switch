@@ -362,7 +362,7 @@ void zclSampleLight_Init( byte task_id )
   
   zdpExternalStateTaskID = zclSampleLight_TaskID;
   
-  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 5, reportableChangeTest);
+  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xFF, reportableChangeTest);
   
 //  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, ATTRID_ON_OFF, 0, 10, reportableChangeTest);
 }
@@ -466,7 +466,7 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
   }
   if ( keys & HAL_KEY_SW_5 )  // Switch 5
   {     
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_BLINK );
     if ( zclSampleLight_OnOff == LIGHT_OFF )
     {
       zclSampleLight_OnOff = LIGHT_ON;
@@ -475,7 +475,6 @@ static void zclSampleLight_HandleKeys( byte shift, byte keys )
     {
       zclSampleLight_OnOff = LIGHT_OFF;
     }
-    //zclSampleLight_OnOff = zclSampleLight_OnOff + 5;
     bdb_RepChangedAttrValue(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
     zclSampleLight_UpdateLedState();
   }
@@ -700,7 +699,7 @@ static void zclSampleLight_OnOffCB( uint8 cmd )
 #else
   zclSampleLight_OnOff = OnOff;
 #endif
-
+  bdb_RepChangedAttrValue(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
   zclSampleLight_UpdateLedState();
 }
 
