@@ -148,7 +148,7 @@ devStates_t zclSampleSw_NwkState = DEV_INIT;
  */
 static void Send_To_SW1( void );
 static void Send_To_SW2( void );
-static void Send_To_SW3( void );
+//static void Send_To_SW3( void );
 
 static void zclSampleSw_HandleKeys( byte shift, byte keys );
 static void zclSampleSw_BasicResetCB( void );
@@ -337,6 +337,14 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
         case ZDO_STATE_CHANGE:
           break;
 
+        case UART0_MESSAGE_SW1_TOGGLE:
+          Send_To_SW1();
+          break;
+
+        case UART0_MESSAGE_SW2_TOGGLE:
+          Send_To_SW2();
+          break;
+
 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
         case ZCL_OTA_CALLBACK_IND:
           zclSampleSw_ProcessOTAMsgs( (zclOTA_CallbackMsg_t*)MSGpkt  );
@@ -400,7 +408,7 @@ static void zclSampleSw_HandleKeys( byte shift, byte keys )
   }    
   if ( keys & HAL_KEY_SW_5 ) //key2
   {
-    Send_To_SW1();
+//    Send_To_SW1();
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
 //    Send_To_SW2();
   }
@@ -832,10 +840,10 @@ static void Send_To_SW2( void )
   zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
 }
 
-static void Send_To_SW3( void )
-{
-  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
-  SW_DstAddr.endPoint = SW3_ENDPOINT;
-  SW_DstAddr.addr.shortAddr = SourceAddr; 
-  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
-}
+//static void Send_To_SW3( void )
+//{
+//  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+//  SW_DstAddr.endPoint = SW3_ENDPOINT;
+//  SW_DstAddr.addr.shortAddr = SourceAddr; 
+//  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
+//}

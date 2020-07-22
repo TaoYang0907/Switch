@@ -688,7 +688,6 @@ static void SW2_OnOffCB( uint8 cmd )
 #else
   SW2_OnOff = OnOff;
 #endif
-  bdb_RepChangedAttrValue(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
   SW2_UpdateLedState();
 }
 
@@ -1308,7 +1307,7 @@ static uint8 SW2_ProcessInDiscAttrsExtRspCmd( zclIncomingMsg_t *pInMsg )
 
 void SW2_UpdateLedState(void)
 {
-  // set the LED1 based on light (on or off)
+  // set the LED3 based on light (on or off)
   if ( SW2_OnOff == LIGHT_ON )
   {
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_ON );
@@ -1317,6 +1316,7 @@ void SW2_UpdateLedState(void)
   {
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_OFF );
   }
+  bdb_RepChangedAttrValue(SW2_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF);
 }
 
 
