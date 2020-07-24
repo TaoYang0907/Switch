@@ -180,7 +180,11 @@
 #define PUSH2_BV          BV(0)
 #define PUSH2_SBIT        P2_0
 #define PUSH2_POLARITY    ACTIVE_HIGH
-
+ 
+/* S3*/
+#define PUSH3_BV          BV(5)
+#define PUSH3_SBIT        P0_5
+#define PUSH3_POLARITY    ACTIVE_LOW        
 /* ------------------------------------------------------------------------------------------------
  *                                    LCD Configuration
  * ------------------------------------------------------------------------------------------------
@@ -369,7 +373,7 @@ extern void MAC_RfFrontendSetup(void);
 /* ----------- Push Buttons ---------- */
 #define HAL_PUSH_BUTTON1()        (PUSH1_POLARITY (PUSH1_SBIT))
 #define HAL_PUSH_BUTTON2()        (PUSH2_POLARITY (PUSH2_SBIT))
-#define HAL_PUSH_BUTTON3()        (0)
+#define HAL_PUSH_BUTTON3()        (PUSH3_POLARITY (PUSH3_SBIT))
 #define HAL_PUSH_BUTTON4()        (0)
 #define HAL_PUSH_BUTTON5()        (0)
 #define HAL_PUSH_BUTTON6()        (0)

@@ -113,10 +113,18 @@
 #define HAL_KEY_SW_6_SEL    P0SEL
 #define HAL_KEY_SW_6_DIR    P0DIR
 
-/* edge interrupt */
+/* SW3 */
+#define HAL_KEY_SW3_PORT   P0
+#define HAL_KEY_SW3_BIT    BV(5)
+#define HAL_KEY_SW3_SEL    P0SEL
+#define HAL_KEY_SW3_DIR    P0DIR
+
+/* edge interrupt */ 
 #define HAL_KEY_SW_6_EDGEBIT  BV(0)
 #define HAL_KEY_SW_6_EDGE     HAL_KEY_FALLING_EDGE
 
+#define HAL_KEY_SW3_EDGEBIT  BV(3)
+#define HAL_KEY_SW3_EDGE     HAL_KEY_FALLING_EDGE
 
 /* SW_6 interrupts */
 #define HAL_KEY_SW_6_IEN      IEN1  /* CPU interrupt mask register */
@@ -124,6 +132,12 @@
 #define HAL_KEY_SW_6_ICTL     P0IEN /* Port Interrupt Control register */
 #define HAL_KEY_SW_6_ICTLBIT  BV(1) /* P0IEN - P0.1 enable/disable bit */
 #define HAL_KEY_SW_6_PXIFG    P0IFG /* Interrupt flag at source */
+
+#define HAL_KEY_SW3_IEN      IEN1  /* CPU interrupt mask register */
+#define HAL_KEY_SW3_IENBIT   BV(5) /* Mask bit for all of Port_2 */
+#define HAL_KEY_SW3_ICTL     P0IEN /* Port Interrupt Control register */
+#define HAL_KEY_SW3_ICTLBIT  BV(5) /* P2IENL - P2.0<->P2.3 enable/disable bit */
+#define HAL_KEY_SW3_PXIFG    P0IFG /* Interrupt flag at source */
 
 /* Joy stick move at P2.0 */
 #define HAL_KEY_JOY_MOVE_PORT   P2
@@ -133,7 +147,8 @@
 
 /* edge interrupt */
 #define HAL_KEY_JOY_MOVE_EDGEBIT  BV(3)
-#define HAL_KEY_JOY_MOVE_EDGE     HAL_KEY_FALLING_EDGE
+//#define HAL_KEY_JOY_MOVE_EDGE     HAL_KEY_FALLING_EDGE 
+#define HAL_KEY_JOY_MOVE_EDGE     HAL_KEY_RISING_EDGE
 
 /* Joy move interrupts */
 #define HAL_KEY_JOY_MOVE_IEN      IEN2  /* CPU interrupt mask register */
@@ -195,6 +210,9 @@ void HalKeyInit( void )
   P2INP &= ~(HAL_KEY_JOY_MOVE_BIT);
   P2INP |= BV(7);
 
+  HAL_KEY_SW3_SEL &= ~(HAL_KEY_SW3_BIT); /* Set pin function to GPIO */
+  HAL_KEY_SW3_DIR &= ~(HAL_KEY_SW3_BIT); /* Set pin direction to Input */
+  P0INP &= ~(HAL_KEY_SW3_BIT);
 
   /* Initialize callback function */
   pHalKeyProcessFunction  = NULL;
@@ -249,11 +267,9 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
 
     HAL_KEY_JOY_MOVE_ICTL &= ~(HAL_KEY_JOY_MOVE_EDGEBIT);    /* Clear the edge bit */
     /* For falling edge, the bit must be set. */
-//  #if (HAL_KEY_JOY_MOVE_EDGE == HAL_KEY_FALLING_EDGE)
-//    HAL_KEY_JOY_MOVE_ICTL |= HAL_KEY_JOY_MOVE_EDGEBIT;
-//  #endif
   #if (HAL_KEY_JOY_MOVE_EDGE == HAL_KEY_RISING_EDGE)
-    HAL_KEY_JOY_MOVE_ICTL &= ~HAL_KEY_JOY_MOVE_EDGEBIT;
+//    HAL_KEY_JOY_MOVE_ICTL &= ~HAL_KEY_JOY_MOVE_EDGEBIT;
+    PICTL &= ~HAL_KEY_JOY_MOVE_EDGEBIT;
   #endif
 
 
@@ -265,6 +281,26 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
     HAL_KEY_JOY_MOVE_ICTL |= HAL_KEY_JOY_MOVE_ICTLBIT;
     HAL_KEY_JOY_MOVE_IEN |= HAL_KEY_JOY_MOVE_IENBIT;
     HAL_KEY_JOY_MOVE_PXIFG = ~(HAL_KEY_JOY_MOVE_BIT);
+
+    
+
+    /* SW3 INIT */
+    HAL_KEY_SW3_ICTL &= ~(HAL_KEY_SW3_EDGEBIT);    /* Clear the edge bit */
+    /* For falling edge, the bit must be set. */
+  #if (HAL_KEY_JOY_MOVE_EDGE == HAL_KEY_RISING_EDGE)
+//    HAL_KEY_SW3_ICTL &= ~HAL_KEY_SW3_EDGEBIT;
+    PICTL |= HAL_KEY_SW_6_EDGEBIT;
+  #endif
+
+
+    /* Interrupt configuration:
+     * - Enable interrupt generation at the port
+     * - Enable CPU interrupt
+     * - Clear any pending interrupt
+     */
+    HAL_KEY_SW3_ICTL |= HAL_KEY_SW3_ICTLBIT;
+    HAL_KEY_SW3_IEN |= HAL_KEY_SW3_IENBIT;
+    HAL_KEY_SW3_PXIFG = ~(HAL_KEY_SW3_BIT);
 
 
     /* Do this only after the hal_key is configured - to work with sleep stuff */
@@ -355,19 +391,13 @@ void HalKeyPoll (void)
     {
       keys |= HAL_KEY_SW_5;
     }
+    else if (HAL_PUSH_BUTTON3())
+    {
+      keys |= HAL_KEY_SW3;
+    }
   }
 
-//  if (HAL_PUSH_BUTTON1())
-//  {
-//    keys |= HAL_KEY_SW_6;
-//  }
-
   /* Invoke Callback if new keys were depressed */
-  //  if (pHalKeyProcessFunction
-//#ifdef HAL_LEGACY_KEYS
-//    && keys //in legacy modes, only report key presses and do not report when a key is released
-//#endif
-//    )
   if (keys && (pHalKeyProcessFunction))
   {
     (pHalKeyProcessFunction) (keys, HAL_KEY_STATE_NORMAL);
@@ -454,6 +484,12 @@ void halProcessKeyInterrupt (void)
     valid = TRUE;
   }
 
+  if (HAL_KEY_SW3_PXIFG & HAL_KEY_SW3_BIT)  /* Interrupt Flag has been set */
+  {
+    HAL_KEY_SW3_PXIFG = ~(HAL_KEY_SW3_BIT); /* Clear Interrupt Flag */
+    valid = TRUE;
+  }
+  
   if (valid)
   {
     osal_start_timerEx (Hal_TaskID, HAL_KEY_EVENT, HAL_KEY_DEBOUNCE_VALUE);
@@ -509,7 +545,11 @@ HAL_ISR_FUNCTION( halKeyPort0Isr, P0INT_VECTOR )
   {
     halProcessKeyInterrupt();
   }
-
+  else if (HAL_KEY_SW3_PXIFG & HAL_KEY_SW3_BIT)
+  {
+    halProcessKeyInterrupt();
+  }
+  
   /*
     Clear the CPU interrupt flag for Port_0
     PxIFG has to be cleared before PxIF

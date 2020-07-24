@@ -327,7 +327,7 @@ void SW3_Init( byte task_id )
   RegisterVoltageWarningCB( zclSampleApp_BatteryWarningCB );
 
   // Register for all key events - This app will handle all key events
-//  RegisterSW3ForKeys( SW3_TaskID );
+  RegisterSW3ForKeys( SW3_TaskID );
   
 //  bdb_RegisterCommissioningStatusCB( SW3_ProcessCommissioningStatus );
   
@@ -448,7 +448,7 @@ uint16 SW3_event_loop( uint8 task_id, uint16 events )
  */
 static void SW3_HandleKeys( byte shift, byte keys )
 {
-  if ( keys & HAL_KEY_SW_5 )  // Switch 5
+  if ( keys & HAL_KEY_SW3 )  // Switch 5
   {     
     if ( SW3_OnOff == LIGHT_OFF )
     {

@@ -110,6 +110,7 @@ uint8 aExtendedAddress[8];
 // Registered keys task ID, initialized to NOT USED.
 static uint8 registeredKeysTaskID = NO_TASK_ID;
 static uint8 registeredSW2KeysTaskID = NO_TASK_ID;
+static uint8 registeredSW3KeysTaskID = NO_TASK_ID;
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -212,6 +213,18 @@ uint8 RegisterSW2ForKeys( uint8 task_id )
     return ( false );
 }
 
+uint8 RegisterSW3ForKeys( uint8 task_id )
+{
+  // Allow only the first task
+  if ( registeredSW3KeysTaskID == NO_TASK_ID )
+  {
+    registeredSW3KeysTaskID = task_id;
+    return ( true );
+  }
+  else
+    return ( false );
+}
+
 /*********************************************************************
  * @fn      OnBoard_SendKeys
  *
@@ -244,7 +257,10 @@ uint8 OnBoard_SendKeys( uint8 keys, uint8 state )
       {
         osal_msg_send( registeredSW2KeysTaskID, (uint8 *)msgPtr );
       }
-
+      else if ( keys & HAL_KEY_SW3 )
+      {
+        osal_msg_send( registeredSW3KeysTaskID, (uint8 *)msgPtr );
+      }
 //      osal_msg_send( registeredKeysTaskID, (uint8 *)msgPtr );
     }
     return ( ZSuccess );
