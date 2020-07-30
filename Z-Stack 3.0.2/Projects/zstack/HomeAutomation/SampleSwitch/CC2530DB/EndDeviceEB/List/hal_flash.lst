@@ -1,0 +1,856 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:09
+# Copyright 2004-2018 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data_rom
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  
+#        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
+#    Command line       =  
+#        -f C:\Users\sunli\AppData\Local\Temp\EW847.tmp ("D:\AA\Z-Stack
+#        3.0.2\Components\hal\target\CC2530EB\hal_flash.c" -D SECURE=1 -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
+#        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
+#        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
+#        ZCL_DISCOVER -D ZCL_WRITE -D ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF
+#        -D ZCL_GROUPS -D BDB_TL_INITIATOR -D INTER_PAN -lC "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List"
+#        -lA "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List"
+#        --diag_suppress Pe001,Pa010 -o "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\Obj"
+#        -e --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data_rom --nr_virtual_regs 16 -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wEndev.cfg"
+#        (-DCPU32MHZ -DROOT=__near_func -DMAC_CFG_TX_DATA_MAX=3
+#        -DMAC_CFG_TX_MAX=6 -DMAC_CFG_RX_MAX=3) -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg"
+#        (-DZIGBEEPRO -DSECURE=1 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
+#        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
+#        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
+#        -DLINK_STATUS_JITTER_MASK=0x007F -DROUTE_EXPIRY_TIME=30
+#        -DAPSC_ACK_WAIT_DURATION_POLLED=3000 -DNWK_INDIRECT_MSG_TIMEOUT=7
+#        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
+#        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
+#        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
+#        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0} -DMAC_MAX_FRAME_SIZE=116
+#        -DZDNWKMGR_MIN_TRANSMISSIONS=20 "-DCONST=const __code"
+#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=1000
+#        -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100 -DREJOIN_POLL_RATE=440
+#        -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000 -DENABLE_LED4_DISABLE_S1)
+#        -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\" -I
+#        "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\ZMain\TI2530DB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\hal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\hal\target\CC2530EB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\high_level\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mt\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\osal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\services\saddr\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\services\sdata\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\af\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\bdb\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\gp\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\nwk\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sapi\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sec\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sys\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\zcl\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\zdo\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\zmac\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
+#        -On --require_prototypes --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Chinese (Simplified)_CHN.936
+#    List file          =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List\hal_flash.lst
+#    Object file        =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\Obj\hal_flash.r51
+#
+###############################################################################
+
+D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_flash.c
+      1          /**************************************************************************************************
+      2            Filename:       hal_flash.c
+      3            Revised:        $Date: 2010-10-07 02:19:52 -0700 (Thu, 07 Oct 2010) $
+      4            Revision:       $Revision: 24049 $
+      5          
+      6            Description: This file contains the interface to the H/W Flash driver.
+      7          
+      8          
+      9            Copyright 2006-2010 Texas Instruments Incorporated. All rights reserved.
+     10          
+     11            IMPORTANT: Your use of this Software is limited to those specific rights
+     12            granted under the terms of a software license agreement between the user
+     13            who downloaded the software, his/her employer (which must be your employer)
+     14            and Texas Instruments Incorporated (the "License").  You may not use this
+     15            Software unless you agree to abide by the terms of the License. The License
+     16            limits your use, and you acknowledge, that the Software may not be modified,
+     17            copied or distributed unless embedded on a Texas Instruments microcontroller
+     18            or used solely and exclusively in conjunction with a Texas Instruments radio
+     19            frequency transceiver, which is integrated into your product.  Other than for
+     20            the foregoing purpose, you may not use, reproduce, copy, prepare derivative
+     21            works of, modify, distribute, perform, display or sell this Software and/or
+     22            its documentation for any purpose.
+     23          
+     24            YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
+     25            PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+     26            INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
+     27            NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
+     28            TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
+     29            NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
+     30            LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
+     31            INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
+     32            OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
+     33            OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
+     34            (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+     35          
+     36            Should you have any questions regarding your right to use this Software,
+     37            contact Texas Instruments Incorporated at www.TI.com.
+     38          **************************************************************************************************/
+     39          
+     40          /* ------------------------------------------------------------------------------------------------
+     41           *                                          Includes
+     42           * ------------------------------------------------------------------------------------------------
+     43           */
+     44          
+     45          #include "hal_board_cfg.h"
+
+   \                                 In  segment SFR_AN, at 0xa8
+   \   union <unnamed> volatile __sfr _A_IEN0
+   \                     _A_IEN0:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xc7
+   \   unsigned char volatile __sfr MEMCTR
+   \                     MEMCTR:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xd1
+   \   unsigned char volatile __sfr DMAIRQ
+   \                     DMAIRQ:
+   \   000000                DS 1
+
+   \                                 In  segment SFR_AN, at 0xd6
+   \   unsigned char volatile __sfr DMAARM
+   \                     DMAARM:
+   \   000000                DS 1
+     46          #include "hal_dma.h"
+     47          #include "hal_flash.h"
+     48          #include "hal_mcu.h"
+     49          #include "hal_types.h"
+     50          
+     51          /**************************************************************************************************
+     52           * @fn          HalFlashRead
+     53           *
+     54           * @brief       This function reads 'cnt' bytes from the internal flash.
+     55           *
+     56           * input parameters
+     57           *
+     58           * @param       pg - A valid flash page number.
+     59           * @param       offset - A valid offset into the page.
+     60           * @param       buf - A valid buffer space at least as big as the 'cnt' parameter.
+     61           * @param       cnt - A valid number of bytes to read.
+     62           *
+     63           * output parameters
+     64           *
+     65           * None.
+     66           *
+     67           * @return      None.
+     68           **************************************************************************************************
+     69           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     70          void HalFlashRead(uint8 pg, uint16 offset, uint8 *buf, uint16 cnt)
+   \                     HalFlashRead:
+     71          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000   74F3         MOV       A,#-0xd
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 13
+   \   000005                ; Auto size: 0
+   \   000005   89..         MOV       ?V2,R1
+   \   000007   740D         MOV       A,#0xd
+   \   000009   12....       LCALL     ?XSTACK_DISP0_8
+   \   00000C   E0           MOVX      A,@DPTR
+   \   00000D   FE           MOV       R6,A
+   \   00000E   A3           INC       DPTR
+   \   00000F   E0           MOVX      A,@DPTR
+   \   000010   FF           MOV       R7,A
+     72            // Calculate the offset into the containing flash bank as it gets mapped into XDATA.
+     73            uint8 *pData = (uint8 *)(offset + HAL_FLASH_PAGE_MAP) +
+     74                           ((pg % HAL_FLASH_PAGE_PER_BANK) * HAL_FLASH_PAGE_SIZE);
+   \   000011   E5..         MOV       A,?V2
+   \   000013   75F010       MOV       B,#0x10
+   \   000016   84           DIV       AB
+   \   000017   E5F0         MOV       A,B
+   \   000019   F5..         MOV       ?V0,A
+   \   00001B   75..00       MOV       ?V1,#0x0
+   \   00001E   E5..         MOV       A,?V0
+   \   000020   75F000       MOV       B,#0x0
+   \   000023   A4           MUL       AB
+   \   000024   C5..         XCH       A,?V0
+   \   000026   A8F0         MOV       R0,B
+   \   000028   75F008       MOV       B,#0x8
+   \   00002B   A4           MUL       AB
+   \   00002C   28           ADD       A,R0
+   \   00002D   F8           MOV       R0,A
+   \   00002E   75F000       MOV       B,#0x0
+   \   000031   E5..         MOV       A,?V1
+   \   000033   A4           MUL       AB
+   \   000034   28           ADD       A,R0
+   \   000035   F5..         MOV       ?V1,A
+   \   000037   EA           MOV       A,R2
+   \   000038   2400         ADD       A,#0x0
+   \   00003A   F8           MOV       R0,A
+   \   00003B   EB           MOV       A,R3
+   \   00003C   3480         ADDC      A,#-0x80
+   \   00003E   F9           MOV       R1,A
+   \   00003F   E8           MOV       A,R0
+   \   000040   25..         ADD       A,?V0
+   \   000042   F8           MOV       R0,A
+   \   000043   E9           MOV       A,R1
+   \   000044   35..         ADDC      A,?V1
+   \   000046   F9           MOV       R1,A
+     75            uint8 memctr = MEMCTR;  // Save to restore.
+   \   000047   85C7..       MOV       ?V4,0xc7+0x0
+     76          
+     77          #if (!defined HAL_OAD_BOOT_CODE) && (!defined HAL_OTA_BOOT_CODE)
+     78            halIntState_t is;
+     79          #endif
+     80          
+     81            pg /= HAL_FLASH_PAGE_PER_BANK;  // Calculate the flash bank from the flash page.
+   \   00004A   75F010       MOV       B,#0x10
+   \   00004D   E5..         MOV       A,?V2
+   \   00004F   84           DIV       AB
+   \   000050   F5..         MOV       ?V2,A
+     82          
+     83          #if (!defined HAL_OAD_BOOT_CODE) && (!defined HAL_OTA_BOOT_CODE)
+     84            HAL_ENTER_CRITICAL_SECTION(is);
+   \   000052   A2AF         MOV       C,0xa8.7
+   \   000054   E4           CLR       A
+   \   000055   33           RLC       A
+   \   000056   F5..         MOV       ?V3,A
+   \   000058   C2AF         CLR       0xa8.7
+     85          #endif
+     86          
+     87            // Calculate and map the containing flash bank into XDATA.
+     88            MEMCTR = (MEMCTR & 0xF8) | pg;
+   \   00005A   E5C7         MOV       A,0xc7
+   \   00005C   54F8         ANL       A,#0xf8
+   \   00005E   45..         ORL       A,?V2
+   \   000060   F5C7         MOV       0xc7,A
+     89          
+     90            while (cnt--)
+   \                     ??HalFlashRead_0:
+   \   000062   8E..         MOV       ?V0,R6
+   \   000064   8F..         MOV       ?V1,R7
+   \   000066   E5..         MOV       A,?V0
+   \   000068   24FF         ADD       A,#-0x1
+   \   00006A   FE           MOV       R6,A
+   \   00006B   E5..         MOV       A,?V1
+   \   00006D   34FF         ADDC      A,#-0x1
+   \   00006F   FF           MOV       R7,A
+   \   000070   E5..         MOV       A,?V0
+   \   000072   45..         ORL       A,?V1
+   \   000074   6022         JZ        ??HalFlashRead_1
+     91            {
+     92              *buf++ = *pData++;
+   \   000076   8882         MOV       DPL,R0
+   \   000078   8983         MOV       DPH,R1
+   \   00007A   E0           MOVX      A,@DPTR
+   \   00007B   C0E0         PUSH      A
+   \   00007D   8C82         MOV       DPL,R4
+   \   00007F   8D83         MOV       DPH,R5
+   \   000081   D0E0         POP       A
+   \   000083   F0           MOVX      @DPTR,A
+   \   000084   8882         MOV       DPL,R0
+   \   000086   8983         MOV       DPH,R1
+   \   000088   A3           INC       DPTR
+   \   000089   A882         MOV       R0,DPL
+   \   00008B   A983         MOV       R1,DPH
+   \   00008D   8C82         MOV       DPL,R4
+   \   00008F   8D83         MOV       DPH,R5
+   \   000091   A3           INC       DPTR
+   \   000092   AC82         MOV       R4,DPL
+   \   000094   AD83         MOV       R5,DPH
+   \   000096   80CA         SJMP      ??HalFlashRead_0
+     93            }
+     94          
+     95            MEMCTR = memctr;
+   \                     ??HalFlashRead_1:
+   \   000098   85..C7       MOV       0xc7,?V4
+     96          
+     97          #if (!defined HAL_OAD_BOOT_CODE) && (!defined HAL_OTA_BOOT_CODE)
+     98            HAL_EXIT_CRITICAL_SECTION(is);
+   \   00009B   E5..         MOV       A,?V3
+   \   00009D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00009F   92AF         MOV       0xa8.7,C
+     99          #endif
+    100          }
+   \   0000A1   7F05         MOV       R7,#0x5
+   \   0000A3   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   0000A6                REQUIRE MEMCTR
+   \   0000A6                REQUIRE _A_IEN0
+    101          
+    102          /**************************************************************************************************
+    103           * @fn          HalFlashWrite
+    104           *
+    105           * @brief       This function writes 'cnt' bytes to the internal flash.
+    106           *
+    107           * input parameters
+    108           *
+    109           * @param       addr - Valid HAL flash write address: actual addr / 4 and quad-aligned.
+    110           * @param       buf - Valid buffer space at least as big as 'cnt' X 4.
+    111           * @param       cnt - Number of 4-byte blocks to write.
+    112           *
+    113           * output parameters
+    114           *
+    115           * None.
+    116           *
+    117           * @return      None.
+    118           **************************************************************************************************
+    119           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    120          void HalFlashWrite(uint16 addr, uint8 *buf, uint16 cnt)
+   \                     HalFlashWrite:
+    121          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000   74F4         MOV       A,#-0xc
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 12
+   \   000005                ; Auto size: 0
+   \   000005   740C         MOV       A,#0xc
+   \   000007   12....       LCALL     ?XSTACK_DISP0_8
+   \   00000A   E0           MOVX      A,@DPTR
+   \   00000B   FE           MOV       R6,A
+   \   00000C   A3           INC       DPTR
+   \   00000D   E0           MOVX      A,@DPTR
+   \   00000E   FF           MOV       R7,A
+    122          #if (defined HAL_DMA) && (HAL_DMA == TRUE)
+    123            halDMADesc_t *ch = HAL_NV_DMA_GET_DESC();
+   \   00000F   75....       MOV       ?V2,#dmaCh0 & 0xff
+   \   000012   75....       MOV       ?V3,#(dmaCh0 >> 8) & 0xff
+    124          
+    125            HAL_DMA_SET_SOURCE(ch, buf);
+   \   000015   EC           MOV       A,R4
+   \   000016   F8           MOV       R0,A
+   \   000017   ED           MOV       A,R5
+   \   000018   F9           MOV       R1,A
+   \   000019   E4           CLR       A
+   \   00001A   C9           XCH       A,R1
+   \   00001B   F8           MOV       R0,A
+   \   00001C   E8           MOV       A,R0
+   \   00001D   C0E0         PUSH      A
+   \   00001F   85..82       MOV       DPL,?V2
+   \   000022   85..83       MOV       DPH,?V3
+   \   000025   D0E0         POP       A
+   \   000027   F0           MOVX      @DPTR,A
+   \   000028   EC           MOV       A,R4
+   \   000029   C0E0         PUSH      A
+   \   00002B   85..82       MOV       DPL,?V2
+   \   00002E   85..83       MOV       DPH,?V3
+   \   000031   A3           INC       DPTR
+   \   000032   D0E0         POP       A
+   \   000034   F0           MOVX      @DPTR,A
+    126            HAL_DMA_SET_DEST(ch, &FWDATA);
+   \   000035   85..82       MOV       DPL,?V2
+   \   000038   85..83       MOV       DPH,?V3
+   \   00003B   A3           INC       DPTR
+   \   00003C   A3           INC       DPTR
+   \   00003D   7462         MOV       A,#0x62
+   \   00003F   F0           MOVX      @DPTR,A
+   \   000040   85..82       MOV       DPL,?V2
+   \   000043   85..83       MOV       DPH,?V3
+   \   000046   A3           INC       DPTR
+   \   000047   A3           INC       DPTR
+   \   000048   A3           INC       DPTR
+   \   000049   7473         MOV       A,#0x73
+   \   00004B   F0           MOVX      @DPTR,A
+    127            HAL_DMA_SET_VLEN(ch, HAL_DMA_VLEN_USE_LEN);
+   \   00004C   85..82       MOV       DPL,?V2
+   \   00004F   85..83       MOV       DPH,?V3
+   \   000052   A3           INC       DPTR
+   \   000053   A3           INC       DPTR
+   \   000054   A3           INC       DPTR
+   \   000055   A3           INC       DPTR
+   \   000056   E0           MOVX      A,@DPTR
+   \   000057   541F         ANL       A,#0x1f
+   \   000059   F0           MOVX      @DPTR,A
+   \   00005A   85..82       MOV       DPL,?V2
+   \   00005D   85..83       MOV       DPH,?V3
+   \   000060   A3           INC       DPTR
+   \   000061   A3           INC       DPTR
+   \   000062   A3           INC       DPTR
+   \   000063   A3           INC       DPTR
+   \   000064   E0           MOVX      A,@DPTR
+   \   000065   C0E0         PUSH      A
+   \   000067   85..82       MOV       DPL,?V2
+   \   00006A   85..83       MOV       DPH,?V3
+   \   00006D   A3           INC       DPTR
+   \   00006E   A3           INC       DPTR
+   \   00006F   A3           INC       DPTR
+   \   000070   A3           INC       DPTR
+   \   000071   D0E0         POP       A
+   \   000073   F0           MOVX      @DPTR,A
+    128            HAL_DMA_SET_LEN(ch, (cnt * HAL_FLASH_WORD_SIZE));
+   \   000074   75F004       MOV       B,#0x4
+   \   000077   EE           MOV       A,R6
+   \   000078   A4           MUL       AB
+   \   000079   C0E0         PUSH      A
+   \   00007B   85..82       MOV       DPL,?V2
+   \   00007E   85..83       MOV       DPH,?V3
+   \   000081   A3           INC       DPTR
+   \   000082   A3           INC       DPTR
+   \   000083   A3           INC       DPTR
+   \   000084   A3           INC       DPTR
+   \   000085   A3           INC       DPTR
+   \   000086   D0E0         POP       A
+   \   000088   F0           MOVX      @DPTR,A
+   \   000089   85..82       MOV       DPL,?V2
+   \   00008C   85..83       MOV       DPH,?V3
+   \   00008F   A3           INC       DPTR
+   \   000090   A3           INC       DPTR
+   \   000091   A3           INC       DPTR
+   \   000092   A3           INC       DPTR
+   \   000093   E0           MOVX      A,@DPTR
+   \   000094   54E0         ANL       A,#0xe0
+   \   000096   F0           MOVX      @DPTR,A
+   \   000097   EE           MOV       A,R6
+   \   000098   F8           MOV       R0,A
+   \   000099   EF           MOV       A,R7
+   \   00009A   F9           MOV       R1,A
+   \   00009B   E8           MOV       A,R0
+   \   00009C   75F004       MOV       B,#0x4
+   \   00009F   A4           MUL       AB
+   \   0000A0   C8           XCH       A,R0
+   \   0000A1   85F0..       MOV       ?V0,B
+   \   0000A4   75F000       MOV       B,#0x0
+   \   0000A7   A4           MUL       AB
+   \   0000A8   25..         ADD       A,?V0
+   \   0000AA   F5..         MOV       ?V0,A
+   \   0000AC   75F004       MOV       B,#0x4
+   \   0000AF   E9           MOV       A,R1
+   \   0000B0   A4           MUL       AB
+   \   0000B1   25..         ADD       A,?V0
+   \   0000B3   F9           MOV       R1,A
+   \   0000B4   E4           CLR       A
+   \   0000B5   C9           XCH       A,R1
+   \   0000B6   F8           MOV       R0,A
+   \   0000B7   85..82       MOV       DPL,?V2
+   \   0000BA   85..83       MOV       DPH,?V3
+   \   0000BD   A3           INC       DPTR
+   \   0000BE   A3           INC       DPTR
+   \   0000BF   A3           INC       DPTR
+   \   0000C0   A3           INC       DPTR
+   \   0000C1   E0           MOVX      A,@DPTR
+   \   0000C2   48           ORL       A,R0
+   \   0000C3   F0           MOVX      @DPTR,A
+    129            HAL_DMA_SET_WORD_SIZE(ch, HAL_DMA_WORDSIZE_BYTE);
+   \   0000C4   85..82       MOV       DPL,?V2
+   \   0000C7   85..83       MOV       DPH,?V3
+   \   0000CA   A3           INC       DPTR
+   \   0000CB   A3           INC       DPTR
+   \   0000CC   A3           INC       DPTR
+   \   0000CD   A3           INC       DPTR
+   \   0000CE   A3           INC       DPTR
+   \   0000CF   A3           INC       DPTR
+   \   0000D0   E0           MOVX      A,@DPTR
+   \   0000D1   C2E7         CLR       0xE0 /* A   */.7
+   \   0000D3   F0           MOVX      @DPTR,A
+   \   0000D4   85..82       MOV       DPL,?V2
+   \   0000D7   85..83       MOV       DPH,?V3
+   \   0000DA   A3           INC       DPTR
+   \   0000DB   A3           INC       DPTR
+   \   0000DC   A3           INC       DPTR
+   \   0000DD   A3           INC       DPTR
+   \   0000DE   A3           INC       DPTR
+   \   0000DF   A3           INC       DPTR
+   \   0000E0   E0           MOVX      A,@DPTR
+   \   0000E1   C0E0         PUSH      A
+   \   0000E3   85..82       MOV       DPL,?V2
+   \   0000E6   85..83       MOV       DPH,?V3
+   \   0000E9   A3           INC       DPTR
+   \   0000EA   A3           INC       DPTR
+   \   0000EB   A3           INC       DPTR
+   \   0000EC   A3           INC       DPTR
+   \   0000ED   A3           INC       DPTR
+   \   0000EE   A3           INC       DPTR
+   \   0000EF   D0E0         POP       A
+   \   0000F1   F0           MOVX      @DPTR,A
+    130            HAL_DMA_SET_TRIG_MODE(ch, HAL_DMA_TMODE_SINGLE);
+   \   0000F2   85..82       MOV       DPL,?V2
+   \   0000F5   85..83       MOV       DPH,?V3
+   \   0000F8   A3           INC       DPTR
+   \   0000F9   A3           INC       DPTR
+   \   0000FA   A3           INC       DPTR
+   \   0000FB   A3           INC       DPTR
+   \   0000FC   A3           INC       DPTR
+   \   0000FD   A3           INC       DPTR
+   \   0000FE   E0           MOVX      A,@DPTR
+   \   0000FF   549F         ANL       A,#0x9f
+   \   000101   F0           MOVX      @DPTR,A
+   \   000102   85..82       MOV       DPL,?V2
+   \   000105   85..83       MOV       DPH,?V3
+   \   000108   A3           INC       DPTR
+   \   000109   A3           INC       DPTR
+   \   00010A   A3           INC       DPTR
+   \   00010B   A3           INC       DPTR
+   \   00010C   A3           INC       DPTR
+   \   00010D   A3           INC       DPTR
+   \   00010E   E0           MOVX      A,@DPTR
+   \   00010F   C0E0         PUSH      A
+   \   000111   85..82       MOV       DPL,?V2
+   \   000114   85..83       MOV       DPH,?V3
+   \   000117   A3           INC       DPTR
+   \   000118   A3           INC       DPTR
+   \   000119   A3           INC       DPTR
+   \   00011A   A3           INC       DPTR
+   \   00011B   A3           INC       DPTR
+   \   00011C   A3           INC       DPTR
+   \   00011D   D0E0         POP       A
+   \   00011F   F0           MOVX      @DPTR,A
+    131            HAL_DMA_SET_TRIG_SRC(ch, HAL_DMA_TRIG_FLASH);
+   \   000120   85..82       MOV       DPL,?V2
+   \   000123   85..83       MOV       DPH,?V3
+   \   000126   A3           INC       DPTR
+   \   000127   A3           INC       DPTR
+   \   000128   A3           INC       DPTR
+   \   000129   A3           INC       DPTR
+   \   00012A   A3           INC       DPTR
+   \   00012B   A3           INC       DPTR
+   \   00012C   E0           MOVX      A,@DPTR
+   \   00012D   54E0         ANL       A,#0xe0
+   \   00012F   F0           MOVX      @DPTR,A
+   \   000130   85..82       MOV       DPL,?V2
+   \   000133   85..83       MOV       DPH,?V3
+   \   000136   A3           INC       DPTR
+   \   000137   A3           INC       DPTR
+   \   000138   A3           INC       DPTR
+   \   000139   A3           INC       DPTR
+   \   00013A   A3           INC       DPTR
+   \   00013B   A3           INC       DPTR
+   \   00013C   E0           MOVX      A,@DPTR
+   \   00013D   4412         ORL       A,#0x12
+   \   00013F   F0           MOVX      @DPTR,A
+    132            HAL_DMA_SET_SRC_INC(ch, HAL_DMA_SRCINC_1);
+   \   000140   85..82       MOV       DPL,?V2
+   \   000143   85..83       MOV       DPH,?V3
+   \   000146   A3           INC       DPTR
+   \   000147   A3           INC       DPTR
+   \   000148   A3           INC       DPTR
+   \   000149   A3           INC       DPTR
+   \   00014A   A3           INC       DPTR
+   \   00014B   A3           INC       DPTR
+   \   00014C   A3           INC       DPTR
+   \   00014D   E0           MOVX      A,@DPTR
+   \   00014E   543F         ANL       A,#0x3f
+   \   000150   F0           MOVX      @DPTR,A
+   \   000151   85..82       MOV       DPL,?V2
+   \   000154   85..83       MOV       DPH,?V3
+   \   000157   A3           INC       DPTR
+   \   000158   A3           INC       DPTR
+   \   000159   A3           INC       DPTR
+   \   00015A   A3           INC       DPTR
+   \   00015B   A3           INC       DPTR
+   \   00015C   A3           INC       DPTR
+   \   00015D   A3           INC       DPTR
+   \   00015E   E0           MOVX      A,@DPTR
+   \   00015F   D2E6         SETB      0xE0 /* A   */.6
+   \   000161   F0           MOVX      @DPTR,A
+    133            HAL_DMA_SET_DST_INC(ch, HAL_DMA_DSTINC_0);
+   \   000162   85..82       MOV       DPL,?V2
+   \   000165   85..83       MOV       DPH,?V3
+   \   000168   A3           INC       DPTR
+   \   000169   A3           INC       DPTR
+   \   00016A   A3           INC       DPTR
+   \   00016B   A3           INC       DPTR
+   \   00016C   A3           INC       DPTR
+   \   00016D   A3           INC       DPTR
+   \   00016E   A3           INC       DPTR
+   \   00016F   E0           MOVX      A,@DPTR
+   \   000170   54CF         ANL       A,#0xcf
+   \   000172   F0           MOVX      @DPTR,A
+   \   000173   85..82       MOV       DPL,?V2
+   \   000176   85..83       MOV       DPH,?V3
+   \   000179   A3           INC       DPTR
+   \   00017A   A3           INC       DPTR
+   \   00017B   A3           INC       DPTR
+   \   00017C   A3           INC       DPTR
+   \   00017D   A3           INC       DPTR
+   \   00017E   A3           INC       DPTR
+   \   00017F   A3           INC       DPTR
+   \   000180   E0           MOVX      A,@DPTR
+   \   000181   C0E0         PUSH      A
+   \   000183   85..82       MOV       DPL,?V2
+   \   000186   85..83       MOV       DPH,?V3
+   \   000189   A3           INC       DPTR
+   \   00018A   A3           INC       DPTR
+   \   00018B   A3           INC       DPTR
+   \   00018C   A3           INC       DPTR
+   \   00018D   A3           INC       DPTR
+   \   00018E   A3           INC       DPTR
+   \   00018F   A3           INC       DPTR
+   \   000190   D0E0         POP       A
+   \   000192   F0           MOVX      @DPTR,A
+    134            // The DMA is to be polled and shall not issue an IRQ upon completion.
+    135            HAL_DMA_SET_IRQ(ch, HAL_DMA_IRQMASK_DISABLE);
+   \   000193   85..82       MOV       DPL,?V2
+   \   000196   85..83       MOV       DPH,?V3
+   \   000199   A3           INC       DPTR
+   \   00019A   A3           INC       DPTR
+   \   00019B   A3           INC       DPTR
+   \   00019C   A3           INC       DPTR
+   \   00019D   A3           INC       DPTR
+   \   00019E   A3           INC       DPTR
+   \   00019F   A3           INC       DPTR
+   \   0001A0   E0           MOVX      A,@DPTR
+   \   0001A1   C2E3         CLR       0xE0 /* A   */.3
+   \   0001A3   F0           MOVX      @DPTR,A
+   \   0001A4   85..82       MOV       DPL,?V2
+   \   0001A7   85..83       MOV       DPH,?V3
+   \   0001AA   A3           INC       DPTR
+   \   0001AB   A3           INC       DPTR
+   \   0001AC   A3           INC       DPTR
+   \   0001AD   A3           INC       DPTR
+   \   0001AE   A3           INC       DPTR
+   \   0001AF   A3           INC       DPTR
+   \   0001B0   A3           INC       DPTR
+   \   0001B1   E0           MOVX      A,@DPTR
+   \   0001B2   C0E0         PUSH      A
+   \   0001B4   85..82       MOV       DPL,?V2
+   \   0001B7   85..83       MOV       DPH,?V3
+   \   0001BA   A3           INC       DPTR
+   \   0001BB   A3           INC       DPTR
+   \   0001BC   A3           INC       DPTR
+   \   0001BD   A3           INC       DPTR
+   \   0001BE   A3           INC       DPTR
+   \   0001BF   A3           INC       DPTR
+   \   0001C0   A3           INC       DPTR
+   \   0001C1   D0E0         POP       A
+   \   0001C3   F0           MOVX      @DPTR,A
+    136            HAL_DMA_SET_M8( ch, HAL_DMA_M8_USE_8_BITS);
+   \   0001C4   85..82       MOV       DPL,?V2
+   \   0001C7   85..83       MOV       DPH,?V3
+   \   0001CA   A3           INC       DPTR
+   \   0001CB   A3           INC       DPTR
+   \   0001CC   A3           INC       DPTR
+   \   0001CD   A3           INC       DPTR
+   \   0001CE   A3           INC       DPTR
+   \   0001CF   A3           INC       DPTR
+   \   0001D0   A3           INC       DPTR
+   \   0001D1   E0           MOVX      A,@DPTR
+   \   0001D2   C2E2         CLR       0xE0 /* A   */.2
+   \   0001D4   F0           MOVX      @DPTR,A
+   \   0001D5   85..82       MOV       DPL,?V2
+   \   0001D8   85..83       MOV       DPH,?V3
+   \   0001DB   A3           INC       DPTR
+   \   0001DC   A3           INC       DPTR
+   \   0001DD   A3           INC       DPTR
+   \   0001DE   A3           INC       DPTR
+   \   0001DF   A3           INC       DPTR
+   \   0001E0   A3           INC       DPTR
+   \   0001E1   A3           INC       DPTR
+   \   0001E2   E0           MOVX      A,@DPTR
+   \   0001E3   C0E0         PUSH      A
+   \   0001E5   85..82       MOV       DPL,?V2
+   \   0001E8   85..83       MOV       DPH,?V3
+   \   0001EB   A3           INC       DPTR
+   \   0001EC   A3           INC       DPTR
+   \   0001ED   A3           INC       DPTR
+   \   0001EE   A3           INC       DPTR
+   \   0001EF   A3           INC       DPTR
+   \   0001F0   A3           INC       DPTR
+   \   0001F1   A3           INC       DPTR
+   \   0001F2   D0E0         POP       A
+   \   0001F4   F0           MOVX      @DPTR,A
+    137            HAL_DMA_SET_PRIORITY(ch, HAL_DMA_PRI_HIGH);
+   \   0001F5   85..82       MOV       DPL,?V2
+   \   0001F8   85..83       MOV       DPH,?V3
+   \   0001FB   A3           INC       DPTR
+   \   0001FC   A3           INC       DPTR
+   \   0001FD   A3           INC       DPTR
+   \   0001FE   A3           INC       DPTR
+   \   0001FF   A3           INC       DPTR
+   \   000200   A3           INC       DPTR
+   \   000201   A3           INC       DPTR
+   \   000202   E0           MOVX      A,@DPTR
+   \   000203   54FC         ANL       A,#0xfc
+   \   000205   F0           MOVX      @DPTR,A
+   \   000206   85..82       MOV       DPL,?V2
+   \   000209   85..83       MOV       DPH,?V3
+   \   00020C   A3           INC       DPTR
+   \   00020D   A3           INC       DPTR
+   \   00020E   A3           INC       DPTR
+   \   00020F   A3           INC       DPTR
+   \   000210   A3           INC       DPTR
+   \   000211   A3           INC       DPTR
+   \   000212   A3           INC       DPTR
+   \   000213   E0           MOVX      A,@DPTR
+   \   000214   D2E1         SETB      0xE0 /* A   */.1
+   \   000216   F0           MOVX      @DPTR,A
+    138            HAL_DMA_CLEAR_IRQ(HAL_NV_DMA_CH);
+   \   000217   75D1FE       MOV       0xd1,#-0x2
+    139            HAL_DMA_ARM_CH(HAL_NV_DMA_CH);
+   \   00021A   75D601       MOV       0xd6,#0x1
+    140          
+    141            FADDRL = (uint8)addr;
+   \   00021D   EA           MOV       A,R2
+   \   00021E   906271       MOV       DPTR,#0x6271
+   \   000221   F0           MOVX      @DPTR,A
+    142            FADDRH = (uint8)(addr >> 8);
+   \   000222   EA           MOV       A,R2
+   \   000223   F8           MOV       R0,A
+   \   000224   EB           MOV       A,R3
+   \   000225   F9           MOV       R1,A
+   \   000226   E4           CLR       A
+   \   000227   C9           XCH       A,R1
+   \   000228   F8           MOV       R0,A
+   \   000229   E8           MOV       A,R0
+   \   00022A   906272       MOV       DPTR,#0x6272
+   \   00022D   F0           MOVX      @DPTR,A
+    143            FCTL |= 0x02;         // Trigger the DMA writes.
+   \   00022E   906270       MOV       DPTR,#0x6270
+   \   000231   E0           MOVX      A,@DPTR
+   \   000232   D2E1         SETB      0xE0 /* A   */.1
+   \   000234   F0           MOVX      @DPTR,A
+    144            while (FCTL & 0x80);  // Wait until writing is done.
+   \                     ??HalFlashWrite_0:
+   \   000235   906270       MOV       DPTR,#0x6270
+   \   000238   E0           MOVX      A,@DPTR
+   \   000239   A2E7         MOV       C,0xE0 /* A   */.7
+   \   00023B   40F8         JC        ??HalFlashWrite_0
+    145          #endif
+    146          }
+   \   00023D   7F04         MOV       R7,#0x4
+   \   00023F   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000242                REQUIRE DMAIRQ
+   \   000242                REQUIRE DMAARM
+    147          
+    148          /**************************************************************************************************
+    149           * @fn          HalFlashErase
+    150           *
+    151           * @brief       This function erases the specified page of the internal flash.
+    152           *
+    153           * input parameters
+    154           *
+    155           * @param       pg - A valid flash page number to erase.
+    156           *
+    157           * output parameters
+    158           *
+    159           * None.
+    160           *
+    161           * @return      None.
+    162           **************************************************************************************************
+    163           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    164          void HalFlashErase(uint8 pg)
+   \                     HalFlashErase:
+    165          {
+   \   000000   C082         PUSH      DPL
+   \   000002   C083         PUSH      DPH
+   \   000004                ; Saved register size: 2
+   \   000004                ; Auto size: 0
+    166            FADDRH = pg * (HAL_FLASH_PAGE_SIZE / HAL_FLASH_WORD_SIZE / 256);
+   \   000004   75F002       MOV       B,#0x2
+   \   000007   E9           MOV       A,R1
+   \   000008   A4           MUL       AB
+   \   000009   906272       MOV       DPTR,#0x6272
+   \   00000C   F0           MOVX      @DPTR,A
+    167            FCTL |= 0x01;
+   \   00000D   906270       MOV       DPTR,#0x6270
+   \   000010   E0           MOVX      A,@DPTR
+   \   000011   D2E0         SETB      0xE0 /* A   */.0
+   \   000013   F0           MOVX      @DPTR,A
+    168          }
+   \   000014   D083         POP       DPH
+   \   000016   D082         POP       DPL
+   \   000018   02....       LJMP      ?BRET
+    169          
+    170          /**************************************************************************************************
+    171          */
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      2      0   HalFlashErase
+      1     15   HalFlashRead
+      1     14   HalFlashWrite
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       1  DMAARM
+       1  DMAIRQ
+      27  HalFlashErase
+     166  HalFlashRead
+     578  HalFlashWrite
+       1  MEMCTR
+       1  _A_IEN0
+      18  -- Other
+
+ 
+ 771 bytes in segment BANKED_CODE
+  18 bytes in segment BANK_RELAYS
+   4 bytes in segment SFR_AN
+ 
+  18 bytes of CODE     memory
+   0 bytes of DATA     memory (+ 4 bytes shared)
+ 771 bytes of HUGECODE memory
+
+Errors: none
+Warnings: none

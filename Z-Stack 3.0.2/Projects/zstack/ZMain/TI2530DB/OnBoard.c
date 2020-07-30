@@ -249,19 +249,19 @@ uint8 OnBoard_SendKeys( uint8 keys, uint8 state )
       msgPtr->state = state;
       msgPtr->keys = keys;
 
-      if ( keys & HAL_KEY_SW_6 )
-      {
-        osal_msg_send( registeredKeysTaskID, (uint8 *)msgPtr );
-      }
-      else if ( keys & HAL_KEY_SW_5 )
-      {
-        osal_msg_send( registeredSW2KeysTaskID, (uint8 *)msgPtr );
-      }
-      else if ( keys & HAL_KEY_SW3 )
-      {
-        osal_msg_send( registeredSW3KeysTaskID, (uint8 *)msgPtr );
-      }
-//      osal_msg_send( registeredKeysTaskID, (uint8 *)msgPtr );
+//      if ( keys & HAL_KEY_SW_6 )
+//      {
+//        osal_msg_send( registeredKeysTaskID, (uint8 *)msgPtr );
+//      }
+//      else if ( keys & HAL_KEY_SW_5 )
+//      {
+//        osal_msg_send( registeredSW2KeysTaskID, (uint8 *)msgPtr );
+//      }
+//      else if ( keys & HAL_KEY_SW3 )
+//      {
+//        osal_msg_send( registeredSW3KeysTaskID, (uint8 *)msgPtr );
+//      }
+      osal_msg_send( registeredKeysTaskID, (uint8 *)msgPtr );
     }
     return ( ZSuccess );
   }

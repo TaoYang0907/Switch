@@ -215,7 +215,7 @@ extern "C" {
 
 // Maximum number in tables
 #if !defined( NWK_MAX_DEVICE_LIST )
-#define NWK_MAX_DEVICE_LIST     20  // Maximum number of devices in the
+#define NWK_MAX_DEVICE_LIST     15  // Maximum number of devices in the
                                     // Assoc/Device list.
 #endif
 
@@ -241,7 +241,7 @@ extern "C" {
 
 #if !defined ( MAX_NEIGHBOR_ENTRIES )
   #if ( ZG_BUILD_RTR_TYPE )
-    #define MAX_NEIGHBOR_ENTRIES    16
+    #define MAX_NEIGHBOR_ENTRIES    10
   #else
     #define MAX_NEIGHBOR_ENTRIES    4
   #endif

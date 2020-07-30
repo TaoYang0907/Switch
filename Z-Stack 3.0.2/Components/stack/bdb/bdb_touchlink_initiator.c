@@ -70,6 +70,8 @@
 #include "hal_lcd.h"
 #include "hal_led.h"
 
+#include "user_printf.h"
+
 #if defined ( BDB_TL_INITIATOR )
    
 /*********************************************************************
@@ -1571,6 +1573,10 @@ static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp
 {
   bdbFindingBindingRespondent_t *pCurr;
   
+//  printf("%d\n", touchLink_GetNwkKeyBitmask() );
+//  printf("%d\n", pRsp->keyBitmask );
+//  printf("%d\n", ( pRsp->keyBitmask & touchLink_GetNwkKeyBitmask() ) );
+  
   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_TL_SCAN_BASE_EVT )
        && ( touchLink_IsValidTransID( pRsp->transID ) )
        && ( pRsp->keyBitmask & touchLink_GetNwkKeyBitmask() ) )
@@ -1591,7 +1597,7 @@ static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp
         selectThisTarget = TRUE;
       }
     }
-
+    
     if ( selectThisTarget )
     {
       selectedTarget.scanRsp = *pRsp;
@@ -1600,6 +1606,7 @@ static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp
       selectedTarget.srcAddr.panId = 0xFFFF;
       touchLinkResponseID = pRsp->responseID;
       touchLinkTransID = pRsp->transID;
+      printf("%d\n", pRsp->logicalChannel );
 
       // Remember channel we heard back this scan response on
       ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));

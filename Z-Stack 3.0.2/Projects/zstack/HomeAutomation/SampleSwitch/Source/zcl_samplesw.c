@@ -98,7 +98,7 @@
 
 #include "bdb.h"
 #include "bdb_interface.h"
-
+#include "bdb_touchlink_initiator.h"
 
 /*********************************************************************
  * MACROS
@@ -124,7 +124,8 @@ uint8 zclSampleSw_OnOffSwitchActions;
 /*********************************************************************
  * GLOBAL FUNCTIONS
  */
-
+//extern ZStatus_t touchLinkInitiator_StartDevDisc( void );
+//extern ZStatus_t touchLinkInitiator_ResetToFNSelectedTarget( void );
 /*********************************************************************
  * LOCAL VARIABLES
  */
@@ -291,7 +292,9 @@ void zclSampleSw_Init( byte task_id )
 
   zdpExternalStateTaskID = zclSampleSw_TaskID;
 
-  printf("init successful\r\n");
+  bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
+  //touchLinkInitiator_ChannelChange( 11 );
+  printf("init successful\r\n"); 
 }
 
 /*********************************************************************
@@ -395,21 +398,24 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
  *                 HAL_KEY_SW_4
  *                 HAL_KEY_SW_2
  *                 HAL_KEY_SW_1
- *
+ *bdbAttributes.bdbNodeIsOnANetwork
  * @return  none
  */
 static void zclSampleSw_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_6 ) //key1
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
-    bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_FINDING_BINDING );  //Coordiinator
-    NLME_PermitJoiningRequest( 0xff );
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+   // bdb_StartCommissioning( BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_INITIATOR_TL );  //Coordiinator BDB_COMMISSIONING_TOUCHLINK
+//    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
+    touchLinkInitiator_StartDevDisc();
+    
   }    
   if ( keys & HAL_KEY_SW_5 ) //key2
   {
 //    Send_To_SW1();
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
+    touchLinkInitiator_ResetToFNSelectedTarget();
 //    Send_To_SW2();
   }
 }
@@ -432,7 +438,7 @@ static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bd
       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
       {
         //After formation, perform nwk steering again plus the remaining commissioning modes that has not been processed yet
-        HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
+        //HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
         bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
       }
       else

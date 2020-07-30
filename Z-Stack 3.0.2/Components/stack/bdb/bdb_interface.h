@@ -157,7 +157,8 @@ extern "C"
 // Manufacturer specific threshold (greater than -128),
 // do not respond to Touch-link scan request if reached
 #ifndef TOUCHLINK_WORST_RSSI
-#define TOUCHLINK_WORST_RSSI                                    -40 // dBm
+//#define TOUCHLINK_WORST_RSSI                                    -40 // dBm
+#define TOUCHLINK_WORST_RSSI                                    -70 // dBm
 #endif
  
 // Pre-programmed RSSI correction offset (0x00-0x20)
@@ -178,11 +179,13 @@ extern "C"
 #define TOUCHLINK_KEY_INDEX_DEV         0
 #define TOUCHLINK_KEY_INDEX_MASTER      4
 #define TOUCHLINK_KEY_INDEX_CERT        15
+//#define TOUCHLINK_KEY_INDEX_CERT        5
 
 // For certification only:
 #define TOUCHLINK_ENC_KEY  TOUCHLINK_CERTIFICATION_ENC_KEY
 #define TOUCHLINK_LINK_KEY  TOUCHLINK_CERTIFICATION_LINK_KEY
-#define TOUCHLINK_KEY_INDEX TOUCHLINK_KEY_INDEX_CERT
+//#define TOUCHLINK_KEY_INDEX TOUCHLINK_KEY_INDEX_CERT
+#define TOUCHLINK_KEY_INDEX TOUCHLINK_KEY_INDEX_MASTER
 
 // For internal EP's simple descriptor
 #define TOUCHLINK_INTERNAL_ENDPOINT                             13

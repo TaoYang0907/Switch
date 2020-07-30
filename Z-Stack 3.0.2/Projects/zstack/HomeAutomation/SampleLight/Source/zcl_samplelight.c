@@ -364,8 +364,9 @@ void zclSampleLight_Init( byte task_id )
   
   zdpExternalStateTaskID = zclSampleLight_TaskID;
   
-  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xff, reportableChangeTest);
-  
+//  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF, ATTRID_ON_OFF, 0, 0xff, reportableChangeTest);
+//  bdb_StartCommissioning( BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_NWK_STEERING  );
+//  touchLinkTarget_EnableCommissioning( TOUCHLINK_TARGET_PERPETUAL );  
 //  bdb_RepAddAttrCfgRecordDefaultToList(SAMPLELIGHT_ENDPOINT, ZCL_CLUSTER_ID_GEN_ON_OFF_SWITCH_CONFIG, ATTRID_ON_OFF, 0, 10, reportableChangeTest);
 }
 
@@ -461,39 +462,23 @@ uint16 zclSampleLight_event_loop( uint8 task_id, uint16 events )
  */
 static void zclSampleLight_HandleKeys( byte shift, byte keys )
 {
-  if ( keys & HAL_KEY_SW_6 )  // Switch 6
+  if ( keys & HAL_KEY_SW_6 )  // Switch 6  MAX_NEIGHBOR_ENTRIES INT_HEAP_LEN TOUCHLINK_WORST_RSSI
   {
-    if ( NetState )
-    {
-      if ( zclSampleLight_OnOff == LIGHT_OFF )
-      {
-        zclSampleLight_OnOff = LIGHT_ON;
-      }
-      else
-      {
-        zclSampleLight_OnOff = LIGHT_OFF;
-      }
-      
-      zclSampleLight_UpdateLedState();
-    }
-    else
-    {
-      bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | BDB_COMMISSIONING_MODE_FINDING_BINDING  );
-    }
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+//    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
+//    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_NWK_STEERING  );
+    bdb_TouchlinkSetAllowStealing (TRUE);
+    touchLinkTarget_EnableCommissioning( TOUCHLINK_TARGET_PERPETUAL - 10 );
   }
-//  if ( keys & HAL_KEY_SW_5 )  // Switch 5
-//  {     
-//    HalLedSet ( HAL_LED_2, HAL_LED_MODE_BLINK );
-//    if ( zclSampleLight_OnOff == LIGHT_OFF )
-//    {
-//      zclSampleLight_OnOff = LIGHT_ON;
-//    }
-//    else
-//    {
-//      zclSampleLight_OnOff = LIGHT_OFF;
-//    }
-//    zclSampleLight_UpdateLedState();
-//  }
+  if ( keys & HAL_KEY_SW_5 )  // Switch 6
+  {
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
+//    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
+    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_NWK_FORMATION );
+    NLME_PermitJoiningRequest( 0xff );
+//    touchLinkTarget_EnableCommissioning( TOUCHLINK_TARGET_PERPETUAL );
+
+  }
 }
 
 //GP_UPDATE

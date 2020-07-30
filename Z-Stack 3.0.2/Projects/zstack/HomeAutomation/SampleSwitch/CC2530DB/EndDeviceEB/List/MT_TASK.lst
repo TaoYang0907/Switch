@@ -1,0 +1,776 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:17
+# Copyright 2004-2018 IAR Systems AB.
+# PC-locked license - IAR Embedded Workbench for 8051
+#
+#    Core               =  plain
+#    Code model         =  banked
+#    Data model         =  large
+#    Calling convention =  xdata reentrant
+#    Constant location  =  data_rom
+#    Dptr setup         =  1,16
+#                          
+#    Source file        =  D:\AA\Z-Stack 3.0.2\Components\mt\MT_TASK.c
+#    Command line       =  
+#        -f C:\Users\sunli\AppData\Local\Temp\EW260D.tmp ("D:\AA\Z-Stack
+#        3.0.2\Components\mt\MT_TASK.c" -D SECURE=1 -D TC_LINKKEY_JOIN -D
+#        NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1
+#        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
+#        xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
+#        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
+#        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_GROUPS -D
+#        BDB_TL_INITIATOR -D INTER_PAN -lC "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List"
+#        -lA "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List"
+#        --diag_suppress Pe001,Pa010 -o "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\Obj"
+#        -e --debug --core=plain --dptr=16,1 --data_model=large
+#        --code_model=banked --calling_convention=xdata_reentrant
+#        --place_constants=data_rom --nr_virtual_regs 16 -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wEndev.cfg"
+#        (-DCPU32MHZ -DROOT=__near_func -DMAC_CFG_TX_DATA_MAX=3
+#        -DMAC_CFG_TX_MAX=6 -DMAC_CFG_RX_MAX=3) -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wConfig.cfg"
+#        (-DZIGBEEPRO -DSECURE=1 -DZG_SECURE_DYNAMIC=0 -DREFLECTOR
+#        -DDEFAULT_CHANLIST=0x00000800 -DZDAPP_CONFIG_PAN_ID=0xFFFF
+#        -DNWK_START_DELAY=100 -DEXTENDED_JOINING_RANDOM_MASK=0x007F
+#        -DBEACON_REQUEST_DELAY=100 -DBEACON_REQ_DELAY_MASK=0x00FF
+#        -DLINK_STATUS_JITTER_MASK=0x007F -DROUTE_EXPIRY_TIME=30
+#        -DAPSC_ACK_WAIT_DURATION_POLLED=3000 -DNWK_INDIRECT_MSG_TIMEOUT=7
+#        -DMAX_RREQ_ENTRIES=8 -DAPSC_MAX_FRAME_RETRIES=3
+#        -DNWK_MAX_DATA_RETRIES=2 -DMAX_POLL_FAILURE_RETRIES=2 -DMAX_BCAST=9
+#        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
+#        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0} -DMAC_MAX_FRAME_SIZE=116
+#        -DZDNWKMGR_MIN_TRANSMISSIONS=20 "-DCONST=const __code"
+#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=1000
+#        -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100 -DREJOIN_POLL_RATE=440
+#        -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000 -DENABLE_LED4_DISABLE_S1)
+#        -f "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\" -I
+#        "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\Source\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\ZMain\TI2530DB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\hal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\hal\target\CC2530EB\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\high_level\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\mt\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\osal\include\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\services\saddr\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\services\sdata\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\af\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\bdb\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\gp\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\nwk\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sapi\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sec\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\sys\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\zcl\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\stack\zdo\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\zmac\"
+#        -I "D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\..\..\Components\zmac\f8w\"
+#        -On --require_prototypes --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_cross_call)
+#    Locale             =  Chinese (Simplified)_CHN.936
+#    List file          =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\List\MT_TASK.lst
+#    Object file        =  
+#        D:\AA\Z-Stack
+#        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\EndDeviceEB\Obj\MT_TASK.r51
+#
+###############################################################################
+
+D:\AA\Z-Stack 3.0.2\Components\mt\MT_TASK.c
+      1          /***************************************************************************************************
+      2            Filename:       MT_TASK.c
+      3            Revised:        $Date: 2015-01-30 11:15:01 -0800 (Fri, 30 Jan 2015) $
+      4            Revision:       $Revision: 42161 $
+      5          
+      6            Description:    MonitorTest Task handling routines
+      7          
+      8            Copyright 2007-2013 Texas Instruments Incorporated. All rights reserved.
+      9          
+     10            IMPORTANT: Your use of this Software is limited to those specific rights
+     11            granted under the terms of a software license agreement between the user
+     12            who downloaded the software, his/her employer (which must be your employer)
+     13            and Texas Instruments Incorporated (the "License").  You may not use this
+     14            Software unless you agree to abide by the terms of the License. The License
+     15            limits your use, and you acknowledge, that the Software may not be modified,
+     16            copied or distributed unless embedded on a Texas Instruments microcontroller
+     17            or used solely and exclusively in conjunction with a Texas Instruments radio
+     18            frequency transceiver, which is integrated into your product.  Other than for
+     19            the foregoing purpose, you may not use, reproduce, copy, prepare derivative
+     20            works of, modify, distribute, perform, display or sell this Software and/or
+     21            its documentation for any purpose.
+     22          
+     23            YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
+     24            PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+     25            INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
+     26            NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
+     27            TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
+     28            NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR OTHER
+     29            LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
+     30            INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE
+     31            OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT
+     32            OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
+     33            (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+     34          
+     35            Should you have any questions regarding your right to use this Software,
+     36            contact Texas Instruments Incorporated at www.TI.com.
+     37          
+     38           ***************************************************************************************************/
+     39          
+     40          /***************************************************************************************************
+     41           * INCLUDES
+     42           ***************************************************************************************************/
+     43          #include "ZComDef.h"
+     44          #include "MT_TASK.h"
+     45          #include "MT.h"
+     46          #include "MT_DEBUG.h"
+     47          #include "MT_UART.h"
+     48          #include "MT_UTIL.h"
+     49          #include "MT_SYS.h"
+     50          
+     51          #if !defined( NONWK )
+     52          #include "MT_ZDO.h"
+     53          #include "MT_AF.h"
+     54          #endif  /* NONWK */
+     55          
+     56          #include "hal_uart.h"
+     57          #include "OSAL_Memory.h"
+     58          
+     59          /***************************************************************************************************
+     60           * LOCAL FUNCTIONS
+     61           ***************************************************************************************************/
+     62          
+     63          static void MT_ProcessIncomingCommand( mtOSALSerialData_t *msg );
+     64          #ifdef MT_SRNG
+     65          void MT_ProcessSrngEvent(void); 
+     66          #endif
+     67          
+     68          #if defined(NPI)
+     69          extern uint8_t npiframe_calcMTFCS(uint8_t *msg_ptr, uint8_t len);
+     70          #endif
+     71          
+     72          /***************************************************************************************************
+     73           * GLOBALS
+     74           ***************************************************************************************************/
+     75          
+
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
+     76          uint8 MT_TaskID;
+   \                     MT_TaskID:
+   \   000000                DS 1
+   \   000001                REQUIRE __INIT_XDATA_Z
+     77          
+     78          /***************************************************************************************************
+     79           * @fn      MT_TaskInit
+     80           *
+     81           * @brief  MonitorTest Task Initialization.  This function is put into the
+     82           *         task table.
+     83           *
+     84           * @param   task_id - task ID of the MT Task
+     85           *
+     86           * @return  void
+     87           ***************************************************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+     88          void MT_TaskInit(uint8 task_id)
+   \                     MT_TaskInit:
+     89          {
+   \   000000   74F7         MOV       A,#-0x9
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 9
+   \   000005                ; Auto size: 0
+   \   000005   E9           MOV       A,R1
+   \   000006   FE           MOV       R6,A
+     90            MT_TaskID = task_id;
+   \   000007   EE           MOV       A,R6
+   \   000008   90....       MOV       DPTR,#MT_TaskID
+   \   00000B   F0           MOVX      @DPTR,A
+     91          
+     92            /* Initialize the Serial port */
+     93          #if !defined(NPI)
+     94            MT_UartInit();
+   \   00000C                ; Setup parameters for call to function MT_UartInit
+   \   00000C   12....       LCALL     `??MT_UartInit::?relay`; Banked call to: MT_UartInit
+     95          
+     96            /* Register taskID - Do this after UartInit() because it will reset the taskID */
+     97            MT_UartRegisterTaskID(task_id);
+   \   00000F                ; Setup parameters for call to function MT_UartRegisterTaskID
+   \   00000F   EE           MOV       A,R6
+   \   000010   F9           MOV       R1,A
+   \   000011   12....       LCALL     `??MT_UartRegisterTaskID::?relay`; Banked call to: MT_UartRegisterTaskID
+     98          #endif /* NPI */
+     99            osal_set_event(task_id, MT_SECONDARY_INIT_EVENT);
+   \   000014                ; Setup parameters for call to function osal_set_event
+   \   000014   7A10         MOV       R2,#0x10
+   \   000016   7B00         MOV       R3,#0x0
+   \   000018   EE           MOV       A,R6
+   \   000019   F9           MOV       R1,A
+   \   00001A   12....       LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
+   \   00001D   E9           MOV       A,R1
+    100          }
+   \   00001E   7F01         MOV       R7,#0x1
+   \   000020   02....       LJMP      ?BANKED_LEAVE_XDATA
+    101          
+    102          /**************************************************************************************************
+    103           * @fn      MT_ProcessEvent
+    104           *
+    105           * @brief   MonitorTest Task Event Processor.  This task is put into the task table.
+    106           *
+    107           * @param   task_id - task ID of the MT Task
+    108           * @param   events - event(s) for the MT Task
+    109           *
+    110           * @return  Bit mask of the unprocessed MT Task events.
+    111           **************************************************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    112          UINT16 MT_ProcessEvent(uint8 task_id, uint16 events)
+   \                     MT_ProcessEvent:
+    113          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000   74F2         MOV       A,#-0xe
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 14
+   \   000005                ; Auto size: 0
+   \   000005   89..         MOV       ?V2,R1
+   \   000007   EA           MOV       A,R2
+   \   000008   FE           MOV       R6,A
+   \   000009   EB           MOV       A,R3
+   \   00000A   FF           MOV       R7,A
+    114            /* Could be multiple events, so switch won't work */
+    115            if ( events & SYS_EVENT_MSG )
+   \   00000B   EE           MOV       A,R6
+   \   00000C   5400         ANL       A,#0x0
+   \   00000E   F8           MOV       R0,A
+   \   00000F   EF           MOV       A,R7
+   \   000010   5480         ANL       A,#0x80
+   \   000012   F9           MOV       R1,A
+   \   000013   E8           MOV       A,R0
+   \   000014   49           ORL       A,R1
+   \   000015   602E         JZ        ??MT_ProcessEvent_0
+    116            {
+    117              uint8 *msg_ptr = osal_msg_receive(task_id);
+   \   000017                ; Setup parameters for call to function osal_msg_receive
+   \   000017   A9..         MOV       R1,?V2
+   \   000019   12....       LCALL     `??osal_msg_receive::?relay`; Banked call to: osal_msg_receive
+   \   00001C   8A..         MOV       ?V4,R2
+   \   00001E   8B..         MOV       ?V5,R3
+   \   000020   85....       MOV       ?V0,?V4
+   \   000023   85....       MOV       ?V1,?V5
+    118          
+    119              if (msg_ptr != NULL)
+   \   000026   E5..         MOV       A,?V0
+   \   000028   45..         ORL       A,?V1
+   \   00002A   600F         JZ        ??MT_ProcessEvent_1
+    120              {
+    121                MT_ProcessIncomingCommand((mtOSALSerialData_t *)msg_ptr);
+   \   00002C                ; Setup parameters for call to function MT_ProcessIncomingCommand
+   \   00002C   AA..         MOV       R2,?V0
+   \   00002E   AB..         MOV       R3,?V1
+   \   000030   12....       LCALL     `??MT_ProcessIncomingCommand::?relay`; Banked call to: MT_ProcessIncomingCommand
+    122                osal_msg_deallocate(msg_ptr);
+   \   000033                ; Setup parameters for call to function osal_msg_deallocate
+   \   000033   AA..         MOV       R2,?V0
+   \   000035   AB..         MOV       R3,?V1
+   \   000037   12....       LCALL     `??osal_msg_deallocate::?relay`; Banked call to: osal_msg_deallocate
+   \   00003A   E9           MOV       A,R1
+    123              }
+    124          
+    125              /* Return unproccessed events */
+    126              return (events ^ SYS_EVENT_MSG);
+   \                     ??MT_ProcessEvent_1:
+   \   00003B   EE           MOV       A,R6
+   \   00003C   6400         XRL       A,#0x0
+   \   00003E   FA           MOV       R2,A
+   \   00003F   EF           MOV       A,R7
+   \   000040   6480         XRL       A,#0x80
+   \   000042   FB           MOV       R3,A
+   \   000043   8039         SJMP      ??MT_ProcessEvent_2
+    127            }
+    128          
+    129            if ( events & MT_SECONDARY_INIT_EVENT )
+   \                     ??MT_ProcessEvent_0:
+   \   000045   EE           MOV       A,R6
+   \   000046   5410         ANL       A,#0x10
+   \   000048   600F         JZ        ??MT_ProcessEvent_3
+    130            {
+    131              MT_Init(task_id);
+   \   00004A                ; Setup parameters for call to function MT_Init
+   \   00004A   A9..         MOV       R1,?V2
+   \   00004C   12....       LCALL     `??MT_Init::?relay`; Banked call to: MT_Init
+    132              /* Return unproccessed events */
+    133              return (events ^ MT_SECONDARY_INIT_EVENT);
+   \   00004F   EE           MOV       A,R6
+   \   000050   6410         XRL       A,#0x10
+   \   000052   FA           MOV       R2,A
+   \   000053   EF           MOV       A,R7
+   \   000054   6400         XRL       A,#0x0
+   \   000056   FB           MOV       R3,A
+   \   000057   8025         SJMP      ??MT_ProcessEvent_2
+    134            }
+    135          
+    136            if ( events & MT_ZTOOL_SERIAL_RCV_BUFFER_FULL )
+   \                     ??MT_ProcessEvent_3:
+   \   000059   EE           MOV       A,R6
+   \   00005A   5402         ANL       A,#0x2
+   \   00005C   600A         JZ        ??MT_ProcessEvent_4
+    137            {
+    138              /* Return unproccessed events */
+    139              return (events ^ MT_ZTOOL_SERIAL_RCV_BUFFER_FULL);
+   \   00005E   EE           MOV       A,R6
+   \   00005F   6402         XRL       A,#0x2
+   \   000061   FA           MOV       R2,A
+   \   000062   EF           MOV       A,R7
+   \   000063   6400         XRL       A,#0x0
+   \   000065   FB           MOV       R3,A
+   \   000066   8016         SJMP      ??MT_ProcessEvent_2
+    140            }
+    141          
+    142          #if !defined( NONWK )
+    143            if ( events & MT_AF_EXEC_EVT )
+   \                     ??MT_ProcessEvent_4:
+   \   000068   EE           MOV       A,R6
+   \   000069   5408         ANL       A,#0x8
+   \   00006B   600D         JZ        ??MT_ProcessEvent_5
+    144            {
+    145              MT_AfExec();
+   \   00006D                ; Setup parameters for call to function MT_AfExec
+   \   00006D   12....       LCALL     `??MT_AfExec::?relay`; Banked call to: MT_AfExec
+    146              return (events ^ MT_AF_EXEC_EVT);
+   \   000070   EE           MOV       A,R6
+   \   000071   6408         XRL       A,#0x8
+   \   000073   FA           MOV       R2,A
+   \   000074   EF           MOV       A,R7
+   \   000075   6400         XRL       A,#0x0
+   \   000077   FB           MOV       R3,A
+   \   000078   8004         SJMP      ??MT_ProcessEvent_2
+    147            }
+    148          #endif  /* NONWK */
+    149          
+    150            /* Handle MT_SYS_OSAL_START_TIMER callbacks */
+    151          #if defined MT_SYS_FUNC
+    152            if ( events & (MT_SYS_OSAL_EVENT_MASK))
+    153            {
+    154              if (events & MT_SYS_OSAL_EVENT_0)
+    155              {
+    156                MT_SysOsalTimerExpired(0x00);
+    157                events ^= MT_SYS_OSAL_EVENT_0;
+    158              }
+    159          
+    160              if (events & MT_SYS_OSAL_EVENT_1)
+    161              {
+    162                MT_SysOsalTimerExpired(0x01);
+    163                events ^= MT_SYS_OSAL_EVENT_1;
+    164              }
+    165          
+    166              if (events & MT_SYS_OSAL_EVENT_2)
+    167              {
+    168                MT_SysOsalTimerExpired(0x02);
+    169                events ^= MT_SYS_OSAL_EVENT_2;
+    170              }
+    171          
+    172              if (events & MT_SYS_OSAL_EVENT_3)
+    173              {
+    174                MT_SysOsalTimerExpired(0x03);
+    175                events ^= MT_SYS_OSAL_EVENT_3;
+    176              }
+    177          
+    178              return events;
+    179            }
+    180          #endif
+    181          
+    182          #ifdef MT_SRNG
+    183            if(events & MT_SRNG_EVENT)
+    184            {
+    185              MT_ProcessSrngEvent(); 
+    186              return (events ^ MT_SRNG_EVENT);
+    187            }
+    188          #endif  
+    189          
+    190            /* Discard or make more handlers */
+    191            return 0;
+   \                     ??MT_ProcessEvent_5:
+   \   00007A   7A00         MOV       R2,#0x0
+   \   00007C   7B00         MOV       R3,#0x0
+   \                     ??MT_ProcessEvent_2:
+   \   00007E   7F06         MOV       R7,#0x6
+   \   000080   02....       LJMP      ?BANKED_LEAVE_XDATA
+    192          
+    193          } /* MT_ProcessEvent() */
+    194          
+    195          #ifdef MT_SRNG
+    196          /***************************************************************************************************
+    197           * @fn      MT_ProcessSrngEvent
+    198           *
+    199           * @brief
+    200           *
+    201           *   Process SRNG Event Messages.
+    202           *
+    203           * @param   None
+    204           *
+    205           * @return  None
+    206           ***************************************************************************************************/
+    207          void MT_ProcessSrngEvent(void)
+    208          {
+    209            uint8 * msg;
+    210            osal_event_hdr_t * msg_ptr;
+    211            
+    212            msg_ptr = (osal_event_hdr_t *)osal_msg_allocate( MT_RPC_FRAME_HDR_SZ + 4 + sizeof(osal_event_hdr_t) );
+    213            msg = msg_ptr + sizeof(osal_event_hdr_t) + 4;
+    214            
+    215            if ( msg_ptr )
+    216            {
+    217              msg_ptr->event = CMD_SERIAL_MSG;
+    218              msg_ptr->status = 4;
+    219              if(msg)
+    220              {
+    221                msg[MT_RPC_POS_LEN] = 4 + MT_RPC_FRAME_HDR_SZ;
+    222                msg[MT_RPC_POS_CMD0] = MT_RPC_SYS_UTIL;
+    223                msg[MT_RPC_POS_CMD1] = MT_UTIL_SRNG_GENERATE;
+    224              } 
+    225              osal_memcpy(msg_ptr + sizeof(osal_event_hdr_t), &msg, 4); 
+    226            }
+    227            osal_msg_send( MT_TaskID, (uint8 *)msg_ptr );
+    228          }
+    229          #endif
+    230          
+    231          /***************************************************************************************************
+    232           * @fn      MT_ProcessIncomingCommand
+    233           *
+    234           * @brief
+    235           *
+    236           *   Process Event Messages.
+    237           *
+    238           * @param   *msg - pointer to event message
+    239           *
+    240           * @return
+    241           ***************************************************************************************************/
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
+    242          static void MT_ProcessIncomingCommand( mtOSALSerialData_t *msg )
+   \                     MT_ProcessIncomingCommand:
+    243          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000   74F5         MOV       A,#-0xb
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 11
+   \   000005                ; Auto size: 0
+   \   000005   EA           MOV       A,R2
+   \   000006   FE           MOV       R6,A
+   \   000007   EB           MOV       A,R3
+   \   000008   FF           MOV       R7,A
+    244            uint8 len, *msg_ptr = msg->msg;
+   \   000009   8E82         MOV       DPL,R6
+   \   00000B   8F83         MOV       DPH,R7
+   \   00000D   A3           INC       DPTR
+   \   00000E   A3           INC       DPTR
+   \   00000F   E0           MOVX      A,@DPTR
+   \   000010   F5..         MOV       ?V0,A
+   \   000012   A3           INC       DPTR
+   \   000013   E0           MOVX      A,@DPTR
+   \   000014   F5..         MOV       ?V1,A
+    245          
+    246            /* Use the first byte of the message as the command ID */
+    247            switch ( msg->hdr.event )
+   \   000016   8E82         MOV       DPL,R6
+   \   000018   8F83         MOV       DPH,R7
+   \   00001A   E0           MOVX      A,@DPTR
+   \   00001B   14           DEC       A
+   \   00001C   6011         JZ        ??MT_ProcessIncomingCommand_0
+   \   00001E   14           DEC       A
+   \   00001F   6017         JZ        ??MT_ProcessIncomingCommand_1
+   \   000021   24FE         ADD       A,#-0x2
+   \   000023   601C         JZ        ??MT_ProcessIncomingCommand_2
+   \   000025   24FE         ADD       A,#-0x2
+   \   000027   6058         JZ        ??MT_ProcessIncomingCommand_3
+   \   000029   24E2         ADD       A,#-0x1e
+   \   00002B   605D         JZ        ??MT_ProcessIncomingCommand_4
+   \   00002D   8072         SJMP      ??MT_ProcessIncomingCommand_5
+    248            {
+    249              case CMD_SERIAL_MSG:
+    250                MT_ProcessIncoming(msg_ptr);
+   \                     ??MT_ProcessIncomingCommand_0:
+   \   00002F                ; Setup parameters for call to function MT_ProcessIncoming
+   \   00002F   AA..         MOV       R2,?V0
+   \   000031   AB..         MOV       R3,?V1
+   \   000033   12....       LCALL     `??MT_ProcessIncoming::?relay`; Banked call to: MT_ProcessIncoming
+    251                break;
+   \   000036   8069         SJMP      ??MT_ProcessIncomingCommand_5
+    252          
+    253              case CMD_DEBUG_MSG:
+    254                MT_ProcessDebugMsg( (mtDebugMsg_t *)msg );
+   \                     ??MT_ProcessIncomingCommand_1:
+   \   000038                ; Setup parameters for call to function MT_ProcessDebugMsg
+   \   000038   EE           MOV       A,R6
+   \   000039   FA           MOV       R2,A
+   \   00003A   EF           MOV       A,R7
+   \   00003B   FB           MOV       R3,A
+   \   00003C   12....       LCALL     `??MT_ProcessDebugMsg::?relay`; Banked call to: MT_ProcessDebugMsg
+    255                break;
+   \   00003F   8060         SJMP      ??MT_ProcessIncomingCommand_5
+    256          
+    257              case CB_FUNC:
+    258                /*
+    259                  Build SPI message here instead of redundantly calling MT_BuildSPIMsg
+    260                  because we have copied data already in the allocated message
+    261                */
+    262          
+    263                /* msg_ptr is the beginning of the intended SPI message */
+    264                len = SPI_0DATA_MSG_LEN + msg_ptr[DATALEN_FIELD];
+   \                     ??MT_ProcessIncomingCommand_2:
+   \   000041   85..82       MOV       DPL,?V0
+   \   000044   85..83       MOV       DPH,?V1
+   \   000047   A3           INC       DPTR
+   \   000048   A3           INC       DPTR
+   \   000049   A3           INC       DPTR
+   \   00004A   E0           MOVX      A,@DPTR
+   \   00004B   2405         ADD       A,#0x5
+   \   00004D   F5..         MOV       ?V2,A
+    265          
+    266                /*
+    267                  FCS goes to the last byte in the message and is calculated over all
+    268                  the bytes except FCS and SOP
+    269                */
+    270          #if !defined(NPI)
+    271                msg_ptr[len-1] = MT_UartCalcFCS(msg_ptr + 1, (uint8)(len-2));
+   \   00004F                ; Setup parameters for call to function MT_UartCalcFCS
+   \   00004F   74FE         MOV       A,#-0x2
+   \   000051   25..         ADD       A,?V2
+   \   000053   F9           MOV       R1,A
+   \   000054   85..82       MOV       DPL,?V0
+   \   000057   85..83       MOV       DPH,?V1
+   \   00005A   A3           INC       DPTR
+   \   00005B   AA82         MOV       R2,DPL
+   \   00005D   AB83         MOV       R3,DPH
+   \   00005F   12....       LCALL     `??MT_UartCalcFCS::?relay`; Banked call to: MT_UartCalcFCS
+   \   000062   E9           MOV       A,R1
+   \   000063   C0E0         PUSH      A
+   \   000065   E5..         MOV       A,?V2
+   \   000067   F8           MOV       R0,A
+   \   000068   7900         MOV       R1,#0x0
+   \   00006A   E5..         MOV       A,?V0
+   \   00006C   28           ADD       A,R0
+   \   00006D   F8           MOV       R0,A
+   \   00006E   E5..         MOV       A,?V1
+   \   000070   39           ADDC      A,R1
+   \   000071   F9           MOV       R1,A
+   \   000072   E8           MOV       A,R0
+   \   000073   24FF         ADD       A,#-0x1
+   \   000075   F582         MOV       DPL,A
+   \   000077   E9           MOV       A,R1
+   \   000078   34FF         ADDC      A,#-0x1
+   \   00007A   F583         MOV       DPH,A
+   \   00007C   D0E0         POP       A
+   \   00007E   F0           MOVX      @DPTR,A
+    272          #else
+    273                msg_ptr[len-1] = npiframe_calcMTFCS(msg_ptr + 1, (uint8)(len-2));
+    274          #endif
+    275          
+    276          #ifdef MT_UART_DEFAULT_PORT
+    277                HalUARTWrite ( MT_UART_DEFAULT_PORT, msg_ptr, len );
+    278          #endif
+    279                break;
+   \   00007F   8020         SJMP      ??MT_ProcessIncomingCommand_5
+    280          
+    281              case CMD_DEBUG_STR:
+    282                MT_ProcessDebugStr( (mtDebugStr_t *)msg );
+   \                     ??MT_ProcessIncomingCommand_3:
+   \   000081                ; Setup parameters for call to function MT_ProcessDebugStr
+   \   000081   EE           MOV       A,R6
+   \   000082   FA           MOV       R2,A
+   \   000083   EF           MOV       A,R7
+   \   000084   FB           MOV       R3,A
+   \   000085   12....       LCALL     `??MT_ProcessDebugStr::?relay`; Banked call to: MT_ProcessDebugStr
+    283                break;
+   \   000088   8017         SJMP      ??MT_ProcessIncomingCommand_5
+    284          
+    285          #if !defined ( NONWK )
+    286              case MT_SYS_APP_RSP_MSG:
+    287                len = SPI_0DATA_MSG_LEN + msg_ptr[DATALEN_FIELD];
+   \                     ??MT_ProcessIncomingCommand_4:
+   \   00008A   85..82       MOV       DPL,?V0
+   \   00008D   85..83       MOV       DPH,?V1
+   \   000090   A3           INC       DPTR
+   \   000091   A3           INC       DPTR
+   \   000092   A3           INC       DPTR
+   \   000093   E0           MOVX      A,@DPTR
+   \   000094   2405         ADD       A,#0x5
+   \   000096   F5..         MOV       ?V2,A
+    288                MTProcessAppRspMsg( msg_ptr, len );
+   \   000098                ; Setup parameters for call to function MTProcessAppRspMsg
+   \   000098   A9..         MOV       R1,?V2
+   \   00009A   AA..         MOV       R2,?V0
+   \   00009C   AB..         MOV       R3,?V1
+   \   00009E   12....       LCALL     `??MTProcessAppRspMsg::?relay`; Banked call to: MTProcessAppRspMsg
+    289                break;
+    290          #endif  // NONWK
+    291          
+    292          #if defined (MT_UTIL_FUNC)
+    293          #if defined ZCL_KEY_ESTABLISH
+    294              case ZCL_KEY_ESTABLISH_IND:
+    295                MT_UtilKeyEstablishInd((zclKE_StatusInd_t *)msg);
+    296                break;
+    297          #endif
+    298          #endif
+    299          #ifdef MT_ZDO_CB_FUNC
+    300              case ZDO_STATE_CHANGE:
+    301                MT_ZdoStateChangeCB((osal_event_hdr_t *)msg);
+    302                break;
+    303          #endif
+    304          
+    305              default:
+    306                break;
+    307            }
+    308          }
+   \                     ??MT_ProcessIncomingCommand_5:
+   \   0000A1   7F03         MOV       R7,#0x3
+   \   0000A3   02....       LJMP      ?BANKED_LEAVE_XDATA
+    309          
+    310          #ifdef MT_TASK
+    311          /***************************************************************************************************
+    312           * @fn      MT_TransportAlloc
+    313           *
+    314           * @brief   Allocate memory for transport msg
+    315           *
+    316           * @param   uint8 cmd0 - The first byte of the MT command id containing the command type and subsystem.
+    317           *          uint8 len - length
+    318           *
+    319           * @return  pointer the allocated memory or NULL if fail to allocate the memory
+    320           ***************************************************************************************************/
+    321          uint8 *MT_TransportAlloc(uint8 cmd0, uint8 len)
+    322          {
+    323            uint8 *p;
+    324          
+    325            (void)cmd0;  // Intentionally unreferenced parameter
+    326          
+    327            /* Allocate a buffer of data length + SOP+CMD+FCS (5 bytes) */
+    328            p = osal_msg_allocate(len + SPI_0DATA_MSG_LEN);
+    329          
+    330            if (p)
+    331            {
+    332              p++; /* Save space for SOP_VALUE, msg structure */
+    333              return p;
+    334            }
+    335            else
+    336            {
+    337              return NULL;
+    338            }
+    339          }
+    340          
+    341          /***************************************************************************************************
+    342           * @fn      MT_TransportSend
+    343           *
+    344           * @brief   Fill in SOP and FCS then send out the msg
+    345           *
+    346           * @param   uint8 *pBuf - pointer to the message that contains CMD, length, data and FCS
+    347           *
+    348           * @return  None
+    349           ***************************************************************************************************/
+    350          void MT_TransportSend(uint8 *pBuf)
+    351          {
+    352            uint8 *msgPtr;
+    353            uint8 dataLen = pBuf[0]; /* Data length is on byte #1 from the pointer */
+    354          
+    355            /* Move back to the SOP */
+    356            msgPtr = pBuf-1;
+    357          
+    358            /* Insert SOP */
+    359            msgPtr[0] = MT_UART_SOF;
+    360          
+    361            /* Insert FCS */
+    362            msgPtr[SPI_0DATA_MSG_LEN - 1 + dataLen] = MT_UartCalcFCS (pBuf, (3 + dataLen));
+    363          
+    364            /* Send to UART */
+    365          #ifdef MT_UART_DEFAULT_PORT
+    366            HalUARTWrite(MT_UART_DEFAULT_PORT, msgPtr, dataLen + SPI_0DATA_MSG_LEN);
+    367          #endif
+    368          
+    369            /* Deallocate */
+    370            osal_msg_deallocate(msgPtr);
+    371          }
+    372          #endif /* MT_TASK */
+    373          /***************************************************************************************************
+    374           ***************************************************************************************************/
+
+   Maximum stack usage in bytes:
+
+   ISTACK XSTACK Function
+   ------ ------ --------
+      0     14   MT_ProcessEvent
+        0     14   -> MT_AfExec
+        0     14   -> MT_Init
+        0     14   -> MT_ProcessIncomingCommand
+        0     14   -> osal_msg_deallocate
+        0     14   -> osal_msg_receive
+      1     25   MT_ProcessIncomingCommand
+        0     11   -> MTProcessAppRspMsg
+        0     11   -> MT_ProcessDebugMsg
+        0     11   -> MT_ProcessDebugStr
+        0     11   -> MT_ProcessIncoming
+        0     11   -> MT_UartCalcFCS
+      0      9   MT_TaskInit
+        0      9   -> MT_UartInit
+        0      9   -> MT_UartRegisterTaskID
+        0      9   -> osal_set_event
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     131  MT_ProcessEvent
+     166  MT_ProcessIncomingCommand
+       1  MT_TaskID
+      35  MT_TaskInit
+      18  -- Other
+
+ 
+ 332 bytes in segment BANKED_CODE
+  18 bytes in segment BANK_RELAYS
+   1 byte  in segment XDATA_Z
+ 
+  18 bytes of CODE     memory
+ 332 bytes of HUGECODE memory
+   1 byte  of XDATA    memory
+
+Errors: none
+Warnings: none

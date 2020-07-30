@@ -215,7 +215,8 @@ extern "C"
 // Define if Touchlink Target device will use fixed or random 
 // channel from bdbcTLPrimaryChannelSet during commissioning
 // when is Factory New (development only).
-#define TOUCHLINK_FIXED_CHANNEL_ENABLE                          FALSE
+//#define TOUCHLINK_FIXED_CHANNEL_ENABLE                          FALSE
+#define TOUCHLINK_FIXED_CHANNEL_ENABLE                          TRUE
 #define TOUCHLINK_FIXED_CHANNEL                                 TOUCHLINK_FIRST_CHANNEL
 
 // set TOUCHLINK_CH_OFFSET to Ch_Plus_1, Ch_Plus_2 or Ch_Plus_3 to shift
@@ -248,6 +249,7 @@ extern "C"
 #define BDBCTL_PRIMARY_CHANNEL_LIST                      ( 0x02108800 << TOUCHLINK_CH_OFFSET )
 #define BDBCTL_RX_WINDOW_DURATION                        5000 // 5s
 #define BDBCTL_SCAN_TIME_BASE_DURATION                   250  // 0.25s
+//#define BDBCTL_SCAN_TIME_BASE_DURATION                   1000  // 0.25s
 #define BDBCTL_SECONDARY_CHANNEL_LIST                    ( 0x07fff800 ^ BDBCTL_PRIMARY_CHANNEL_LIST ) // TOUCHLINK Secondary Channels
 
 // TOUCHLINK Channels (standard)
