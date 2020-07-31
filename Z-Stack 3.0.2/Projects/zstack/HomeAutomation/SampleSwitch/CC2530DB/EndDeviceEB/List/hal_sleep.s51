@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  16:01:58
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  18:41:09
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWD99D.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW97CF.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_sleep.c" -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
@@ -834,43 +834,44 @@ halSetSleepMode:
 //  237 {
         ; Saved register size: 0
         ; Auto size: 0
-//  238   PCON = halSleepPconValue;
-        MOV       0x87,halSleepPconValue
-//  239   HAL_DISABLE_INTERRUPTS();
+//  238   //PCON = halSleepPconValue;
+//  239   PCON = CC2530_PM3;
+        MOV       0x87,#0x3
+//  240   HAL_DISABLE_INTERRUPTS();
         CLR       0xa8.7
-//  240 }
+//  241 }
         LJMP      ?BRET
           CFI EndBlock cfiBlock0
         REQUIRE PCON
         REQUIRE _A_IEN0
-//  241 
-//  242 /**************************************************************************************************
-//  243  * @fn          halSetMaxSleepLoopTime
-//  244  *
-//  245  * @brief       This function is to used to setup the maximum sleep loop time. This sleep loop time
-//  246  *              should be lesser than T2 rollover so that a maximum of only one rollover occurs
-//  247  *              when cc2530 is in sleep. This function should be called whenever rolloverTime is
-//  248  *              changed using the function macBackoffTimerSetRollover(macTimerRollover);
-//  249  *
-//  250  * input parameters
-//  251  *
-//  252  * @param       rolloverTime.
-//  253  *
-//  254  * output parameters
-//  255  *
-//  256  * None.
-//  257  *
-//  258  * @return      None.
-//  259  **************************************************************************************************
-//  260  */
+//  242 
+//  243 /**************************************************************************************************
+//  244  * @fn          halSetMaxSleepLoopTime
+//  245  *
+//  246  * @brief       This function is to used to setup the maximum sleep loop time. This sleep loop time
+//  247  *              should be lesser than T2 rollover so that a maximum of only one rollover occurs
+//  248  *              when cc2530 is in sleep. This function should be called whenever rolloverTime is
+//  249  *              changed using the function macBackoffTimerSetRollover(macTimerRollover);
+//  250  *
+//  251  * input parameters
+//  252  *
+//  253  * @param       rolloverTime.
+//  254  *
+//  255  * output parameters
+//  256  *
+//  257  * None.
+//  258  *
+//  259  * @return      None.
+//  260  **************************************************************************************************
+//  261  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  261 void halSetMaxSleepLoopTime(uint32 rolloverTime)
+//  262 void halSetMaxSleepLoopTime(uint32 rolloverTime)
 halSetMaxSleepLoopTime:
           CFI Block cfiBlock1 Using cfiCommon0
           CFI Function halSetMaxSleepLoopTime
         CODE
-//  262 {
+//  263 {
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
@@ -905,13 +906,13 @@ halSetMaxSleepLoopTime:
         MOV       ?V1,R3
         MOV       ?V2,R4
         MOV       ?V3,R5
-//  263   if( rolloverTime > HAL_SLEEP_MS_TO_320US(MAX_SLEEP_TIME) )
+//  264   if( rolloverTime > HAL_SLEEP_MS_TO_320US(MAX_SLEEP_TIME) )
         MOV       DPTR,#__Constant_185197
         MOV       R0,#?V0
         LCALL     ?UL_GE_X
         JNC       ??halSetMaxSleepLoopTime_0
-//  264   {
-//  265     rolloverTime = HAL_SLEEP_MS_TO_320US(MAX_SLEEP_TIME);
+//  265   {
+//  266     rolloverTime = HAL_SLEEP_MS_TO_320US(MAX_SLEEP_TIME);
         MOV       R0,#-0x6a
         MOV       R1,#0x51
         MOV       R2,#0x18
@@ -920,8 +921,8 @@ halSetMaxSleepLoopTime:
         MOV       ?V1,R1
         MOV       ?V2,R2
         MOV       ?V3,R3
-//  266   }
-//  267   maxSleepLoopTime = (rolloverTime - TICKS_SUBTRACTED);
+//  267   }
+//  268   maxSleepLoopTime = (rolloverTime - TICKS_SUBTRACTED);
 ??halSetMaxSleepLoopTime_0:
         MOV       ?V4,?V0
         MOV       ?V5,?V1
@@ -933,36 +934,36 @@ halSetMaxSleepLoopTime:
         MOV       DPTR,#maxSleepLoopTime
         MOV       R0,#?V4
         LCALL     ?L_MOV_TO_X
-//  268 }
+//  269 }
         MOV       R7,#0x8
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock1
-//  269 
-//  270 /**************************************************************************************************
-//  271  * @fn          halSleep
-//  272  *
-//  273  * @brief       This function is called from the OSAL task loop using and existing OSAL
-//  274  *              interface.  It sets the low power mode of the MAC and the CC2530.
-//  275  *
-//  276  * input parameters
-//  277  *
-//  278  * @param       osal_timeout - Next OSAL timer timeout.
-//  279  *
-//  280  * output parameters
-//  281  *
-//  282  * None.
-//  283  *
-//  284  * @return      None.
-//  285  **************************************************************************************************
-//  286  */
+//  270 
+//  271 /**************************************************************************************************
+//  272  * @fn          halSleep
+//  273  *
+//  274  * @brief       This function is called from the OSAL task loop using and existing OSAL
+//  275  *              interface.  It sets the low power mode of the MAC and the CC2530.
+//  276  *
+//  277  * input parameters
+//  278  *
+//  279  * @param       osal_timeout - Next OSAL timer timeout.
+//  280  *
+//  281  * output parameters
+//  282  *
+//  283  * None.
+//  284  *
+//  285  * @return      None.
+//  286  **************************************************************************************************
+//  287  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  287 void halSleep( uint32 osal_timeout )
+//  288 void halSleep( uint32 osal_timeout )
 halSleep:
           CFI Block cfiBlock2 Using cfiCommon0
           CFI Function halSleep
         CODE
-//  288 {
+//  289 {
         FUNCALL halSleep, MAC_PwrNextTimeout
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1168,15 +1169,15 @@ halSleep:
         INC       DPTR
         MOV       A,R5
         MOVX      @DPTR,A
-//  289   uint32        timeout;
-//  290   uint32        macTimeout = 0;
+//  290   uint32        timeout;
+//  291   uint32        macTimeout = 0;
         MOV       ?V8,#0x0
         MOV       ?V9,#0x0
         MOV       ?V10,#0x0
         MOV       ?V11,#0x0
-//  291 
-//  292   /* get next OSAL timer expiration converted to 320 usec units */
-//  293   timeout = HAL_SLEEP_MS_TO_320US(osal_timeout);
+//  292 
+//  293   /* get next OSAL timer expiration converted to 320 usec units */
+//  294   timeout = HAL_SLEEP_MS_TO_320US(osal_timeout);
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         MOV       R0,#?V0
@@ -1197,14 +1198,14 @@ halSleep:
         MOV       ?V5,?V1
         MOV       ?V6,?V2
         MOV       ?V7,?V3
-//  294   if (timeout == 0)
+//  295   if (timeout == 0)
         MOV       A,?V4
         ORL       A,?V5
         ORL       A,?V6
         ORL       A,?V7
         JNZ       ??halSleep_0
-//  295   {
-//  296     timeout = MAC_PwrNextTimeout();
+//  296   {
+//  297     timeout = MAC_PwrNextTimeout();
         ; Setup parameters for call to function MAC_PwrNextTimeout
         LCALL     `??MAC_PwrNextTimeout::?relay`; Banked call to: MAC_PwrNextTimeout
         MOV       ?V0,R2
@@ -1216,11 +1217,11 @@ halSleep:
         MOV       ?V6,?V2
         MOV       ?V7,?V3
         SJMP      ??halSleep_1
-//  297   }
-//  298   else
-//  299   {
-//  300     /* get next MAC timer expiration */
-//  301     macTimeout = MAC_PwrNextTimeout();
+//  298   }
+//  299   else
+//  300   {
+//  301     /* get next MAC timer expiration */
+//  302     macTimeout = MAC_PwrNextTimeout();
 ??halSleep_0:
         ; Setup parameters for call to function MAC_PwrNextTimeout
         LCALL     `??MAC_PwrNextTimeout::?relay`; Banked call to: MAC_PwrNextTimeout
@@ -1232,9 +1233,9 @@ halSleep:
         MOV       ?V9,?V1
         MOV       ?V10,?V2
         MOV       ?V11,?V3
-//  302 
-//  303     /* get lesser of two timeouts */
-//  304     if ((macTimeout != 0) && (macTimeout < timeout))
+//  303 
+//  304     /* get lesser of two timeouts */
+//  305     if ((macTimeout != 0) && (macTimeout < timeout))
         MOV       A,?V8
         ORL       A,?V9
         ORL       A,?V10
@@ -1244,19 +1245,19 @@ halSleep:
         MOV       R1,#?V8
         LCALL     ?UL_GT
         JNC       ??halSleep_1
-//  305     {
-//  306       timeout = macTimeout;
+//  306     {
+//  307       timeout = macTimeout;
         MOV       ?V4,?V8
         MOV       ?V5,?V9
         MOV       ?V6,?V10
         MOV       ?V7,?V11
-//  307     }
-//  308   }
-//  309 
-//  310   /* HAL_SLEEP_PM2 is entered only if the timeout is zero and
-//  311    * the device is a stimulated device.
-//  312    */
-//  313   halPwrMgtMode = (timeout == 0) ? HAL_SLEEP_DEEP : HAL_SLEEP_TIMER;
+//  308     }
+//  309   }
+//  310 
+//  311   /* HAL_SLEEP_PM2 is entered only if the timeout is zero and
+//  312    * the device is a stimulated device.
+//  313    */
+//  314   halPwrMgtMode = (timeout == 0) ? HAL_SLEEP_DEEP : HAL_SLEEP_TIMER;
 ??halSleep_1:
         MOV       A,?V4
         ORL       A,?V5
@@ -1271,17 +1272,17 @@ halSleep:
         MOV       DPTR,#halPwrMgtMode
         MOV       A,#0x2
         MOVX      @DPTR,A
-//  314 
-//  315   /* DEEP sleep can only be entered when zgPollRate == 0.
-//  316    * This is to eliminate any possibility of entering PM3 between
-//  317    * two network timers.
-//  318    */
-//  319 #if ZG_BUILD_ENDDEVICE_TYPE && defined (NWK_AUTO_POLL)
-//  320   if ((timeout > HAL_SLEEP_MS_TO_320US(PM_MIN_SLEEP_TIME)) ||
-//  321       (timeout == 0 && zgPollRate == 0))
-//  322 #else
-//  323   if ((timeout > HAL_SLEEP_MS_TO_320US(PM_MIN_SLEEP_TIME)) ||
-//  324       (timeout == 0))
+//  315 
+//  316   /* DEEP sleep can only be entered when zgPollRate == 0.
+//  317    * This is to eliminate any possibility of entering PM3 between
+//  318    * two network timers.
+//  319    */
+//  320 #if ZG_BUILD_ENDDEVICE_TYPE && defined (NWK_AUTO_POLL)
+//  321   if ((timeout > HAL_SLEEP_MS_TO_320US(PM_MIN_SLEEP_TIME)) ||
+//  322       (timeout == 0 && zgPollRate == 0))
+//  323 #else
+//  324   if ((timeout > HAL_SLEEP_MS_TO_320US(PM_MIN_SLEEP_TIME)) ||
+//  325       (timeout == 0))
 ??halSleep_3:
         MOV       DPTR,#__Constant_8
         MOV       R0,#?V4
@@ -1293,22 +1294,22 @@ halSleep:
         ORL       A,?V7
         JZ        $+5
         LJMP      ??halSleep_5 & 0xFFFF
-//  325 #endif
-//  326   {
-//  327     halIntState_t ien0, ien1, ien2;
-//  328 
-//  329     HAL_ASSERT(HAL_INTERRUPTS_ARE_ENABLED());
+//  326 #endif
+//  327   {
+//  328     halIntState_t ien0, ien1, ien2;
+//  329 
+//  330     HAL_ASSERT(HAL_INTERRUPTS_ARE_ENABLED());
 ??halSleep_4:
         MOV       C,0xa8.7
         JC        ??halSleep_6
         ; Setup parameters for call to function halAssertHandler
         LCALL     `??halAssertHandler::?relay`; Banked call to: halAssertHandler
-//  330     HAL_DISABLE_INTERRUPTS();
+//  331     HAL_DISABLE_INTERRUPTS();
 ??halSleep_6:
         CLR       0xa8.7
-//  331 
-//  332     /* always use "deep sleep" to turn off radio VREG on CC2530 */
-//  333     if (halSleepPconValue != 0 && MAC_PwrOffReq(MAC_PWR_SLEEP_DEEP) == MAC_SUCCESS)
+//  332 
+//  333     /* always use "deep sleep" to turn off radio VREG on CC2530 */
+//  334     if (halSleepPconValue != 0 && MAC_PwrOffReq(MAC_PWR_SLEEP_DEEP) == MAC_SUCCESS)
         MOV       A,halSleepPconValue
         JNZ       $+5
         LJMP      ??halSleep_7 & 0xFFFF
@@ -1318,34 +1319,34 @@ halSleep:
         MOV       A,R1
         JZ        $+5
         LJMP      ??halSleep_7 & 0xFFFF
-//  334     {
-//  335       /* The PCON value is not zero. There is no interrupt overriding the 
-//  336        * sleep decision. Also, the radio granted the sleep request.
-//  337        */
-//  338 
-//  339 #if ((defined HAL_KEY) && (HAL_KEY == TRUE))
-//  340       /* get peripherals ready for sleep */
-//  341       HalKeyEnterSleep();
+//  335     {
+//  336       /* The PCON value is not zero. There is no interrupt overriding the 
+//  337        * sleep decision. Also, the radio granted the sleep request.
+//  338        */
+//  339 
+//  340 #if ((defined HAL_KEY) && (HAL_KEY == TRUE))
+//  341       /* get peripherals ready for sleep */
+//  342       HalKeyEnterSleep();
         ; Setup parameters for call to function HalKeyEnterSleep
         LCALL     `??HalKeyEnterSleep::?relay`; Banked call to: HalKeyEnterSleep
-//  342 #endif
-//  343 
-//  344 #ifdef HAL_SLEEP_DEBUG_LED
-//  345       HAL_TURN_OFF_LED3();
-//  346 #else
-//  347       /* use this to turn LEDs off during sleep */
-//  348       HalLedEnterSleep();
+//  343 #endif
+//  344 
+//  345 #ifdef HAL_SLEEP_DEBUG_LED
+//  346       HAL_TURN_OFF_LED3();
+//  347 #else
+//  348       /* use this to turn LEDs off during sleep */
+//  349       HalLedEnterSleep();
         ; Setup parameters for call to function HalLedEnterSleep
         LCALL     `??HalLedEnterSleep::?relay`; Banked call to: HalLedEnterSleep
-//  349 #endif
-//  350       
-//  351       if(timeout > maxSleepLoopTime)
+//  350 #endif
+//  351       
+//  352       if(timeout > maxSleepLoopTime)
         MOV       DPTR,#maxSleepLoopTime
         MOV       R0,#?V4
         LCALL     ?UL_GT_X
         JNC       ??halSleep_8
-//  352       {
-//  353         timeout = maxSleepLoopTime;
+//  353       {
+//  354         timeout = maxSleepLoopTime;
         MOV       DPTR,#maxSleepLoopTime
         MOV       R0,#?V0
         LCALL     ?L_MOV_X
@@ -1353,40 +1354,40 @@ halSleep:
         MOV       ?V5,?V1
         MOV       ?V6,?V2
         MOV       ?V7,?V3
-//  354       }  
-//  355       
-//  356       do
-//  357       {
-//  358         /* enable sleep timer interrupt */
-//  359         if(timeout != 0)
+//  355       }  
+//  356       
+//  357       do
+//  358       {
+//  359         /* enable sleep timer interrupt */
+//  360         if(timeout != 0)
 ??halSleep_8:
         MOV       A,?V4
         ORL       A,?V5
         ORL       A,?V6
         ORL       A,?V7
         JZ        ??halSleep_9
-//  360         { 
-//  361           if (timeout > HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME ))
+//  361         { 
+//  362           if (timeout > HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME ))
         MOV       DPTR,#__Constant_185197
         MOV       R0,#?V4
         LCALL     ?UL_GE_X
         JNC       ??halSleep_10
-//  362           {
-//  363             timeout -= HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME );
+//  363           {
+//  364             timeout -= HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME );
         MOV       DPTR,#__Constant_ffe7ae6a
         MOV       R0,#?V4
         LCALL     ?L_ADD_X
-//  364             halSleepSetTimer(HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME ));
+//  365             halSleepSetTimer(HAL_SLEEP_MS_TO_320US( MAX_SLEEP_TIME ));
         ; Setup parameters for call to function halSleepSetTimer
         MOV       DPTR,#__Constant_185196
         LCALL     ?XLOAD_R2345
         LCALL     `??halSleepSetTimer::?relay`; Banked call to: halSleepSetTimer
         SJMP      ??halSleep_11
-//  365           }
-//  366           else
-//  367           {
-//  368             /* set sleep timer */
-//  369             halSleepSetTimer(timeout);
+//  366           }
+//  367           else
+//  368           {
+//  369             /* set sleep timer */
+//  370             halSleepSetTimer(timeout);
 ??halSleep_10:
         ; Setup parameters for call to function halSleepSetTimer
         MOV       R2,?V4
@@ -1394,7 +1395,7 @@ halSleep:
         MOV       R4,?V6
         MOV       R5,?V7
         LCALL     `??halSleepSetTimer::?relay`; Banked call to: halSleepSetTimer
-//  370             timeout = 0;
+//  371             timeout = 0;
         MOV       R0,#0x0
         MOV       R1,#0x0
         MOV       R2,#0x0
@@ -1403,28 +1404,28 @@ halSleep:
         MOV       ?V5,R1
         MOV       ?V6,R2
         MOV       ?V7,R3
-//  371           }
-//  372           
-//  373           /* set up sleep timer interrupt */
-//  374           HAL_SLEEP_TIMER_CLEAR_INT();
+//  372           }
+//  373           
+//  374           /* set up sleep timer interrupt */
+//  375           HAL_SLEEP_TIMER_CLEAR_INT();
 ??halSleep_11:
         CLR       0xc0.7
-//  375           HAL_SLEEP_TIMER_ENABLE_INT();
+//  376           HAL_SLEEP_TIMER_ENABLE_INT();
         SETB      0xa8.5
-//  376         }
-//  377 
-//  378 #ifdef HAL_SLEEP_DEBUG_LED
-//  379         if (halPwrMgtMode == CC2530_PM1)
-//  380         {
-//  381           HAL_TURN_ON_LED1();
-//  382         }
-//  383         else
-//  384         {
-//  385           HAL_TURN_OFF_LED1();
-//  386         }
-//  387 #endif
-//  388         /* Prep CC2530 power mode */
-//  389         HAL_SLEEP_PREP_POWER_MODE(halPwrMgtMode);
+//  377         }
+//  378 
+//  379 #ifdef HAL_SLEEP_DEBUG_LED
+//  380         if (halPwrMgtMode == CC2530_PM1)
+//  381         {
+//  382           HAL_TURN_ON_LED1();
+//  383         }
+//  384         else
+//  385         {
+//  386           HAL_TURN_OFF_LED1();
+//  387         }
+//  388 #endif
+//  389         /* Prep CC2530 power mode */
+//  390         HAL_SLEEP_PREP_POWER_MODE(halPwrMgtMode);
 ??halSleep_9:
         ANL       0xbe,#0xfc
         MOV       DPTR,#halPwrMgtMode
@@ -1435,103 +1436,103 @@ halSleep:
         MOV       C,0xE0 /* A   */.0
         JNC       ??halSleep_12
         MOV       halSleepPconValue,#0x1
-//  390 
-//  391         /* save interrupt enable registers and disable all interrupts */
-//  392         HAL_SLEEP_IE_BACKUP_AND_DISABLE(ien0, ien1, ien2);
+//  391 
+//  392         /* save interrupt enable registers and disable all interrupts */
+//  393         HAL_SLEEP_IE_BACKUP_AND_DISABLE(ien0, ien1, ien2);
         MOV       ?V12,0xa8+0x0
         MOV       R7,0xb8+0x0
         MOV       R6,0x9a+0x0
         ANL       0xa8,#0x20
         ANL       0xb8,#0x20
         ANL       0x9a,#0x12
-//  393         HAL_ENABLE_INTERRUPTS();
+//  394         HAL_ENABLE_INTERRUPTS();
         SETB      0xa8.7
-//  394 
-//  395         /* set CC2530 power mode, interrupt is disabled after this function
-//  396          * Note that an ISR (that could wake up from power mode) which runs
-//  397          * between the previous instruction enabling interrupts and before
-//  398          * power mode is set would switch the halSleepPconValue so that
-//  399          * power mode shall not be entered in such a case. 
-//  400          */
-//  401         
-//  402         HAL_SLEEP_SET_POWER_MODE();
+//  395 
+//  396         /* set CC2530 power mode, interrupt is disabled after this function
+//  397          * Note that an ISR (that could wake up from power mode) which runs
+//  398          * between the previous instruction enabling interrupts and before
+//  399          * power mode is set would switch the halSleepPconValue so that
+//  400          * power mode shall not be entered in such a case. 
+//  401          */
+//  402         
+//  403         HAL_SLEEP_SET_POWER_MODE();
         ; Setup parameters for call to function halSetSleepMode
         LCALL     `??halSetSleepMode::?relay`; Banked call to: halSetSleepMode
-//  403         
-//  404         /* the interrupt is disabled - see halSetSleepMode() */
-//  405         
-//  406         /* restore interrupt enable registers */
-//  407         HAL_SLEEP_IE_RESTORE(ien0, ien1, ien2);
+//  404         
+//  405         /* the interrupt is disabled - see halSetSleepMode() */
+//  406         
+//  407         /* restore interrupt enable registers */
+//  408         HAL_SLEEP_IE_RESTORE(ien0, ien1, ien2);
         MOV       0xa8,?V12
         MOV       0xb8,R7
         MOV       0x9a,R6
-//  408 
-//  409         /* disable sleep timer interrupt */
-//  410         HAL_SLEEP_TIMER_DISABLE_INT();
+//  409 
+//  410         /* disable sleep timer interrupt */
+//  411         HAL_SLEEP_TIMER_DISABLE_INT();
         CLR       0xa8.5
-//  411 
-//  412 #ifdef HAL_SLEEP_DEBUG_LED
-//  413         HAL_TURN_ON_LED3();
-//  414 #else
-//  415         /* use this to turn LEDs back on after sleep */
-//  416         HalLedExitSleep();
+//  412 
+//  413 #ifdef HAL_SLEEP_DEBUG_LED
+//  414         HAL_TURN_ON_LED3();
+//  415 #else
+//  416         /* use this to turn LEDs back on after sleep */
+//  417         HalLedExitSleep();
         ; Setup parameters for call to function HalLedExitSleep
         LCALL     `??HalLedExitSleep::?relay`; Banked call to: HalLedExitSleep
-//  417 #endif
-//  418 
-//  419 #if ((defined HAL_KEY) && (HAL_KEY == TRUE))
-//  420         /* handle peripherals */
-//  421         if(HalKeyExitSleep())
+//  418 #endif
+//  419 
+//  420 #if ((defined HAL_KEY) && (HAL_KEY == TRUE))
+//  421         /* handle peripherals */
+//  422         if(HalKeyExitSleep())
         ; Setup parameters for call to function HalKeyExitSleep
         LCALL     `??HalKeyExitSleep::?relay`; Banked call to: HalKeyExitSleep
         MOV       A,R1
         JNZ       ??halSleep_13
-//  422         {
-//  423           break; 
-//  424         }
-//  425 #endif
-//  426 
-//  427       } while(timeout != 0);
+//  423         {
+//  424           break; 
+//  425         }
+//  426 #endif
+//  427 
+//  428       } while(timeout != 0);
         MOV       A,?V4
         ORL       A,?V5
         ORL       A,?V6
         ORL       A,?V7
         JZ        $+5
         LJMP      ??halSleep_8 & 0xFFFF
-//  428 
-//  429       /* power on the MAC; blocks until completion */
-//  430       MAC_PwrOnReq();
+//  429 
+//  430       /* power on the MAC; blocks until completion */
+//  431       MAC_PwrOnReq();
 ??halSleep_13:
         ; Setup parameters for call to function MAC_PwrOnReq
         LCALL     `??MAC_PwrOnReq::?relay`; Banked call to: MAC_PwrOnReq
-//  431 
-//  432       HAL_ENABLE_INTERRUPTS();
+//  432 
+//  433       HAL_ENABLE_INTERRUPTS();
         SETB      0xa8.7
-//  433 
-//  434       /* For CC2530, T2 interrupt won’t be generated when the current count is greater than
-//  435        * the comparator. The interrupt is only generated when the current count is equal to
-//  436        * the comparator. When the CC2530 is waking up from sleep, there is a small window
-//  437        * that the count may be grater than the comparator, therefore, missing the interrupt.
-//  438        * This workaround will call the T2 ISR when the current T2 count is greater than the
-//  439        * comparator. The problem only occurs when POWER_SAVING is turned on, i.e. the 32KHz
-//  440        * drives the chip in sleep and SYNC start is used.
-//  441        */
-//  442       macMcuTimer2OverflowWorkaround();
+//  434 
+//  435       /* For CC2530, T2 interrupt won’t be generated when the current count is greater than
+//  436        * the comparator. The interrupt is only generated when the current count is equal to
+//  437        * the comparator. When the CC2530 is waking up from sleep, there is a small window
+//  438        * that the count may be grater than the comparator, therefore, missing the interrupt.
+//  439        * This workaround will call the T2 ISR when the current T2 count is greater than the
+//  440        * comparator. The problem only occurs when POWER_SAVING is turned on, i.e. the 32KHz
+//  441        * drives the chip in sleep and SYNC start is used.
+//  442        */
+//  443       macMcuTimer2OverflowWorkaround();
         ; Setup parameters for call to function macMcuTimer2OverflowWorkaround
         LCALL     `??macMcuTimer2OverflowWorkaround::?relay`; Banked call to: macMcuTimer2OverflowWorkaround
         SJMP      ??halSleep_5
-//  443     }
-//  444     else
-//  445     {
-//  446       /* An interrupt may have changed the sleep decision. Do not sleep at all. Turn on
-//  447        * the interrupt, exit normally, and the next sleep will be allowed.
-//  448        */
-//  449       HAL_ENABLE_INTERRUPTS();
+//  444     }
+//  445     else
+//  446     {
+//  447       /* An interrupt may have changed the sleep decision. Do not sleep at all. Turn on
+//  448        * the interrupt, exit normally, and the next sleep will be allowed.
+//  449        */
+//  450       HAL_ENABLE_INTERRUPTS();
 ??halSleep_7:
         SETB      0xa8.7
-//  450     }
-//  451   }
-//  452 }
+//  451     }
+//  452   }
+//  453 }
 ??halSleep_5:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
@@ -1545,35 +1546,35 @@ halSleep:
         REQUIRE STLOAD
         REQUIRE _A_IEN1
         REQUIRE IEN2
-//  453 
-//  454 /**************************************************************************************************
-//  455  * @fn          halSleepSetTimer
-//  456  *
-//  457  * @brief       This function sets the CC2530 sleep timer compare value.  First it reads and
-//  458  *              stores the value of the sleep timer; this value is used later to update OSAL
-//  459  *              timers.  Then the timeout value is converted from 320 usec units to 32 kHz
-//  460  *              period units and the compare value is set to the timeout.
-//  461  *
-//  462  * input parameters
-//  463  *
-//  464  * @param       timeout - Timeout value in 320 usec units.  The sleep timer compare is set to
-//  465  *                        this value.
-//  466  *
-//  467  * output parameters
-//  468  *
-//  469  * None.
-//  470  *
-//  471  * @return      None.
-//  472  **************************************************************************************************
-//  473  */
+//  454 
+//  455 /**************************************************************************************************
+//  456  * @fn          halSleepSetTimer
+//  457  *
+//  458  * @brief       This function sets the CC2530 sleep timer compare value.  First it reads and
+//  459  *              stores the value of the sleep timer; this value is used later to update OSAL
+//  460  *              timers.  Then the timeout value is converted from 320 usec units to 32 kHz
+//  461  *              period units and the compare value is set to the timeout.
+//  462  *
+//  463  * input parameters
+//  464  *
+//  465  * @param       timeout - Timeout value in 320 usec units.  The sleep timer compare is set to
+//  466  *                        this value.
+//  467  *
+//  468  * output parameters
+//  469  *
+//  470  * None.
+//  471  *
+//  472  * @return      None.
+//  473  **************************************************************************************************
+//  474  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  474 void halSleepSetTimer(uint32 timeout)
+//  475 void halSleepSetTimer(uint32 timeout)
 halSleepSetTimer:
           CFI Block cfiBlock3 Using cfiCommon0
           CFI Function halSleepSetTimer
         CODE
-//  475 {
+//  476 {
         REQUIRE ?V0
         REQUIRE ?V1
         REQUIRE ?V2
@@ -1619,10 +1620,10 @@ halSleepSetTimer:
         MOV       ?V5,R3
         MOV       ?V6,R4
         MOV       ?V7,R5
-//  476   uint32 ticks;
-//  477 
-//  478   /* read the sleep timer; ST0 must be read first */
-//  479   ((uint8 *) &ticks)[UINT32_NDX0] = ST0;
+//  477   uint32 ticks;
+//  478 
+//  479   /* read the sleep timer; ST0 must be read first */
+//  480   ((uint8 *) &ticks)[UINT32_NDX0] = ST0;
         MOV       A,0x95
         PUSH      A
           CFI CFA_SP SP+-1
@@ -1631,7 +1632,7 @@ halSleepSetTimer:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-//  480   ((uint8 *) &ticks)[UINT32_NDX1] = ST1;
+//  481   ((uint8 *) &ticks)[UINT32_NDX1] = ST1;
         MOV       A,0x96
         PUSH      A
           CFI CFA_SP SP+-1
@@ -1640,7 +1641,7 @@ halSleepSetTimer:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-//  481   ((uint8 *) &ticks)[UINT32_NDX2] = ST2;
+//  482   ((uint8 *) &ticks)[UINT32_NDX2] = ST2;
         MOV       A,0x97
         PUSH      A
           CFI CFA_SP SP+-1
@@ -1649,16 +1650,16 @@ halSleepSetTimer:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-//  482   ((uint8 *) &ticks)[UINT32_NDX3] = 0;
+//  483   ((uint8 *) &ticks)[UINT32_NDX3] = 0;
         MOV       A,#0x3
         LCALL     ?XSTACK_DISP0_8
         MOV       A,#0x0
         MOVX      @DPTR,A
-//  483 
-//  484   /* Compute sleep timer compare value.  The ratio of 32 kHz ticks to 320 usec ticks
-//  485    * is 32768/3125 = 10.48576.  This is nearly 671/64 = 10.484375.
-//  486    */
-//  487   ticks += (timeout * 671) / 64;
+//  484 
+//  485   /* Compute sleep timer compare value.  The ratio of 32 kHz ticks to 320 usec ticks
+//  486    * is 32768/3125 = 10.48576.  This is nearly 671/64 = 10.484375.
+//  487    */
+//  488   ticks += (timeout * 671) / 64;
         MOV       ?V0,?V4
         MOV       ?V1,?V5
         MOV       ?V2,?V6
@@ -1676,9 +1677,9 @@ halSleepSetTimer:
         MOV       DPH,?XSP + 1
         MOV       R0,#?V0
         LCALL     ?L_ADD_TO_X
-//  488 
-//  489   /* subtract the processing time spent in function halSleep() */
-//  490   ticks -= HAL_SLEEP_ADJ_TICKS;
+//  489 
+//  490   /* subtract the processing time spent in function halSleep() */
+//  491   ticks -= HAL_SLEEP_ADJ_TICKS;
         MOV       DPTR,#__Constant_ffffffe9
         MOV       R0,#?V0
         LCALL     ?L_MOV_X
@@ -1686,24 +1687,24 @@ halSleepSetTimer:
         MOV       DPH,?XSP + 1
         MOV       R0,#?V0
         LCALL     ?L_ADD_TO_X
-//  491 
-//  492   /* set sleep timer compare; ST0 must be written last */
-//  493   ST2 = ((uint8 *) &ticks)[UINT32_NDX2];
+//  492 
+//  493   /* set sleep timer compare; ST0 must be written last */
+//  494   ST2 = ((uint8 *) &ticks)[UINT32_NDX2];
         MOV       A,#0x2
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
         MOV       0x97,A
-//  494   ST1 = ((uint8 *) &ticks)[UINT32_NDX1];
+//  495   ST1 = ((uint8 *) &ticks)[UINT32_NDX1];
         MOV       A,#0x1
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
         MOV       0x96,A
-//  495   ST0 = ((uint8 *) &ticks)[UINT32_NDX0];
+//  496   ST0 = ((uint8 *) &ticks)[UINT32_NDX0];
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         MOVX      A,@DPTR
         MOV       0x95,A
-//  496 }
+//  497 }
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 20)
@@ -1713,99 +1714,99 @@ halSleepSetTimer:
         REQUIRE ST0
         REQUIRE ST1
         REQUIRE ST2
-//  497 
-//  498 /**************************************************************************************************
-//  499  * @fn          TimerElapsed
-//  500  *
-//  501  * @brief       Determine the number of OSAL timer ticks elapsed during sleep.
-//  502  *              Deprecated for CC2530 and CC2430 SoC.
-//  503  *
-//  504  * input parameters
-//  505  *
-//  506  * @param       None.
-//  507  *
-//  508  * output parameters
-//  509  *
-//  510  * None.
-//  511  *
-//  512  * @return      Number of timer ticks elapsed during sleep.
-//  513  **************************************************************************************************
-//  514  */
+//  498 
+//  499 /**************************************************************************************************
+//  500  * @fn          TimerElapsed
+//  501  *
+//  502  * @brief       Determine the number of OSAL timer ticks elapsed during sleep.
+//  503  *              Deprecated for CC2530 and CC2430 SoC.
+//  504  *
+//  505  * input parameters
+//  506  *
+//  507  * @param       None.
+//  508  *
+//  509  * output parameters
+//  510  *
+//  511  * None.
+//  512  *
+//  513  * @return      Number of timer ticks elapsed during sleep.
+//  514  **************************************************************************************************
+//  515  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  515 uint32 TimerElapsed( void )
+//  516 uint32 TimerElapsed( void )
 TimerElapsed:
           CFI Block cfiBlock4 Using cfiCommon0
           CFI Function TimerElapsed
         CODE
-//  516 {
+//  517 {
         ; Saved register size: 0
         ; Auto size: 0
-//  517   /* Stubs */
-//  518   return (0);
+//  518   /* Stubs */
+//  519   return (0);
         MOV       R2,#0x0
         MOV       R3,#0x0
         MOV       R4,#0x0
         MOV       R5,#0x0
         LJMP      ?BRET
-//  519 }
+//  520 }
           CFI EndBlock cfiBlock4
-//  520 
-//  521 /**************************************************************************************************
-//  522  * @fn          halRestoreSleepLevel
-//  523  *
-//  524  * @brief       Restore the deepest timer sleep level.
-//  525  *
-//  526  * input parameters
-//  527  *
-//  528  * @param       None
-//  529  *
-//  530  * output parameters
-//  531  *
-//  532  *              None.
-//  533  *
-//  534  * @return      None.
-//  535  **************************************************************************************************
-//  536  */
+//  521 
+//  522 /**************************************************************************************************
+//  523  * @fn          halRestoreSleepLevel
+//  524  *
+//  525  * @brief       Restore the deepest timer sleep level.
+//  526  *
+//  527  * input parameters
+//  528  *
+//  529  * @param       None
+//  530  *
+//  531  * output parameters
+//  532  *
+//  533  *              None.
+//  534  *
+//  535  * @return      None.
+//  536  **************************************************************************************************
+//  537  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  537 void halRestoreSleepLevel( void )
+//  538 void halRestoreSleepLevel( void )
 halRestoreSleepLevel:
           CFI Block cfiBlock5 Using cfiCommon0
           CFI Function halRestoreSleepLevel
         CODE
-//  538 {
+//  539 {
         ; Saved register size: 0
         ; Auto size: 0
-//  539   /* Stubs */
-//  540 }
+//  540   /* Stubs */
+//  541 }
         LJMP      ?BRET
           CFI EndBlock cfiBlock5
-//  541 
-//  542 /**************************************************************************************************
-//  543  * @fn          halSleepTimerIsr
-//  544  *
-//  545  * @brief       Sleep timer ISR.
-//  546  *
-//  547  * input parameters
-//  548  *
-//  549  * None.
-//  550  *
-//  551  * output parameters
-//  552  *
-//  553  * None.
-//  554  *
-//  555  * @return      None.
-//  556  **************************************************************************************************
-//  557  */
+//  542 
+//  543 /**************************************************************************************************
+//  544  * @fn          halSleepTimerIsr
+//  545  *
+//  546  * @brief       Sleep timer ISR.
+//  547  *
+//  548  * input parameters
+//  549  *
+//  550  * None.
+//  551  *
+//  552  * output parameters
+//  553  *
+//  554  * None.
+//  555  *
+//  556  * @return      None.
+//  557  **************************************************************************************************
+//  558  */
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
-//  558 HAL_ISR_FUNCTION(halSleepTimerIsr, ST_VECTOR)
+//  559 HAL_ISR_FUNCTION(halSleepTimerIsr, ST_VECTOR)
 halSleepTimerIsr:
           CFI Block cfiBlock6 Using cfiCommon1
           CFI Function halSleepTimerIsr
         CODE
-//  559 {
+//  560 {
         PUSH      A
           CFI A Frame(CFA_SP, 3)
           CFI CFA_SP SP+-3
@@ -1819,26 +1820,26 @@ halSleepTimerIsr:
           CFI CFA_SP SP+-5
         ; Saved register size: 3
         ; Auto size: 0
-//  560   HAL_ENTER_ISR();
+//  561   HAL_ENTER_ISR();
         MOV       C,0xa8.7
         CLR       A
         RLC       A
         MOV       R0,A
         SETB      0xa8.7
-//  561   HAL_SLEEP_TIMER_CLEAR_INT();
+//  562   HAL_SLEEP_TIMER_CLEAR_INT();
         CLR       0xc0.7
-//  562 
-//  563 #ifdef HAL_SLEEP_DEBUG_POWER_MODE
-//  564   halSleepInt = TRUE;
-//  565 #endif
-//  566   
-//  567   CLEAR_SLEEP_MODE();
+//  563 
+//  564 #ifdef HAL_SLEEP_DEBUG_POWER_MODE
+//  565   halSleepInt = TRUE;
+//  566 #endif
+//  567   
+//  568   CLEAR_SLEEP_MODE();
         MOV       halSleepPconValue,#0x0
-//  568   HAL_EXIT_ISR();
+//  569   HAL_EXIT_ISR();
         MOV       A,R0
         MOV       C,0xE0 /* A   */.0
         MOV       0xa8.7,C
-//  569 }
+//  570 }
         POP       A
           CFI R0 A
           CFI CFA_SP SP+-4
@@ -1854,38 +1855,38 @@ halSleepTimerIsr:
           CFI EndBlock cfiBlock6
         REQUIRE _A_IEN0
         REQUIRE _A_IRCON
-//  570 
-//  571 /**************************************************************************************************
-//  572  * @fn          halSleepWait
-//  573  *
-//  574  * @brief       Perform a blocking wait for the specified number of microseconds.
-//  575  *              Use assumptions about number of clock cycles needed for the various instructions.
-//  576  *              This function assumes a 32 MHz clock.
-//  577  *              NB! This function is highly dependent on architecture and compiler!
-//  578  *
-//  579  * input parameters
-//  580  *
-//  581  * @param       duration - Duration of wait in microseconds.
-//  582  *
-//  583  * output parameters
-//  584  *
-//  585  * None.
-//  586  *
-//  587  * @return      None.
-//  588  **************************************************************************************************
-//  589  */
-//  590 #pragma optimize=none
+//  571 
+//  572 /**************************************************************************************************
+//  573  * @fn          halSleepWait
+//  574  *
+//  575  * @brief       Perform a blocking wait for the specified number of microseconds.
+//  576  *              Use assumptions about number of clock cycles needed for the various instructions.
+//  577  *              This function assumes a 32 MHz clock.
+//  578  *              NB! This function is highly dependent on architecture and compiler!
+//  579  *
+//  580  * input parameters
+//  581  *
+//  582  * @param       duration - Duration of wait in microseconds.
+//  583  *
+//  584  * output parameters
+//  585  *
+//  586  * None.
+//  587  *
+//  588  * @return      None.
+//  589  **************************************************************************************************
+//  590  */
+//  591 #pragma optimize=none
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-//  591 void halSleepWait(uint16 duration)
+//  592 void halSleepWait(uint16 duration)
 halSleepWait:
           CFI Block cfiBlock7 Using cfiCommon0
           CFI Function halSleepWait
         CODE
-//  592 {
+//  593 {
         ; Saved register size: 0
         ; Auto size: 0
-//  593   duration >>= 1;
+//  594   duration >>= 1;
         MOV       A,R3
         CLR       C
         RRC       A
@@ -1893,8 +1894,8 @@ halSleepWait:
         MOV       A,R2
         RRC       A
         MOV       R2,A
-//  594 
-//  595   while (duration-- > 0)
+//  595 
+//  596   while (duration-- > 0)
 ??halSleepWait_0:
         MOV       A,R2
         MOV       R0,A
@@ -1909,20 +1910,7 @@ halSleepWait:
         MOV       A,R0
         ORL       A,R1
         JZ        ??halSleepWait_1
-//  596   {
-//  597     ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP;
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
+//  597   {
 //  598     ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP;
         NOP
         NOP
@@ -1936,9 +1924,22 @@ halSleepWait:
         NOP
         NOP
         NOP
+//  599     ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP; ASM_NOP;
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
         SJMP      ??halSleepWait_0
-//  599   }
-//  600 }
+//  600   }
+//  601 }
 ??halSleepWait_1:
         LJMP      ?BRET
           CFI EndBlock cfiBlock7

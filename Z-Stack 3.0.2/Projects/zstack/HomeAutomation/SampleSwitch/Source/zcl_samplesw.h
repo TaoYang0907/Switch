@@ -65,7 +65,8 @@ extern "C"
 
 // Events for the sample app
 #define SAMPLEAPP_END_DEVICE_REJOIN_EVT   0x0001
-
+#define RESET_LIGHT_EVT   0x0002
+  
 // UI Events
 #define SAMPLEAPP_LCD_AUTO_UPDATE_EVT       0x0010  
 #define SAMPLEAPP_KEY_AUTO_REPEAT_EVT       0x0020  

@@ -76,7 +76,7 @@ extern "C"
 #define HAL_LED_DEFAULT_MAX_LEDS      4
 #define HAL_LED_DEFAULT_DUTY_CYCLE    5
 //#define HAL_LED_DEFAULT_FLASH_COUNT   50
-#define HAL_LED_DEFAULT_FLASH_COUNT   3
+#define HAL_LED_DEFAULT_FLASH_COUNT   8
 #define HAL_LED_DEFAULT_FLASH_TIME    1000
 
 /*********************************************************************

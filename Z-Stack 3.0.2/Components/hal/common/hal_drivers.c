@@ -93,7 +93,7 @@ void Hal_Init( uint8 task_id )
 {
   /* Register task ID */
   Hal_TaskID = task_id;
-
+  
 #ifdef CC2591_COMPRESSION_WORKAROUND
   osal_start_reload_timer( Hal_TaskID, PERIOD_RSSI_RESET_EVT, PERIOD_RSSI_RESET_TIMEOUT );
 #endif

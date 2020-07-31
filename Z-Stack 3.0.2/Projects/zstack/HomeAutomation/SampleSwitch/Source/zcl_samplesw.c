@@ -100,6 +100,7 @@
 #include "bdb_interface.h"
 #include "bdb_touchlink_initiator.h"
 
+#include "OSAL_PwrMgr.h"
 /*********************************************************************
  * MACROS
  */
@@ -242,6 +243,8 @@ void zclSampleSw_Init( byte task_id )
 {
   zclSampleSw_TaskID = task_id;
 
+  osal_pwrmgr_device(PWRMGR_BATTERY);
+
   // Set destination address to indirect
   zclSampleSw_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
   zclSampleSw_DstAddr.endPoint = 0;
@@ -295,7 +298,7 @@ void zclSampleSw_Init( byte task_id )
 
   bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
   //touchLinkInitiator_ChannelChange( 11 );
-  printf("init successful\r\n"); 
+  //printf("init successful\r\n"); 
 }
 
 /*********************************************************************
@@ -313,15 +316,14 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
   (void)task_id;  // Intentionally unreferenced parameter
 
   //Send toggle every 500ms
-  if( events & SAMPLESW_TOGGLE_TEST_EVT )
-  {
-    osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
-    zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
-    
-    // return unprocessed events
-    return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
-  }
-  
+//  if( events & SAMPLESW_TOGGLE_TEST_EVT )
+//  {
+//    osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
+//    zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
+//    
+//    // return unprocessed events
+//    return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
+//  }
 
   if ( events & SYS_EVENT_MSG )
   {
@@ -406,16 +408,15 @@ static void zclSampleSw_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_6 ) //key1
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
-   // bdb_StartCommissioning( BDB_COMMISSIONING_MODE_NWK_FORMATION | BDB_COMMISSIONING_MODE_INITIATOR_TL );  //Coordiinator BDB_COMMISSIONING_TOUCHLINK
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
 //    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
     touchLinkInitiator_StartDevDisc();
-    
+//    NLME_SetPollRate(10000);
   }    
   if ( keys & HAL_KEY_SW_5 ) //key2
   {
 //    Send_To_SW1();
-    HalLedSet ( HAL_LED_3, HAL_LED_MODE_FLASH );
+    HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
     touchLinkInitiator_ResetToFNSelectedTarget();
 //    Send_To_SW2();
   }

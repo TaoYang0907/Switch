@@ -235,7 +235,8 @@ void halSleepSetTimer(uint32 timeout);
  */
 void halSetSleepMode(void)
 {
-  PCON = halSleepPconValue;
+  //PCON = halSleepPconValue;
+  PCON = CC2530_PM3;
   HAL_DISABLE_INTERRUPTS();
 }
 

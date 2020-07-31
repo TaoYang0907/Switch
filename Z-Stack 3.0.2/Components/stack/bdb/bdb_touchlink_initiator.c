@@ -433,6 +433,7 @@ void touchLinkInitiator_Init( uint8 task_id )
 
   touchLink_SetTouchLinkTaskId( touchLinkInitiator_TaskID );
 
+  osal_pwrmgr_device(PWRMGR_BATTERY);
 
   // Build a broadcast address for the Scan Request
   bcastAddr.addrMode = afAddrBroadcast;
@@ -1572,10 +1573,6 @@ static ZStatus_t initiatorNwkUpdateReqCB( afAddrType_t *srcAddr, bdbTLNwkUpdateR
 static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp )
 {
   bdbFindingBindingRespondent_t *pCurr;
-  
-//  printf("%d\n", touchLink_GetNwkKeyBitmask() );
-//  printf("%d\n", pRsp->keyBitmask );
-//  printf("%d\n", ( pRsp->keyBitmask & touchLink_GetNwkKeyBitmask() ) );
   
   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_TL_SCAN_BASE_EVT )
        && ( touchLink_IsValidTransID( pRsp->transID ) )
