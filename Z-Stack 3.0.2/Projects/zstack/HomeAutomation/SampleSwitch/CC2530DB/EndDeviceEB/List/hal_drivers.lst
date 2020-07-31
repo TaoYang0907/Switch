@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:09
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:17
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,9 +14,9 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW6AF.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWAAE4.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\common\hal_drivers.c" -D SECURE=1 -D
-#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -336,13 +336,13 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    \   000000                REQUIRE ?V0
    \   000000                REQUIRE ?V1
    \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
    \   000000                REQUIRE ?V4
-   \   000000                REQUIRE ?V5
-   \   000000   74F2         MOV       A,#-0xe
+   \   000000   74F3         MOV       A,#-0xd
    \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 14
+   \   000005                ; Saved register size: 13
    \   000005                ; Auto size: 0
-   \   000005   89..         MOV       ?V2,R1
+   \   000005   89..         MOV       ?V4,R1
    \   000007   EA           MOV       A,R2
    \   000008   FE           MOV       R6,A
    \   000009   EB           MOV       A,R3
@@ -360,7 +360,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    \   000012   F9           MOV       R1,A
    \   000013   E8           MOV       A,R0
    \   000014   49           ORL       A,R1
-   \   000015   603E         JZ        ??Hal_ProcessEvent_0
+   \   000015   603F         JZ        ??Hal_ProcessEvent_0
     181            {
     182              msgPtr = osal_msg_receive(Hal_TaskID);
    \   000017                ; Setup parameters for call to function osal_msg_receive
@@ -368,10 +368,10 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    \   00001A   E0           MOVX      A,@DPTR
    \   00001B   F9           MOV       R1,A
    \   00001C   12....       LCALL     `??osal_msg_receive::?relay`; Banked call to: osal_msg_receive
-   \   00001F   8A..         MOV       ?V4,R2
-   \   000021   8B..         MOV       ?V5,R3
-   \   000023   85....       MOV       ?V0,?V4
-   \   000026   85....       MOV       ?V1,?V5
+   \   00001F   8A..         MOV       ?V2,R2
+   \   000021   8B..         MOV       ?V3,R3
+   \   000023   85....       MOV       ?V0,?V2
+   \   000026   85....       MOV       ?V1,?V3
     183          
     184              while (msgPtr)
    \                     ??Hal_ProcessEvent_1:
@@ -395,10 +395,10 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    \   00003A   E0           MOVX      A,@DPTR
    \   00003B   F9           MOV       R1,A
    \   00003C   12....       LCALL     `??osal_msg_receive::?relay`; Banked call to: osal_msg_receive
-   \   00003F   8A..         MOV       ?V4,R2
-   \   000041   8B..         MOV       ?V5,R3
-   \   000043   85....       MOV       ?V0,?V4
-   \   000046   85....       MOV       ?V1,?V5
+   \   00003F   8A..         MOV       ?V2,R2
+   \   000041   8B..         MOV       ?V3,R3
+   \   000043   85....       MOV       ?V0,?V2
+   \   000046   85....       MOV       ?V1,?V3
    \   000049   80DE         SJMP      ??Hal_ProcessEvent_1
     192              }
     193              return events ^ SYS_EVENT_MSG;
@@ -409,7 +409,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    \   00004F   EF           MOV       A,R7
    \   000050   6480         XRL       A,#0x80
    \   000052   FB           MOV       R3,A
-   \   000053   8046         SJMP      ??Hal_ProcessEvent_3
+   \   000053   02....       LJMP      ??Hal_ProcessEvent_3 & 0xFFFF
     194            }
     195          
     196          #if (defined HAL_BUZZER) && (HAL_BUZZER == TRUE)
@@ -430,100 +430,169 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
     211          
     212            if ( events & HAL_LED_BLINK_EVENT )
    \                     ??Hal_ProcessEvent_0:
-   \   000055   EE           MOV       A,R6
-   \   000056   5420         ANL       A,#0x20
-   \   000058   600D         JZ        ??Hal_ProcessEvent_4
+   \   000056   EE           MOV       A,R6
+   \   000057   5420         ANL       A,#0x20
+   \   000059   600E         JZ        ??Hal_ProcessEvent_4
     213            {
     214          #if (defined (BLINK_LEDS)) && (HAL_LED == TRUE)
     215              HalLedUpdate();
-   \   00005A                ; Setup parameters for call to function HalLedUpdate
-   \   00005A   12....       LCALL     `??HalLedUpdate::?relay`; Banked call to: HalLedUpdate
+   \   00005B                ; Setup parameters for call to function HalLedUpdate
+   \   00005B   12....       LCALL     `??HalLedUpdate::?relay`; Banked call to: HalLedUpdate
     216          #endif /* BLINK_LEDS && HAL_LED */
     217              return events ^ HAL_LED_BLINK_EVENT;
-   \   00005D   EE           MOV       A,R6
-   \   00005E   6420         XRL       A,#0x20
-   \   000060   FA           MOV       R2,A
-   \   000061   EF           MOV       A,R7
-   \   000062   6400         XRL       A,#0x0
-   \   000064   FB           MOV       R3,A
-   \   000065   8034         SJMP      ??Hal_ProcessEvent_3
+   \   00005E   EE           MOV       A,R6
+   \   00005F   6420         XRL       A,#0x20
+   \   000061   FA           MOV       R2,A
+   \   000062   EF           MOV       A,R7
+   \   000063   6400         XRL       A,#0x0
+   \   000065   FB           MOV       R3,A
+   \   000066   02....       LJMP      ??Hal_ProcessEvent_3 & 0xFFFF
     218            }
     219          
     220            if (events & HAL_KEY_EVENT)
    \                     ??Hal_ProcessEvent_4:
-   \   000067   EE           MOV       A,R6
-   \   000068   5410         ANL       A,#0x10
-   \   00006A   602B         JZ        ??Hal_ProcessEvent_5
+   \   000069   EE           MOV       A,R6
+   \   00006A   5410         ANL       A,#0x10
+   \   00006C   602B         JZ        ??Hal_ProcessEvent_5
     221            {
     222          #if (defined HAL_KEY) && (HAL_KEY == TRUE)
     223              /* Check for keys */
     224              HalKeyPoll();
-   \   00006C                ; Setup parameters for call to function HalKeyPoll
-   \   00006C   12....       LCALL     `??HalKeyPoll::?relay`; Banked call to: HalKeyPoll
+   \   00006E                ; Setup parameters for call to function HalKeyPoll
+   \   00006E   12....       LCALL     `??HalKeyPoll::?relay`; Banked call to: HalKeyPoll
     225          
     226              /* if interrupt disabled, do next polling */
     227              if (!Hal_KeyIntEnable)
-   \   00006F   90....       MOV       DPTR,#Hal_KeyIntEnable
-   \   000072   E0           MOVX      A,@DPTR
-   \   000073   7018         JNZ       ??Hal_ProcessEvent_6
+   \   000071   90....       MOV       DPTR,#Hal_KeyIntEnable
+   \   000074   E0           MOVX      A,@DPTR
+   \   000075   7018         JNZ       ??Hal_ProcessEvent_6
     228              {
     229                osal_start_timerEx( Hal_TaskID, HAL_KEY_EVENT, 100);
-   \   000075                ; Setup parameters for call to function osal_start_timerEx
-   \   000075   90....       MOV       DPTR,#__Constant_64
-   \   000078   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
-   \   00007B   7A10         MOV       R2,#0x10
-   \   00007D   7B00         MOV       R3,#0x0
-   \   00007F   90....       MOV       DPTR,#Hal_TaskID
-   \   000082   E0           MOVX      A,@DPTR
-   \   000083   F9           MOV       R1,A
-   \   000084   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
-   \   000087   7404         MOV       A,#0x4
-   \   000089   12....       LCALL     ?DEALLOC_XSTACK8
-   \   00008C   E9           MOV       A,R1
+   \   000077                ; Setup parameters for call to function osal_start_timerEx
+   \   000077   90....       MOV       DPTR,#__Constant_64
+   \   00007A   12....       LCALL     ?PUSH_XSTACK8_X_FOUR
+   \   00007D   7A10         MOV       R2,#0x10
+   \   00007F   7B00         MOV       R3,#0x0
+   \   000081   90....       MOV       DPTR,#Hal_TaskID
+   \   000084   E0           MOVX      A,@DPTR
+   \   000085   F9           MOV       R1,A
+   \   000086   12....       LCALL     `??osal_start_timerEx::?relay`; Banked call to: osal_start_timerEx
+   \   000089   7404         MOV       A,#0x4
+   \   00008B   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00008E   E9           MOV       A,R1
     230              }
     231          #endif
     232              return events ^ HAL_KEY_EVENT;
    \                     ??Hal_ProcessEvent_6:
-   \   00008D   EE           MOV       A,R6
-   \   00008E   6410         XRL       A,#0x10
-   \   000090   FA           MOV       R2,A
-   \   000091   EF           MOV       A,R7
-   \   000092   6400         XRL       A,#0x0
-   \   000094   FB           MOV       R3,A
-   \   000095   8004         SJMP      ??Hal_ProcessEvent_3
+   \   00008F   EE           MOV       A,R6
+   \   000090   6410         XRL       A,#0x10
+   \   000092   FA           MOV       R2,A
+   \   000093   EF           MOV       A,R7
+   \   000094   6400         XRL       A,#0x0
+   \   000096   FB           MOV       R3,A
+   \   000097   806A         SJMP      ??Hal_ProcessEvent_3
     233            }
     234          
     235          #if defined POWER_SAVING
     236            if ( events & HAL_SLEEP_TIMER_EVENT )
+   \                     ??Hal_ProcessEvent_5:
+   \   000099   EE           MOV       A,R6
+   \   00009A   5404         ANL       A,#0x4
+   \   00009C   600D         JZ        ??Hal_ProcessEvent_7
     237            {
     238              halRestoreSleepLevel();
+   \   00009E                ; Setup parameters for call to function halRestoreSleepLevel
+   \   00009E   12....       LCALL     `??halRestoreSleepLevel::?relay`; Banked call to: halRestoreSleepLevel
     239              return events ^ HAL_SLEEP_TIMER_EVENT;
+   \   0000A1   EE           MOV       A,R6
+   \   0000A2   6404         XRL       A,#0x4
+   \   0000A4   FA           MOV       R2,A
+   \   0000A5   EF           MOV       A,R7
+   \   0000A6   6400         XRL       A,#0x0
+   \   0000A8   FB           MOV       R3,A
+   \   0000A9   8058         SJMP      ??Hal_ProcessEvent_3
     240            }
     241          
     242            if ( events & HAL_PWRMGR_HOLD_EVENT )
+   \                     ??Hal_ProcessEvent_7:
+   \   0000AB   EE           MOV       A,R6
+   \   0000AC   5402         ANL       A,#0x2
+   \   0000AE   6034         JZ        ??Hal_ProcessEvent_8
     243            {
     244              (void)osal_pwrmgr_task_state(Hal_TaskID, PWRMGR_HOLD);
+   \   0000B0                ; Setup parameters for call to function osal_pwrmgr_task_state
+   \   0000B0   7A01         MOV       R2,#0x1
+   \   0000B2   90....       MOV       DPTR,#Hal_TaskID
+   \   0000B5   E0           MOVX      A,@DPTR
+   \   0000B6   F9           MOV       R1,A
+   \   0000B7   12....       LCALL     `??osal_pwrmgr_task_state::?relay`; Banked call to: osal_pwrmgr_task_state
+   \   0000BA   E9           MOV       A,R1
+   \   0000BB   F5..         MOV       ?V2,A
     245          
     246              (void)osal_stop_timerEx(Hal_TaskID, HAL_PWRMGR_CONSERVE_EVENT);
+   \   0000BD                ; Setup parameters for call to function osal_stop_timerEx
+   \   0000BD   7A01         MOV       R2,#0x1
+   \   0000BF   7B00         MOV       R3,#0x0
+   \   0000C1   90....       MOV       DPTR,#Hal_TaskID
+   \   0000C4   E0           MOVX      A,@DPTR
+   \   0000C5   F9           MOV       R1,A
+   \   0000C6   12....       LCALL     `??osal_stop_timerEx::?relay`; Banked call to: osal_stop_timerEx
+   \   0000C9   E9           MOV       A,R1
+   \   0000CA   F5..         MOV       ?V3,A
     247              (void)osal_clear_event(Hal_TaskID, HAL_PWRMGR_CONSERVE_EVENT);
+   \   0000CC                ; Setup parameters for call to function osal_clear_event
+   \   0000CC   7A01         MOV       R2,#0x1
+   \   0000CE   7B00         MOV       R3,#0x0
+   \   0000D0   90....       MOV       DPTR,#Hal_TaskID
+   \   0000D3   E0           MOVX      A,@DPTR
+   \   0000D4   F9           MOV       R1,A
+   \   0000D5   12....       LCALL     `??osal_clear_event::?relay`; Banked call to: osal_clear_event
+   \   0000D8   E9           MOV       A,R1
+   \   0000D9   F8           MOV       R0,A
     248          
     249              return (events & ~(HAL_PWRMGR_HOLD_EVENT | HAL_PWRMGR_CONSERVE_EVENT));
+   \   0000DA   EE           MOV       A,R6
+   \   0000DB   54FC         ANL       A,#0xfc
+   \   0000DD   FA           MOV       R2,A
+   \   0000DE   EF           MOV       A,R7
+   \   0000DF   54FF         ANL       A,#0xff
+   \   0000E1   FB           MOV       R3,A
+   \   0000E2   801F         SJMP      ??Hal_ProcessEvent_3
     250            }
     251          
     252            if ( events & HAL_PWRMGR_CONSERVE_EVENT )
+   \                     ??Hal_ProcessEvent_8:
+   \   0000E4   EE           MOV       A,R6
+   \   0000E5   A2E0         MOV       C,0xE0 /* A   */.0
+   \   0000E7   5016         JNC       ??Hal_ProcessEvent_9
     253            {
     254              (void)osal_pwrmgr_task_state(Hal_TaskID, PWRMGR_CONSERVE);
+   \   0000E9                ; Setup parameters for call to function osal_pwrmgr_task_state
+   \   0000E9   7A00         MOV       R2,#0x0
+   \   0000EB   90....       MOV       DPTR,#Hal_TaskID
+   \   0000EE   E0           MOVX      A,@DPTR
+   \   0000EF   F9           MOV       R1,A
+   \   0000F0   12....       LCALL     `??osal_pwrmgr_task_state::?relay`; Banked call to: osal_pwrmgr_task_state
+   \   0000F3   E9           MOV       A,R1
+   \   0000F4   F8           MOV       R0,A
     255              return events ^ HAL_PWRMGR_CONSERVE_EVENT;
+   \   0000F5   EE           MOV       A,R6
+   \   0000F6   6401         XRL       A,#0x1
+   \   0000F8   FA           MOV       R2,A
+   \   0000F9   EF           MOV       A,R7
+   \   0000FA   6400         XRL       A,#0x0
+   \   0000FC   FB           MOV       R3,A
+   \   0000FD   8004         SJMP      ??Hal_ProcessEvent_3
     256            }
     257          #endif
     258          
     259            return 0;
-   \                     ??Hal_ProcessEvent_5:
-   \   000097   7A00         MOV       R2,#0x0
-   \   000099   7B00         MOV       R3,#0x0
+   \                     ??Hal_ProcessEvent_9:
+   \   0000FF   7A00         MOV       R2,#0x0
+   \   000101   7B00         MOV       R3,#0x0
    \                     ??Hal_ProcessEvent_3:
-   \   00009B   7F06         MOV       R7,#0x6
-   \   00009D   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000103   7F05         MOV       R7,#0x5
+   \   000105   02....       LJMP      ?BANKED_LEAVE_XDATA
     260          }
     261          
     262          /**************************************************************************************************
@@ -547,13 +616,14 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
     273          #if defined( POWER_SAVING )
     274            /* Allow sleep before the next OSAL event loop */
     275            ALLOW_SLEEP_MODE();
+   \   000004   75..01       MOV       halSleepPconValue,#0x1
     276          #endif
     277            
     278            /* UART Poll */
     279          #if (defined HAL_UART) && (HAL_UART == TRUE)
     280            HalUARTPoll();
-   \   000004                ; Setup parameters for call to function HalUARTPoll
-   \   000004   12....       LCALL     `??HalUARTPoll::?relay`; Banked call to: HalUARTPoll
+   \   000007                ; Setup parameters for call to function HalUARTPoll
+   \   000007   12....       LCALL     `??HalUARTPoll::?relay`; Banked call to: HalUARTPoll
     281          #endif
     282            
     283            /* SPI Poll */
@@ -567,9 +637,9 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
     291          #endif
     292           
     293          }
-   \   000007   D083         POP       DPH
-   \   000009   D082         POP       DPL
-   \   00000B   02....       LJMP      ?BRET
+   \   00000A   D083         POP       DPH
+   \   00000C   D082         POP       DPL
+   \   00000E   02....       LJMP      ?BRET
 
    \                                 In  segment XDATA_ROM_C, align 1
    \                     __Constant_64:
@@ -592,12 +662,16 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
         2      0   -> HalLedInit
         2      0   -> HalUARTInit
       2      0   Hal_Init
-      0     18   Hal_ProcessEvent
-        0     14   -> HalKeyPoll
-        0     14   -> HalLedUpdate
-        0     14   -> osal_msg_deallocate
-        0     14   -> osal_msg_receive
-        0     18   -> osal_start_timerEx
+      0     17   Hal_ProcessEvent
+        0     13   -> HalKeyPoll
+        0     13   -> HalLedUpdate
+        0     13   -> halRestoreSleepLevel
+        0     13   -> osal_clear_event
+        0     13   -> osal_msg_deallocate
+        0     13   -> osal_msg_receive
+        0     13   -> osal_pwrmgr_task_state
+        0     17   -> osal_start_timerEx
+        0     13   -> osal_stop_timerEx
       2      0   Hal_ProcessPoll
         2      0   -> HalUARTPoll
 
@@ -608,21 +682,21 @@ D:\AA\Z-Stack 3.0.2\Components\hal\common\hal_drivers.c
    -----  --------------
       32  HalDriverInit
       16  Hal_Init
-     160  Hal_ProcessEvent
-      14  Hal_ProcessPoll
+     264  Hal_ProcessEvent
+      17  Hal_ProcessPoll
        1  Hal_TaskID
        4  __Constant_64
       24  -- Other
 
  
- 222 bytes in segment BANKED_CODE
+ 329 bytes in segment BANKED_CODE
   24 bytes in segment BANK_RELAYS
    4 bytes in segment XDATA_ROM_C
    1 byte  in segment XDATA_Z
  
   24 bytes of CODE     memory
    0 bytes of CONST    memory (+ 4 bytes shared)
- 222 bytes of HUGECODE memory
+ 329 bytes of HUGECODE memory
    1 byte  of XDATA    memory
 
 Errors: none

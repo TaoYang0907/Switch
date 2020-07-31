@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              30/Jul/2020  16:03:43
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:31
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,9 +13,9 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\zdo\ZDApp.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW1176.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWE180.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\zdo\ZDApp.c" -D SECURE=1 -D TC_LINKKEY_JOIN -D
-//        NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1
+//        NV_INIT -D NV_RESTORE -D POWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1
 //        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 //        xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 //        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
@@ -1999,7 +1999,7 @@ ZDO_beaconNotifyIndCB SYMBOL "ZDO_beaconNotifyIndCB"
         FUNCTION osal_pwrmgr_device,0202H
         ARGFRAME ISTACK, 2, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_rand
@@ -5246,6 +5246,17 @@ ZDApp_DeviceAuthEvt:
         ARGFRAME XSTACK, 0, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDApp_DeviceAuthEvt, osal_pwrmgr_device
+        LOCFRAME ISTACK, 2, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 0, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 2, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDApp_DeviceAuthEvt, ZDApp_NVUpdate
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -5329,6 +5340,9 @@ ZDApp_DeviceAuthEvt:
 // 1034     // Set the Power Manager Device
 // 1035 #if defined ( POWER_SAVING )
 // 1036     osal_pwrmgr_device( PWRMGR_BATTERY );
+        ; Setup parameters for call to function osal_pwrmgr_device
+        MOV       R1,#0x1
+        LCALL     `??osal_pwrmgr_device::?relay`; Banked call to: osal_pwrmgr_device
 // 1037 #endif
 // 1038 
 // 1039     if ( ZSTACK_ROUTER_BUILD )
@@ -6970,6 +6984,17 @@ ZDApp_ProcessNetworkJoin:
         ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDApp_ProcessNetworkJoin, osal_pwrmgr_device
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDApp_ProcessNetworkJoin, ZDApp_RestoreNwkKey
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -7135,6 +7160,17 @@ ZDApp_ProcessNetworkJoin:
         ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL ZDApp_ProcessNetworkJoin, osal_pwrmgr_device
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 10, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 10, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL ZDApp_ProcessNetworkJoin, NLME_SetPollRate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -7288,6 +7324,9 @@ ZDApp_ProcessNetworkJoin:
 // 1570 
 // 1571 #if defined ( POWER_SAVING )
 // 1572       osal_pwrmgr_device( PWRMGR_BATTERY );
+        ; Setup parameters for call to function osal_pwrmgr_device
+        MOV       R1,#0x1
+        LCALL     `??osal_pwrmgr_device::?relay`; Banked call to: osal_pwrmgr_device
 // 1573 #endif
 // 1574 
 // 1575       if ( ZG_SECURE_ENABLED && ( ZDApp_RestoreNwkKey( TRUE ) == false ) )
@@ -7495,6 +7534,9 @@ ZDApp_ProcessNetworkJoin:
 // 1657         // setup Power Manager Device
 // 1658 #if defined ( POWER_SAVING )
 // 1659         osal_pwrmgr_device( PWRMGR_BATTERY );
+        ; Setup parameters for call to function osal_pwrmgr_device
+        MOV       R1,#0x1
+        LCALL     `??osal_pwrmgr_device::?relay`; Banked call to: osal_pwrmgr_device
 // 1660 #endif
 // 1661 
 // 1662         // The receiver is on, turn network layer polling off.
@@ -17687,7 +17729,7 @@ __Constant_258:
 // 4039 /*********************************************************************
 // 4040 *********************************************************************/
 // 
-// 9 458 bytes in segment BANKED_CODE
+// 9 473 bytes in segment BANKED_CODE
 //   450 bytes in segment BANK_RELAYS
 //    13 bytes in segment XDATA_I
 //    13 bytes in segment XDATA_ID
@@ -17696,7 +17738,7 @@ __Constant_258:
 // 
 //   463 bytes of CODE     memory
 //    16 bytes of CONST    memory (+ 16 bytes shared)
-// 9 458 bytes of HUGECODE memory
+// 9 473 bytes of HUGECODE memory
 //    79 bytes of XDATA    memory
 //
 //Errors: none

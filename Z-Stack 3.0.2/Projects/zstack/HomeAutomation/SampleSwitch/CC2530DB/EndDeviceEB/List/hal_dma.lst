@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:09
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:16
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,9 +14,9 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_dma.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW68F.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWA99B.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\target\CC2530EB\hal_dma.c" -D SECURE=1 -D
-#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -371,17 +371,18 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_dma.c
     159          #endif // (defined HAL_IRGEN) && (HAL_IRGEN == TRUE)
     160          
     161            CLEAR_SLEEP_MODE();
-    162            HAL_EXIT_ISR();
    \                     ??halDmaIsr_0:
-   \   000019   EE           MOV       A,R6
-   \   00001A   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00001C   92AF         MOV       0xa8.7,C
+   \   000019   75..00       MOV       halSleepPconValue,#0x0
+    162            HAL_EXIT_ISR();
+   \   00001C   EE           MOV       A,R6
+   \   00001D   A2E0         MOV       C,0xE0 /* A   */.0
+   \   00001F   92AF         MOV       0xa8.7,C
     163          }
-   \   00001E   7F01         MOV       R7,#0x1
-   \   000020   02....       LJMP      ?INTERRUPT_LEAVE_XSP
-   \   000023                REQUIRE _A_IEN0
-   \   000023                REQUIRE _A_IRCON
-   \   000023                REQUIRE DMAIRQ
+   \   000021   7F01         MOV       R7,#0x1
+   \   000023   02....       LJMP      ?INTERRUPT_LEAVE_XSP
+   \   000026                REQUIRE _A_IEN0
+   \   000026                REQUIRE _A_IRCON
+   \   000026                REQUIRE DMAIRQ
 
    \                                 In  segment INTVEC, offset 0x43, root
    \                     `??halDmaIsr::??INTVEC 67`:
@@ -415,7 +416,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_dma.c
        1  _A_IRCON
        8  dmaCh0
       32  dmaCh1234
-      35  halDmaIsr
+      38  halDmaIsr
        3  halDmaIsr::??INTVEC 67
        6  -- Other
 
@@ -423,11 +424,11 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_dma.c
  31 bytes in segment BANKED_CODE
   6 bytes in segment BANK_RELAYS
   3 bytes in segment INTVEC
- 35 bytes in segment NEAR_CODE
+ 38 bytes in segment NEAR_CODE
   8 bytes in segment SFR_AN
  40 bytes in segment XDATA_Z
  
- 41 bytes of CODE     memory (+ 3 bytes shared)
+ 44 bytes of CODE     memory (+ 3 bytes shared)
   0 bytes of DATA     memory (+ 8 bytes shared)
  31 bytes of HUGECODE memory
  40 bytes of XDATA    memory

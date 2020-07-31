@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              30/Jul/2020  15:22:09
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:17
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,9 +14,9 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_key.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW8A5.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWAC5D.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\hal\target\CC2530EB\hal_key.c" -D SECURE=1 -D
-//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -425,6 +425,7 @@ halProcessKeyInterrupt SYMBOL "halProcessKeyInterrupt"
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN Hal_TaskID
+        EXTERN halSleepPconValue
         EXTERN osal_set_event
         FUNCTION osal_set_event,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -1772,6 +1773,7 @@ halKeyPort0Isr:
         CLR       0xc0.5
 //  559   
 //  560   CLEAR_SLEEP_MODE();
+        MOV       halSleepPconValue,#0x0
 //  561   HAL_EXIT_ISR();
         MOV       A,R6
         MOV       C,0xE0 /* A   */.0
@@ -1864,6 +1866,7 @@ halKeyPort2Isr:
         CLR       0xe8.0
 //  590 
 //  591   CLEAR_SLEEP_MODE();
+        MOV       halSleepPconValue,#0x0
 //  592   HAL_EXIT_ISR();
         MOV       A,R6
         MOV       C,0xE0 /* A   */.0
@@ -1972,12 +1975,12 @@ __Constant_19:
 // 543 bytes in segment BANKED_CODE
 //  48 bytes in segment BANK_RELAYS
 //   6 bytes in segment INTVEC
-//  87 bytes in segment NEAR_CODE
+//  93 bytes in segment NEAR_CODE
 //  18 bytes in segment SFR_AN
 //   4 bytes in segment XDATA_ROM_C
 //   5 bytes in segment XDATA_Z
 // 
-// 135 bytes of CODE     memory (+  6 bytes shared)
+// 141 bytes of CODE     memory (+  6 bytes shared)
 //   0 bytes of CONST    memory (+  4 bytes shared)
 //   0 bytes of DATA     memory (+ 18 bytes shared)
 // 543 bytes of HUGECODE memory

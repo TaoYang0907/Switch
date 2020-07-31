@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              30/Jul/2020  15:22:19
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:27
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,9 +14,9 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW2FBB.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWD30B.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\osal\common\OSAL_PwrMgr.c" -D SECURE=1 -D
-//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -131,6 +131,12 @@
 
         EXTERN ?V0
         EXTERN ?V1
+        EXTERN ?V2
+        EXTERN ?V3
+        EXTERN ?V4
+        EXTERN ?V5
+        EXTERN ?V6
+        EXTERN ?V7
         EXTERN ?BANKED_ENTER_XDATA
         EXTERN ?BANKED_LEAVE_XDATA
         EXTERN ?BDISPATCH
@@ -142,6 +148,8 @@
         FUNCTION `??osal_pwrmgr_device::?relay`,0203H
         PUBLIC `??osal_pwrmgr_init::?relay`
         FUNCTION `??osal_pwrmgr_init::?relay`,0203H
+        PUBLIC `??osal_pwrmgr_powerconserve::?relay`
+        FUNCTION `??osal_pwrmgr_powerconserve::?relay`,0203H
         PUBLIC `??osal_pwrmgr_task_state::?relay`
         FUNCTION `??osal_pwrmgr_task_state::?relay`,0203H
         PUBWEAK _A_IEN0
@@ -153,6 +161,10 @@
         FUNCTION osal_pwrmgr_init,0203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
+        PUBLIC osal_pwrmgr_powerconserve
+        FUNCTION osal_pwrmgr_powerconserve,0a1203H
+        ARGFRAME XSTACK, 0, STACK
+        LOCFRAME XSTACK, 16, STACK
         PUBLIC osal_pwrmgr_task_state
         FUNCTION osal_pwrmgr_task_state,080203H
         ARGFRAME XSTACK, 0, STACK
@@ -247,13 +259,37 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
+halSleep            SYMBOL "halSleep"
+`??halSleep::?relay` SYMBOL "?relay", halSleep
+osal_next_timeout   SYMBOL "osal_next_timeout"
+`??osal_next_timeout::?relay` SYMBOL "?relay", osal_next_timeout
 osal_pwrmgr_device  SYMBOL "osal_pwrmgr_device"
 `??osal_pwrmgr_device::?relay` SYMBOL "?relay", osal_pwrmgr_device
 osal_pwrmgr_init    SYMBOL "osal_pwrmgr_init"
 `??osal_pwrmgr_init::?relay` SYMBOL "?relay", osal_pwrmgr_init
+osal_pwrmgr_powerconserve SYMBOL "osal_pwrmgr_powerconserve"
+`??osal_pwrmgr_powerconserve::?relay` SYMBOL "?relay", osal_pwrmgr_powerconserve
 osal_pwrmgr_task_state SYMBOL "osal_pwrmgr_task_state"
 `??osal_pwrmgr_task_state::?relay` SYMBOL "?relay", osal_pwrmgr_task_state
 
+        EXTERN `??halSleep::?relay`
+        FUNCTION `??halSleep::?relay`,00H
+        EXTERN `??osal_next_timeout::?relay`
+        FUNCTION `??osal_next_timeout::?relay`,00H
+        EXTERN halSleep
+        FUNCTION halSleep,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        EXTERN osal_next_timeout
+        FUNCTION osal_next_timeout,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN tasksCnt
 
 // D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
@@ -403,11 +439,11 @@ osal_pwrmgr_init:
 //  118 #if !defined USE_ICALL && !defined OSAL_PORT2TIRTOS
 //  119 #if defined POWER_SAVING && ZSTACK_END_DEVICE_BUILD                  
 //  120   pwrmgr_attribute.pwrmgr_device = PWRMGR_BATTERY;   // Default to power conservation for ZED if power saving enabled.
+        MOV       DPTR,#pwrmgr_attribute + 6
+        MOV       A,#0x1
+        MOVX      @DPTR,A
 //  121 #else
 //  122   pwrmgr_attribute.pwrmgr_device = PWRMGR_ALWAYS_ON; // No power conservation for routing devices.
-        MOV       DPTR,#pwrmgr_attribute + 6
-        MOV       A,#0x0
-        MOVX      @DPTR,A
 //  123 #endif
 //  124 #endif /* USE_ICALL */
 //  125   pwrmgr_attribute.pwrmgr_task_state = 0;            // Cleared.  All set to conserve
@@ -635,6 +671,142 @@ osal_pwrmgr_task_state:
           CFI EndBlock cfiBlock2
         REQUIRE _A_IEN0
 //  223 }
+//  224 
+//  225 #if defined( POWER_SAVING ) && !(defined USE_ICALL || defined OSAL_PORT2TIRTOS)
+//  226 /*********************************************************************
+//  227  * @fn      osal_pwrmgr_powerconserve
+//  228  *
+//  229  * @brief   This function is called from the main OSAL loop when there are
+//  230  *          no events scheduled and shouldn't be called from anywhere else.
+//  231  *
+//  232  * @param   none.
+//  233  *
+//  234  * @return  none.
+//  235  */
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
+//  236 void osal_pwrmgr_powerconserve( void )
+osal_pwrmgr_powerconserve:
+          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Function osal_pwrmgr_powerconserve
+        CODE
+//  237 {
+        FUNCALL osal_pwrmgr_powerconserve, osal_next_timeout
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 16, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL osal_pwrmgr_powerconserve, halSleep
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 16, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 16, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        REQUIRE ?V6
+        REQUIRE ?V7
+        MOV       A,#-0x10
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 16)
+        ; Saved register size: 16
+        ; Auto size: 0
+//  238   uint32        next;
+//  239   halIntState_t intState;
+//  240 
+//  241   // Should we even look into power conservation
+//  242   if ( pwrmgr_attribute.pwrmgr_device != PWRMGR_ALWAYS_ON )
+        MOV       DPTR,#pwrmgr_attribute + 6
+        MOVX      A,@DPTR
+        JZ        ??osal_pwrmgr_powerconserve_0
+//  243   {
+//  244     // Are all tasks in agreement to conserve
+//  245     if ( pwrmgr_attribute.pwrmgr_task_state == 0 )
+        MOV       DPTR,#pwrmgr_attribute
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        ORL       A,R1
+        JNZ       ??osal_pwrmgr_powerconserve_0
+//  246     {
+//  247       // Hold off interrupts.
+//  248       HAL_ENTER_CRITICAL_SECTION( intState );
+        MOV       C,0xa8.7
+        CLR       A
+        RLC       A
+        MOV       R6,A
+        CLR       0xa8.7
+//  249 
+//  250       // Get next time-out
+//  251       next = osal_next_timeout();
+        ; Setup parameters for call to function osal_next_timeout
+        LCALL     `??osal_next_timeout::?relay`; Banked call to: osal_next_timeout
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       ?V0,?V4
+        MOV       ?V1,?V5
+        MOV       ?V2,?V6
+        MOV       ?V3,?V7
+//  252 
+//  253       // Re-enable interrupts.
+//  254       HAL_EXIT_CRITICAL_SECTION( intState );
+        MOV       A,R6
+        MOV       C,0xE0 /* A   */.0
+        MOV       0xa8.7,C
+//  255 
+//  256       // Put the processor into sleep mode
+//  257       OSAL_SET_CPU_INTO_SLEEP( next );
+        ; Setup parameters for call to function halSleep
+        MOV       R2,?V0
+        MOV       R3,?V1
+        MOV       R4,?V2
+        MOV       R5,?V3
+        LCALL     `??halSleep::?relay`; Banked call to: halSleep
+//  258     }
+//  259   }
+//  260 }
+??osal_pwrmgr_powerconserve_0:
+        MOV       R7,#0x8
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock3
+        REQUIRE _A_IEN0
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??osal_pwrmgr_init::?relay`:
@@ -657,57 +829,27 @@ osal_pwrmgr_task_state:
         DATA24
         DC24    osal_pwrmgr_task_state
 
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??osal_pwrmgr_powerconserve::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    osal_pwrmgr_powerconserve
+
         END
-//  224 
-//  225 #if defined( POWER_SAVING ) && !(defined USE_ICALL || defined OSAL_PORT2TIRTOS)
-//  226 /*********************************************************************
-//  227  * @fn      osal_pwrmgr_powerconserve
-//  228  *
-//  229  * @brief   This function is called from the main OSAL loop when there are
-//  230  *          no events scheduled and shouldn't be called from anywhere else.
-//  231  *
-//  232  * @param   none.
-//  233  *
-//  234  * @return  none.
-//  235  */
-//  236 void osal_pwrmgr_powerconserve( void )
-//  237 {
-//  238   uint32        next;
-//  239   halIntState_t intState;
-//  240 
-//  241   // Should we even look into power conservation
-//  242   if ( pwrmgr_attribute.pwrmgr_device != PWRMGR_ALWAYS_ON )
-//  243   {
-//  244     // Are all tasks in agreement to conserve
-//  245     if ( pwrmgr_attribute.pwrmgr_task_state == 0 )
-//  246     {
-//  247       // Hold off interrupts.
-//  248       HAL_ENTER_CRITICAL_SECTION( intState );
-//  249 
-//  250       // Get next time-out
-//  251       next = osal_next_timeout();
-//  252 
-//  253       // Re-enable interrupts.
-//  254       HAL_EXIT_CRITICAL_SECTION( intState );
-//  255 
-//  256       // Put the processor into sleep mode
-//  257       OSAL_SET_CPU_INTO_SLEEP( next );
-//  258     }
-//  259   }
-//  260 }
 //  261 #endif /* POWER_SAVING */
 //  262 
 //  263 /*********************************************************************
 //  264 *********************************************************************/
 // 
-// 142 bytes in segment BANKED_CODE
-//  18 bytes in segment BANK_RELAYS
+// 216 bytes in segment BANKED_CODE
+//  24 bytes in segment BANK_RELAYS
 //   1 byte  in segment SFR_AN
 //   7 bytes in segment XDATA_Z
 // 
-//  18 bytes of CODE     memory
+//  24 bytes of CODE     memory
 //   0 bytes of DATA     memory (+ 1 byte shared)
-// 142 bytes of HUGECODE memory
+// 216 bytes of HUGECODE memory
 //   7 bytes of XDATA    memory
 //
 //Errors: none

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              30/Jul/2020  15:22:20
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:49:42
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -15,9 +15,9 @@
 //        D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW3192.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWE473.tmp ("D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c" -D
-//        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING
+//        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING
 //        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -162,11 +162,10 @@
         PUBLIC UART0_RX_LEN
         PUBLIC UART0_RX_STA
         PUBLIC Uart0_Handle
-        FUNCTION Uart0_Handle,0a1203H
+        FUNCTION Uart0_Handle,0203H
         ARGFRAME XSTACK, 11, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        LOCFRAME XSTACK, 10, STACK
         PUBLIC Uart0_Init
         FUNCTION Uart0_Init,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -280,14 +279,6 @@ Hal_UART_RxBufLen   SYMBOL "Hal_UART_RxBufLen"
 `??Hal_UART_RxBufLen::?relay` SYMBOL "?relay", Hal_UART_RxBufLen
 memset              SYMBOL "memset"
 `??memset::?relay`  SYMBOL "?relay", memset
-osal_msg_allocate   SYMBOL "osal_msg_allocate"
-`??osal_msg_allocate::?relay` SYMBOL "?relay", osal_msg_allocate
-osal_msg_send       SYMBOL "osal_msg_send"
-`??osal_msg_send::?relay` SYMBOL "?relay", osal_msg_send
-printf              SYMBOL "printf"
-`??printf::?relay`  SYMBOL "?relay", printf
-strstr              SYMBOL "strstr"
-`??strstr::?relay`  SYMBOL "?relay", strstr
 RegisterForUart0    SYMBOL "RegisterForUart0"
 `??RegisterForUart0::?relay` SYMBOL "?relay", RegisterForUart0
 Uart0_Handle        SYMBOL "Uart0_Handle"
@@ -307,14 +298,6 @@ Uart0_Reset         SYMBOL "Uart0_Reset"
         FUNCTION `??Hal_UART_RxBufLen::?relay`,00H
         EXTERN `??memset::?relay`
         FUNCTION `??memset::?relay`,00H
-        EXTERN `??osal_msg_allocate::?relay`
-        FUNCTION `??osal_msg_allocate::?relay`,00H
-        EXTERN `??osal_msg_send::?relay`
-        FUNCTION `??osal_msg_send::?relay`,00H
-        EXTERN `??printf::?relay`
-        FUNCTION `??printf::?relay`,00H
-        EXTERN `??strstr::?relay`
-        FUNCTION `??strstr::?relay`,00H
         EXTERN HalUARTOpen
         FUNCTION HalUARTOpen,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -341,34 +324,6 @@ Uart0_Reset         SYMBOL "Uart0_Reset"
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
         ARGFRAME XSTACK, 12, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN osal_msg_allocate
-        FUNCTION osal_msg_allocate,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN osal_msg_send
-        FUNCTION osal_msg_send,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN printf
-        FUNCTION printf,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        EXTERN strstr
-        FUNCTION strstr,010202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
 
@@ -826,222 +781,34 @@ Uart0_Handle:
           CFI Function Uart0_Handle
         CODE
 //   95 {
-        FUNCALL Uart0_Handle, strstr
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, printf
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, osal_msg_allocate
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, osal_msg_send
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, strstr
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, printf
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, osal_msg_allocate
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL Uart0_Handle, osal_msg_send
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 10, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 10, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        REQUIRE ?V0
-        REQUIRE ?V1
-        MOV       A,#-0xa
-        LCALL     ?BANKED_ENTER_XDATA
-          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
-          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
-          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
-          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
-          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
-          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
-          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-7)))
-          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-8)))
-          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-9)))
-          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-10)))
-          CFI CFA_SP SP+0
-          CFI CFA_XSP16 add(XSP16, 10)
-        ; Saved register size: 10
+        ; Saved register size: 0
         ; Auto size: 0
-//   96   if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
-        ; Setup parameters for call to function strstr
-        MOV       R4,#`?<Constant "SW1_TOGGLE">` & 0xff
-        MOV       R5,#(`?<Constant "SW1_TOGGLE">` >> 8) & 0xff
-        MOV       R2,#UART0_RX_BUFF & 0xff
-        MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
-        LCALL     `??strstr::?relay`; Banked call to: strstr
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       A,?V0
-        ORL       A,?V1
-        JZ        ??Uart0_Handle_0
-//   97   {
-//   98     printf("SW1_TOGGLE\n");
-        ; Setup parameters for call to function printf
-        MOV       R2,#`?<Constant "SW1_TOGGLE\\n">` & 0xff
-        MOV       R3,#(`?<Constant "SW1_TOGGLE\\n">` >> 8) & 0xff
-        LCALL     `??printf::?relay`; Banked call to: printf
-//   99     UART0_t *msgPtr;
-//  100     msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-        ; Setup parameters for call to function osal_msg_allocate
-        MOV       R2,#0x2
-        MOV       R3,#0x0
-        LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       R6,?V0
-        MOV       R7,?V1
-//  101     if ( msgPtr )
-        MOV       A,R6
-        ORL       A,R7
-        JZ        ??Uart0_Handle_1
-//  102     {
-//  103       msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
-        MOV       DPL,R6
-        MOV       DPH,R7
-        MOV       A,#0x37
-        MOVX      @DPTR,A
-//  104 
-//  105       osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-        ; Setup parameters for call to function osal_msg_send
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
-        MOV       DPTR,#registeredUart0TaskID
-        MOVX      A,@DPTR
-        MOV       R1,A
-        LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
-        MOV       A,R1
-        SJMP      ??Uart0_Handle_1
-//  106     }
-//  107   }
-//  108   else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
-??Uart0_Handle_0:
-        ; Setup parameters for call to function strstr
-        MOV       R4,#`?<Constant "SW2_TOGGLE">` & 0xff
-        MOV       R5,#(`?<Constant "SW2_TOGGLE">` >> 8) & 0xff
-        MOV       R2,#UART0_RX_BUFF & 0xff
-        MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
-        LCALL     `??strstr::?relay`; Banked call to: strstr
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       A,?V0
-        ORL       A,?V1
-        JZ        ??Uart0_Handle_1
-//  109   {
-//  110     printf("SW2_TOGGLE\n");
-        ; Setup parameters for call to function printf
-        MOV       R2,#`?<Constant "SW2_TOGGLE\\n">` & 0xff
-        MOV       R3,#(`?<Constant "SW2_TOGGLE\\n">` >> 8) & 0xff
-        LCALL     `??printf::?relay`; Banked call to: printf
-//  111     UART0_t *msgPtr;
-//  112     msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-        ; Setup parameters for call to function osal_msg_allocate
-        MOV       R2,#0x2
-        MOV       R3,#0x0
-        LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
-        MOV       ?V0,R2
-        MOV       ?V1,R3
-        MOV       R6,?V0
-        MOV       R7,?V1
-//  113     if ( msgPtr )
-        MOV       A,R6
-        ORL       A,R7
-        JZ        ??Uart0_Handle_1
-//  114     {
-//  115       msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
-        MOV       DPL,R6
-        MOV       DPH,R7
-        MOV       A,#0x38
-        MOVX      @DPTR,A
-//  116 
-//  117       osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-        ; Setup parameters for call to function osal_msg_send
-        MOV       A,R6
-        MOV       R2,A
-        MOV       A,R7
-        MOV       R3,A
-        MOV       DPTR,#registeredUart0TaskID
-        MOVX      A,@DPTR
-        MOV       R1,A
-        LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
-        MOV       A,R1
-//  118     }
-//  119   }
+//   96 //  if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
+//   97 //  {
+//   98 //    printf("SW1_TOGGLE\n");
+//   99 //    UART0_t *msgPtr;
+//  100 //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//  101 //    if ( msgPtr )
+//  102 //    {
+//  103 //      msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
+//  104 //
+//  105 //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+//  106 //    }
+//  107 //  }
+//  108 //  else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
+//  109 //  {
+//  110 //    printf("SW2_TOGGLE\n");
+//  111 //    UART0_t *msgPtr;
+//  112 //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//  113 //    if ( msgPtr )
+//  114 //    {
+//  115 //      msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
+//  116 //
+//  117 //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+//  118 //    }
+//  119 //  }
 //  120 }
-??Uart0_Handle_1:
-        MOV       R7,#0x2
-        LJMP      ?BANKED_LEAVE_XDATA
+        LJMP      ?BRET
           CFI EndBlock cfiBlock3
 //  121 
 
@@ -1145,38 +912,16 @@ Uart0_Reset:
         DATA24
         DC24    Uart0_Reset
 
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA8
-`?<Constant "SW1_TOGGLE">`:
-        DB "SW1_TOGGLE"
-
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA8
-`?<Constant "SW1_TOGGLE\\n">`:
-        DB "SW1_TOGGLE\012"
-
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA8
-`?<Constant "SW2_TOGGLE">`:
-        DB "SW2_TOGGLE"
-
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA8
-`?<Constant "SW2_TOGGLE\\n">`:
-        DB "SW2_TOGGLE\012"
-
         END
 // 
-// 559 bytes in segment BANKED_CODE
+// 416 bytes in segment BANKED_CODE
 //  30 bytes in segment BANK_RELAYS
 //   1 byte  in segment XDATA_I
 //   1 byte  in segment XDATA_ID
-//  46 bytes in segment XDATA_ROM_C
 //  52 bytes in segment XDATA_Z
 // 
 //  31 bytes of CODE     memory
-//  46 bytes of CONST    memory
-// 559 bytes of HUGECODE memory
+// 416 bytes of HUGECODE memory
 //  53 bytes of XDATA    memory
 //
 //Errors: none

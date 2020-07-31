@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              30/Jul/2020  15:22:20
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:27
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,9 +14,9 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_Timers.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW3162.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWD474.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\osal\common\OSAL_Timers.c" -D SECURE=1 -D
-//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+//        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 //        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 //        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -154,6 +154,7 @@
         EXTERN ?L_MOV_X
         EXTERN ?L_SUB_FROM_X
         EXTERN ?PUSH_XSTACK_I_FOUR
+        EXTERN ?UL_DIV_MOD
         EXTERN ?UL_GT_X
         EXTERN ?XLOAD_R0123
         EXTERN ?XLOAD_R2345
@@ -174,8 +175,12 @@
         FUNCTION `??osalTimerUpdate::?relay`,0203H
         PUBLIC `??osal_GetSystemClock::?relay`
         FUNCTION `??osal_GetSystemClock::?relay`,0203H
+        PUBLIC `??osal_adjust_timers::?relay`
+        FUNCTION `??osal_adjust_timers::?relay`,0203H
         PUBLIC `??osal_get_timeoutEx::?relay`
         FUNCTION `??osal_get_timeoutEx::?relay`,0203H
+        PUBLIC `??osal_next_timeout::?relay`
+        FUNCTION `??osal_next_timeout::?relay`,0203H
         PUBLIC `??osal_start_reload_timer::?relay`
         FUNCTION `??osal_start_reload_timer::?relay`,0203H
         PUBLIC `??osal_start_timerEx::?relay`
@@ -185,6 +190,7 @@
         PUBLIC `??osal_timer_num_active::?relay`
         FUNCTION `??osal_timer_num_active::?relay`,0203H
         PUBWEAK _A_IEN0
+        PUBWEAK __Constant_1
         PUBLIC osalAddTimer
         FUNCTION osalAddTimer,0a1203H
         ARGFRAME XSTACK, 22, STACK
@@ -210,16 +216,26 @@
         LOCFRAME ISTACK, 2, STACK
         PUBLIC osalTimerUpdate
         FUNCTION osalTimerUpdate,0a1203H
-        ARGFRAME XSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         LOCFRAME XSTACK, 26, STACK
         PUBLIC osal_GetSystemClock
         FUNCTION osal_GetSystemClock,0203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 2, STACK
+        PUBLIC osal_adjust_timers
+        FUNCTION osal_adjust_timers,0a1203H
+        ARGFRAME XSTACK, 0, STACK
+        LOCFRAME XSTACK, 20, STACK
         PUBLIC osal_get_timeoutEx
         FUNCTION osal_get_timeoutEx,0a1203H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME XSTACK, 20, STACK
+        PUBLIC osal_next_timeout
+        FUNCTION osal_next_timeout,080203H
+        ARGFRAME XSTACK, 0, STACK
+        LOCFRAME XSTACK, 16, STACK
         PUBLIC osal_start_reload_timer
         FUNCTION osal_start_reload_timer,0a1203H
         ARGFRAME XSTACK, 4, STACK
@@ -326,6 +342,8 @@
           CFI ?RET_LOW Frame(CFA_SP, 1)
           CFI EndCommon cfiCommon0
         
+TimerElapsed        SYMBOL "TimerElapsed"
+`??TimerElapsed::?relay` SYMBOL "?relay", TimerElapsed
 osal_mem_alloc      SYMBOL "osal_mem_alloc"
 `??osal_mem_alloc::?relay` SYMBOL "?relay", osal_mem_alloc
 osal_mem_free       SYMBOL "osal_mem_free"
@@ -344,8 +362,12 @@ osalTimerUpdate     SYMBOL "osalTimerUpdate"
 `??osalTimerUpdate::?relay` SYMBOL "?relay", osalTimerUpdate
 osal_GetSystemClock SYMBOL "osal_GetSystemClock"
 `??osal_GetSystemClock::?relay` SYMBOL "?relay", osal_GetSystemClock
+osal_adjust_timers  SYMBOL "osal_adjust_timers"
+`??osal_adjust_timers::?relay` SYMBOL "?relay", osal_adjust_timers
 osal_get_timeoutEx  SYMBOL "osal_get_timeoutEx"
 `??osal_get_timeoutEx::?relay` SYMBOL "?relay", osal_get_timeoutEx
+osal_next_timeout   SYMBOL "osal_next_timeout"
+`??osal_next_timeout::?relay` SYMBOL "?relay", osal_next_timeout
 osal_start_reload_timer SYMBOL "osal_start_reload_timer"
 `??osal_start_reload_timer::?relay` SYMBOL "?relay", osal_start_reload_timer
 osal_start_timerEx  SYMBOL "osal_start_timerEx"
@@ -355,12 +377,21 @@ osal_stop_timerEx   SYMBOL "osal_stop_timerEx"
 osal_timer_num_active SYMBOL "osal_timer_num_active"
 `??osal_timer_num_active::?relay` SYMBOL "?relay", osal_timer_num_active
 
+        EXTERN `??TimerElapsed::?relay`
+        FUNCTION `??TimerElapsed::?relay`,00H
         EXTERN `??osal_mem_alloc::?relay`
         FUNCTION `??osal_mem_alloc::?relay`,00H
         EXTERN `??osal_mem_free::?relay`
         FUNCTION `??osal_mem_free::?relay`,00H
         EXTERN `??osal_set_event::?relay`
         FUNCTION `??osal_set_event::?relay`,00H
+        EXTERN TimerElapsed
+        FUNCTION TimerElapsed,0202H
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN osal_mem_alloc
         FUNCTION osal_mem_alloc,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -2329,21 +2360,127 @@ osalTimerUpdate:
 //  535  *
 //  536  * @return  none
 //  537  *********************************************************************/
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  538 void osal_adjust_timers( void )
+osal_adjust_timers:
+          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Function osal_adjust_timers
+        CODE
 //  539 {
+        FUNCALL osal_adjust_timers, TimerElapsed
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 20, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL osal_adjust_timers, osalTimerUpdate
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 20, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 20, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        REQUIRE ?V6
+        REQUIRE ?V7
+        REQUIRE ?V8
+        REQUIRE ?V9
+        REQUIRE ?V10
+        REQUIRE ?V11
+        MOV       A,#-0x14
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V11 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V10 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V9 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V8 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-17)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-18)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-19)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-20)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 20)
+        ; Saved register size: 20
+        ; Auto size: 0
 //  540   uint32 eTime;
 //  541 
 //  542   if ( timerHead != NULL )
+        MOV       DPTR,#timerHead
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        ORL       A,R1
+        JZ        ??osal_adjust_timers_0
 //  543   {
 //  544     // Compute elapsed time (msec)
 //  545     eTime = TimerElapsed() / TICK_COUNT;
+        ; Setup parameters for call to function TimerElapsed
+        LCALL     `??TimerElapsed::?relay`; Banked call to: TimerElapsed
+        MOV       ?V4,R2
+        MOV       ?V5,R3
+        MOV       ?V6,R4
+        MOV       ?V7,R5
+        MOV       DPTR,#__Constant_1
+        MOV       R0,#?V8
+        LCALL     ?L_MOV_X
+        MOV       R0,#?V4
+        MOV       R1,#?V8
+        LCALL     ?UL_DIV_MOD
+        MOV       ?V0,?V4
+        MOV       ?V1,?V5
+        MOV       ?V2,?V6
+        MOV       ?V3,?V7
 //  546 
 //  547     if ( eTime )
+        MOV       A,?V0
+        ORL       A,?V1
+        ORL       A,?V2
+        ORL       A,?V3
+        JZ        ??osal_adjust_timers_0
 //  548     {
 //  549       osalTimerUpdate( eTime );
+        ; Setup parameters for call to function osalTimerUpdate
+        MOV       R2,?V0
+        MOV       R3,?V1
+        MOV       R4,?V2
+        MOV       R5,?V3
+        LCALL     `??osalTimerUpdate::?relay`; Banked call to: osalTimerUpdate
 //  550     }
 //  551   }
 //  552 }
+??osal_adjust_timers_0:
+        MOV       R7,#0xc
+        LJMP      ?BANKED_LEAVE_XDATA
+          CFI EndBlock cfiBlock10
 //  553 #endif /* POWER_SAVING */
 //  554 
 //  555 #if defined POWER_SAVING || defined USE_ICALL
@@ -2359,36 +2496,150 @@ osalTimerUpdate:
 //  565  *
 //  566  * @return  none
 //  567  *********************************************************************/
+
+        RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  568 uint32 osal_next_timeout( void )
+osal_next_timeout:
+          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Function osal_next_timeout
+        CODE
 //  569 {
+        REQUIRE ?V0
+        REQUIRE ?V1
+        REQUIRE ?V2
+        REQUIRE ?V3
+        REQUIRE ?V4
+        REQUIRE ?V5
+        REQUIRE ?V6
+        REQUIRE ?V7
+        MOV       A,#-0x10
+        LCALL     ?BANKED_ENTER_XDATA
+          CFI DPH0 load(1, XDATA, add(CFA_XSP16, literal(-1)))
+          CFI DPL0 load(1, XDATA, add(CFA_XSP16, literal(-2)))
+          CFI ?BRET_EXT load(1, XDATA, add(CFA_XSP16, literal(-3)))
+          CFI ?RET_HIGH load(1, XDATA, add(CFA_XSP16, literal(-4)))
+          CFI ?RET_LOW load(1, XDATA, add(CFA_XSP16, literal(-5)))
+          CFI R7 load(1, XDATA, add(CFA_XSP16, literal(-6)))
+          CFI V7 load(1, XDATA, add(CFA_XSP16, literal(-7)))
+          CFI V6 load(1, XDATA, add(CFA_XSP16, literal(-8)))
+          CFI V5 load(1, XDATA, add(CFA_XSP16, literal(-9)))
+          CFI V4 load(1, XDATA, add(CFA_XSP16, literal(-10)))
+          CFI V3 load(1, XDATA, add(CFA_XSP16, literal(-11)))
+          CFI V2 load(1, XDATA, add(CFA_XSP16, literal(-12)))
+          CFI V1 load(1, XDATA, add(CFA_XSP16, literal(-13)))
+          CFI V0 load(1, XDATA, add(CFA_XSP16, literal(-14)))
+          CFI VB load(1, XDATA, add(CFA_XSP16, literal(-15)))
+          CFI R6 load(1, XDATA, add(CFA_XSP16, literal(-16)))
+          CFI CFA_SP SP+0
+          CFI CFA_XSP16 add(XSP16, 16)
+        ; Saved register size: 16
+        ; Auto size: 0
 //  570   uint32 nextTimeout;
 //  571   osalTimerRec_t *srchTimer;
 //  572 
 //  573   if ( timerHead != NULL )
+        MOV       DPTR,#timerHead
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        ORL       A,R1
+        JZ        ??osal_next_timeout_0
 //  574   {
 //  575     // Head of the timer list
 //  576     srchTimer = timerHead;
+        MOV       DPTR,#timerHead
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        MOV       R6,A
+        MOV       A,R1
+        MOV       R7,A
 //  577     nextTimeout = OSAL_TIMERS_MAX_TIMEOUT;
+        MOV       R0,#-0x72
+        MOV       R1,#-0x3e
+        MOV       R2,#-0xb
+        MOV       R3,#0x28
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       ?V2,R2
+        MOV       ?V3,R3
 //  578 
 //  579     // Look for the next timeout timer
 //  580     while ( srchTimer != NULL )
+??osal_next_timeout_1:
+        MOV       A,R6
+        ORL       A,R7
+        JZ        ??osal_next_timeout_2
 //  581     {
 //  582       if (srchTimer->timeout.time32 < nextTimeout)
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        MOV       R0,#?V0
+        LCALL     ?UL_GT_X
+        JNC       ??osal_next_timeout_3
 //  583       {
 //  584         nextTimeout = srchTimer->timeout.time32;
+        MOV       DPL,R6
+        MOV       DPH,R7
+        INC       DPTR
+        INC       DPTR
+        MOV       R0,#?V4
+        LCALL     ?L_MOV_X
+        MOV       ?V0,?V4
+        MOV       ?V1,?V5
+        MOV       ?V2,?V6
+        MOV       ?V3,?V7
 //  585       }
 //  586       // Check next timer
 //  587       srchTimer = srchTimer->next;
+??osal_next_timeout_3:
+        MOV       DPL,R6
+        MOV       DPH,R7
+        MOVX      A,@DPTR
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        MOV       R1,A
+        MOV       A,R0
+        MOV       R6,A
+        MOV       A,R1
+        MOV       R7,A
+        SJMP      ??osal_next_timeout_1
 //  588     }
 //  589   }
 //  590   else
 //  591   {
 //  592     // No timers
 //  593     nextTimeout = 0;
+??osal_next_timeout_0:
+        MOV       R0,#0x0
+        MOV       R1,#0x0
+        MOV       R2,#0x0
+        MOV       R3,#0x0
+        MOV       ?V0,R0
+        MOV       ?V1,R1
+        MOV       ?V2,R2
+        MOV       ?V3,R3
 //  594   }
 //  595 
 //  596   return ( nextTimeout );
+??osal_next_timeout_2:
+        MOV       R2,?V0
+        MOV       R3,?V1
+        MOV       R4,?V2
+        MOV       R5,?V3
+        MOV       R7,#0x8
+        LJMP      ?BANKED_LEAVE_XDATA
 //  597 }
+          CFI EndBlock cfiBlock11
 //  598 #endif // POWER_SAVING || USE_ICALL
 //  599 
 //  600 /*********************************************************************
@@ -2404,7 +2655,7 @@ osalTimerUpdate:
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
 //  609 uint32 osal_GetSystemClock( void )
 osal_GetSystemClock:
-          CFI Block cfiBlock10 Using cfiCommon0
+          CFI Block cfiBlock12 Using cfiCommon0
           CFI Function osal_GetSystemClock
         CODE
 //  610 {
@@ -2427,7 +2678,12 @@ osal_GetSystemClock:
           CFI CFA_SP SP+-3
         LJMP      ?BRET
 //  612 }
-          CFI EndBlock cfiBlock10
+          CFI EndBlock cfiBlock12
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA32
+__Constant_1:
+        DD 1
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??osalTimerInit::?relay`:
@@ -2500,6 +2756,20 @@ osal_GetSystemClock:
         DC24    osalTimerUpdate
 
         RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??osal_adjust_timers::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    osal_adjust_timers
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
+`??osal_next_timeout::?relay`:
+        CODE
+        LCALL   ?BDISPATCH
+        DATA24
+        DC24    osal_next_timeout
+
+        RSEG BANK_RELAYS:CODE:REORDER:NOROOT(0)
 `??osal_GetSystemClock::?relay`:
         CODE
         LCALL   ?BDISPATCH
@@ -2511,14 +2781,16 @@ osal_GetSystemClock:
 //  614 /*********************************************************************
 //  615 *********************************************************************/
 // 
-// 1 489 bytes in segment BANKED_CODE
-//    66 bytes in segment BANK_RELAYS
+// 1 699 bytes in segment BANKED_CODE
+//    78 bytes in segment BANK_RELAYS
 //     1 byte  in segment SFR_AN
+//     4 bytes in segment XDATA_ROM_C
 //     6 bytes in segment XDATA_Z
 // 
-//    66 bytes of CODE     memory
-//     0 bytes of DATA     memory (+ 1 byte shared)
-// 1 489 bytes of HUGECODE memory
+//    78 bytes of CODE     memory
+//     0 bytes of CONST    memory (+ 4 bytes shared)
+//     0 bytes of DATA     memory (+ 1 byte  shared)
+// 1 699 bytes of HUGECODE memory
 //     6 bytes of XDATA    memory
 //
 //Errors: none

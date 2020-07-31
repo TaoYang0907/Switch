@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  16:17:52
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:15
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,9 +14,9 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW77D.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWA185.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
-#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -516,6 +516,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
     261          
     262          #if defined ( POWER_SAVING )
     263            osal_pwrmgr_device( PWRMGR_BATTERY );
+   \                     ??touchLinkInitiator_InitDevice_1:
+   \   000028                ; Setup parameters for call to function osal_pwrmgr_device
+   \   000028   7901         MOV       R1,#0x1
+   \   00002A   12....       LCALL     `??osal_pwrmgr_device::?relay`; Banked call to: osal_pwrmgr_device
     264          #endif
     265          
     266          #if ( ZSTACK_ROUTER_BUILD )
@@ -526,11 +530,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
     271          #endif
     272          
     273            return ( ZSuccess );
-   \                     ??touchLinkInitiator_InitDevice_1:
-   \   000028   7900         MOV       R1,#0x0
-   \   00002A   D083         POP       DPH
-   \   00002C   D082         POP       DPL
-   \   00002E   02....       LJMP      ?BRET
+   \   00002D   7900         MOV       R1,#0x0
+   \   00002F   D083         POP       DPH
+   \   000031   D082         POP       DPL
+   \   000033   02....       LJMP      ?BRET
     274          }
     275          
     276          /*********************************************************************
@@ -9143,6 +9146,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
       2      0   touchLinkInitiator_InitDevice
         2      0   -> initiatorReJoinNwk
         2      0   -> initiatorSelectNwkParams
+        2      0   -> osal_pwrmgr_device
       2      0   touchLinkInitiator_RegisterForMsg
       2      0   touchLinkInitiator_RegisterNotifyTLCB
       2      0   touchLinkInitiator_RegisterSelectDiscDevCB
@@ -9297,7 +9301,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
      235  touchLinkInitiator_ChannelChange
       26  touchLinkInitiator_CmdCBs
      140  touchLinkInitiator_Init
-      49  touchLinkInitiator_InitDevice
+      54  touchLinkInitiator_InitDevice
       32  touchLinkInitiator_RegisterForMsg
       19  touchLinkInitiator_RegisterNotifyTLCB
       19  touchLinkInitiator_RegisterSelectDiscDevCB
@@ -9311,7 +9315,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
      204  -- Other
 
  
- 9 901 bytes in segment BANKED_CODE
+ 9 906 bytes in segment BANKED_CODE
    204 bytes in segment BANK_RELAYS
     27 bytes in segment XDATA_I
     27 bytes in segment XDATA_ID
@@ -9320,7 +9324,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
  
    231 bytes of CODE     memory
     33 bytes of CONST    memory (+ 36 bytes shared)
- 9 901 bytes of HUGECODE memory
+ 9 906 bytes of HUGECODE memory
    246 bytes of XDATA    memory
 
 Errors: none

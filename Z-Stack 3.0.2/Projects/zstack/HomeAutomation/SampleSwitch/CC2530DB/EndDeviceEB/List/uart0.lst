@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:20
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:49:42
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -15,9 +15,9 @@
 #        D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW3192.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWE473.tmp ("D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c" -D
-#        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING
+#        SECURE=1 -D TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING
 #        -D NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
 #        xMT_SYS_FUNC -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -454,122 +454,34 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
      94          void Uart0_Handle( void )
    \                     Uart0_Handle:
      95          {
-   \   000000                REQUIRE ?V0
-   \   000000                REQUIRE ?V1
-   \   000000   74F6         MOV       A,#-0xa
-   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
-   \   000005                ; Saved register size: 10
-   \   000005                ; Auto size: 0
-     96            if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
-   \   000005                ; Setup parameters for call to function strstr
-   \   000005   7C..         MOV       R4,#`?<Constant "SW1_TOGGLE">` & 0xff
-   \   000007   7D..         MOV       R5,#(`?<Constant "SW1_TOGGLE">` >> 8) & 0xff
-   \   000009   7A..         MOV       R2,#UART0_RX_BUFF & 0xff
-   \   00000B   7B..         MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
-   \   00000D   12....       LCALL     `??strstr::?relay`; Banked call to: strstr
-   \   000010   8A..         MOV       ?V0,R2
-   \   000012   8B..         MOV       ?V1,R3
-   \   000014   E5..         MOV       A,?V0
-   \   000016   45..         ORL       A,?V1
-   \   000018   6030         JZ        ??Uart0_Handle_0
-     97            {
-     98              printf("SW1_TOGGLE\n");
-   \   00001A                ; Setup parameters for call to function printf
-   \   00001A   7A..         MOV       R2,#`?<Constant "SW1_TOGGLE\\n">` & 0xff
-   \   00001C   7B..         MOV       R3,#(`?<Constant "SW1_TOGGLE\\n">` >> 8) & 0xff
-   \   00001E   12....       LCALL     `??printf::?relay`; Banked call to: printf
-     99              UART0_t *msgPtr;
-    100              msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-   \   000021                ; Setup parameters for call to function osal_msg_allocate
-   \   000021   7A02         MOV       R2,#0x2
-   \   000023   7B00         MOV       R3,#0x0
-   \   000025   12....       LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
-   \   000028   8A..         MOV       ?V0,R2
-   \   00002A   8B..         MOV       ?V1,R3
-   \   00002C   AE..         MOV       R6,?V0
-   \   00002E   AF..         MOV       R7,?V1
-    101              if ( msgPtr )
-   \   000030   EE           MOV       A,R6
-   \   000031   4F           ORL       A,R7
-   \   000032   6059         JZ        ??Uart0_Handle_1
-    102              {
-    103                msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
-   \   000034   8E82         MOV       DPL,R6
-   \   000036   8F83         MOV       DPH,R7
-   \   000038   7437         MOV       A,#0x37
-   \   00003A   F0           MOVX      @DPTR,A
-    104          
-    105                osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-   \   00003B                ; Setup parameters for call to function osal_msg_send
-   \   00003B   EE           MOV       A,R6
-   \   00003C   FA           MOV       R2,A
-   \   00003D   EF           MOV       A,R7
-   \   00003E   FB           MOV       R3,A
-   \   00003F   90....       MOV       DPTR,#registeredUart0TaskID
-   \   000042   E0           MOVX      A,@DPTR
-   \   000043   F9           MOV       R1,A
-   \   000044   12....       LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
-   \   000047   E9           MOV       A,R1
-   \   000048   8043         SJMP      ??Uart0_Handle_1
-    106              }
-    107            }
-    108            else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
-   \                     ??Uart0_Handle_0:
-   \   00004A                ; Setup parameters for call to function strstr
-   \   00004A   7C..         MOV       R4,#`?<Constant "SW2_TOGGLE">` & 0xff
-   \   00004C   7D..         MOV       R5,#(`?<Constant "SW2_TOGGLE">` >> 8) & 0xff
-   \   00004E   7A..         MOV       R2,#UART0_RX_BUFF & 0xff
-   \   000050   7B..         MOV       R3,#(UART0_RX_BUFF >> 8) & 0xff
-   \   000052   12....       LCALL     `??strstr::?relay`; Banked call to: strstr
-   \   000055   8A..         MOV       ?V0,R2
-   \   000057   8B..         MOV       ?V1,R3
-   \   000059   E5..         MOV       A,?V0
-   \   00005B   45..         ORL       A,?V1
-   \   00005D   602E         JZ        ??Uart0_Handle_1
-    109            {
-    110              printf("SW2_TOGGLE\n");
-   \   00005F                ; Setup parameters for call to function printf
-   \   00005F   7A..         MOV       R2,#`?<Constant "SW2_TOGGLE\\n">` & 0xff
-   \   000061   7B..         MOV       R3,#(`?<Constant "SW2_TOGGLE\\n">` >> 8) & 0xff
-   \   000063   12....       LCALL     `??printf::?relay`; Banked call to: printf
-    111              UART0_t *msgPtr;
-    112              msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-   \   000066                ; Setup parameters for call to function osal_msg_allocate
-   \   000066   7A02         MOV       R2,#0x2
-   \   000068   7B00         MOV       R3,#0x0
-   \   00006A   12....       LCALL     `??osal_msg_allocate::?relay`; Banked call to: osal_msg_allocate
-   \   00006D   8A..         MOV       ?V0,R2
-   \   00006F   8B..         MOV       ?V1,R3
-   \   000071   AE..         MOV       R6,?V0
-   \   000073   AF..         MOV       R7,?V1
-    113              if ( msgPtr )
-   \   000075   EE           MOV       A,R6
-   \   000076   4F           ORL       A,R7
-   \   000077   6014         JZ        ??Uart0_Handle_1
-    114              {
-    115                msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
-   \   000079   8E82         MOV       DPL,R6
-   \   00007B   8F83         MOV       DPH,R7
-   \   00007D   7438         MOV       A,#0x38
-   \   00007F   F0           MOVX      @DPTR,A
-    116          
-    117                osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-   \   000080                ; Setup parameters for call to function osal_msg_send
-   \   000080   EE           MOV       A,R6
-   \   000081   FA           MOV       R2,A
-   \   000082   EF           MOV       A,R7
-   \   000083   FB           MOV       R3,A
-   \   000084   90....       MOV       DPTR,#registeredUart0TaskID
-   \   000087   E0           MOVX      A,@DPTR
-   \   000088   F9           MOV       R1,A
-   \   000089   12....       LCALL     `??osal_msg_send::?relay`; Banked call to: osal_msg_send
-   \   00008C   E9           MOV       A,R1
-    118              }
-    119            }
+   \   000000                ; Saved register size: 0
+   \   000000                ; Auto size: 0
+     96          //  if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
+     97          //  {
+     98          //    printf("SW1_TOGGLE\n");
+     99          //    UART0_t *msgPtr;
+    100          //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    101          //    if ( msgPtr )
+    102          //    {
+    103          //      msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
+    104          //
+    105          //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+    106          //    }
+    107          //  }
+    108          //  else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
+    109          //  {
+    110          //    printf("SW2_TOGGLE\n");
+    111          //    UART0_t *msgPtr;
+    112          //    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+    113          //    if ( msgPtr )
+    114          //    {
+    115          //      msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
+    116          //
+    117          //      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+    118          //    }
+    119          //  }
     120          }
-   \                     ??Uart0_Handle_1:
-   \   00008D   7F02         MOV       R7,#0x2
-   \   00008F   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000000   02....       LJMP      ?BRET
     121          
 
    \                                 In  segment BANKED_CODE, align 1, keep-with-next
@@ -607,40 +519,12 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
    \                     `?<Initializer for registeredUart0TaskID>`:
    \   000000   FF           DB 255
 
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "SW1_TOGGLE">`:
-   \   000000   5357315F     DB "SW1_TOGGLE"
-   \            544F4747
-   \            4C4500  
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "SW1_TOGGLE\\n">`:
-   \   000000   5357315F     DB "SW1_TOGGLE\012"
-   \            544F4747
-   \            4C450A00
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "SW2_TOGGLE">`:
-   \   000000   5357325F     DB "SW2_TOGGLE"
-   \            544F4747
-   \            4C4500  
-
-   \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "SW2_TOGGLE\\n">`:
-   \   000000   5357325F     DB "SW2_TOGGLE\012"
-   \            544F4747
-   \            4C450A00
-
    Maximum stack usage in bytes:
 
    ISTACK XSTACK Function
    ------ ------ --------
       2      0   RegisterForUart0
-      0     21   Uart0_Handle
-        0     10   -> osal_msg_allocate
-        0     10   -> osal_msg_send
-        0     10   -> printf
-        0     10   -> strstr
+      0     11   Uart0_Handle
       1     38   Uart0_Init
         0     38   -> HalUARTOpen
       1     11   Uart0_Process
@@ -656,16 +540,12 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
 
    Bytes  Function/Label
    -----  --------------
-      11  ?<Constant "SW1_TOGGLE">
-      12  ?<Constant "SW1_TOGGLE\n">
-      11  ?<Constant "SW2_TOGGLE">
-      12  ?<Constant "SW2_TOGGLE\n">
        1  ?<Initializer for registeredUart0TaskID>
       32  RegisterForUart0
       50  UART0_RX_BUFF
        1  UART0_RX_LEN
        1  UART0_RX_STA
-     146  Uart0_Handle
+       3  Uart0_Handle
      124  Uart0_Init
      214  Uart0_Process
       43  Uart0_Reset
@@ -673,16 +553,14 @@ D:\AA\Z-Stack 3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\Source\uart0.c
       30  -- Other
 
  
- 559 bytes in segment BANKED_CODE
+ 416 bytes in segment BANKED_CODE
   30 bytes in segment BANK_RELAYS
    1 byte  in segment XDATA_I
    1 byte  in segment XDATA_ID
-  46 bytes in segment XDATA_ROM_C
   52 bytes in segment XDATA_Z
  
   31 bytes of CODE     memory
-  46 bytes of CONST    memory
- 559 bytes of HUGECODE memory
+ 416 bytes of HUGECODE memory
   53 bytes of XDATA    memory
 
 Errors: none

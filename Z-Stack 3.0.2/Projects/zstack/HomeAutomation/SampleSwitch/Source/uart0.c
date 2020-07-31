@@ -93,30 +93,30 @@ void Uart0_Process( uint8 port, uint8 event )
 
 void Uart0_Handle( void )
 {
-  if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
-  {
-    printf("SW1_TOGGLE\n");
-    UART0_t *msgPtr;
-    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-    if ( msgPtr )
-    {
-      msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
-
-      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-    }
-  }
-  else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
-  {
-    printf("SW2_TOGGLE\n");
-    UART0_t *msgPtr;
-    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
-    if ( msgPtr )
-    {
-      msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
-
-      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
-    }
-  }
+//  if(strstr((const char*)UART0_RX_BUFF,"SW1_TOGGLE"))
+//  {
+//    printf("SW1_TOGGLE\n");
+//    UART0_t *msgPtr;
+//    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//    if ( msgPtr )
+//    {
+//      msgPtr->hdr.event = UART0_MESSAGE_SW1_TOGGLE;
+//
+//      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+//    }
+//  }
+//  else if(strstr((const char*)UART0_RX_BUFF,"SW2_TOGGLE"))
+//  {
+//    printf("SW2_TOGGLE\n");
+//    UART0_t *msgPtr;
+//    msgPtr = (UART0_t *)osal_msg_allocate( sizeof(UART0_t) );
+//    if ( msgPtr )
+//    {
+//      msgPtr->hdr.event = UART0_MESSAGE_SW2_TOGGLE;
+//
+//      osal_msg_send( registeredUart0TaskID, (uint8 *)msgPtr );
+//    }
+//  }
 }
 
 void Uart0_Reset( void )

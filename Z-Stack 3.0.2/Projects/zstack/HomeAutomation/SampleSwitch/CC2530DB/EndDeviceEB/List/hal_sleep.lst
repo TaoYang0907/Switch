@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:10
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:18
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,9 +14,9 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWC23.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWAE45.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\hal\target\CC2530EB\hal_sleep.c" -D SECURE=1 -D
-#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -1171,18 +1171,19 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
     565          #endif
     566            
     567            CLEAR_SLEEP_MODE();
+   \   000010   75..00       MOV       halSleepPconValue,#0x0
     568            HAL_EXIT_ISR();
-   \   000010   E8           MOV       A,R0
-   \   000011   A2E0         MOV       C,0xE0 /* A   */.0
-   \   000013   92AF         MOV       0xa8.7,C
+   \   000013   E8           MOV       A,R0
+   \   000014   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000016   92AF         MOV       0xa8.7,C
     569          }
-   \   000015   D0E0         POP       A
-   \   000017   F8           MOV       R0,A
-   \   000018   D0D0         POP       PSW
-   \   00001A   D0E0         POP       A
-   \   00001C   32           RETI
-   \   00001D                REQUIRE _A_IEN0
-   \   00001D                REQUIRE _A_IRCON
+   \   000018   D0E0         POP       A
+   \   00001A   F8           MOV       R0,A
+   \   00001B   D0D0         POP       PSW
+   \   00001D   D0E0         POP       A
+   \   00001F   32           RETI
+   \   000020                REQUIRE _A_IEN0
+   \   000020                REQUIRE _A_IRCON
     570          
     571          /**************************************************************************************************
     572           * @fn          halSleepWait
@@ -1374,7 +1375,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
      453  halSleep
        1  halSleepPconValue
      162  halSleepSetTimer
-      29  halSleepTimerIsr
+      32  halSleepTimerIsr
        3  halSleepTimerIsr::??INTVEC 43
       52  halSleepWait
        4  maxSleepLoopTime
@@ -1386,7 +1387,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
    1 byte  in segment DATA_I
    1 byte  in segment DATA_ID
    3 bytes in segment INTVEC
-  29 bytes in segment NEAR_CODE
+  32 bytes in segment NEAR_CODE
   10 bytes in segment SFR_AN
    8 bytes in segment SLEEP_CODE
    4 bytes in segment XDATA_I
@@ -1394,7 +1395,7 @@ D:\AA\Z-Stack 3.0.2\Components\hal\target\CC2530EB\hal_sleep.c
   36 bytes in segment XDATA_ROM_C
    1 byte  in segment XDATA_Z
  
-  76 bytes of CODE     memory (+  3 bytes shared)
+  79 bytes of CODE     memory (+  3 bytes shared)
    0 bytes of CONST    memory (+ 36 bytes shared)
    1 byte  of DATA     memory (+ 10 bytes shared)
  761 bytes of HUGECODE memory

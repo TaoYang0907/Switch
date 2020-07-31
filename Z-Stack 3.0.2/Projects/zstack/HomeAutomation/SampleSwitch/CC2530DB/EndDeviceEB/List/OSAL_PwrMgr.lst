@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:19
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:27
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,9 +14,9 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW2FBB.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWD30B.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\osal\common\OSAL_PwrMgr.c" -D SECURE=1 -D
-#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D
+#        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
 #        -D xMT_ZDO_FUNC -D xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D
 #        LCD_SUPPORTED=DEBUG -D MULTICAST_ENABLED=FALSE -D ZCL_READ -D
@@ -250,11 +250,11 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
     118          #if !defined USE_ICALL && !defined OSAL_PORT2TIRTOS
     119          #if defined POWER_SAVING && ZSTACK_END_DEVICE_BUILD                  
     120            pwrmgr_attribute.pwrmgr_device = PWRMGR_BATTERY;   // Default to power conservation for ZED if power saving enabled.
+   \   000004   90....       MOV       DPTR,#pwrmgr_attribute + 6
+   \   000007   7401         MOV       A,#0x1
+   \   000009   F0           MOVX      @DPTR,A
     121          #else
     122            pwrmgr_attribute.pwrmgr_device = PWRMGR_ALWAYS_ON; // No power conservation for routing devices.
-   \   000004   90....       MOV       DPTR,#pwrmgr_attribute + 6
-   \   000007   7400         MOV       A,#0x0
-   \   000009   F0           MOVX      @DPTR,A
     123          #endif
     124          #endif /* USE_ICALL */
     125            pwrmgr_attribute.pwrmgr_task_state = 0;            // Cleared.  All set to conserve
@@ -461,31 +461,86 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
     233           *
     234           * @return  none.
     235           */
+
+   \                                 In  segment BANKED_CODE, align 1, keep-with-next
     236          void osal_pwrmgr_powerconserve( void )
+   \                     osal_pwrmgr_powerconserve:
     237          {
+   \   000000                REQUIRE ?V0
+   \   000000                REQUIRE ?V1
+   \   000000                REQUIRE ?V2
+   \   000000                REQUIRE ?V3
+   \   000000                REQUIRE ?V4
+   \   000000                REQUIRE ?V5
+   \   000000                REQUIRE ?V6
+   \   000000                REQUIRE ?V7
+   \   000000   74F0         MOV       A,#-0x10
+   \   000002   12....       LCALL     ?BANKED_ENTER_XDATA
+   \   000005                ; Saved register size: 16
+   \   000005                ; Auto size: 0
     238            uint32        next;
     239            halIntState_t intState;
     240          
     241            // Should we even look into power conservation
     242            if ( pwrmgr_attribute.pwrmgr_device != PWRMGR_ALWAYS_ON )
+   \   000005   90....       MOV       DPTR,#pwrmgr_attribute + 6
+   \   000008   E0           MOVX      A,@DPTR
+   \   000009   603A         JZ        ??osal_pwrmgr_powerconserve_0
     243            {
     244              // Are all tasks in agreement to conserve
     245              if ( pwrmgr_attribute.pwrmgr_task_state == 0 )
+   \   00000B   90....       MOV       DPTR,#pwrmgr_attribute
+   \   00000E   E0           MOVX      A,@DPTR
+   \   00000F   F8           MOV       R0,A
+   \   000010   A3           INC       DPTR
+   \   000011   E0           MOVX      A,@DPTR
+   \   000012   F9           MOV       R1,A
+   \   000013   E8           MOV       A,R0
+   \   000014   49           ORL       A,R1
+   \   000015   702E         JNZ       ??osal_pwrmgr_powerconserve_0
     246              {
     247                // Hold off interrupts.
     248                HAL_ENTER_CRITICAL_SECTION( intState );
+   \   000017   A2AF         MOV       C,0xa8.7
+   \   000019   E4           CLR       A
+   \   00001A   33           RLC       A
+   \   00001B   FE           MOV       R6,A
+   \   00001C   C2AF         CLR       0xa8.7
     249          
     250                // Get next time-out
     251                next = osal_next_timeout();
+   \   00001E                ; Setup parameters for call to function osal_next_timeout
+   \   00001E   12....       LCALL     `??osal_next_timeout::?relay`; Banked call to: osal_next_timeout
+   \   000021   8A..         MOV       ?V4,R2
+   \   000023   8B..         MOV       ?V5,R3
+   \   000025   8C..         MOV       ?V6,R4
+   \   000027   8D..         MOV       ?V7,R5
+   \   000029   85....       MOV       ?V0,?V4
+   \   00002C   85....       MOV       ?V1,?V5
+   \   00002F   85....       MOV       ?V2,?V6
+   \   000032   85....       MOV       ?V3,?V7
     252          
     253                // Re-enable interrupts.
     254                HAL_EXIT_CRITICAL_SECTION( intState );
+   \   000035   EE           MOV       A,R6
+   \   000036   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000038   92AF         MOV       0xa8.7,C
     255          
     256                // Put the processor into sleep mode
     257                OSAL_SET_CPU_INTO_SLEEP( next );
+   \   00003A                ; Setup parameters for call to function halSleep
+   \   00003A   AA..         MOV       R2,?V0
+   \   00003C   AB..         MOV       R3,?V1
+   \   00003E   AC..         MOV       R4,?V2
+   \   000040   AD..         MOV       R5,?V3
+   \   000042   12....       LCALL     `??halSleep::?relay`; Banked call to: halSleep
     258              }
     259            }
     260          }
+   \                     ??osal_pwrmgr_powerconserve_0:
+   \   000045   7F08         MOV       R7,#0x8
+   \   000047   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   00004A                REQUIRE _A_IEN0
     261          #endif /* POWER_SAVING */
     262          
     263          /*********************************************************************
@@ -497,6 +552,9 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
    ------ ------ --------
       2      0   osal_pwrmgr_device
       2      0   osal_pwrmgr_init
+      0     16   osal_pwrmgr_powerconserve
+        0     16   -> halSleep
+        0     16   -> osal_next_timeout
       0     10   osal_pwrmgr_task_state
 
 
@@ -507,19 +565,20 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL_PwrMgr.c
        1  _A_IEN0
       16  osal_pwrmgr_device
       27  osal_pwrmgr_init
+      74  osal_pwrmgr_powerconserve
       99  osal_pwrmgr_task_state
        7  pwrmgr_attribute
-      18  -- Other
+      24  -- Other
 
  
- 142 bytes in segment BANKED_CODE
-  18 bytes in segment BANK_RELAYS
+ 216 bytes in segment BANKED_CODE
+  24 bytes in segment BANK_RELAYS
    1 byte  in segment SFR_AN
    7 bytes in segment XDATA_Z
  
-  18 bytes of CODE     memory
+  24 bytes of CODE     memory
    0 bytes of DATA     memory (+ 1 byte shared)
- 142 bytes of HUGECODE memory
+ 216 bytes of HUGECODE memory
    7 bytes of XDATA    memory
 
 Errors: none

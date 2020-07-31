@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               30/Jul/2020  15:22:18
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:26
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,10 +13,10 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW2B52.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWCDA8.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\osal\common\OSAL.c" -D SECURE=1 -D TC_LINKKEY_JOIN -D
-#        NV_INIT -D NV_RESTORE -D xPOWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1
-#        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
+#        NV_INIT -D NV_RESTORE -D POWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1 -D
+#        xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
 #        xMT_ZDO_MGMT -D xMT_APP_CNF_FUNC -D LCD_SUPPORTED=DEBUG -D
 #        MULTICAST_ENABLED=FALSE -D ZCL_READ -D ZCL_DISCOVER -D ZCL_WRITE -D
 #        ZCL_BASIC -D ZCL_IDENTIFY -D ZCL_ON_OFF -D ZCL_GROUPS -D
@@ -4227,11 +4227,15 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
    \   000140   E5..         MOV       A,?V0
    \   000142   A2E0         MOV       C,0xE0 /* A   */.0
    \   000144   92AF         MOV       0xa8.7,C
+   \   000146   8003         SJMP      ??osal_run_system_3
    1668            }
    1669          #if defined( POWER_SAVING ) && !defined(USE_ICALL)
    1670            else  // Complete pass through all task events with no activity?
    1671            {
    1672              osal_pwrmgr_powerconserve();  // Put the processor/system into sleep
+   \                     ??osal_run_system_2:
+   \   000148                ; Setup parameters for call to function osal_pwrmgr_powerconserve
+   \   000148   12....       LCALL     `??osal_pwrmgr_powerconserve::?relay`; Banked call to: osal_pwrmgr_powerconserve
    1673            }
    1674          #endif
    1675          
@@ -4284,10 +4288,10 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
    1722            }
    1723          #endif /* USE_ICALL */
    1724          }
-   \                     ??osal_run_system_2:
-   \   000146   7F04         MOV       R7,#0x4
-   \   000148   02....       LJMP      ?BANKED_LEAVE_XDATA
-   \   00014B                REQUIRE _A_IEN0
+   \                     ??osal_run_system_3:
+   \   00014B   7F04         MOV       R7,#0x4
+   \   00014D   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000150                REQUIRE _A_IEN0
    1725          
    1726          /*********************************************************************
    1727           * @fn      osal_buffer_uint32
@@ -4694,6 +4698,7 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
       0     12   osal_run_system
         0     12   -> Hal_ProcessPoll
         0     12   -> osalTimeUpdate
+        0     12   -> osal_pwrmgr_powerconserve
       2      0   osal_self
       0     23   osal_set_event
       2      0   osal_start_system
@@ -4746,7 +4751,7 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
        2  osal_qHead
       14  osal_rand
      109  osal_revmemcpy
-     331  osal_run_system
+     336  osal_run_system
       16  osal_self
       85  osal_set_event
        9  osal_start_system
@@ -4754,7 +4759,7 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
      210  -- Other
 
  
- 3 847 bytes in segment BANKED_CODE
+ 3 852 bytes in segment BANKED_CODE
    210 bytes in segment BANK_RELAYS
      1 byte  in segment SFR_AN
      1 byte  in segment XDATA_I
@@ -4765,7 +4770,7 @@ D:\AA\Z-Stack 3.0.2\Components\osal\common\OSAL.c
    211 bytes of CODE     memory
     32 bytes of CONST    memory (+ 8 bytes shared)
      0 bytes of DATA     memory (+ 1 byte  shared)
- 3 847 bytes of HUGECODE memory
+ 3 852 bytes of HUGECODE memory
      3 bytes of XDATA    memory
 
 Errors: none
