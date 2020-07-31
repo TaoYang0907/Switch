@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:33
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  16:02:18
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -13,7 +13,7 @@
 #                          
 #    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWEB0D.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW2578.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\sys\ZGlobals.c" -D SECURE=1 -D TC_LINKKEY_JOIN
 #        -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D NWK_AUTO_POLL -D xZTOOL_P1
 #        -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC -D
@@ -44,8 +44,8 @@
 #        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
 #        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0} -DMAC_MAX_FRAME_SIZE=116
 #        -DZDNWKMGR_MIN_TRANSMISSIONS=20 "-DCONST=const __code"
-#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=1000
-#        -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100 -DREJOIN_POLL_RATE=440
+#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=0
+#        -DQUEUED_POLL_RATE=0 -DRESPONSE_POLL_RATE=0 -DREJOIN_POLL_RATE=0
 #        -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000 -DENABLE_LED4_DISABLE_S1)
 #        -f "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
@@ -189,40 +189,35 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
      75          
      76          // Polling values
 
-   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
      77          uint32 zgPollRate = POLL_RATE;
    \                     zgPollRate:
    \   000000                DS 4
-   \   000004                REQUIRE `?<Initializer for zgPollRate>`
-   \   000004                REQUIRE __INIT_XDATA_I
+   \   000004                REQUIRE __INIT_XDATA_Z
 
-   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
      78          uint32 zgSavedPollRate = POLL_RATE;
    \                     zgSavedPollRate:
    \   000000                DS 4
-   \   000004                REQUIRE `?<Initializer for zgSavedPollRate>`
-   \   000004                REQUIRE __INIT_XDATA_I
+   \   000004                REQUIRE __INIT_XDATA_Z
 
-   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
      79          uint16 zgQueuedPollRate = QUEUED_POLL_RATE;
    \                     zgQueuedPollRate:
    \   000000                DS 2
-   \   000002                REQUIRE `?<Initializer for zgQueuedPollRate>`
-   \   000002                REQUIRE __INIT_XDATA_I
+   \   000002                REQUIRE __INIT_XDATA_Z
 
-   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
      80          uint16 zgResponsePollRate = RESPONSE_POLL_RATE;
    \                     zgResponsePollRate:
    \   000000                DS 2
-   \   000002                REQUIRE `?<Initializer for zgResponsePollRate>`
-   \   000002                REQUIRE __INIT_XDATA_I
+   \   000002                REQUIRE __INIT_XDATA_Z
 
-   \                                 In  segment XDATA_I, align 1, keep-with-next
+   \                                 In  segment XDATA_Z, align 1, keep-with-next
      81          uint16 zgRejoinPollRate = REJOIN_POLL_RATE;
    \                     zgRejoinPollRate:
    \   000000                DS 2
-   \   000002                REQUIRE `?<Initializer for zgRejoinPollRate>`
-   \   000002                REQUIRE __INIT_XDATA_I
+   \   000002                REQUIRE __INIT_XDATA_Z
      82          
      83          // Rejoin backoff (silent period ) duration
 
@@ -2385,26 +2380,6 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
    \   0000B2   02....       LJMP      ?BANKED_LEAVE_XDATA
 
    \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for zgPollRate>`:
-   \   000000   E8030000     DD 1000
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for zgSavedPollRate>`:
-   \   000000   E8030000     DD 1000
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for zgQueuedPollRate>`:
-   \   000000   6400         DW 100
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for zgResponsePollRate>`:
-   \   000000   6400         DW 100
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
-   \                     `?<Initializer for zgRejoinPollRate>`:
-   \   000000   B801         DW 440
-
-   \                                 In  segment XDATA_ID, align 1, keep-with-next
    \                     `?<Initializer for zgDefaultRejoinBackoff>`:
    \   000000   A0BB0D00     DD 900000
 
@@ -2719,14 +2694,9 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
        1  ?<Initializer for zgNwkProcessLocalLeaveCnf>
        1  ?<Initializer for zgNwkSrcRtgExpiryTime>
        1  ?<Initializer for zgPassiveAckTimeout>
-       4  ?<Initializer for zgPollRate>
-       2  ?<Initializer for zgQueuedPollRate>
-       2  ?<Initializer for zgRejoinPollRate>
-       2  ?<Initializer for zgResponsePollRate>
        1  ?<Initializer for zgRouteDiscoveryTime>
        1  ?<Initializer for zgRouteExpiryTime>
        1  ?<Initializer for zgSapiEndpoint>
-       4  ?<Initializer for zgSavedPollRate>
        1  ?<Initializer for zgSecurePermitJoin>
        1  ?<Initializer for zgSecurityMode>
        1  ?<Initializer for zgStackProfile>
@@ -2812,11 +2782,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
  1 274 bytes in segment BANKED_CODE
     48 bytes in segment BANK_RELAYS
    330 bytes in segment CODE_C
-    68 bytes in segment XDATA_I
-    68 bytes in segment XDATA_ID
-    42 bytes in segment XDATA_Z
+    54 bytes in segment XDATA_I
+    54 bytes in segment XDATA_ID
+    56 bytes in segment XDATA_Z
  
-   446 bytes of CODE     memory
+   432 bytes of CODE     memory
  1 274 bytes of HUGECODE memory
    110 bytes of XDATA    memory
 

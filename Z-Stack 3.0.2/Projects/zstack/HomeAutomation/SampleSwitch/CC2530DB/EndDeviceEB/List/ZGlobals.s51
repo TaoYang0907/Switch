@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:33
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  16:02:18
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -13,7 +13,7 @@
 //                          
 //    Source file        =  D:\AA\Z-Stack 3.0.2\Components\stack\sys\ZGlobals.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWEB0D.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW2578.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\sys\ZGlobals.c" -D SECURE=1 -D TC_LINKKEY_JOIN
 //        -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D NWK_AUTO_POLL -D
 //        xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC -D xMT_ZDO_FUNC
@@ -45,8 +45,8 @@
 //        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0}
 //        -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 //        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
-//        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
-//        -DREJOIN_POLL_RATE=440 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000
+//        -DPOLL_RATE=0 -DQUEUED_POLL_RATE=0 -DRESPONSE_POLL_RATE=0
+//        -DREJOIN_POLL_RATE=0 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000
 //        -DENABLE_LED4_DISABLE_S1) -f "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
 //        -I "D:\AA\Z-Stack
@@ -558,45 +558,40 @@ zgWriteStartupOptions SYMBOL "zgWriteStartupOptions"
 //   75 
 //   76 // Polling values
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA32
 //   77 uint32 zgPollRate = POLL_RATE;
 zgPollRate:
-        DATA32
         DS 4
-        REQUIRE `?<Initializer for zgPollRate>`
-        REQUIRE __INIT_XDATA_I
+        REQUIRE __INIT_XDATA_Z
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA32
 //   78 uint32 zgSavedPollRate = POLL_RATE;
 zgSavedPollRate:
-        DATA32
         DS 4
-        REQUIRE `?<Initializer for zgSavedPollRate>`
-        REQUIRE __INIT_XDATA_I
+        REQUIRE __INIT_XDATA_Z
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA16
 //   79 uint16 zgQueuedPollRate = QUEUED_POLL_RATE;
 zgQueuedPollRate:
-        DATA16
         DS 2
-        REQUIRE `?<Initializer for zgQueuedPollRate>`
-        REQUIRE __INIT_XDATA_I
+        REQUIRE __INIT_XDATA_Z
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA16
 //   80 uint16 zgResponsePollRate = RESPONSE_POLL_RATE;
 zgResponsePollRate:
-        DATA16
         DS 2
-        REQUIRE `?<Initializer for zgResponsePollRate>`
-        REQUIRE __INIT_XDATA_I
+        REQUIRE __INIT_XDATA_Z
 
-        RSEG XDATA_I:XDATA:NOROOT(0)
+        RSEG XDATA_Z:XDATA:NOROOT(0)
+        DATA16
 //   81 uint16 zgRejoinPollRate = REJOIN_POLL_RATE;
 zgRejoinPollRate:
-        DATA16
         DS 2
-        REQUIRE `?<Initializer for zgRejoinPollRate>`
-        REQUIRE __INIT_XDATA_I
+        REQUIRE __INIT_XDATA_Z
 //   82 
 //   83 // Rejoin backoff (silent period ) duration
 
@@ -3302,31 +3297,6 @@ zgUpgradeNVItems:
           CFI EndBlock cfiBlock7
 
         RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for zgPollRate>`:
-        DATA32
-        DD 1000
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for zgSavedPollRate>`:
-        DATA32
-        DD 1000
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for zgQueuedPollRate>`:
-        DATA16
-        DW 100
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for zgResponsePollRate>`:
-        DATA16
-        DW 100
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
-`?<Initializer for zgRejoinPollRate>`:
-        DATA16
-        DW 440
-
-        RSEG XDATA_ID:CODE:NOROOT(0)
 `?<Initializer for zgDefaultRejoinBackoff>`:
         DATA32
         DD 900000
@@ -3667,11 +3637,11 @@ zgUpgradeNVItems:
 // 1 274 bytes in segment BANKED_CODE
 //    48 bytes in segment BANK_RELAYS
 //   330 bytes in segment CODE_C
-//    68 bytes in segment XDATA_I
-//    68 bytes in segment XDATA_ID
-//    42 bytes in segment XDATA_Z
+//    54 bytes in segment XDATA_I
+//    54 bytes in segment XDATA_ID
+//    56 bytes in segment XDATA_Z
 // 
-//   446 bytes of CODE     memory
+//   432 bytes of CODE     memory
 // 1 274 bytes of HUGECODE memory
 //   110 bytes of XDATA    memory
 //

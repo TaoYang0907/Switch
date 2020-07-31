@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  11:47:15
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  16:01:55
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EWA185.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EWCB08.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
@@ -46,8 +46,8 @@
 //        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0}
 //        -DMAC_MAX_FRAME_SIZE=116 -DZDNWKMGR_MIN_TRANSMISSIONS=20
 //        "-DCONST=const __code" -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE
-//        -DPOLL_RATE=1000 -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100
-//        -DREJOIN_POLL_RATE=440 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000
+//        -DPOLL_RATE=0 -DQUEUED_POLL_RATE=0 -DRESPONSE_POLL_RATE=0
+//        -DREJOIN_POLL_RATE=0 -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000
 //        -DENABLE_LED4_DISABLE_S1) -f "D:\AA\Z-Stack
 //        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
 //        -I "D:\AA\Z-Stack
@@ -230,6 +230,7 @@
         PUBWEAK __Constant_3
         PUBWEAK __Constant_30d4
         PUBWEAK __Constant_32
+        PUBWEAK __Constant_3e8
         PUBWEAK __Constant_7d0
         PUBWEAK __Constant_fa
         PUBLIC bdb_Initiator_SendNwkJoinReq
@@ -879,7 +880,7 @@ touchLinkInitiator_event_loop SYMBOL "touchLinkInitiator_event_loop"
         FUNCTION NLME_SetPollRate,0202H
         ARGFRAME ISTACK, 0, STACK
         ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 17, STACK
+        ARGFRAME XSTACK, 107, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN NLME_SetQueuedPollRate
@@ -2851,21 +2852,21 @@ touchLinkInitiator_Init:
 //  445 
 //  446   savedPollRate = POLL_RATE;
         MOV       DPTR,#savedPollRate
-        MOV       A,#-0x18
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
-        MOV       A,#0x3
+        MOV       A,#0x0
         MOVX      @DPTR,A
 //  447   savedQueuedPollRate = QUEUED_POLL_RATE;
         MOV       DPTR,#savedQueuedPollRate
-        MOV       A,#0x64
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
         MOVX      @DPTR,A
 //  448   savedResponsePollRate = RESPONSE_POLL_RATE;
         MOV       DPTR,#savedResponsePollRate
-        MOV       A,#0x64
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
@@ -3698,6 +3699,17 @@ touchLinkInitiator_event_loop:
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL touchLinkInitiator_event_loop, touchLink_UpdateNV
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 107, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 107, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL touchLinkInitiator_event_loop, NLME_SetPollRate
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
         LOCFRAME XSTACK, 107, STACK
@@ -5364,10 +5376,25 @@ touchLinkInitiator_event_loop:
         LCALL     `??touchLink_UpdateNV::?relay`; Banked call to: touchLink_UpdateNV
 //  896 
 //  897       if ( ( POLL_RATE == 0 ) && ( selectedTarget.scanRsp.zLogicalType == ZG_DEVICETYPE_ENDDEVICE ) )
-        SJMP      ??touchLinkInitiator_event_loop_37
+        MOV       DPTR,#selectedTarget + 5
+        MOVX      A,@DPTR
+        ANL       A,#0x3
+        MOV       R0,A
+        INC       DPTR
+        MOVX      A,@DPTR
+        ANL       A,#0x0
+        MOV       R1,A
+        MOV       A,R0
+        XRL       A,#0x2
+        JNZ       ??touchLinkInitiator_event_loop_37
 //  898       {
 //  899         //allow to respond to TOUCHLINK commission utility commands after TL
 //  900         NLME_SetPollRate( TOUCHLINK_INITIATOR_TEMP_POST_TL_POLL_RATE );
+        ; Setup parameters for call to function NLME_SetPollRate
+        MOV       DPTR,#__Constant_3e8
+        LCALL     ?XLOAD_R2345
+        LCALL     `??NLME_SetPollRate::?relay`; Banked call to: NLME_SetPollRate
+        SJMP      ??touchLinkInitiator_event_loop_37
 //  901         //polling should reset when TL life time expires
 //  902       }
 //  903     }
@@ -11168,10 +11195,10 @@ initiatorSetNwkToInitState:
         LCALL     `??NLME_SetPollRate::?relay`; Banked call to: NLME_SetPollRate
 // 1933     savedPollRate = POLL_RATE;
         MOV       DPTR,#savedPollRate
-        MOV       A,#-0x18
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
-        MOV       A,#0x3
+        MOV       A,#0x0
         MOVX      @DPTR,A
 // 1934   }
 // 1935 
@@ -11204,7 +11231,7 @@ initiatorSetNwkToInitState:
         LCALL     `??NLME_SetQueuedPollRate::?relay`; Banked call to: NLME_SetQueuedPollRate
 // 1939     savedQueuedPollRate = QUEUED_POLL_RATE;
         MOV       DPTR,#savedQueuedPollRate
-        MOV       A,#0x64
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
@@ -11240,7 +11267,7 @@ initiatorSetNwkToInitState:
         LCALL     `??NLME_SetResponseRate::?relay`; Banked call to: NLME_SetResponseRate
 // 1945     savedResponsePollRate = RESPONSE_POLL_RATE;
         MOV       DPTR,#savedResponsePollRate
-        MOV       A,#0x64
+        MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
@@ -13962,6 +13989,11 @@ __Constant_3:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
+__Constant_3e8:
+        DD 1000
+
+        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
+        DATA32
 __Constant_30d4:
         DD 12500
 
@@ -13982,16 +14014,16 @@ __Constant_1388:
 // 2362 /*********************************************************************
 // 2363 *********************************************************************/
 // 
-// 9 906 bytes in segment BANKED_CODE
+// 9 932 bytes in segment BANKED_CODE
 //   204 bytes in segment BANK_RELAYS
 //    27 bytes in segment XDATA_I
 //    27 bytes in segment XDATA_ID
-//    69 bytes in segment XDATA_ROM_C
+//    73 bytes in segment XDATA_ROM_C
 //   219 bytes in segment XDATA_Z
 // 
 //   231 bytes of CODE     memory
-//    33 bytes of CONST    memory (+ 36 bytes shared)
-// 9 906 bytes of HUGECODE memory
+//    33 bytes of CONST    memory (+ 40 bytes shared)
+// 9 932 bytes of HUGECODE memory
 //   246 bytes of XDATA    memory
 //
 //Errors: none

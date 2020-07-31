@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  11:47:15
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               31/Jul/2020  16:01:55
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EWA185.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EWCB08.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
@@ -45,8 +45,8 @@
 #        -DAPS_MAX_GROUPS=16 -DMAX_RTG_ENTRIES=40 -DNWK_MAX_BINDING_ENTRIES=4
 #        -DMAX_BINDING_CLUSTER_IDS=4 -DDEFAULT_KEY={0} -DMAC_MAX_FRAME_SIZE=116
 #        -DZDNWKMGR_MIN_TRANSMISSIONS=20 "-DCONST=const __code"
-#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=1000
-#        -DQUEUED_POLL_RATE=100 -DRESPONSE_POLL_RATE=100 -DREJOIN_POLL_RATE=440
+#        -DGENERIC=__generic -DRFD_RCVC_ALWAYS_ON=FALSE -DPOLL_RATE=0
+#        -DQUEUED_POLL_RATE=0 -DRESPONSE_POLL_RATE=0 -DREJOIN_POLL_RATE=0
 #        -DREJOIN_BACKOFF=900000 -DREJOIN_SCAN=900000 -DENABLE_LED4_DISABLE_S1)
 #        -f "D:\AA\Z-Stack
 #        3.0.2\Projects\zstack\HomeAutomation\SampleSwitch\CC2530DB\..\..\..\Tools\CC2530DB\f8wZCL.cfg"
@@ -1055,21 +1055,21 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
     445          
     446            savedPollRate = POLL_RATE;
    \   000039   90....       MOV       DPTR,#savedPollRate
-   \   00003C   74E8         MOV       A,#-0x18
+   \   00003C   7400         MOV       A,#0x0
    \   00003E   F0           MOVX      @DPTR,A
    \   00003F   A3           INC       DPTR
-   \   000040   7403         MOV       A,#0x3
+   \   000040   7400         MOV       A,#0x0
    \   000042   F0           MOVX      @DPTR,A
     447            savedQueuedPollRate = QUEUED_POLL_RATE;
    \   000043   90....       MOV       DPTR,#savedQueuedPollRate
-   \   000046   7464         MOV       A,#0x64
+   \   000046   7400         MOV       A,#0x0
    \   000048   F0           MOVX      @DPTR,A
    \   000049   A3           INC       DPTR
    \   00004A   7400         MOV       A,#0x0
    \   00004C   F0           MOVX      @DPTR,A
     448            savedResponsePollRate = RESPONSE_POLL_RATE;
    \   00004D   90....       MOV       DPTR,#savedResponsePollRate
-   \   000050   7464         MOV       A,#0x64
+   \   000050   7400         MOV       A,#0x0
    \   000052   F0           MOVX      @DPTR,A
    \   000053   A3           INC       DPTR
    \   000054   7400         MOV       A,#0x0
@@ -2628,10 +2628,25 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   000675   12....       LCALL     `??touchLink_UpdateNV::?relay`; Banked call to: touchLink_UpdateNV
     896          
     897                if ( ( POLL_RATE == 0 ) && ( selectedTarget.scanRsp.zLogicalType == ZG_DEVICETYPE_ENDDEVICE ) )
-   \   000678   8011         SJMP      ??touchLinkInitiator_event_loop_37
+   \   000678   90....       MOV       DPTR,#selectedTarget + 5
+   \   00067B   E0           MOVX      A,@DPTR
+   \   00067C   5403         ANL       A,#0x3
+   \   00067E   F8           MOV       R0,A
+   \   00067F   A3           INC       DPTR
+   \   000680   E0           MOVX      A,@DPTR
+   \   000681   5400         ANL       A,#0x0
+   \   000683   F9           MOV       R1,A
+   \   000684   E8           MOV       A,R0
+   \   000685   6402         XRL       A,#0x2
+   \   000687   701C         JNZ       ??touchLinkInitiator_event_loop_37
     898                {
     899                  //allow to respond to TOUCHLINK commission utility commands after TL
     900                  NLME_SetPollRate( TOUCHLINK_INITIATOR_TEMP_POST_TL_POLL_RATE );
+   \   000689                ; Setup parameters for call to function NLME_SetPollRate
+   \   000689   90....       MOV       DPTR,#__Constant_3e8
+   \   00068C   12....       LCALL     ?XLOAD_R2345
+   \   00068F   12....       LCALL     `??NLME_SetPollRate::?relay`; Banked call to: NLME_SetPollRate
+   \   000692   8011         SJMP      ??touchLinkInitiator_event_loop_37
     901                  //polling should reset when TL life time expires
     902                }
     903              }
@@ -2639,55 +2654,55 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
     905              {
     906                touchLink_SendLeaveReq( );
    \                     ??touchLinkInitiator_event_loop_35:
-   \   00067A                ; Setup parameters for call to function touchLink_SendLeaveReq
-   \   00067A   12....       LCALL     `??touchLink_SendLeaveReq::?relay`; Banked call to: touchLink_SendLeaveReq
-   \   00067D   E9           MOV       A,R1
+   \   000694                ; Setup parameters for call to function touchLink_SendLeaveReq
+   \   000694   12....       LCALL     `??touchLink_SendLeaveReq::?relay`; Banked call to: touchLink_SendLeaveReq
+   \   000697   E9           MOV       A,R1
     907                bdbAttributes.bdbCommissioningStatus = BDB_COMMISSIONING_TL_TARGET_FAILURE;
-   \   00067E   90....       MOV       DPTR,#bdbAttributes + 10
-   \   000681   7403         MOV       A,#0x3
-   \   000683   F0           MOVX      @DPTR,A
+   \   000698   90....       MOV       DPTR,#bdbAttributes + 10
+   \   00069B   7403         MOV       A,#0x3
+   \   00069D   F0           MOVX      @DPTR,A
     908                bdb_reportCommissioningState( BDB_COMMISSIONING_STATE_TL, FALSE );
-   \   000684                ; Setup parameters for call to function bdb_reportCommissioningState
-   \   000684   7A00         MOV       R2,#0x0
-   \   000686   7902         MOV       R1,#0x2
-   \   000688   12....       LCALL     `??bdb_reportCommissioningState::?relay`; Banked call to: bdb_reportCommissioningState
+   \   00069E                ; Setup parameters for call to function bdb_reportCommissioningState
+   \   00069E   7A00         MOV       R2,#0x0
+   \   0006A0   7902         MOV       R1,#0x2
+   \   0006A2   12....       LCALL     `??bdb_reportCommissioningState::?relay`; Banked call to: bdb_reportCommissioningState
     909              }
     910          
     911              // return unprocessed events
     912              return ( events ^ TOUCHLINK_W4_NWK_JOIN_RSP_EVT );
    \                     ??touchLinkInitiator_event_loop_37:
-   \   00068B   EE           MOV       A,R6
-   \   00068C   6400         XRL       A,#0x0
-   \   00068E   FA           MOV       R2,A
-   \   00068F   EF           MOV       A,R7
-   \   000690   6401         XRL       A,#0x1
-   \   000692   FB           MOV       R3,A
-   \   000693   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   0006A5   EE           MOV       A,R6
+   \   0006A6   6400         XRL       A,#0x0
+   \   0006A8   FA           MOV       R2,A
+   \   0006A9   EF           MOV       A,R7
+   \   0006AA   6401         XRL       A,#0x1
+   \   0006AC   FB           MOV       R3,A
+   \   0006AD   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
     913            }
     914          
     915            if ( events & TOUCHLINK_NWK_JOIN_IND_EVT )
    \                     ??touchLinkInitiator_event_loop_34:
-   \   000696   EE           MOV       A,R6
-   \   000697   5402         ANL       A,#0x2
-   \   000699   604F         JZ        ??touchLinkInitiator_event_loop_38
+   \   0006B0   EE           MOV       A,R6
+   \   0006B1   5402         ANL       A,#0x2
+   \   0006B3   604F         JZ        ??touchLinkInitiator_event_loop_38
     916            {
     917              // If not factory new, perform a Leave on our old network
     918              if ( ( bdbAttributes.bdbNodeIsOnANetwork == TRUE ) && ( touchLink_SendLeaveReq( ) == ZSuccess ) )
-   \   00069B   90....       MOV       DPTR,#bdbAttributes + 14
-   \   00069E   E0           MOVX      A,@DPTR
-   \   00069F   6401         XRL       A,#0x1
-   \   0006A1   700E         JNZ       ??touchLinkInitiator_event_loop_39
-   \   0006A3                ; Setup parameters for call to function touchLink_SendLeaveReq
-   \   0006A3   12....       LCALL     `??touchLink_SendLeaveReq::?relay`; Banked call to: touchLink_SendLeaveReq
-   \   0006A6   E9           MOV       A,R1
-   \   0006A7   7008         JNZ       ??touchLinkInitiator_event_loop_39
+   \   0006B5   90....       MOV       DPTR,#bdbAttributes + 14
+   \   0006B8   E0           MOVX      A,@DPTR
+   \   0006B9   6401         XRL       A,#0x1
+   \   0006BB   700E         JNZ       ??touchLinkInitiator_event_loop_39
+   \   0006BD                ; Setup parameters for call to function touchLink_SendLeaveReq
+   \   0006BD   12....       LCALL     `??touchLink_SendLeaveReq::?relay`; Banked call to: touchLink_SendLeaveReq
+   \   0006C0   E9           MOV       A,R1
+   \   0006C1   7008         JNZ       ??touchLinkInitiator_event_loop_39
     919              {
     920                // Wait for Leave confirmation before joining the new network
     921                touchLinkLeaveInitiated = TOUCHLINK_LEAVE_TO_JOIN_NWK;
-   \   0006A9   90....       MOV       DPTR,#touchLinkLeaveInitiated
-   \   0006AC   7401         MOV       A,#0x1
-   \   0006AE   F0           MOVX      @DPTR,A
-   \   0006AF   802E         SJMP      ??touchLinkInitiator_event_loop_40
+   \   0006C3   90....       MOV       DPTR,#touchLinkLeaveInitiated
+   \   0006C6   7401         MOV       A,#0x1
+   \   0006C8   F0           MOVX      @DPTR,A
+   \   0006C9   802E         SJMP      ??touchLinkInitiator_event_loop_40
     922              }
     923              else
     924              {
@@ -2697,622 +2712,622 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
     928          #else
     929                bdbTLNwkParams_t *pParams = &(joinReq.nwkParams);
    \                     ??touchLinkInitiator_event_loop_39:
-   \   0006B1   75....       MOV       ?V0,#(joinReq + 4) & 0xff
-   \   0006B4   75....       MOV       ?V1,#((joinReq + 4) >> 8) & 0xff
+   \   0006CB   75....       MOV       ?V0,#(joinReq + 4) & 0xff
+   \   0006CE   75....       MOV       ?V1,#((joinReq + 4) >> 8) & 0xff
     930                
     931                // Notify our task to join this network
     932                // Perform Network Discovery to verify our new network parameters uniqeness
     933                touchLink_PerformNetworkDisc( (uint32)1 << pParams->logicalChannel );
-   \   0006B7                ; Setup parameters for call to function touchLink_PerformNetworkDisc
-   \   0006B7   75..01       MOV       ?V4,#0x1
-   \   0006BA   75..00       MOV       ?V5,#0x0
-   \   0006BD   75..00       MOV       ?V6,#0x0
-   \   0006C0   75..00       MOV       ?V7,#0x0
-   \   0006C3   E5..         MOV       A,?V0
-   \   0006C5   2419         ADD       A,#0x19
-   \   0006C7   F582         MOV       DPL,A
-   \   0006C9   E4           CLR       A
-   \   0006CA   35..         ADDC      A,?V1
-   \   0006CC   F583         MOV       DPH,A
-   \   0006CE   E0           MOVX      A,@DPTR
-   \   0006CF   78..         MOV       R0,#?V4
-   \   0006D1   12....       LCALL     ?L_SHL
-   \   0006D4   AA..         MOV       R2,?V4
-   \   0006D6   AB..         MOV       R3,?V5
-   \   0006D8   AC..         MOV       R4,?V6
-   \   0006DA   AD..         MOV       R5,?V7
-   \   0006DC   12....       LCALL     `??touchLink_PerformNetworkDisc::?relay`; Banked call to: touchLink_PerformNetworkDisc
+   \   0006D1                ; Setup parameters for call to function touchLink_PerformNetworkDisc
+   \   0006D1   75..01       MOV       ?V4,#0x1
+   \   0006D4   75..00       MOV       ?V5,#0x0
+   \   0006D7   75..00       MOV       ?V6,#0x0
+   \   0006DA   75..00       MOV       ?V7,#0x0
+   \   0006DD   E5..         MOV       A,?V0
+   \   0006DF   2419         ADD       A,#0x19
+   \   0006E1   F582         MOV       DPL,A
+   \   0006E3   E4           CLR       A
+   \   0006E4   35..         ADDC      A,?V1
+   \   0006E6   F583         MOV       DPH,A
+   \   0006E8   E0           MOVX      A,@DPTR
+   \   0006E9   78..         MOV       R0,#?V4
+   \   0006EB   12....       LCALL     ?L_SHL
+   \   0006EE   AA..         MOV       R2,?V4
+   \   0006F0   AB..         MOV       R3,?V5
+   \   0006F2   AC..         MOV       R4,?V6
+   \   0006F4   AD..         MOV       R5,?V7
+   \   0006F6   12....       LCALL     `??touchLink_PerformNetworkDisc::?relay`; Banked call to: touchLink_PerformNetworkDisc
     934          #endif
     935              }
     936          
     937              // return unprocessed events
     938              return ( events ^ TOUCHLINK_NWK_JOIN_IND_EVT );
    \                     ??touchLinkInitiator_event_loop_40:
-   \   0006DF   EE           MOV       A,R6
-   \   0006E0   6402         XRL       A,#0x2
-   \   0006E2   FA           MOV       R2,A
-   \   0006E3   EF           MOV       A,R7
-   \   0006E4   6400         XRL       A,#0x0
-   \   0006E6   FB           MOV       R3,A
-   \   0006E7   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   0006F9   EE           MOV       A,R6
+   \   0006FA   6402         XRL       A,#0x2
+   \   0006FC   FA           MOV       R2,A
+   \   0006FD   EF           MOV       A,R7
+   \   0006FE   6400         XRL       A,#0x0
+   \   000700   FB           MOV       R3,A
+   \   000701   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
     939            }
     940          
     941            if ( events & TOUCHLINK_JOIN_NWK_ATTEMPT_EVT )
    \                     ??touchLinkInitiator_event_loop_38:
-   \   0006EA   EE           MOV       A,R6
-   \   0006EB   5408         ANL       A,#0x8
-   \   0006ED   7003         JNZ       $+5
-   \   0006EF   02....       LJMP      ??touchLinkInitiator_event_loop_41 & 0xFFFF
+   \   000704   EE           MOV       A,R6
+   \   000705   5408         ANL       A,#0x8
+   \   000707   7003         JNZ       $+5
+   \   000709   02....       LJMP      ??touchLinkInitiator_event_loop_41 & 0xFFFF
     942            {
     943              // Join the network
     944          #if ( ZSTACK_ROUTER_BUILD )
     945              initiatorJoinNwk();
     946          #else
     947              bdbTLNwkParams_t *pParams = &(joinReq.nwkParams);
-   \   0006F2   75....       MOV       ?V0,#(joinReq + 4) & 0xff
-   \   0006F5   75....       MOV       ?V1,#((joinReq + 4) >> 8) & 0xff
+   \   00070C   75....       MOV       ?V0,#(joinReq + 4) & 0xff
+   \   00070F   75....       MOV       ?V1,#((joinReq + 4) >> 8) & 0xff
     948              
     949              bdbTLNwkRejoin_t rejoinInf;
     950                   
     951              rejoinInf.panId = pParams->panId;
-   \   0006F8   E5..         MOV       A,?V0
-   \   0006FA   241A         ADD       A,#0x1a
-   \   0006FC   F582         MOV       DPL,A
-   \   0006FE   E4           CLR       A
-   \   0006FF   35..         ADDC      A,?V1
-   \   000701   F583         MOV       DPH,A
-   \   000703   E0           MOVX      A,@DPTR
-   \   000704   F8           MOV       R0,A
-   \   000705   A3           INC       DPTR
-   \   000706   E0           MOVX      A,@DPTR
-   \   000707   F9           MOV       R1,A
-   \   000708   7428         MOV       A,#0x28
-   \   00070A   12....       LCALL     ?XSTACK_DISP0_8
-   \   00070D   E8           MOV       A,R0
-   \   00070E   F0           MOVX      @DPTR,A
-   \   00070F   A3           INC       DPTR
-   \   000710   E9           MOV       A,R1
-   \   000711   F0           MOVX      @DPTR,A
-    952              rejoinInf.logicalChannel = pParams->logicalChannel;
    \   000712   E5..         MOV       A,?V0
-   \   000714   2419         ADD       A,#0x19
+   \   000714   241A         ADD       A,#0x1a
    \   000716   F582         MOV       DPL,A
    \   000718   E4           CLR       A
    \   000719   35..         ADDC      A,?V1
    \   00071B   F583         MOV       DPH,A
    \   00071D   E0           MOVX      A,@DPTR
-   \   00071E   C0E0         PUSH      A
-   \   000720   7427         MOV       A,#0x27
-   \   000722   12....       LCALL     ?XSTACK_DISP0_8
-   \   000725   D0E0         POP       A
-   \   000727   F0           MOVX      @DPTR,A
+   \   00071E   F8           MOV       R0,A
+   \   00071F   A3           INC       DPTR
+   \   000720   E0           MOVX      A,@DPTR
+   \   000721   F9           MOV       R1,A
+   \   000722   7428         MOV       A,#0x28
+   \   000724   12....       LCALL     ?XSTACK_DISP0_8
+   \   000727   E8           MOV       A,R0
+   \   000728   F0           MOVX      @DPTR,A
+   \   000729   A3           INC       DPTR
+   \   00072A   E9           MOV       A,R1
+   \   00072B   F0           MOVX      @DPTR,A
+    952              rejoinInf.logicalChannel = pParams->logicalChannel;
+   \   00072C   E5..         MOV       A,?V0
+   \   00072E   2419         ADD       A,#0x19
+   \   000730   F582         MOV       DPL,A
+   \   000732   E4           CLR       A
+   \   000733   35..         ADDC      A,?V1
+   \   000735   F583         MOV       DPH,A
+   \   000737   E0           MOVX      A,@DPTR
+   \   000738   C0E0         PUSH      A
+   \   00073A   7427         MOV       A,#0x27
+   \   00073C   12....       LCALL     ?XSTACK_DISP0_8
+   \   00073F   D0E0         POP       A
+   \   000741   F0           MOVX      @DPTR,A
     953              osal_memcpy( rejoinInf.extendedPANID, pParams->extendedPANID, Z_EXTADDR_LEN);
-   \   000728                ; Setup parameters for call to function osal_memcpy
-   \   000728   85....       MOV       ?V4,?V0
-   \   00072B   85....       MOV       ?V5,?V1
-   \   00072E   75..00       MOV       ?V6,#0x0
-   \   000731   78..         MOV       R0,#?V4
-   \   000733   12....       LCALL     ?PUSH_XSTACK_I_THREE
-   \   000736   7C08         MOV       R4,#0x8
-   \   000738   7D00         MOV       R5,#0x0
-   \   00073A   7421         MOV       A,#0x21
-   \   00073C   12....       LCALL     ?XSTACK_DISP101_8
-   \   00073F   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
-   \   000742   7403         MOV       A,#0x3
-   \   000744   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000742                ; Setup parameters for call to function osal_memcpy
+   \   000742   85....       MOV       ?V4,?V0
+   \   000745   85....       MOV       ?V5,?V1
+   \   000748   75..00       MOV       ?V6,#0x0
+   \   00074B   78..         MOV       R0,#?V4
+   \   00074D   12....       LCALL     ?PUSH_XSTACK_I_THREE
+   \   000750   7C08         MOV       R4,#0x8
+   \   000752   7D00         MOV       R5,#0x0
+   \   000754   7421         MOV       A,#0x21
+   \   000756   12....       LCALL     ?XSTACK_DISP101_8
+   \   000759   12....       LCALL     `??osal_memcpy::?relay`; Banked call to: osal_memcpy
+   \   00075C   7403         MOV       A,#0x3
+   \   00075E   12....       LCALL     ?DEALLOC_XSTACK8
     954              rejoinInf.nwkAddr = pDiscoveredNwkParamList->chosenRouter;
-   \   000747   90....       MOV       DPTR,#pDiscoveredNwkParamList
-   \   00074A   E0           MOVX      A,@DPTR
-   \   00074B   F8           MOV       R0,A
-   \   00074C   A3           INC       DPTR
-   \   00074D   E0           MOVX      A,@DPTR
-   \   00074E   C8           XCH       A,R0
-   \   00074F   240D         ADD       A,#0xd
-   \   000751   F582         MOV       DPL,A
-   \   000753   C8           XCH       A,R0
-   \   000754   3400         ADDC      A,#0x0
-   \   000756   F583         MOV       DPH,A
-   \   000758   E0           MOVX      A,@DPTR
-   \   000759   F8           MOV       R0,A
-   \   00075A   A3           INC       DPTR
-   \   00075B   E0           MOVX      A,@DPTR
-   \   00075C   F9           MOV       R1,A
-   \   00075D   742A         MOV       A,#0x2a
-   \   00075F   12....       LCALL     ?XSTACK_DISP0_8
-   \   000762   E8           MOV       A,R0
-   \   000763   F0           MOVX      @DPTR,A
-   \   000764   A3           INC       DPTR
-   \   000765   E9           MOV       A,R1
-   \   000766   F0           MOVX      @DPTR,A
+   \   000761   90....       MOV       DPTR,#pDiscoveredNwkParamList
+   \   000764   E0           MOVX      A,@DPTR
+   \   000765   F8           MOV       R0,A
+   \   000766   A3           INC       DPTR
+   \   000767   E0           MOVX      A,@DPTR
+   \   000768   C8           XCH       A,R0
+   \   000769   240D         ADD       A,#0xd
+   \   00076B   F582         MOV       DPL,A
+   \   00076D   C8           XCH       A,R0
+   \   00076E   3400         ADDC      A,#0x0
+   \   000770   F583         MOV       DPH,A
+   \   000772   E0           MOVX      A,@DPTR
+   \   000773   F8           MOV       R0,A
+   \   000774   A3           INC       DPTR
+   \   000775   E0           MOVX      A,@DPTR
+   \   000776   F9           MOV       R1,A
+   \   000777   742A         MOV       A,#0x2a
+   \   000779   12....       LCALL     ?XSTACK_DISP0_8
+   \   00077C   E8           MOV       A,R0
+   \   00077D   F0           MOVX      @DPTR,A
+   \   00077E   A3           INC       DPTR
+   \   00077F   E9           MOV       A,R1
+   \   000780   F0           MOVX      @DPTR,A
     955              rejoinInf.nwkUpdateId = joinReq.nwkUpdateId;
-   \   000767   90....       MOV       DPTR,#joinReq + 46
-   \   00076A   E0           MOVX      A,@DPTR
-   \   00076B   C0E0         PUSH      A
-   \   00076D   7426         MOV       A,#0x26
-   \   00076F   12....       LCALL     ?XSTACK_DISP0_8
-   \   000772   D0E0         POP       A
-   \   000774   F0           MOVX      @DPTR,A
+   \   000781   90....       MOV       DPTR,#joinReq + 46
+   \   000784   E0           MOVX      A,@DPTR
+   \   000785   C0E0         PUSH      A
+   \   000787   7426         MOV       A,#0x26
+   \   000789   12....       LCALL     ?XSTACK_DISP0_8
+   \   00078C   D0E0         POP       A
+   \   00078E   F0           MOVX      @DPTR,A
     956                
     957              touchLink_DevRejoin( &rejoinInf );
-   \   000775                ; Setup parameters for call to function touchLink_DevRejoin
-   \   000775   741E         MOV       A,#0x1e
-   \   000777   12....       LCALL     ?XSTACK_DISP101_8
-   \   00077A   12....       LCALL     `??touchLink_DevRejoin::?relay`; Banked call to: touchLink_DevRejoin
+   \   00078F                ; Setup parameters for call to function touchLink_DevRejoin
+   \   00078F   741E         MOV       A,#0x1e
+   \   000791   12....       LCALL     ?XSTACK_DISP101_8
+   \   000794   12....       LCALL     `??touchLink_DevRejoin::?relay`; Banked call to: touchLink_DevRejoin
     958          #endif
     959              touchLink_FreeNwkParamList();
-   \   00077D                ; Setup parameters for call to function touchLink_FreeNwkParamList
-   \   00077D   12....       LCALL     `??touchLink_FreeNwkParamList::?relay`; Banked call to: touchLink_FreeNwkParamList
+   \   000797                ; Setup parameters for call to function touchLink_FreeNwkParamList
+   \   000797   12....       LCALL     `??touchLink_FreeNwkParamList::?relay`; Banked call to: touchLink_FreeNwkParamList
     960          
     961              // return unprocessed events
     962              return ( events ^ TOUCHLINK_JOIN_NWK_ATTEMPT_EVT );
-   \   000780   EE           MOV       A,R6
-   \   000781   6408         XRL       A,#0x8
-   \   000783   FA           MOV       R2,A
-   \   000784   EF           MOV       A,R7
-   \   000785   6400         XRL       A,#0x0
-   \   000787   FB           MOV       R3,A
-   \   000788   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   00079A   EE           MOV       A,R6
+   \   00079B   6408         XRL       A,#0x8
+   \   00079D   FA           MOV       R2,A
+   \   00079E   EF           MOV       A,R7
+   \   00079F   6400         XRL       A,#0x0
+   \   0007A1   FB           MOV       R3,A
+   \   0007A2   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
     963            }
     964          
     965            if ( events & TOUCHLINK_DISABLE_RX_EVT )
    \                     ??touchLinkInitiator_event_loop_41:
-   \   00078B   EE           MOV       A,R6
-   \   00078C   5400         ANL       A,#0x0
-   \   00078E   F8           MOV       R0,A
-   \   00078F   EF           MOV       A,R7
-   \   000790   5402         ANL       A,#0x2
-   \   000792   F9           MOV       R1,A
-   \   000793   E8           MOV       A,R0
-   \   000794   49           ORL       A,R1
-   \   000795   6023         JZ        ??touchLinkInitiator_event_loop_42
+   \   0007A5   EE           MOV       A,R6
+   \   0007A6   5400         ANL       A,#0x0
+   \   0007A8   F8           MOV       R0,A
+   \   0007A9   EF           MOV       A,R7
+   \   0007AA   5402         ANL       A,#0x2
+   \   0007AC   F9           MOV       R1,A
+   \   0007AD   E8           MOV       A,R0
+   \   0007AE   49           ORL       A,R1
+   \   0007AF   6023         JZ        ??touchLinkInitiator_event_loop_42
     966            {
     967              // We're not asked to join a network
     968              initiatorSetNwkToInitState();
-   \   000797                ; Setup parameters for call to function initiatorSetNwkToInitState
-   \   000797   12....       LCALL     `??initiatorSetNwkToInitState::?relay`; Banked call to: initiatorSetNwkToInitState
+   \   0007B1                ; Setup parameters for call to function initiatorSetNwkToInitState
+   \   0007B1   12....       LCALL     `??initiatorSetNwkToInitState::?relay`; Banked call to: initiatorSetNwkToInitState
     969          
     970              scanReqChannels = TOUCHLINK_SCAN_PRIMARY_CHANNELS;
-   \   00079A   90....       MOV       DPTR,#scanReqChannels
-   \   00079D   7401         MOV       A,#0x1
-   \   00079F   F0           MOVX      @DPTR,A
+   \   0007B4   90....       MOV       DPTR,#scanReqChannels
+   \   0007B7   7401         MOV       A,#0x1
+   \   0007B9   F0           MOVX      @DPTR,A
     971              numScanReqSent = 0;
-   \   0007A0   90....       MOV       DPTR,#numScanReqSent
-   \   0007A3   7400         MOV       A,#0x0
-   \   0007A5   F0           MOVX      @DPTR,A
+   \   0007BA   90....       MOV       DPTR,#numScanReqSent
+   \   0007BD   7400         MOV       A,#0x0
+   \   0007BF   F0           MOVX      @DPTR,A
     972              // Reset selected target
     973              if ( zTouchLinkNwkStartRtr == FALSE )
-   \   0007A6   90....       MOV       DPTR,#zTouchLinkNwkStartRtr
-   \   0007A9   E0           MOVX      A,@DPTR
-   \   0007AA   7003         JNZ       ??touchLinkInitiator_event_loop_43
+   \   0007C0   90....       MOV       DPTR,#zTouchLinkNwkStartRtr
+   \   0007C3   E0           MOVX      A,@DPTR
+   \   0007C4   7003         JNZ       ??touchLinkInitiator_event_loop_43
     974              {
     975                initiatorClearSelectedTarget();
-   \   0007AC                ; Setup parameters for call to function initiatorClearSelectedTarget
-   \   0007AC   12....       LCALL     `??initiatorClearSelectedTarget::?relay`; Banked call to: initiatorClearSelectedTarget
+   \   0007C6                ; Setup parameters for call to function initiatorClearSelectedTarget
+   \   0007C6   12....       LCALL     `??initiatorClearSelectedTarget::?relay`; Banked call to: initiatorClearSelectedTarget
     976              }
     977          
     978              // return unprocessed events
     979              return ( events ^ TOUCHLINK_DISABLE_RX_EVT );
    \                     ??touchLinkInitiator_event_loop_43:
-   \   0007AF   EE           MOV       A,R6
-   \   0007B0   6400         XRL       A,#0x0
-   \   0007B2   FA           MOV       R2,A
-   \   0007B3   EF           MOV       A,R7
-   \   0007B4   6402         XRL       A,#0x2
-   \   0007B6   FB           MOV       R3,A
-   \   0007B7   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   0007C9   EE           MOV       A,R6
+   \   0007CA   6400         XRL       A,#0x0
+   \   0007CC   FA           MOV       R2,A
+   \   0007CD   EF           MOV       A,R7
+   \   0007CE   6402         XRL       A,#0x2
+   \   0007D0   FB           MOV       R3,A
+   \   0007D1   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
     980            }
     981          
     982            if ( events & TOUCHLINK_W4_REJOIN_EVT )
    \                     ??touchLinkInitiator_event_loop_42:
-   \   0007BA   EE           MOV       A,R6
-   \   0007BB   5400         ANL       A,#0x0
-   \   0007BD   F8           MOV       R0,A
-   \   0007BE   EF           MOV       A,R7
-   \   0007BF   5404         ANL       A,#0x4
-   \   0007C1   F9           MOV       R1,A
-   \   0007C2   E8           MOV       A,R0
-   \   0007C3   49           ORL       A,R1
-   \   0007C4   600F         JZ        ??touchLinkInitiator_event_loop_44
+   \   0007D4   EE           MOV       A,R6
+   \   0007D5   5400         ANL       A,#0x0
+   \   0007D7   F8           MOV       R0,A
+   \   0007D8   EF           MOV       A,R7
+   \   0007D9   5404         ANL       A,#0x4
+   \   0007DB   F9           MOV       R1,A
+   \   0007DC   E8           MOV       A,R0
+   \   0007DD   49           ORL       A,R1
+   \   0007DE   600F         JZ        ??touchLinkInitiator_event_loop_44
     983            {
     984              // Stop joining cycle
     985              ZDApp_StopJoiningCycle();
-   \   0007C6                ; Setup parameters for call to function ZDApp_StopJoiningCycle
-   \   0007C6   12....       LCALL     `??ZDApp_StopJoiningCycle::?relay`; Banked call to: ZDApp_StopJoiningCycle
-   \   0007C9   E9           MOV       A,R1
+   \   0007E0                ; Setup parameters for call to function ZDApp_StopJoiningCycle
+   \   0007E0   12....       LCALL     `??ZDApp_StopJoiningCycle::?relay`; Banked call to: ZDApp_StopJoiningCycle
+   \   0007E3   E9           MOV       A,R1
     986          
     987              // return unprocessed events
     988              return ( events ^ TOUCHLINK_W4_REJOIN_EVT );
-   \   0007CA   EE           MOV       A,R6
-   \   0007CB   6400         XRL       A,#0x0
-   \   0007CD   FA           MOV       R2,A
-   \   0007CE   EF           MOV       A,R7
-   \   0007CF   6404         XRL       A,#0x4
-   \   0007D1   FB           MOV       R3,A
-   \   0007D2   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   0007E4   EE           MOV       A,R6
+   \   0007E5   6400         XRL       A,#0x0
+   \   0007E7   FA           MOV       R2,A
+   \   0007E8   EF           MOV       A,R7
+   \   0007E9   6404         XRL       A,#0x4
+   \   0007EB   FB           MOV       R3,A
+   \   0007EC   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
     989            }
     990          
     991            if ( events & TOUCHLINK_NOTIFY_APP_EVT )
    \                     ??touchLinkInitiator_event_loop_44:
-   \   0007D5   EE           MOV       A,R6
-   \   0007D6   5400         ANL       A,#0x0
-   \   0007D8   F8           MOV       R0,A
-   \   0007D9   EF           MOV       A,R7
-   \   0007DA   5408         ANL       A,#0x8
-   \   0007DC   F9           MOV       R1,A
-   \   0007DD   E8           MOV       A,R0
-   \   0007DE   49           ORL       A,R1
-   \   0007DF   7003         JNZ       $+5
-   \   0007E1   02....       LJMP      ??touchLinkInitiator_event_loop_45 & 0xFFFF
+   \   0007EF   EE           MOV       A,R6
+   \   0007F0   5400         ANL       A,#0x0
+   \   0007F2   F8           MOV       R0,A
+   \   0007F3   EF           MOV       A,R7
+   \   0007F4   5408         ANL       A,#0x8
+   \   0007F6   F9           MOV       R1,A
+   \   0007F7   E8           MOV       A,R0
+   \   0007F8   49           ORL       A,R1
+   \   0007F9   7003         JNZ       $+5
+   \   0007FB   02....       LJMP      ??touchLinkInitiator_event_loop_45 & 0xFFFF
     992            {
     993              ZDP_DeviceAnnce( NLME_GetShortAddr(), NLME_GetExtAddr(),
     994                               ZDO_Config_Node_Descriptor.CapabilityFlags, 0 );
-   \   0007E4                ; Setup parameters for call to function NLME_GetExtAddr
-   \   0007E4   12....       LCALL     `??NLME_GetExtAddr::?relay`; Banked call to: NLME_GetExtAddr
-   \   0007E7   8A..         MOV       ?V4,R2
-   \   0007E9   8B..         MOV       ?V5,R3
-   \   0007EB   85....       MOV       ?V0,?V4
-   \   0007EE   85....       MOV       ?V1,?V5
-   \   0007F1                ; Setup parameters for call to function NLME_GetShortAddr
-   \   0007F1   12....       LCALL     `??NLME_GetShortAddr::?relay`; Banked call to: NLME_GetShortAddr
-   \   0007F4   8A..         MOV       ?V4,R2
-   \   0007F6   8B..         MOV       ?V5,R3
-   \   0007F8   AA..         MOV       R2,?V4
-   \   0007FA   AB..         MOV       R3,?V5
-   \   0007FC                ; Setup parameters for call to function ZDP_DeviceAnnce
-   \   0007FC   75..00       MOV       ?V3,#0x0
-   \   0007FF   78..         MOV       R0,#?V3
-   \   000801   12....       LCALL     ?PUSH_XSTACK_I_ONE
-   \   000804   90....       MOV       DPTR,#ZDO_Config_Node_Descriptor + 2
-   \   000807   E0           MOVX      A,@DPTR
-   \   000808   F9           MOV       R1,A
-   \   000809   AC..         MOV       R4,?V0
-   \   00080B   AD..         MOV       R5,?V1
-   \   00080D   12....       LCALL     `??ZDP_DeviceAnnce::?relay`; Banked call to: ZDP_DeviceAnnce
-   \   000810   7401         MOV       A,#0x1
-   \   000812   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000815   E9           MOV       A,R1
+   \   0007FE                ; Setup parameters for call to function NLME_GetExtAddr
+   \   0007FE   12....       LCALL     `??NLME_GetExtAddr::?relay`; Banked call to: NLME_GetExtAddr
+   \   000801   8A..         MOV       ?V4,R2
+   \   000803   8B..         MOV       ?V5,R3
+   \   000805   85....       MOV       ?V0,?V4
+   \   000808   85....       MOV       ?V1,?V5
+   \   00080B                ; Setup parameters for call to function NLME_GetShortAddr
+   \   00080B   12....       LCALL     `??NLME_GetShortAddr::?relay`; Banked call to: NLME_GetShortAddr
+   \   00080E   8A..         MOV       ?V4,R2
+   \   000810   8B..         MOV       ?V5,R3
+   \   000812   AA..         MOV       R2,?V4
+   \   000814   AB..         MOV       R3,?V5
+   \   000816                ; Setup parameters for call to function ZDP_DeviceAnnce
+   \   000816   75..00       MOV       ?V3,#0x0
+   \   000819   78..         MOV       R0,#?V3
+   \   00081B   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   00081E   90....       MOV       DPTR,#ZDO_Config_Node_Descriptor + 2
+   \   000821   E0           MOVX      A,@DPTR
+   \   000822   F9           MOV       R1,A
+   \   000823   AC..         MOV       R4,?V0
+   \   000825   AD..         MOV       R5,?V1
+   \   000827   12....       LCALL     `??ZDP_DeviceAnnce::?relay`; Banked call to: ZDP_DeviceAnnce
+   \   00082A   7401         MOV       A,#0x1
+   \   00082C   12....       LCALL     ?DEALLOC_XSTACK8
+   \   00082F   E9           MOV       A,R1
     995              
     996              if ( selectedTarget.lastRssi > TOUCHLINK_WORST_RSSI )
-   \   000816   90....       MOV       DPTR,#selectedTarget + 53
-   \   000819   E0           MOVX      A,@DPTR
-   \   00081A   C3           CLR       C
-   \   00081B   94BB         SUBB      A,#-0x45
-   \   00081D   A2D2         MOV       C,0xD0 /* PSW */.2
-   \   00081F   65D0         XRL       A,PSW
-   \   000821   33           RLC       A
-   \   000822   4072         JC        ??touchLinkInitiator_event_loop_46
+   \   000830   90....       MOV       DPTR,#selectedTarget + 53
+   \   000833   E0           MOVX      A,@DPTR
+   \   000834   C3           CLR       C
+   \   000835   94BB         SUBB      A,#-0x45
+   \   000837   A2D2         MOV       C,0xD0 /* PSW */.2
+   \   000839   65D0         XRL       A,PSW
+   \   00083B   33           RLC       A
+   \   00083C   4072         JC        ??touchLinkInitiator_event_loop_46
     997              {
     998                epInfoRec_t rec;
     999                rec.nwkAddr = selectedTarget.newNwkAddr; // newly assigned network address
-   \   000824   90....       MOV       DPTR,#selectedTarget + 50
-   \   000827   E0           MOVX      A,@DPTR
-   \   000828   F8           MOV       R0,A
-   \   000829   A3           INC       DPTR
-   \   00082A   E0           MOVX      A,@DPTR
-   \   00082B   F9           MOV       R1,A
-   \   00082C   7402         MOV       A,#0x2
-   \   00082E   12....       LCALL     ?XSTACK_DISP0_8
-   \   000831   E8           MOV       A,R0
-   \   000832   F0           MOVX      @DPTR,A
-   \   000833   A3           INC       DPTR
-   \   000834   E9           MOV       A,R1
-   \   000835   F0           MOVX      @DPTR,A
+   \   00083E   90....       MOV       DPTR,#selectedTarget + 50
+   \   000841   E0           MOVX      A,@DPTR
+   \   000842   F8           MOV       R0,A
+   \   000843   A3           INC       DPTR
+   \   000844   E0           MOVX      A,@DPTR
+   \   000845   F9           MOV       R1,A
+   \   000846   7402         MOV       A,#0x2
+   \   000848   12....       LCALL     ?XSTACK_DISP0_8
+   \   00084B   E8           MOV       A,R0
+   \   00084C   F0           MOVX      @DPTR,A
+   \   00084D   A3           INC       DPTR
+   \   00084E   E9           MOV       A,R1
+   \   00084F   F0           MOVX      @DPTR,A
    1000                rec.endpoint = selectedTarget.scanRsp.deviceInfo.endpoint;
-   \   000836   90....       MOV       DPTR,#selectedTarget + 31
-   \   000839   E0           MOVX      A,@DPTR
-   \   00083A   C0E0         PUSH      A
-   \   00083C   7404         MOV       A,#0x4
-   \   00083E   12....       LCALL     ?XSTACK_DISP0_8
-   \   000841   D0E0         POP       A
-   \   000843   F0           MOVX      @DPTR,A
+   \   000850   90....       MOV       DPTR,#selectedTarget + 31
+   \   000853   E0           MOVX      A,@DPTR
+   \   000854   C0E0         PUSH      A
+   \   000856   7404         MOV       A,#0x4
+   \   000858   12....       LCALL     ?XSTACK_DISP0_8
+   \   00085B   D0E0         POP       A
+   \   00085D   F0           MOVX      @DPTR,A
    1001                rec.profileID = selectedTarget.scanRsp.deviceInfo.profileID;
-   \   000844   90....       MOV       DPTR,#selectedTarget + 32
-   \   000847   E0           MOVX      A,@DPTR
-   \   000848   F8           MOV       R0,A
-   \   000849   A3           INC       DPTR
-   \   00084A   E0           MOVX      A,@DPTR
-   \   00084B   F9           MOV       R1,A
-   \   00084C   7405         MOV       A,#0x5
-   \   00084E   12....       LCALL     ?XSTACK_DISP0_8
-   \   000851   E8           MOV       A,R0
-   \   000852   F0           MOVX      @DPTR,A
-   \   000853   A3           INC       DPTR
-   \   000854   E9           MOV       A,R1
-   \   000855   F0           MOVX      @DPTR,A
+   \   00085E   90....       MOV       DPTR,#selectedTarget + 32
+   \   000861   E0           MOVX      A,@DPTR
+   \   000862   F8           MOV       R0,A
+   \   000863   A3           INC       DPTR
+   \   000864   E0           MOVX      A,@DPTR
+   \   000865   F9           MOV       R1,A
+   \   000866   7405         MOV       A,#0x5
+   \   000868   12....       LCALL     ?XSTACK_DISP0_8
+   \   00086B   E8           MOV       A,R0
+   \   00086C   F0           MOVX      @DPTR,A
+   \   00086D   A3           INC       DPTR
+   \   00086E   E9           MOV       A,R1
+   \   00086F   F0           MOVX      @DPTR,A
    1002                rec.deviceID = selectedTarget.scanRsp.deviceInfo.deviceID;
-   \   000856   90....       MOV       DPTR,#selectedTarget + 34
-   \   000859   E0           MOVX      A,@DPTR
-   \   00085A   F8           MOV       R0,A
-   \   00085B   A3           INC       DPTR
-   \   00085C   E0           MOVX      A,@DPTR
-   \   00085D   F9           MOV       R1,A
-   \   00085E   7407         MOV       A,#0x7
-   \   000860   12....       LCALL     ?XSTACK_DISP0_8
-   \   000863   E8           MOV       A,R0
-   \   000864   F0           MOVX      @DPTR,A
-   \   000865   A3           INC       DPTR
-   \   000866   E9           MOV       A,R1
-   \   000867   F0           MOVX      @DPTR,A
+   \   000870   90....       MOV       DPTR,#selectedTarget + 34
+   \   000873   E0           MOVX      A,@DPTR
+   \   000874   F8           MOV       R0,A
+   \   000875   A3           INC       DPTR
+   \   000876   E0           MOVX      A,@DPTR
+   \   000877   F9           MOV       R1,A
+   \   000878   7407         MOV       A,#0x7
+   \   00087A   12....       LCALL     ?XSTACK_DISP0_8
+   \   00087D   E8           MOV       A,R0
+   \   00087E   F0           MOVX      @DPTR,A
+   \   00087F   A3           INC       DPTR
+   \   000880   E9           MOV       A,R1
+   \   000881   F0           MOVX      @DPTR,A
    1003                rec.version = selectedTarget.scanRsp.deviceInfo.version;
-   \   000868   90....       MOV       DPTR,#selectedTarget + 36
-   \   00086B   E0           MOVX      A,@DPTR
-   \   00086C   C0E0         PUSH      A
-   \   00086E   7409         MOV       A,#0x9
-   \   000870   12....       LCALL     ?XSTACK_DISP0_8
-   \   000873   D0E0         POP       A
-   \   000875   F0           MOVX      @DPTR,A
+   \   000882   90....       MOV       DPTR,#selectedTarget + 36
+   \   000885   E0           MOVX      A,@DPTR
+   \   000886   C0E0         PUSH      A
+   \   000888   7409         MOV       A,#0x9
+   \   00088A   12....       LCALL     ?XSTACK_DISP0_8
+   \   00088D   D0E0         POP       A
+   \   00088F   F0           MOVX      @DPTR,A
    1004                // Notify the application
    1005                if ( pfnNotifyAppCB )
-   \   000876   90....       MOV       DPTR,#pfnNotifyAppCB
-   \   000879   E0           MOVX      A,@DPTR
-   \   00087A   F8           MOV       R0,A
-   \   00087B   A3           INC       DPTR
-   \   00087C   E0           MOVX      A,@DPTR
-   \   00087D   F9           MOV       R1,A
-   \   00087E   E8           MOV       A,R0
-   \   00087F   49           ORL       A,R1
-   \   000880   6014         JZ        ??touchLinkInitiator_event_loop_46
+   \   000890   90....       MOV       DPTR,#pfnNotifyAppCB
+   \   000893   E0           MOVX      A,@DPTR
+   \   000894   F8           MOV       R0,A
+   \   000895   A3           INC       DPTR
+   \   000896   E0           MOVX      A,@DPTR
+   \   000897   F9           MOV       R1,A
+   \   000898   E8           MOV       A,R0
+   \   000899   49           ORL       A,R1
+   \   00089A   6014         JZ        ??touchLinkInitiator_event_loop_46
    1006                {
    1007                  (*pfnNotifyAppCB)( &rec );
-   \   000882                ; Setup parameters for indirect call
-   \   000882   7402         MOV       A,#0x2
-   \   000884   12....       LCALL     ?XSTACK_DISP101_8
-   \   000887   90....       MOV       DPTR,#pfnNotifyAppCB
-   \   00088A   E0           MOVX      A,@DPTR
-   \   00088B   F8           MOV       R0,A
-   \   00088C   A3           INC       DPTR
-   \   00088D   E0           MOVX      A,@DPTR
-   \   00088E   F583         MOV       DPH,A
-   \   000890   8882         MOV       DPL,R0
-   \   000892   12....       LCALL     ?CALL_IND
-   \   000895   E9           MOV       A,R1
+   \   00089C                ; Setup parameters for indirect call
+   \   00089C   7402         MOV       A,#0x2
+   \   00089E   12....       LCALL     ?XSTACK_DISP101_8
+   \   0008A1   90....       MOV       DPTR,#pfnNotifyAppCB
+   \   0008A4   E0           MOVX      A,@DPTR
+   \   0008A5   F8           MOV       R0,A
+   \   0008A6   A3           INC       DPTR
+   \   0008A7   E0           MOVX      A,@DPTR
+   \   0008A8   F583         MOV       DPH,A
+   \   0008AA   8882         MOV       DPL,R0
+   \   0008AC   12....       LCALL     ?CALL_IND
+   \   0008AF   E9           MOV       A,R1
    1008                }
    1009              }
    1010              // return unprocessed events
    1011              return ( events ^ TOUCHLINK_NOTIFY_APP_EVT );
    \                     ??touchLinkInitiator_event_loop_46:
-   \   000896   EE           MOV       A,R6
-   \   000897   6400         XRL       A,#0x0
-   \   000899   FA           MOV       R2,A
-   \   00089A   EF           MOV       A,R7
-   \   00089B   6408         XRL       A,#0x8
-   \   00089D   FB           MOV       R3,A
-   \   00089E   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   0008B0   EE           MOV       A,R6
+   \   0008B1   6400         XRL       A,#0x0
+   \   0008B3   FA           MOV       R2,A
+   \   0008B4   EF           MOV       A,R7
+   \   0008B5   6408         XRL       A,#0x8
+   \   0008B7   FB           MOV       R3,A
+   \   0008B8   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
    1012            }
    1013            
    1014            if ( events & TOUCHLINK_NWK_RTR_START_EVT )
    \                     ??touchLinkInitiator_event_loop_45:
-   \   0008A1   EE           MOV       A,R6
-   \   0008A2   5400         ANL       A,#0x0
-   \   0008A4   F8           MOV       R0,A
-   \   0008A5   EF           MOV       A,R7
-   \   0008A6   5410         ANL       A,#0x10
-   \   0008A8   F9           MOV       R1,A
-   \   0008A9   E8           MOV       A,R0
-   \   0008AA   49           ORL       A,R1
-   \   0008AB   7003         JNZ       $+5
-   \   0008AD   02....       LJMP      ??touchLinkInitiator_event_loop_47 & 0xFFFF
+   \   0008BB   EE           MOV       A,R6
+   \   0008BC   5400         ANL       A,#0x0
+   \   0008BE   F8           MOV       R0,A
+   \   0008BF   EF           MOV       A,R7
+   \   0008C0   5410         ANL       A,#0x10
+   \   0008C2   F9           MOV       R1,A
+   \   0008C3   E8           MOV       A,R0
+   \   0008C4   49           ORL       A,R1
+   \   0008C5   7003         JNZ       $+5
+   \   0008C7   02....       LJMP      ??touchLinkInitiator_event_loop_47 & 0xFFFF
    1015            {
    1016              uint16 nwkAddr = INVALID_NODE_ADDR;
-   \   0008B0   85..82       MOV       DPL,?XSP + 0
-   \   0008B3   85..83       MOV       DPH,?XSP + 1
-   \   0008B6   74FE         MOV       A,#-0x2
-   \   0008B8   F0           MOVX      @DPTR,A
-   \   0008B9   A3           INC       DPTR
-   \   0008BA   74FF         MOV       A,#-0x1
-   \   0008BC   F0           MOVX      @DPTR,A
+   \   0008CA   85..82       MOV       DPL,?XSP + 0
+   \   0008CD   85..83       MOV       DPH,?XSP + 1
+   \   0008D0   74FE         MOV       A,#-0x2
+   \   0008D2   F0           MOVX      @DPTR,A
+   \   0008D3   A3           INC       DPTR
+   \   0008D4   74FF         MOV       A,#-0x1
+   \   0008D6   F0           MOVX      @DPTR,A
    1017              
    1018              osal_nv_write( ZCD_NV_NIB, osal_offsetof( nwkIB_t, nwkDevAddress ),
    1019                             sizeof( uint16), &nwkAddr );
-   \   0008BD                ; Setup parameters for call to function osal_nv_write
-   \   0008BD   A8..         MOV       R0,?XSP + 0
-   \   0008BF   A9..         MOV       R1,?XSP + 1
-   \   0008C1   88..         MOV       ?V0,R0
-   \   0008C3   89..         MOV       ?V1,R1
-   \   0008C5   78..         MOV       R0,#?V0
-   \   0008C7   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0008CA   75..02       MOV       ?V0,#0x2
-   \   0008CD   75..00       MOV       ?V1,#0x0
-   \   0008D0   78..         MOV       R0,#?V0
-   \   0008D2   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   0008D5   7C14         MOV       R4,#0x14
-   \   0008D7   7D00         MOV       R5,#0x0
-   \   0008D9   7A21         MOV       R2,#0x21
-   \   0008DB   7B00         MOV       R3,#0x0
-   \   0008DD   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
-   \   0008E0   7404         MOV       A,#0x4
-   \   0008E2   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0008E5   E9           MOV       A,R1
+   \   0008D7                ; Setup parameters for call to function osal_nv_write
+   \   0008D7   A8..         MOV       R0,?XSP + 0
+   \   0008D9   A9..         MOV       R1,?XSP + 1
+   \   0008DB   88..         MOV       ?V0,R0
+   \   0008DD   89..         MOV       ?V1,R1
+   \   0008DF   78..         MOV       R0,#?V0
+   \   0008E1   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0008E4   75..02       MOV       ?V0,#0x2
+   \   0008E7   75..00       MOV       ?V1,#0x0
+   \   0008EA   78..         MOV       R0,#?V0
+   \   0008EC   12....       LCALL     ?PUSH_XSTACK_I_TWO
+   \   0008EF   7C14         MOV       R4,#0x14
+   \   0008F1   7D00         MOV       R5,#0x0
+   \   0008F3   7A21         MOV       R2,#0x21
+   \   0008F5   7B00         MOV       R3,#0x0
+   \   0008F7   12....       LCALL     `??osal_nv_write::?relay`; Banked call to: osal_nv_write
+   \   0008FA   7404         MOV       A,#0x4
+   \   0008FC   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0008FF   E9           MOV       A,R1
    1020              
    1021              // If the PAN Id, Extended PAN Id or Logical Channel are zero then
    1022              // determine each of these parameters
    1023              if ( !nwk_ExtPANIDValid( initiatorNwkParams.extendedPANID ) )
-   \   0008E6                ; Setup parameters for call to function nwk_ExtPANIDValid
-   \   0008E6   7A..         MOV       R2,#initiatorNwkParams & 0xff
-   \   0008E8   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
-   \   0008EA   12....       LCALL     `??nwk_ExtPANIDValid::?relay`; Banked call to: nwk_ExtPANIDValid
-   \   0008ED   E9           MOV       A,R1
-   \   0008EE   7009         JNZ       ??touchLinkInitiator_event_loop_48
+   \   000900                ; Setup parameters for call to function nwk_ExtPANIDValid
+   \   000900   7A..         MOV       R2,#initiatorNwkParams & 0xff
+   \   000902   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
+   \   000904   12....       LCALL     `??nwk_ExtPANIDValid::?relay`; Banked call to: nwk_ExtPANIDValid
+   \   000907   E9           MOV       A,R1
+   \   000908   7009         JNZ       ??touchLinkInitiator_event_loop_48
    1024              {
    1025                touchLink_GenerateRandNum( initiatorNwkParams.extendedPANID, Z_EXTADDR_LEN );
-   \   0008F0                ; Setup parameters for call to function touchLink_GenerateRandNum
-   \   0008F0   7908         MOV       R1,#0x8
-   \   0008F2   7A..         MOV       R2,#initiatorNwkParams & 0xff
-   \   0008F4   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
-   \   0008F6   12....       LCALL     `??touchLink_GenerateRandNum::?relay`; Banked call to: touchLink_GenerateRandNum
+   \   00090A                ; Setup parameters for call to function touchLink_GenerateRandNum
+   \   00090A   7908         MOV       R1,#0x8
+   \   00090C   7A..         MOV       R2,#initiatorNwkParams & 0xff
+   \   00090E   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
+   \   000910   12....       LCALL     `??touchLink_GenerateRandNum::?relay`; Banked call to: touchLink_GenerateRandNum
    1026              }
    1027          
    1028              if ( initiatorNwkParams.panId == 0 )
    \                     ??touchLinkInitiator_event_loop_48:
-   \   0008F9   90....       MOV       DPTR,#initiatorNwkParams + 26
-   \   0008FC   E0           MOVX      A,@DPTR
-   \   0008FD   F8           MOV       R0,A
-   \   0008FE   A3           INC       DPTR
-   \   0008FF   E0           MOVX      A,@DPTR
-   \   000900   F9           MOV       R1,A
-   \   000901   E8           MOV       A,R0
-   \   000902   49           ORL       A,R1
-   \   000903   700B         JNZ       ??touchLinkInitiator_event_loop_49
+   \   000913   90....       MOV       DPTR,#initiatorNwkParams + 26
+   \   000916   E0           MOVX      A,@DPTR
+   \   000917   F8           MOV       R0,A
+   \   000918   A3           INC       DPTR
+   \   000919   E0           MOVX      A,@DPTR
+   \   00091A   F9           MOV       R1,A
+   \   00091B   E8           MOV       A,R0
+   \   00091C   49           ORL       A,R1
+   \   00091D   700B         JNZ       ??touchLinkInitiator_event_loop_49
    1029              {
    1030                initiatorNwkParams.panId = osal_rand();
-   \   000905                ; Setup parameters for call to function osal_rand
-   \   000905   12....       LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
-   \   000908   90....       MOV       DPTR,#initiatorNwkParams + 26
-   \   00090B   EA           MOV       A,R2
-   \   00090C   F0           MOVX      @DPTR,A
-   \   00090D   A3           INC       DPTR
-   \   00090E   EB           MOV       A,R3
-   \   00090F   F0           MOVX      @DPTR,A
+   \   00091F                ; Setup parameters for call to function osal_rand
+   \   00091F   12....       LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
+   \   000922   90....       MOV       DPTR,#initiatorNwkParams + 26
+   \   000925   EA           MOV       A,R2
+   \   000926   F0           MOVX      @DPTR,A
+   \   000927   A3           INC       DPTR
+   \   000928   EB           MOV       A,R3
+   \   000929   F0           MOVX      @DPTR,A
    1031              }
    1032          
    1033              if ( initiatorNwkParams.logicalChannel == 0 )
    \                     ??touchLinkInitiator_event_loop_49:
-   \   000910   90....       MOV       DPTR,#initiatorNwkParams + 25
-   \   000913   E0           MOVX      A,@DPTR
-   \   000914   7008         JNZ       ??touchLinkInitiator_event_loop_50
+   \   00092A   90....       MOV       DPTR,#initiatorNwkParams + 25
+   \   00092D   E0           MOVX      A,@DPTR
+   \   00092E   7008         JNZ       ??touchLinkInitiator_event_loop_50
    1034              {
    1035                initiatorNwkParams.logicalChannel = touchLink_GetRandPrimaryChannel();
-   \   000916                ; Setup parameters for call to function touchLink_GetRandPrimaryChannel
-   \   000916   12....       LCALL     `??touchLink_GetRandPrimaryChannel::?relay`; Banked call to: touchLink_GetRandPrimaryChannel
-   \   000919   E9           MOV       A,R1
-   \   00091A   90....       MOV       DPTR,#initiatorNwkParams + 25
-   \   00091D   F0           MOVX      @DPTR,A
+   \   000930                ; Setup parameters for call to function touchLink_GetRandPrimaryChannel
+   \   000930   12....       LCALL     `??touchLink_GetRandPrimaryChannel::?relay`; Banked call to: touchLink_GetRandPrimaryChannel
+   \   000933   E9           MOV       A,R1
+   \   000934   90....       MOV       DPTR,#initiatorNwkParams + 25
+   \   000937   F0           MOVX      @DPTR,A
    1036              }
    1037          
    1038              if ( selectedTarget.scanRsp.touchLinkAddressAssignment)
    \                     ??touchLinkInitiator_event_loop_50:
-   \   00091E   90....       MOV       DPTR,#selectedTarget + 7
-   \   000921   E0           MOVX      A,@DPTR
-   \   000922   F8           MOV       R0,A
-   \   000923   A3           INC       DPTR
-   \   000924   E0           MOVX      A,@DPTR
-   \   000925   F9           MOV       R1,A
-   \   000926   E8           MOV       A,R0
-   \   000927   C3           CLR       C
-   \   000928   13           RRC       A
-   \   000929   5401         ANL       A,#0x1
-   \   00092B   A2E0         MOV       C,0xE0 /* A   */.0
-   \   00092D   5007         JNC       ??touchLinkInitiator_event_loop_51
+   \   000938   90....       MOV       DPTR,#selectedTarget + 7
+   \   00093B   E0           MOVX      A,@DPTR
+   \   00093C   F8           MOV       R0,A
+   \   00093D   A3           INC       DPTR
+   \   00093E   E0           MOVX      A,@DPTR
+   \   00093F   F9           MOV       R1,A
+   \   000940   E8           MOV       A,R0
+   \   000941   C3           CLR       C
+   \   000942   13           RRC       A
+   \   000943   5401         ANL       A,#0x1
+   \   000945   A2E0         MOV       C,0xE0 /* A   */.0
+   \   000947   5007         JNC       ??touchLinkInitiator_event_loop_51
    1039              {
    1040                touchLink_GerFreeRanges( &initiatorNwkParams );
-   \   00092F                ; Setup parameters for call to function touchLink_GerFreeRanges
-   \   00092F   7A..         MOV       R2,#initiatorNwkParams & 0xff
-   \   000931   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
-   \   000933   12....       LCALL     `??touchLink_GerFreeRanges::?relay`; Banked call to: touchLink_GerFreeRanges
+   \   000949                ; Setup parameters for call to function touchLink_GerFreeRanges
+   \   000949   7A..         MOV       R2,#initiatorNwkParams & 0xff
+   \   00094B   7B..         MOV       R3,#(initiatorNwkParams >> 8) & 0xff
+   \   00094D   12....       LCALL     `??touchLink_GerFreeRanges::?relay`; Banked call to: touchLink_GerFreeRanges
    1041              }
    1042          
    1043              // Perform Network Discovery to verify our new network parameters uniqeness
    1044              touchLink_PerformNetworkDisc( (uint32)1 << initiatorNwkParams.logicalChannel );
    \                     ??touchLinkInitiator_event_loop_51:
-   \   000936                ; Setup parameters for call to function touchLink_PerformNetworkDisc
-   \   000936   75..01       MOV       ?V4,#0x1
-   \   000939   75..00       MOV       ?V5,#0x0
-   \   00093C   75..00       MOV       ?V6,#0x0
-   \   00093F   75..00       MOV       ?V7,#0x0
-   \   000942   90....       MOV       DPTR,#initiatorNwkParams + 25
-   \   000945   E0           MOVX      A,@DPTR
-   \   000946   78..         MOV       R0,#?V4
-   \   000948   12....       LCALL     ?L_SHL
-   \   00094B   AA..         MOV       R2,?V4
-   \   00094D   AB..         MOV       R3,?V5
-   \   00094F   AC..         MOV       R4,?V6
-   \   000951   AD..         MOV       R5,?V7
-   \   000953   12....       LCALL     `??touchLink_PerformNetworkDisc::?relay`; Banked call to: touchLink_PerformNetworkDisc
+   \   000950                ; Setup parameters for call to function touchLink_PerformNetworkDisc
+   \   000950   75..01       MOV       ?V4,#0x1
+   \   000953   75..00       MOV       ?V5,#0x0
+   \   000956   75..00       MOV       ?V6,#0x0
+   \   000959   75..00       MOV       ?V7,#0x0
+   \   00095C   90....       MOV       DPTR,#initiatorNwkParams + 25
+   \   00095F   E0           MOVX      A,@DPTR
+   \   000960   78..         MOV       R0,#?V4
+   \   000962   12....       LCALL     ?L_SHL
+   \   000965   AA..         MOV       R2,?V4
+   \   000967   AB..         MOV       R3,?V5
+   \   000969   AC..         MOV       R4,?V6
+   \   00096B   AD..         MOV       R5,?V7
+   \   00096D   12....       LCALL     `??touchLink_PerformNetworkDisc::?relay`; Banked call to: touchLink_PerformNetworkDisc
    1045          
    1046              // return unprocessed events
    1047              return ( events ^ TOUCHLINK_NWK_RTR_START_EVT );
-   \   000956   EE           MOV       A,R6
-   \   000957   6400         XRL       A,#0x0
-   \   000959   FA           MOV       R2,A
-   \   00095A   EF           MOV       A,R7
-   \   00095B   6410         XRL       A,#0x10
-   \   00095D   FB           MOV       R3,A
-   \   00095E   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
+   \   000970   EE           MOV       A,R6
+   \   000971   6400         XRL       A,#0x0
+   \   000973   FA           MOV       R2,A
+   \   000974   EF           MOV       A,R7
+   \   000975   6410         XRL       A,#0x10
+   \   000977   FB           MOV       R3,A
+   \   000978   02....       LJMP      ??touchLinkInitiator_event_loop_4 & 0xFFFF
    1048            }
    1049            
    1050            if ( events & TOUCHLINK_NWK_FORMATION_SUCCESS_EVT )
    \                     ??touchLinkInitiator_event_loop_47:
-   \   000961   EE           MOV       A,R6
-   \   000962   5400         ANL       A,#0x0
-   \   000964   F8           MOV       R0,A
-   \   000965   EF           MOV       A,R7
-   \   000966   5420         ANL       A,#0x20
-   \   000968   F9           MOV       R1,A
-   \   000969   E8           MOV       A,R0
-   \   00096A   49           ORL       A,R1
-   \   00096B   604C         JZ        ??touchLinkInitiator_event_loop_52
+   \   00097B   EE           MOV       A,R6
+   \   00097C   5400         ANL       A,#0x0
+   \   00097E   F8           MOV       R0,A
+   \   00097F   EF           MOV       A,R7
+   \   000980   5420         ANL       A,#0x20
+   \   000982   F9           MOV       R1,A
+   \   000983   E8           MOV       A,R0
+   \   000984   49           ORL       A,R1
+   \   000985   604C         JZ        ??touchLinkInitiator_event_loop_52
    1051            {
    1052              if( bdbCommissioningProcedureState.bdbCommissioningState == BDB_COMMISSIONING_STATE_TL )
-   \   00096D   90....       MOV       DPTR,#bdbCommissioningProcedureState
-   \   000970   E0           MOVX      A,@DPTR
-   \   000971   6402         XRL       A,#0x2
-   \   000973   703A         JNZ       ??touchLinkInitiator_event_loop_53
+   \   000987   90....       MOV       DPTR,#bdbCommissioningProcedureState
+   \   00098A   E0           MOVX      A,@DPTR
+   \   00098B   6402         XRL       A,#0x2
+   \   00098D   703A         JNZ       ??touchLinkInitiator_event_loop_53
    1053              {
    1054                bdbTLNwkJoinRsp_t *pRsp = &(rxRsp.nwkJoinRsp);
-   \   000975   75....       MOV       ?V0,#rxRsp & 0xff
-   \   000978   75....       MOV       ?V1,#(rxRsp >> 8) & 0xff
+   \   00098F   75....       MOV       ?V0,#rxRsp & 0xff
+   \   000992   75....       MOV       ?V1,#(rxRsp >> 8) & 0xff
    1055                pRsp->status = TOUCHLINK_NETWORK_JOIN_RSP_STATUS_FAILURE;
-   \   00097B   85..82       MOV       DPL,?V0
-   \   00097E   85..83       MOV       DPH,?V1
-   \   000981   A3           INC       DPTR
-   \   000982   A3           INC       DPTR
-   \   000983   A3           INC       DPTR
-   \   000984   A3           INC       DPTR
-   \   000985   7401         MOV       A,#0x1
-   \   000987   F0           MOVX      @DPTR,A
+   \   000995   85..82       MOV       DPL,?V0
+   \   000998   85..83       MOV       DPH,?V1
+   \   00099B   A3           INC       DPTR
+   \   00099C   A3           INC       DPTR
+   \   00099D   A3           INC       DPTR
+   \   00099E   A3           INC       DPTR
+   \   00099F   7401         MOV       A,#0x1
+   \   0009A1   F0           MOVX      @DPTR,A
    1056                
    1057                // Tune to the channel that the Scan Response was heard on
    1058                touchLink_SetChannel( selectedTarget.rxChannel );
-   \   000988                ; Setup parameters for call to function touchLink_SetChannel
-   \   000988   90....       MOV       DPTR,#selectedTarget + 52
-   \   00098B   E0           MOVX      A,@DPTR
-   \   00098C   F9           MOV       R1,A
-   \   00098D   12....       LCALL     `??touchLink_SetChannel::?relay`; Banked call to: touchLink_SetChannel
+   \   0009A2                ; Setup parameters for call to function touchLink_SetChannel
+   \   0009A2   90....       MOV       DPTR,#selectedTarget + 52
+   \   0009A5   E0           MOVX      A,@DPTR
+   \   0009A6   F9           MOV       R1,A
+   \   0009A7   12....       LCALL     `??touchLink_SetChannel::?relay`; Banked call to: touchLink_SetChannel
    1059                
    1060                if ( _NIB.nwkUpdateId <= selectedTarget.scanRsp.nwkUpdateId )
-   \   000990   90....       MOV       DPTR,#_NIB + 109
-   \   000993   E0           MOVX      A,@DPTR
-   \   000994   F8           MOV       R0,A
-   \   000995   90....       MOV       DPTR,#selectedTarget + 23
-   \   000998   E0           MOVX      A,@DPTR
-   \   000999   C3           CLR       C
-   \   00099A   98           SUBB      A,R0
-   \   00099B   4008         JC        ??touchLinkInitiator_event_loop_54
+   \   0009AA   90....       MOV       DPTR,#_NIB + 109
+   \   0009AD   E0           MOVX      A,@DPTR
+   \   0009AE   F8           MOV       R0,A
+   \   0009AF   90....       MOV       DPTR,#selectedTarget + 23
+   \   0009B2   E0           MOVX      A,@DPTR
+   \   0009B3   C3           CLR       C
+   \   0009B4   98           SUBB      A,R0
+   \   0009B5   4008         JC        ??touchLinkInitiator_event_loop_54
    1061                {
    1062                  NLME_SetUpdateID( selectedTarget.scanRsp.nwkUpdateId );
-   \   00099D                ; Setup parameters for call to function NLME_SetUpdateID
-   \   00099D   90....       MOV       DPTR,#selectedTarget + 23
-   \   0009A0   E0           MOVX      A,@DPTR
-   \   0009A1   F9           MOV       R1,A
-   \   0009A2   12....       LCALL     `??NLME_SetUpdateID::?relay`; Banked call to: NLME_SetUpdateID
+   \   0009B7                ; Setup parameters for call to function NLME_SetUpdateID
+   \   0009B7   90....       MOV       DPTR,#selectedTarget + 23
+   \   0009BA   E0           MOVX      A,@DPTR
+   \   0009BB   F9           MOV       R1,A
+   \   0009BC   12....       LCALL     `??NLME_SetUpdateID::?relay`; Banked call to: NLME_SetUpdateID
    1063                }
    1064                // Ask the target to join our network
    1065                bdb_Initiator_SendNwkJoinReq( );
    \                     ??touchLinkInitiator_event_loop_54:
-   \   0009A5                ; Setup parameters for call to function bdb_Initiator_SendNwkJoinReq
-   \   0009A5   12....       LCALL     `??bdb_Initiator_SendNwkJoinReq::?relay`; Banked call to: bdb_Initiator_SendNwkJoinReq
-   \   0009A8   E9           MOV       A,R1
+   \   0009BF                ; Setup parameters for call to function bdb_Initiator_SendNwkJoinReq
+   \   0009BF   12....       LCALL     `??bdb_Initiator_SendNwkJoinReq::?relay`; Banked call to: bdb_Initiator_SendNwkJoinReq
+   \   0009C2   E9           MOV       A,R1
    1066                zTouchLinkNwkStartRtr = FALSE;
-   \   0009A9   90....       MOV       DPTR,#zTouchLinkNwkStartRtr
-   \   0009AC   7400         MOV       A,#0x0
-   \   0009AE   F0           MOVX      @DPTR,A
+   \   0009C3   90....       MOV       DPTR,#zTouchLinkNwkStartRtr
+   \   0009C6   7400         MOV       A,#0x0
+   \   0009C8   F0           MOVX      @DPTR,A
    1067              }
    1068              return ( events ^ TOUCHLINK_NWK_FORMATION_SUCCESS_EVT );
    \                     ??touchLinkInitiator_event_loop_53:
-   \   0009AF   EE           MOV       A,R6
-   \   0009B0   6400         XRL       A,#0x0
-   \   0009B2   FA           MOV       R2,A
-   \   0009B3   EF           MOV       A,R7
-   \   0009B4   6420         XRL       A,#0x20
-   \   0009B6   FB           MOV       R3,A
-   \   0009B7   8047         SJMP      ??touchLinkInitiator_event_loop_4
+   \   0009C9   EE           MOV       A,R6
+   \   0009CA   6400         XRL       A,#0x0
+   \   0009CC   FA           MOV       R2,A
+   \   0009CD   EF           MOV       A,R7
+   \   0009CE   6420         XRL       A,#0x20
+   \   0009D0   FB           MOV       R3,A
+   \   0009D1   8047         SJMP      ??touchLinkInitiator_event_loop_4
    1069            }
    1070          
    1071            if ( events & TOUCHLINK_NWK_DISC_CNF_EVT )
    \                     ??touchLinkInitiator_event_loop_52:
-   \   0009B9   EE           MOV       A,R6
-   \   0009BA   A2E0         MOV       C,0xE0 /* A   */.0
-   \   0009BC   5017         JNC       ??touchLinkInitiator_event_loop_55
+   \   0009D3   EE           MOV       A,R6
+   \   0009D4   A2E0         MOV       C,0xE0 /* A   */.0
+   \   0009D6   5017         JNC       ??touchLinkInitiator_event_loop_55
    1072            {
    1073          #if ZSTACK_ROUTER_BUILD
    1074              if ( bdbAttributes.bdbNodeIsOnANetwork == FALSE )
@@ -3326,74 +3341,74 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    1082          #else
    1083              // Join to the chosen network
    1084              osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_JOIN_NWK_ATTEMPT_EVT );
-   \   0009BE                ; Setup parameters for call to function osal_set_event
-   \   0009BE   7A08         MOV       R2,#0x8
-   \   0009C0   7B00         MOV       R3,#0x0
-   \   0009C2   90....       MOV       DPTR,#touchLinkInitiator_TaskID
-   \   0009C5   E0           MOVX      A,@DPTR
-   \   0009C6   F9           MOV       R1,A
-   \   0009C7   12....       LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
-   \   0009CA   E9           MOV       A,R1
+   \   0009D8                ; Setup parameters for call to function osal_set_event
+   \   0009D8   7A08         MOV       R2,#0x8
+   \   0009DA   7B00         MOV       R3,#0x0
+   \   0009DC   90....       MOV       DPTR,#touchLinkInitiator_TaskID
+   \   0009DF   E0           MOVX      A,@DPTR
+   \   0009E0   F9           MOV       R1,A
+   \   0009E1   12....       LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
+   \   0009E4   E9           MOV       A,R1
    1085          #endif
    1086              // return unprocessed events
    1087              return ( events ^ TOUCHLINK_NWK_DISC_CNF_EVT );
-   \   0009CB   EE           MOV       A,R6
-   \   0009CC   6401         XRL       A,#0x1
-   \   0009CE   FA           MOV       R2,A
-   \   0009CF   EF           MOV       A,R7
-   \   0009D0   6400         XRL       A,#0x0
-   \   0009D2   FB           MOV       R3,A
-   \   0009D3   802B         SJMP      ??touchLinkInitiator_event_loop_4
+   \   0009E5   EE           MOV       A,R6
+   \   0009E6   6401         XRL       A,#0x1
+   \   0009E8   FA           MOV       R2,A
+   \   0009E9   EF           MOV       A,R7
+   \   0009EA   6400         XRL       A,#0x0
+   \   0009EC   FB           MOV       R3,A
+   \   0009ED   802B         SJMP      ??touchLinkInitiator_event_loop_4
    1088            }
    1089          
    1090            if ( events & TOUCHLINK_TRANS_LIFETIME_EXPIRED_EVT )
    \                     ??touchLinkInitiator_event_loop_55:
-   \   0009D5   EE           MOV       A,R6
-   \   0009D6   5410         ANL       A,#0x10
-   \   0009D8   6022         JZ        ??touchLinkInitiator_event_loop_56
+   \   0009EF   EE           MOV       A,R6
+   \   0009F0   5410         ANL       A,#0x10
+   \   0009F2   6022         JZ        ??touchLinkInitiator_event_loop_56
    1091            {
    1092              touchLinkTransID = 0;
-   \   0009DA   90....       MOV       DPTR,#touchLinkTransID
-   \   0009DD   7400         MOV       A,#0x0
-   \   0009DF   F0           MOVX      @DPTR,A
-   \   0009E0   A3           INC       DPTR
-   \   0009E1   7400         MOV       A,#0x0
-   \   0009E3   F0           MOVX      @DPTR,A
-   \   0009E4   A3           INC       DPTR
-   \   0009E5   7400         MOV       A,#0x0
-   \   0009E7   F0           MOVX      @DPTR,A
-   \   0009E8   A3           INC       DPTR
-   \   0009E9   7400         MOV       A,#0x0
-   \   0009EB   F0           MOVX      @DPTR,A
+   \   0009F4   90....       MOV       DPTR,#touchLinkTransID
+   \   0009F7   7400         MOV       A,#0x0
+   \   0009F9   F0           MOVX      @DPTR,A
+   \   0009FA   A3           INC       DPTR
+   \   0009FB   7400         MOV       A,#0x0
+   \   0009FD   F0           MOVX      @DPTR,A
+   \   0009FE   A3           INC       DPTR
+   \   0009FF   7400         MOV       A,#0x0
+   \   000A01   F0           MOVX      @DPTR,A
+   \   000A02   A3           INC       DPTR
+   \   000A03   7400         MOV       A,#0x0
+   \   000A05   F0           MOVX      @DPTR,A
    1093              initiatorClearSelectedTarget();
-   \   0009EC                ; Setup parameters for call to function initiatorClearSelectedTarget
-   \   0009EC   12....       LCALL     `??initiatorClearSelectedTarget::?relay`; Banked call to: initiatorClearSelectedTarget
+   \   000A06                ; Setup parameters for call to function initiatorClearSelectedTarget
+   \   000A06   12....       LCALL     `??initiatorClearSelectedTarget::?relay`; Banked call to: initiatorClearSelectedTarget
    1094              initiatorSetNwkToInitState();
-   \   0009EF                ; Setup parameters for call to function initiatorSetNwkToInitState
-   \   0009EF   12....       LCALL     `??initiatorSetNwkToInitState::?relay`; Banked call to: initiatorSetNwkToInitState
+   \   000A09                ; Setup parameters for call to function initiatorSetNwkToInitState
+   \   000A09   12....       LCALL     `??initiatorSetNwkToInitState::?relay`; Banked call to: initiatorSetNwkToInitState
    1095          
    1096              // return unprocessed events
    1097              return ( events ^ TOUCHLINK_TRANS_LIFETIME_EXPIRED_EVT );
-   \   0009F2   EE           MOV       A,R6
-   \   0009F3   6410         XRL       A,#0x10
-   \   0009F5   FA           MOV       R2,A
-   \   0009F6   EF           MOV       A,R7
-   \   0009F7   6400         XRL       A,#0x0
-   \   0009F9   FB           MOV       R3,A
-   \   0009FA   8004         SJMP      ??touchLinkInitiator_event_loop_4
+   \   000A0C   EE           MOV       A,R6
+   \   000A0D   6410         XRL       A,#0x10
+   \   000A0F   FA           MOV       R2,A
+   \   000A10   EF           MOV       A,R7
+   \   000A11   6400         XRL       A,#0x0
+   \   000A13   FB           MOV       R3,A
+   \   000A14   8004         SJMP      ??touchLinkInitiator_event_loop_4
    1098            }
    1099          
    1100            // If reach here, the events are unknown
    1101            // Discard or make more handlers
    1102            return 0;
    \                     ??touchLinkInitiator_event_loop_56:
-   \   0009FC   7A00         MOV       R2,#0x0
-   \   0009FE   7B00         MOV       R3,#0x0
+   \   000A16   7A00         MOV       R2,#0x0
+   \   000A18   7B00         MOV       R3,#0x0
    \                     ??touchLinkInitiator_event_loop_4:
-   \   000A00   7457         MOV       A,#0x57
-   \   000A02   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000A05   7F0C         MOV       R7,#0xc
-   \   000A07   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   000A1A   7457         MOV       A,#0x57
+   \   000A1C   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000A1F   7F0C         MOV       R7,#0xc
+   \   000A21   02....       LJMP      ?BANKED_LEAVE_XDATA
    1103          }
    1104          
    1105          /*********************************************************************
@@ -7025,10 +7040,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   00004E   12....       LCALL     `??NLME_SetPollRate::?relay`; Banked call to: NLME_SetPollRate
    1933              savedPollRate = POLL_RATE;
    \   000051   90....       MOV       DPTR,#savedPollRate
-   \   000054   74E8         MOV       A,#-0x18
+   \   000054   7400         MOV       A,#0x0
    \   000056   F0           MOVX      @DPTR,A
    \   000057   A3           INC       DPTR
-   \   000058   7403         MOV       A,#0x3
+   \   000058   7400         MOV       A,#0x0
    \   00005A   F0           MOVX      @DPTR,A
    1934            }
    1935          
@@ -7061,7 +7076,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   000077   12....       LCALL     `??NLME_SetQueuedPollRate::?relay`; Banked call to: NLME_SetQueuedPollRate
    1939              savedQueuedPollRate = QUEUED_POLL_RATE;
    \   00007A   90....       MOV       DPTR,#savedQueuedPollRate
-   \   00007D   7464         MOV       A,#0x64
+   \   00007D   7400         MOV       A,#0x0
    \   00007F   F0           MOVX      @DPTR,A
    \   000080   A3           INC       DPTR
    \   000081   7400         MOV       A,#0x0
@@ -7097,7 +7112,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   0000A0   12....       LCALL     `??NLME_SetResponseRate::?relay`; Banked call to: NLME_SetResponseRate
    1945              savedResponsePollRate = RESPONSE_POLL_RATE;
    \   0000A3   90....       MOV       DPTR,#savedResponsePollRate
-   \   0000A6   7464         MOV       A,#0x64
+   \   0000A6   7400         MOV       A,#0x0
    \   0000A8   F0           MOVX      @DPTR,A
    \   0000A9   A3           INC       DPTR
    \   0000AA   7400         MOV       A,#0x0
@@ -8980,6 +8995,10 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   000000   03000000     DD 3
 
    \                                 In  segment XDATA_ROM_C, align 1
+   \                     __Constant_3e8:
+   \   000000   E8030000     DD 1000
+
+   \                                 In  segment XDATA_ROM_C, align 1
    \                     __Constant_30d4:
    \   000000   D4300000     DD 12500
 
@@ -9181,6 +9200,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
         0    107   -> AddrMgrEntryUpdate
         0    107   -> NLME_GetExtAddr
         0    107   -> NLME_GetShortAddr
+        0    107   -> NLME_SetPollRate
         0    107   -> NLME_SetUpdateID
         0    107   -> ZDApp_StopJoiningCycle
         0    108   -> ZDP_DeviceAnnce
@@ -9253,6 +9273,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
        4  __Constant_3
        4  __Constant_30d4
        4  __Constant_32
+       4  __Constant_3e8
        4  __Constant_7d0
        4  __Constant_fa
       12  bcastAddr
@@ -9310,21 +9331,21 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
      205  touchLinkInitiator_SendEPInfo
      277  touchLinkInitiator_StartDevDisc
        1  touchLinkInitiator_TaskID
-    2570  touchLinkInitiator_event_loop
+    2596  touchLinkInitiator_event_loop
      777  touchLink_InitiatorSendScanRsp
      204  -- Other
 
  
- 9 906 bytes in segment BANKED_CODE
+ 9 932 bytes in segment BANKED_CODE
    204 bytes in segment BANK_RELAYS
     27 bytes in segment XDATA_I
     27 bytes in segment XDATA_ID
-    69 bytes in segment XDATA_ROM_C
+    73 bytes in segment XDATA_ROM_C
    219 bytes in segment XDATA_Z
  
    231 bytes of CODE     memory
-    33 bytes of CONST    memory (+ 36 bytes shared)
- 9 906 bytes of HUGECODE memory
+    33 bytes of CONST    memory (+ 40 bytes shared)
+ 9 932 bytes of HUGECODE memory
    246 bytes of XDATA    memory
 
 Errors: none
