@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              31/Jul/2020  18:54:57
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              05/Aug/2020  22:50:57
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW375B.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW1245.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
@@ -231,7 +231,7 @@
         PUBWEAK __Constant_30d4
         PUBWEAK __Constant_32
         PUBWEAK __Constant_3e8
-        PUBWEAK __Constant_7d0
+        PUBWEAK __Constant_c8
         PUBWEAK __Constant_fa
         PUBLIC bdb_Initiator_SendNwkJoinReq
         FUNCTION bdb_Initiator_SendNwkJoinReq,021203H
@@ -4236,7 +4236,7 @@ touchLinkInitiator_event_loop:
 ??touchLinkInitiator_event_loop_10:
         MOV       DPTR,#selectedTarget + 53
         MOVX      A,@DPTR
-        XRL       A,#0xba
+        XRL       A,#0xe2
         JNZ       $+5
         LJMP      ??touchLinkInitiator_event_loop_11 & 0xFFFF
         MOV       DPTR,#selectedTarget + 31
@@ -5097,7 +5097,7 @@ touchLinkInitiator_event_loop:
 //  833       // target to start the network correctly. Join the target afterwards.
 //  834       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_START_NWK_EVT, BDBCTL_MIN_STARTUP_DELAY_TIME );
         ; Setup parameters for call to function osal_start_timerEx
-        MOV       DPTR,#__Constant_7d0
+        MOV       DPTR,#__Constant_c8
         LCALL     ?PUSH_XSTACK8_X_FOUR
           CFI CFA_XSP16 add(XSP16, 111)
         MOV       R2,#0x4
@@ -5288,7 +5288,7 @@ touchLinkInitiator_event_loop:
 //  875       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_NOTIFY_APP_EVT,
 //  876                           BDBCTL_MIN_STARTUP_DELAY_TIME );
         ; Setup parameters for call to function osal_start_timerEx
-        MOV       DPTR,#__Constant_7d0
+        MOV       DPTR,#__Constant_c8
         LCALL     ?PUSH_XSTACK8_X_FOUR
           CFI CFA_XSP16 add(XSP16, 111)
         MOV       R2,#0x0
@@ -5762,7 +5762,7 @@ touchLinkInitiator_event_loop:
         MOV       DPTR,#selectedTarget + 53
         MOVX      A,@DPTR
         CLR       C
-        SUBB      A,#-0x45
+        SUBB      A,#-0x1d
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
@@ -7838,7 +7838,7 @@ initiatorScanReqCB:
 // 1354   if( ( rssi > TOUCHLINK_WORST_RSSI ) && ( pReq->touchLinkInitiator == TRUE ) )
         MOV       A,?V0
         CLR       C
-        SUBB      A,#-0x45
+        SUBB      A,#-0x1d
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
@@ -8578,7 +8578,7 @@ initiatorNwkJoinReqCB:
 // 1489     // Notify our task to join the new network
 // 1490     osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_NWK_JOIN_IND_EVT, BDBCTL_MIN_STARTUP_DELAY_TIME );
         ; Setup parameters for call to function osal_start_timerEx
-        MOV       DPTR,#__Constant_7d0
+        MOV       DPTR,#__Constant_c8
         LCALL     ?PUSH_XSTACK8_X_FOUR
           CFI CFA_XSP16 add(XSP16, 34)
         MOV       R2,#0x2
@@ -9076,6 +9076,17 @@ initiatorScanRspCB:
         ARGFRAME XSTACK, 23, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
+        FUNCALL initiatorScanRspCB, printf
+        LOCFRAME ISTACK, 0, STACK
+        LOCFRAME PSTACK, 0, STACK
+        LOCFRAME XSTACK, 23, STACK
+        LOCFRAME IOVERLAY, 0, STATIC
+        LOCFRAME DOVERLAY, 0, STATIC
+        ARGFRAME ISTACK, 0, STACK
+        ARGFRAME PSTACK, 0, STACK
+        ARGFRAME XSTACK, 23, STACK
+        ARGFRAME IOVERLAY, 0, STATIC
+        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL initiatorScanRspCB, ZMacGetReq
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -9211,7 +9222,25 @@ initiatorScanRspCB:
         LCALL     `??touchLink_GetMsgRssi::?relay`; Banked call to: touchLink_GetMsgRssi
         MOV       A,R1
         MOV       ?V1,A
-// 1584     if ( pfnSelectDiscDevCB != NULL )
+// 1584 
+// 1585     printf("%d\n", rssi );
+        ; Setup parameters for call to function printf
+        MOV       A,?V1
+        MOV       ?V6,A
+        RLC       A
+        SUBB      A,0xE0 /* A   */
+        MOV       ?V7,A
+        MOV       R0,#?V6
+        LCALL     ?PUSH_XSTACK_I_TWO
+          CFI CFA_XSP16 add(XSP16, 23)
+        MOV       R2,#`?<Constant "%d\\n">` & 0xff
+        MOV       R3,#(`?<Constant "%d\\n">` >> 8) & 0xff
+        LCALL     `??printf::?relay`; Banked call to: printf
+        MOV       A,#0x2
+        LCALL     ?DEALLOC_XSTACK8
+          CFI CFA_XSP16 add(XSP16, 21)
+// 1586 
+// 1587     if ( pfnSelectDiscDevCB != NULL )
         MOV       DPTR,#pfnSelectDiscDevCB
         MOVX      A,@DPTR
         MOV       R0,A
@@ -9221,8 +9250,8 @@ initiatorScanRspCB:
         MOV       A,R0
         ORL       A,R1
         JZ        ??initiatorScanRspCB_1
-// 1585     {
-// 1586       selectThisTarget = pfnSelectDiscDevCB( pRsp, rssi );
+// 1588     {
+// 1589       selectThisTarget = pfnSelectDiscDevCB( pRsp, rssi );
         ; Setup parameters for indirect call
         MOV       R1,?V1
         MOV       A,R6
@@ -9240,19 +9269,19 @@ initiatorScanRspCB:
         MOV       A,R1
         MOV       ?V0,A
         SJMP      ??initiatorScanRspCB_2
-// 1587     }
-// 1588     // Default selection - according to RSSI
-// 1589     else if ( rssi > TOUCHLINK_WORST_RSSI )
+// 1590     }
+// 1591     // Default selection - according to RSSI
+// 1592     else if ( rssi > TOUCHLINK_WORST_RSSI )
 ??initiatorScanRspCB_1:
         MOV       A,?V1
         CLR       C
-        SUBB      A,#-0x45
+        SUBB      A,#-0x1d
         MOV       C,0xD0 /* PSW */.2
         XRL       A,PSW
         RLC       A
         JC        ??initiatorScanRspCB_2
-// 1590     {
-// 1591       if ( ( rssi + pRsp->rssiCorrection ) > selectedTarget.lastRssi )
+// 1593     {
+// 1594       if ( ( rssi + pRsp->rssiCorrection ) > selectedTarget.lastRssi )
         MOV       DPTR,#selectedTarget + 53
         MOVX      A,@DPTR
         MOV       R2,A
@@ -9288,45 +9317,45 @@ initiatorScanRspCB:
         XRL       A,PSW
         RLC       A
         JNC       ??initiatorScanRspCB_2
-// 1592       {
-// 1593         // Better RSSI, select this target
-// 1594         selectThisTarget = TRUE;
+// 1595       {
+// 1596         // Better RSSI, select this target
+// 1597         selectThisTarget = TRUE;
         MOV       ?V0,#0x1
-// 1595       }
-// 1596     }
-// 1597     
-// 1598     if ( selectThisTarget )
+// 1598       }
+// 1599     }
+// 1600     
+// 1601     if ( selectThisTarget )
 ??initiatorScanRspCB_2:
         MOV       A,?V0
         JNZ       $+5
         LJMP      ??initiatorScanRspCB_3 & 0xFFFF
-// 1599     {
-// 1600       selectedTarget.scanRsp = *pRsp;
+// 1602     {
+// 1603       selectedTarget.scanRsp = *pRsp;
         MOV       DPL,R6
         MOV       DPH,R7
         MOV       R4,#selectedTarget & 0xff
         MOV       R5,#(selectedTarget >> 8) & 0xff
         MOV       A,#0x26
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1601       selectedTarget.lastRssi = rssi;
+// 1604       selectedTarget.lastRssi = rssi;
         MOV       A,?V1
         MOV       DPTR,#selectedTarget + 53
         MOVX      @DPTR,A
-// 1602       selectedTarget.srcAddr = *srcAddr;
+// 1605       selectedTarget.srcAddr = *srcAddr;
         MOV       DPL,?V2
         MOV       DPH,?V3
         MOV       R4,#(selectedTarget + 38) & 0xff
         MOV       R5,#((selectedTarget + 38) >> 8) & 0xff
         MOV       A,#0xc
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1603       selectedTarget.srcAddr.panId = 0xFFFF;
+// 1606       selectedTarget.srcAddr.panId = 0xFFFF;
         MOV       DPTR,#selectedTarget + 48
         MOV       A,#-0x1
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#-0x1
         MOVX      @DPTR,A
-// 1604       touchLinkResponseID = pRsp->responseID;
+// 1607       touchLinkResponseID = pRsp->responseID;
         MOV       A,R6
         ADD       A,#0xb
         MOV       DPL,A
@@ -9336,13 +9365,14 @@ initiatorScanRspCB:
         LCALL     ?XLOAD_R0123
         MOV       DPTR,#touchLinkResponseID
         LCALL     ?XSTORE_R0123
-// 1605       touchLinkTransID = pRsp->transID;
+// 1608       touchLinkTransID = pRsp->transID;
         MOV       DPL,R6
         MOV       DPH,R7
         LCALL     ?XLOAD_R0123
         MOV       DPTR,#touchLinkTransID
         LCALL     ?XSTORE_R0123
-// 1606       printf("%d\n", pRsp->logicalChannel );
+// 1609 
+// 1610       printf("%d\n", pRsp->logicalChannel );
         ; Setup parameters for call to function printf
         MOV       A,R6
         ADD       A,#0x18
@@ -9362,17 +9392,17 @@ initiatorScanRspCB:
         MOV       A,#0x2
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 21)
-// 1607 
-// 1608       // Remember channel we heard back this scan response on
-// 1609       ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));
+// 1611 
+// 1612       // Remember channel we heard back this scan response on
+// 1613       ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));
         ; Setup parameters for call to function ZMacGetReq
         MOV       R2,#(selectedTarget + 52) & 0xff
         MOV       R3,#((selectedTarget + 52) >> 8) & 0xff
         MOV       R1,#-0x1f
         LCALL     `??ZMacGetReq::?relay`; Banked call to: ZMacGetReq
         MOV       A,R1
-// 1610 
-// 1611       if ( pRsp->numSubDevices > 1 )
+// 1614 
+// 1615       if ( pRsp->numSubDevices > 1 )
         MOV       A,R6
         ADD       A,#0x1d
         MOV       DPL,A
@@ -9383,28 +9413,28 @@ initiatorScanRspCB:
         CLR       C
         SUBB      A,#0x2
         JC        ??initiatorScanRspCB_4
-// 1612       {
-// 1613         selectedTarget.scanRsp.deviceInfo.endpoint = DEV_INFO_INVALID_EP;
+// 1616       {
+// 1617         selectedTarget.scanRsp.deviceInfo.endpoint = DEV_INFO_INVALID_EP;
         MOV       DPTR,#selectedTarget + 31
         MOV       A,#-0x2
         MOVX      @DPTR,A
-// 1614 
-// 1615         bdbTLDeviceInfoReq_t devInfoReq;
-// 1616         devInfoReq.transID = pRsp->transID;
+// 1618 
+// 1619         bdbTLDeviceInfoReq_t devInfoReq;
+// 1620         devInfoReq.transID = pRsp->transID;
         MOV       DPL,R6
         MOV       DPH,R7
         LCALL     ?XLOAD_R0123
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         LCALL     ?XSTORE_R0123
-// 1617         devInfoReq.startIndex = 0;
+// 1621         devInfoReq.startIndex = 0;
         MOV       A,#0x4
         LCALL     ?XSTACK_DISP0_8
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 1618 
-// 1619         return bdbTL_Send_DeviceInfoReq( TOUCHLINK_INTERNAL_ENDPOINT, srcAddr,
-// 1620                                     &devInfoReq, initiatorSeqNum++ );
+// 1622 
+// 1623         return bdbTL_Send_DeviceInfoReq( TOUCHLINK_INTERNAL_ENDPOINT, srcAddr,
+// 1624                                     &devInfoReq, initiatorSeqNum++ );
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
         MOV       R0,A
@@ -9428,10 +9458,10 @@ initiatorScanRspCB:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 21)
         SJMP      ??initiatorScanRspCB_5
-// 1621       }
-// 1622         
-// 1623       // add new node to the list
-// 1624       pCurr = bdb_AddRespondentNode( &pRespondentHead, NULL );
+// 1625       }
+// 1626         
+// 1627       // add new node to the list
+// 1628       pCurr = bdb_AddRespondentNode( &pRespondentHead, NULL );
 ??initiatorScanRspCB_4:
         ; Setup parameters for call to function bdb_AddRespondentNode
         MOV       R4,#0x0
@@ -9443,13 +9473,13 @@ initiatorScanRspCB:
         MOV       ?V7,R3
         MOV       ?V4,?V6
         MOV       ?V5,?V7
-// 1625       
-// 1626       if ( pCurr != NULL )
+// 1629       
+// 1630       if ( pCurr != NULL )
         MOV       A,?V4
         ORL       A,?V5
         JZ        ??initiatorScanRspCB_3
-// 1627       {
-// 1628         pCurr->data.endPoint = pRsp->deviceInfo.endpoint;
+// 1631       {
+// 1632         pCurr->data.endPoint = pRsp->deviceInfo.endpoint;
         MOV       A,R6
         ADD       A,#0x1f
         MOV       DPL,A
@@ -9473,7 +9503,7 @@ initiatorScanRspCB:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 1629         pCurr->data.panId = srcAddr->panId;
+// 1633         pCurr->data.panId = srcAddr->panId;
         MOV       DPL,?V2
         MOV       DPH,?V3
         INC       DPTR
@@ -9508,15 +9538,15 @@ initiatorScanRspCB:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 1630       }
-// 1631     }
-// 1632     return ( ZSuccess );
+// 1634       }
+// 1635     }
+// 1636     return ( ZSuccess );
 ??initiatorScanRspCB_3:
         MOV       R1,#0x0
         SJMP      ??initiatorScanRspCB_5
-// 1633   }
-// 1634 
-// 1635   return ( ZFailure );
+// 1637   }
+// 1638 
+// 1639   return ( ZFailure );
 ??initiatorScanRspCB_0:
         MOV       R1,#0x1
 ??initiatorScanRspCB_5:
@@ -9525,29 +9555,29 @@ initiatorScanRspCB:
           CFI CFA_XSP16 add(XSP16, 16)
         MOV       R7,#0x8
         LJMP      ?BANKED_LEAVE_XDATA
-// 1636 }
+// 1640 }
           CFI EndBlock cfiBlock20
-// 1637 
-// 1638 /*********************************************************************
-// 1639  * @fn      initiatorDeviceInfoRspCB
-// 1640  *
-// 1641  * @brief   This callback is called to process a Device Information
-// 1642  *          Response command.
-// 1643  *          If sub-device is selected, selectedTarget data is updated.
+// 1641 
+// 1642 /*********************************************************************
+// 1643  * @fn      initiatorDeviceInfoRspCB
 // 1644  *
-// 1645  * @param   srcAddr - sender's address
-// 1646  * @param   pRsp - parsed command
-// 1647  *
-// 1648  * @return  ZStatus_t
-// 1649  */
+// 1645  * @brief   This callback is called to process a Device Information
+// 1646  *          Response command.
+// 1647  *          If sub-device is selected, selectedTarget data is updated.
+// 1648  *
+// 1649  * @param   srcAddr - sender's address
+// 1650  * @param   pRsp - parsed command
+// 1651  *
+// 1652  * @return  ZStatus_t
+// 1653  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1650 static ZStatus_t initiatorDeviceInfoRspCB( afAddrType_t *srcAddr, bdbTLDeviceInfoRsp_t *pRsp )
+// 1654 static ZStatus_t initiatorDeviceInfoRspCB( afAddrType_t *srcAddr, bdbTLDeviceInfoRsp_t *pRsp )
 initiatorDeviceInfoRspCB:
           CFI Block cfiBlock21 Using cfiCommon0
           CFI Function initiatorDeviceInfoRspCB
         CODE
-// 1651 {
+// 1655 {
         FUNCALL initiatorDeviceInfoRspCB, touchLink_IsValidTransID
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -9653,10 +9683,10 @@ initiatorDeviceInfoRspCB:
         MOV       R6,A
         MOV       A,R5
         MOV       R7,A
-// 1652   bdbFindingBindingRespondent_t *pCurr;
-// 1653   
-// 1654   if ( touchLink_IsValidTransID( pRsp->transID )
-// 1655        && ( srcAddr->addr.shortAddr == selectedTarget.srcAddr.addr.shortAddr ) )
+// 1656   bdbFindingBindingRespondent_t *pCurr;
+// 1657   
+// 1658   if ( touchLink_IsValidTransID( pRsp->transID )
+// 1659        && ( srcAddr->addr.shortAddr == selectedTarget.srcAddr.addr.shortAddr ) )
         ; Setup parameters for call to function touchLink_IsValidTransID
         MOV       DPL,R6
         MOV       DPH,R7
@@ -9682,9 +9712,9 @@ initiatorDeviceInfoRspCB:
 ??initiatorDeviceInfoRspCB_1:
         JZ        $+5
         LJMP      ??initiatorDeviceInfoRspCB_0 & 0xFFFF
-// 1656   {
-// 1657     uint8 i;
-// 1658     uint8 selectedIdx = pRsp->cnt;
+// 1660   {
+// 1661     uint8 i;
+// 1662     uint8 selectedIdx = pRsp->cnt;
         MOV       DPL,R6
         MOV       DPH,R7
         INC       DPTR
@@ -9695,14 +9725,14 @@ initiatorDeviceInfoRspCB:
         INC       DPTR
         MOVX      A,@DPTR
         MOV       ?V1,A
-// 1659     bdbTLScanRsp_t tmpInfo = selectedTarget.scanRsp;
+// 1663     bdbTLScanRsp_t tmpInfo = selectedTarget.scanRsp;
         MOV       DPTR,#selectedTarget
         MOV       R4,?XSP + 0
         MOV       R5,?XSP + 1
         MOV       A,#0x26
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1660 
-// 1661     for ( i = 0; i < pRsp->cnt; ++i )
+// 1664 
+// 1665     for ( i = 0; i < pRsp->cnt; ++i )
         MOV       ?V0,#0x0
 ??initiatorDeviceInfoRspCB_2:
         MOV       DPL,R6
@@ -9720,8 +9750,8 @@ initiatorDeviceInfoRspCB:
         SUBB      A,R0
         JC        $+5
         LJMP      ??initiatorDeviceInfoRspCB_3 & 0xFFFF
-// 1662     {
-// 1663       if ( pfnSelectDiscDevCB != NULL )
+// 1666     {
+// 1667       if ( pfnSelectDiscDevCB != NULL )
         MOV       DPTR,#pfnSelectDiscDevCB
         MOVX      A,@DPTR
         MOV       R0,A
@@ -9731,8 +9761,8 @@ initiatorDeviceInfoRspCB:
         MOV       A,R0
         ORL       A,R1
         JZ        ??initiatorDeviceInfoRspCB_4
-// 1664       {
-// 1665         tmpInfo.deviceInfo = pRsp->devInfoRec[i].deviceInfo;
+// 1668       {
+// 1669         tmpInfo.deviceInfo = pRsp->devInfoRec[i].deviceInfo;
         MOV       A,?V0
         MOV       R0,A
         MOV       R1,#0x0
@@ -9776,7 +9806,7 @@ initiatorDeviceInfoRspCB:
           CFI CFA_SP SP+0
         MOV       A,#0x7
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1666         if ( pfnSelectDiscDevCB( &tmpInfo, selectedTarget.lastRssi ) )
+// 1670         if ( pfnSelectDiscDevCB( &tmpInfo, selectedTarget.lastRssi ) )
         ; Setup parameters for indirect call
         MOV       DPTR,#selectedTarget + 53
         MOVX      A,@DPTR
@@ -9793,17 +9823,17 @@ initiatorDeviceInfoRspCB:
         LCALL     ?CALL_IND
         MOV       A,R1
         JZ        ??initiatorDeviceInfoRspCB_5
-// 1667         {
-// 1668           selectedIdx = i;
+// 1671         {
+// 1672           selectedIdx = i;
         MOV       ?V1,?V0
         SJMP      ??initiatorDeviceInfoRspCB_5
-// 1669           // no break here to allow cycling through all sub-devices
-// 1670         }
-// 1671       }
-// 1672       else
-// 1673       {
-// 1674         if ( ( pRsp->devInfoRec[i].deviceInfo.profileID == TOUCHLINK_PROFILE_ID ) ||
-// 1675              ( pRsp->devInfoRec[i].deviceInfo.profileID == Z3_PROFILE_ID ) )
+// 1673           // no break here to allow cycling through all sub-devices
+// 1674         }
+// 1675       }
+// 1676       else
+// 1677       {
+// 1678         if ( ( pRsp->devInfoRec[i].deviceInfo.profileID == TOUCHLINK_PROFILE_ID ) ||
+// 1679              ( pRsp->devInfoRec[i].deviceInfo.profileID == Z3_PROFILE_ID ) )
 ??initiatorDeviceInfoRspCB_4:
         MOV       A,?V0
         MOV       R0,A
@@ -9879,19 +9909,19 @@ initiatorDeviceInfoRspCB:
         XRL       A,#0x1
 ??initiatorDeviceInfoRspCB_8:
         JNZ       ??initiatorDeviceInfoRspCB_5
-// 1676         {
-// 1677           selectedIdx = i;
+// 1680         {
+// 1681           selectedIdx = i;
 ??initiatorDeviceInfoRspCB_7:
         MOV       ?V1,?V0
-// 1678           break; // first match
+// 1682           break; // first match
         SJMP      ??initiatorDeviceInfoRspCB_3
-// 1679         }
-// 1680       }
-// 1681     }
+// 1683         }
+// 1684       }
+// 1685     }
 ??initiatorDeviceInfoRspCB_5:
         INC       ?V0
         LJMP      ??initiatorDeviceInfoRspCB_2 & 0xFFFF
-// 1682     if ( selectedIdx < pRsp->cnt )
+// 1686     if ( selectedIdx < pRsp->cnt )
 ??initiatorDeviceInfoRspCB_3:
         MOV       DPL,R6
         MOV       DPH,R7
@@ -9908,10 +9938,10 @@ initiatorDeviceInfoRspCB:
         SUBB      A,R0
         JC        $+5
         LJMP      ??initiatorDeviceInfoRspCB_9 & 0xFFFF
-// 1683     {
-// 1684       // NOTE - the original scan response device info is overwritten with the
-// 1685       // selected sub-device info, to complete the data required for the application.
-// 1686       selectedTarget.scanRsp.deviceInfo = pRsp->devInfoRec[selectedIdx].deviceInfo;
+// 1687     {
+// 1688       // NOTE - the original scan response device info is overwritten with the
+// 1689       // selected sub-device info, to complete the data required for the application.
+// 1690       selectedTarget.scanRsp.deviceInfo = pRsp->devInfoRec[selectedIdx].deviceInfo;
         MOV       A,?V1
         MOV       R0,A
         MOV       R1,#0x0
@@ -9945,8 +9975,8 @@ initiatorDeviceInfoRspCB:
         MOV       R5,#((selectedTarget + 31) >> 8) & 0xff
         MOV       A,#0x7
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1687       
-// 1688       for ( i = 0; i < pRsp->cnt; ++i )
+// 1691       
+// 1692       for ( i = 0; i < pRsp->cnt; ++i )
         MOV       ?V0,#0x0
 ??initiatorDeviceInfoRspCB_10:
         MOV       DPL,R6
@@ -9964,9 +9994,9 @@ initiatorDeviceInfoRspCB:
         SUBB      A,R0
         JC        $+5
         LJMP      ??initiatorDeviceInfoRspCB_11 & 0xFFFF
-// 1689       {
-// 1690         if ( ( pRsp->devInfoRec[i].deviceInfo.profileID == TOUCHLINK_PROFILE_ID ) ||
-// 1691              ( pRsp->devInfoRec[i].deviceInfo.profileID == Z3_PROFILE_ID ) )
+// 1693       {
+// 1694         if ( ( pRsp->devInfoRec[i].deviceInfo.profileID == TOUCHLINK_PROFILE_ID ) ||
+// 1695              ( pRsp->devInfoRec[i].deviceInfo.profileID == Z3_PROFILE_ID ) )
         MOV       A,?V0
         MOV       R0,A
         MOV       R1,#0x0
@@ -10042,9 +10072,9 @@ initiatorDeviceInfoRspCB:
 ??initiatorDeviceInfoRspCB_14:
         JZ        $+5
         LJMP      ??initiatorDeviceInfoRspCB_15 & 0xFFFF
-// 1692         {
-// 1693           // add new node to the list
-// 1694           pCurr = bdb_AddRespondentNode( &pRespondentHead, NULL );
+// 1696         {
+// 1697           // add new node to the list
+// 1698           pCurr = bdb_AddRespondentNode( &pRespondentHead, NULL );
 ??initiatorDeviceInfoRspCB_13:
         ; Setup parameters for call to function bdb_AddRespondentNode
         MOV       R4,#0x0
@@ -10056,14 +10086,14 @@ initiatorDeviceInfoRspCB:
         MOV       ?V7,R3
         MOV       ?V2,?V6
         MOV       ?V3,?V7
-// 1695           
-// 1696           if ( pCurr != NULL )
+// 1699           
+// 1700           if ( pCurr != NULL )
         MOV       A,?V2
         ORL       A,?V3
         JNZ       $+5
         LJMP      ??initiatorDeviceInfoRspCB_15 & 0xFFFF
-// 1697           {
-// 1698             osal_memset(pCurr, 0x00, sizeof(bdbFindingBindingRespondent_t));
+// 1701           {
+// 1702             osal_memset(pCurr, 0x00, sizeof(bdbFindingBindingRespondent_t));
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x11
         MOV       R5,#0x0
@@ -10071,7 +10101,7 @@ initiatorDeviceInfoRspCB:
         MOV       R2,?V2
         MOV       R3,?V3
         LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-// 1699             pCurr->data.endPoint = pRsp->devInfoRec[i].deviceInfo.endpoint;
+// 1703             pCurr->data.endPoint = pRsp->devInfoRec[i].deviceInfo.endpoint;
         MOV       A,?V0
         MOV       R0,A
         MOV       R1,#0x0
@@ -10118,7 +10148,7 @@ initiatorDeviceInfoRspCB:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 1700             pCurr->data.panId = srcAddr->panId;
+// 1704             pCurr->data.panId = srcAddr->panId;
         MOV       DPL,?V4
         MOV       DPH,?V5
         INC       DPTR
@@ -10153,7 +10183,7 @@ initiatorDeviceInfoRspCB:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 1701             osal_cpyExtAddr(selectedTargetIEEEAddr, pRsp->devInfoRec[i].ieeeAddr);
+// 1705             osal_cpyExtAddr(selectedTargetIEEEAddr, pRsp->devInfoRec[i].ieeeAddr);
         ; Setup parameters for call to function sAddrExtCpy
         MOV       A,?V0
         MOV       R0,A
@@ -10187,33 +10217,33 @@ initiatorDeviceInfoRspCB:
         MOV       R2,#selectedTargetIEEEAddr & 0xff
         MOV       R3,#(selectedTargetIEEEAddr >> 8) & 0xff
         LCALL     `??sAddrExtCpy::?relay`; Banked call to: sAddrExtCpy
-// 1702           }
-// 1703         }
-// 1704       }
+// 1706           }
+// 1707         }
+// 1708       }
 ??initiatorDeviceInfoRspCB_15:
         INC       ?V0
         LJMP      ??initiatorDeviceInfoRspCB_10 & 0xFFFF
-// 1705     }
-// 1706     else
-// 1707     {
-// 1708       // no sub-device of the currently selected device was selected.
-// 1709       // clear selection
-// 1710       initiatorClearSelectedTarget();
+// 1709     }
+// 1710     else
+// 1711     {
+// 1712       // no sub-device of the currently selected device was selected.
+// 1713       // clear selection
+// 1714       initiatorClearSelectedTarget();
 ??initiatorDeviceInfoRspCB_9:
         ; Setup parameters for call to function initiatorClearSelectedTarget
         LCALL     `??initiatorClearSelectedTarget::?relay`; Banked call to: initiatorClearSelectedTarget
-// 1711       bdb_zclRespondentListClean( &pRespondentHead );
+// 1715       bdb_zclRespondentListClean( &pRespondentHead );
         ; Setup parameters for call to function bdb_zclRespondentListClean
         MOV       R2,#pRespondentHead & 0xff
         MOV       R3,#(pRespondentHead >> 8) & 0xff
         LCALL     `??bdb_zclRespondentListClean::?relay`; Banked call to: bdb_zclRespondentListClean
-// 1712     }
-// 1713     return ( ZSuccess );
+// 1716     }
+// 1717     return ( ZSuccess );
 ??initiatorDeviceInfoRspCB_11:
         MOV       R1,#0x0
         SJMP      ??initiatorDeviceInfoRspCB_16
-// 1714   }
-// 1715   return ( ZFailure );
+// 1718   }
+// 1719   return ( ZFailure );
 ??initiatorDeviceInfoRspCB_0:
         MOV       R1,#0x1
 ??initiatorDeviceInfoRspCB_16:
@@ -10222,27 +10252,27 @@ initiatorDeviceInfoRspCB:
           CFI CFA_XSP16 add(XSP16, 16)
         MOV       R7,#0x8
         LJMP      ?BANKED_LEAVE_XDATA
-// 1716 }
+// 1720 }
           CFI EndBlock cfiBlock21
-// 1717 
-// 1718 /*********************************************************************
-// 1719  * @fn      initiatorNwkStartRspCB
-// 1720  *
-// 1721  * @brief   This callback is called to process a Network Start Response command.
-// 1722  *
-// 1723  * @param   srcAddr - sender's address
-// 1724  * @param   pRsp - parsed command
-// 1725  *
-// 1726  * @return  ZStatus_t
-// 1727  */
+// 1721 
+// 1722 /*********************************************************************
+// 1723  * @fn      initiatorNwkStartRspCB
+// 1724  *
+// 1725  * @brief   This callback is called to process a Network Start Response command.
+// 1726  *
+// 1727  * @param   srcAddr - sender's address
+// 1728  * @param   pRsp - parsed command
+// 1729  *
+// 1730  * @return  ZStatus_t
+// 1731  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1728 static ZStatus_t initiatorNwkStartRspCB( afAddrType_t *srcAddr, bdbTLNwkStartRsp_t *pRsp )
+// 1732 static ZStatus_t initiatorNwkStartRspCB( afAddrType_t *srcAddr, bdbTLNwkStartRsp_t *pRsp )
 initiatorNwkStartRspCB:
           CFI Block cfiBlock22 Using cfiCommon0
           CFI Function initiatorNwkStartRspCB
         CODE
-// 1729 {
+// 1733 {
         FUNCALL initiatorNwkStartRspCB, touchLink_IsValidTransID
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -10300,7 +10330,7 @@ initiatorNwkStartRspCB:
         MOV       R7,A
         MOV       ?V0,R4
         MOV       ?V1,R5
-// 1730   if ( touchLink_IsValidTransID( pRsp->transID ) == FALSE )
+// 1734   if ( touchLink_IsValidTransID( pRsp->transID ) == FALSE )
         ; Setup parameters for call to function touchLink_IsValidTransID
         MOV       DPL,?V0
         MOV       DPH,?V1
@@ -10308,13 +10338,13 @@ initiatorNwkStartRspCB:
         LCALL     `??touchLink_IsValidTransID::?relay`; Banked call to: touchLink_IsValidTransID
         MOV       A,R1
         JNZ       ??initiatorNwkStartRspCB_0
-// 1731   {
-// 1732     return ( ZFailure );
+// 1735   {
+// 1736     return ( ZFailure );
         MOV       R1,#0x1
         SJMP      ??initiatorNwkStartRspCB_1
-// 1733   }
-// 1734   // Make sure we didn't timeout waiting for this response
-// 1735   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT ) )
+// 1737   }
+// 1738   // Make sure we didn't timeout waiting for this response
+// 1739   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT ) )
 ??initiatorNwkStartRspCB_0:
         ; Setup parameters for call to function osal_get_timeoutEx
         MOV       R2,#-0x80
@@ -10328,18 +10358,18 @@ initiatorNwkStartRspCB:
         ORL       A,R4
         ORL       A,R5
         JZ        ??initiatorNwkStartRspCB_2
-// 1736   {
-// 1737     // Save the Network Start Response for later
-// 1738     rxRsp.nwkStartRsp = *pRsp;
+// 1740   {
+// 1741     // Save the Network Start Response for later
+// 1742     rxRsp.nwkStartRsp = *pRsp;
         MOV       DPL,?V0
         MOV       DPH,?V1
         MOV       R4,#rxRsp & 0xff
         MOV       R5,#(rxRsp >> 8) & 0xff
         MOV       A,#0x11
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1739 
-// 1740     // No need to wait longer
-// 1741     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT );  
+// 1743 
+// 1744     // No need to wait longer
+// 1745     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT );  
         ; Setup parameters for call to function osal_set_event
         MOV       R2,#-0x80
         MOV       R3,#0x0
@@ -10348,36 +10378,36 @@ initiatorNwkStartRspCB:
         MOV       R1,A
         LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
         MOV       A,R1
-// 1742   }
-// 1743 
-// 1744   return ( ZSuccess );
+// 1746   }
+// 1747 
+// 1748   return ( ZSuccess );
 ??initiatorNwkStartRspCB_2:
         MOV       R1,#0x0
 ??initiatorNwkStartRspCB_1:
         MOV       R7,#0x2
         LJMP      ?BANKED_LEAVE_XDATA
-// 1745 }
+// 1749 }
           CFI EndBlock cfiBlock22
-// 1746 
-// 1747 /*********************************************************************
-// 1748  * @fn      initiatorNwkJoinRtrRspCB
-// 1749  *
-// 1750  * @brief   This callback is called to process a Network Join Router
-// 1751  *          Response command.
-// 1752  *
-// 1753  * @param   srcAddr - sender's address
-// 1754  * @param   pRsp - parsed command
-// 1755  *
-// 1756  * @return  ZStatus_t
-// 1757  */
+// 1750 
+// 1751 /*********************************************************************
+// 1752  * @fn      initiatorNwkJoinRtrRspCB
+// 1753  *
+// 1754  * @brief   This callback is called to process a Network Join Router
+// 1755  *          Response command.
+// 1756  *
+// 1757  * @param   srcAddr - sender's address
+// 1758  * @param   pRsp - parsed command
+// 1759  *
+// 1760  * @return  ZStatus_t
+// 1761  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1758 static ZStatus_t initiatorNwkJoinRtrRspCB( afAddrType_t *srcAddr, bdbTLNwkJoinRsp_t *pRsp )
+// 1762 static ZStatus_t initiatorNwkJoinRtrRspCB( afAddrType_t *srcAddr, bdbTLNwkJoinRsp_t *pRsp )
 initiatorNwkJoinRtrRspCB:
           CFI Block cfiBlock23 Using cfiCommon0
           CFI Function initiatorNwkJoinRtrRspCB
         CODE
-// 1759 {
+// 1763 {
         FUNCALL initiatorNwkJoinRtrRspCB, touchLink_IsValidTransID
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -10454,8 +10484,8 @@ initiatorNwkJoinRtrRspCB:
         MOV       R6,A
         MOV       A,R5
         MOV       R7,A
-// 1760   if ( ( touchLink_IsValidTransID( pRsp->transID ) == FALSE ) || 
-// 1761      ( ( srcAddr->addrMode != afAddr64Bit ) || ( !osal_memcmp( selectedTarget.srcAddr.addr.extAddr, srcAddr->addr.extAddr, Z_EXTADDR_LEN ) ) ) )
+// 1764   if ( ( touchLink_IsValidTransID( pRsp->transID ) == FALSE ) || 
+// 1765      ( ( srcAddr->addrMode != afAddr64Bit ) || ( !osal_memcmp( selectedTarget.srcAddr.addr.extAddr, srcAddr->addr.extAddr, Z_EXTADDR_LEN ) ) ) )
         ; Setup parameters for call to function touchLink_IsValidTransID
         MOV       DPL,R6
         MOV       DPH,R7
@@ -10494,15 +10524,15 @@ initiatorNwkJoinRtrRspCB:
           CFI CFA_XSP16 add(XSP16, 15)
         MOV       A,R1
         JNZ       ??initiatorNwkJoinRtrRspCB_1
-// 1762   {
-// 1763     return ( ZFailure );
+// 1766   {
+// 1767     return ( ZFailure );
 ??initiatorNwkJoinRtrRspCB_0:
         MOV       R1,#0x1
         SJMP      ??initiatorNwkJoinRtrRspCB_2
-// 1764   }
-// 1765   
-// 1766   // Make sure we didn't timeout waiting for this response
-// 1767   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT ) )
+// 1768   }
+// 1769   
+// 1770   // Make sure we didn't timeout waiting for this response
+// 1771   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT ) )
 ??initiatorNwkJoinRtrRspCB_1:
         ; Setup parameters for call to function osal_get_timeoutEx
         MOV       R2,#0x0
@@ -10516,18 +10546,18 @@ initiatorNwkJoinRtrRspCB:
         ORL       A,R4
         ORL       A,R5
         JZ        ??initiatorNwkJoinRtrRspCB_3
-// 1768   {
-// 1769     // Save the Network Start Response for later
-// 1770     rxRsp.nwkJoinRsp = *pRsp;
+// 1772   {
+// 1773     // Save the Network Start Response for later
+// 1774     rxRsp.nwkJoinRsp = *pRsp;
         MOV       DPL,R6
         MOV       DPH,R7
         MOV       R4,#rxRsp & 0xff
         MOV       R5,#(rxRsp >> 8) & 0xff
         MOV       A,#0x5
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1771 
-// 1772     // No need to wait longer
-// 1773     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT );
+// 1775 
+// 1776     // No need to wait longer
+// 1777     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT );
         ; Setup parameters for call to function osal_set_event
         MOV       R2,#0x0
         MOV       R3,#0x1
@@ -10536,36 +10566,36 @@ initiatorNwkJoinRtrRspCB:
         MOV       R1,A
         LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
         MOV       A,R1
-// 1774   }
-// 1775 
-// 1776   return ( ZSuccess );
+// 1778   }
+// 1779 
+// 1780   return ( ZSuccess );
 ??initiatorNwkJoinRtrRspCB_3:
         MOV       R1,#0x0
 ??initiatorNwkJoinRtrRspCB_2:
         MOV       R7,#0x7
         LJMP      ?BANKED_LEAVE_XDATA
-// 1777 }
+// 1781 }
           CFI EndBlock cfiBlock23
-// 1778 
-// 1779 /*********************************************************************
-// 1780  * @fn      initiatorNwkJoinEDRspCB
-// 1781  *
-// 1782  * @brief   This callback is called to process a Network Join End Device
-// 1783  *          Response command.
-// 1784  *
-// 1785  * @param   srcAddr - sender's address
-// 1786  * @param   pRsp - parsed command
-// 1787  *
-// 1788  * @return  ZStatus_t
-// 1789  */
+// 1782 
+// 1783 /*********************************************************************
+// 1784  * @fn      initiatorNwkJoinEDRspCB
+// 1785  *
+// 1786  * @brief   This callback is called to process a Network Join End Device
+// 1787  *          Response command.
+// 1788  *
+// 1789  * @param   srcAddr - sender's address
+// 1790  * @param   pRsp - parsed command
+// 1791  *
+// 1792  * @return  ZStatus_t
+// 1793  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1790 static ZStatus_t initiatorNwkJoinEDRspCB( afAddrType_t *srcAddr, bdbTLNwkJoinRsp_t *pRsp )
+// 1794 static ZStatus_t initiatorNwkJoinEDRspCB( afAddrType_t *srcAddr, bdbTLNwkJoinRsp_t *pRsp )
 initiatorNwkJoinEDRspCB:
           CFI Block cfiBlock24 Using cfiCommon0
           CFI Function initiatorNwkJoinEDRspCB
         CODE
-// 1791 {
+// 1795 {
         FUNCALL initiatorNwkJoinEDRspCB, touchLink_IsValidTransID
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -10642,8 +10672,8 @@ initiatorNwkJoinEDRspCB:
         MOV       R6,A
         MOV       A,R5
         MOV       R7,A
-// 1792   if ( ( touchLink_IsValidTransID( pRsp->transID ) == FALSE ) || 
-// 1793      ( ( srcAddr->addrMode != afAddr64Bit ) || ( !osal_memcmp( selectedTarget.srcAddr.addr.extAddr, srcAddr->addr.extAddr, Z_EXTADDR_LEN ) ) ) )
+// 1796   if ( ( touchLink_IsValidTransID( pRsp->transID ) == FALSE ) || 
+// 1797      ( ( srcAddr->addrMode != afAddr64Bit ) || ( !osal_memcmp( selectedTarget.srcAddr.addr.extAddr, srcAddr->addr.extAddr, Z_EXTADDR_LEN ) ) ) )
         ; Setup parameters for call to function touchLink_IsValidTransID
         MOV       DPL,R6
         MOV       DPH,R7
@@ -10682,15 +10712,15 @@ initiatorNwkJoinEDRspCB:
           CFI CFA_XSP16 add(XSP16, 15)
         MOV       A,R1
         JNZ       ??initiatorNwkJoinEDRspCB_1
-// 1794   {
-// 1795     return ( ZFailure );
+// 1798   {
+// 1799     return ( ZFailure );
 ??initiatorNwkJoinEDRspCB_0:
         MOV       R1,#0x1
         SJMP      ??initiatorNwkJoinEDRspCB_2
-// 1796   }
-// 1797   
-// 1798   // Make sure we didn't timeout waiting for this response
-// 1799   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT ) )
+// 1800   }
+// 1801   
+// 1802   // Make sure we didn't timeout waiting for this response
+// 1803   if ( osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT ) )
 ??initiatorNwkJoinEDRspCB_1:
         ; Setup parameters for call to function osal_get_timeoutEx
         MOV       R2,#0x0
@@ -10704,18 +10734,18 @@ initiatorNwkJoinEDRspCB:
         ORL       A,R4
         ORL       A,R5
         JZ        ??initiatorNwkJoinEDRspCB_3
-// 1800   {
-// 1801     // Save the Network Start Response for later
-// 1802     rxRsp.nwkJoinRsp = *pRsp;
+// 1804   {
+// 1805     // Save the Network Start Response for later
+// 1806     rxRsp.nwkJoinRsp = *pRsp;
         MOV       DPL,R6
         MOV       DPH,R7
         MOV       R4,#rxRsp & 0xff
         MOV       R5,#(rxRsp >> 8) & 0xff
         MOV       A,#0x5
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 1803 
-// 1804     // No need to wait longer
-// 1805     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT );
+// 1807 
+// 1808     // No need to wait longer
+// 1809     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT );
         ; Setup parameters for call to function osal_set_event
         MOV       R2,#0x0
         MOV       R3,#0x1
@@ -10725,48 +10755,48 @@ initiatorNwkJoinEDRspCB:
         LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
         MOV       A,R1
         SJMP      ??initiatorNwkJoinEDRspCB_4
-// 1806 
-// 1807   }
-// 1808   else
-// 1809   {
-// 1810     rxRsp.nwkJoinRsp.status = TOUCHLINK_NETWORK_JOIN_RSP_STATUS_FAILURE;
+// 1810 
+// 1811   }
+// 1812   else
+// 1813   {
+// 1814     rxRsp.nwkJoinRsp.status = TOUCHLINK_NETWORK_JOIN_RSP_STATUS_FAILURE;
 ??initiatorNwkJoinEDRspCB_3:
         MOV       DPTR,#rxRsp + 4
         MOV       A,#0x1
         MOVX      @DPTR,A
-// 1811   }
-// 1812 
-// 1813   return ( ZSuccess );
+// 1815   }
+// 1816 
+// 1817   return ( ZSuccess );
 ??initiatorNwkJoinEDRspCB_4:
         MOV       R1,#0x0
 ??initiatorNwkJoinEDRspCB_2:
         MOV       R7,#0x7
         LJMP      ?BANKED_LEAVE_XDATA
-// 1814 }
+// 1818 }
           CFI EndBlock cfiBlock24
-// 1815 
-// 1816 /******************************************************************************
-// 1817  * @fn      initiatorZdoLeaveCnfCB
-// 1818  *
-// 1819  * @brief   This callback is called to process a Leave Confirmation message.
-// 1820  *
-// 1821  *          Note: this callback function returns a pointer if it has handled
-// 1822  *                the confirmation message and no further action should be
-// 1823  *                taken with it. It returns NULL if it has not handled the
-// 1824  *                confirmation message and normal processing should take place.
-// 1825  *
-// 1826  * @param   pParam - received message
-// 1827  *
-// 1828  * @return  Pointer if message processed. NULL, otherwise.
-// 1829  */
+// 1819 
+// 1820 /******************************************************************************
+// 1821  * @fn      initiatorZdoLeaveCnfCB
+// 1822  *
+// 1823  * @brief   This callback is called to process a Leave Confirmation message.
+// 1824  *
+// 1825  *          Note: this callback function returns a pointer if it has handled
+// 1826  *                the confirmation message and no further action should be
+// 1827  *                taken with it. It returns NULL if it has not handled the
+// 1828  *                confirmation message and normal processing should take place.
+// 1829  *
+// 1830  * @param   pParam - received message
+// 1831  *
+// 1832  * @return  Pointer if message processed. NULL, otherwise.
+// 1833  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1830 static void *initiatorZdoLeaveCnfCB( void *pParam )
+// 1834 static void *initiatorZdoLeaveCnfCB( void *pParam )
 initiatorZdoLeaveCnfCB:
           CFI Block cfiBlock25 Using cfiCommon0
           CFI Function initiatorZdoLeaveCnfCB
         CODE
-// 1831 {
+// 1835 {
         FUNCALL initiatorZdoLeaveCnfCB, osal_set_event
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -10797,29 +10827,29 @@ initiatorZdoLeaveCnfCB:
         MOV       R6,A
         MOV       A,R3
         MOV       R7,A
-// 1832   (void)pParam;
-// 1833 
-// 1834   // Did we initiate the leave?
-// 1835   if ( touchLinkLeaveInitiated == FALSE )
+// 1836   (void)pParam;
+// 1837 
+// 1838   // Did we initiate the leave?
+// 1839   if ( touchLinkLeaveInitiated == FALSE )
         MOV       DPTR,#touchLinkLeaveInitiated
         MOVX      A,@DPTR
         JNZ       ??initiatorZdoLeaveCnfCB_0
-// 1836   {
-// 1837     return ( NULL );
+// 1840   {
+// 1841     return ( NULL );
         MOV       R2,#0x0
         MOV       R3,#0x0
         SJMP      ??initiatorZdoLeaveCnfCB_1
-// 1838   }
-// 1839 
-// 1840   if ( touchLinkLeaveInitiated == TOUCHLINK_LEAVE_TO_JOIN_NWK )
+// 1842   }
+// 1843 
+// 1844   if ( touchLinkLeaveInitiated == TOUCHLINK_LEAVE_TO_JOIN_NWK )
 ??initiatorZdoLeaveCnfCB_0:
         MOV       DPTR,#touchLinkLeaveInitiated
         MOVX      A,@DPTR
         XRL       A,#0x1
         JNZ       ??initiatorZdoLeaveCnfCB_2
-// 1841   {
-// 1842     // Notify our task to join the new network
-// 1843     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_JOIN_NWK_ATTEMPT_EVT );
+// 1845   {
+// 1846     // Notify our task to join the new network
+// 1847     osal_set_event( touchLinkInitiator_TaskID, TOUCHLINK_JOIN_NWK_ATTEMPT_EVT );
         ; Setup parameters for call to function osal_set_event
         MOV       R2,#0x8
         MOV       R3,#0x0
@@ -10828,35 +10858,35 @@ initiatorZdoLeaveCnfCB:
         MOV       R1,A
         LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
         MOV       A,R1
-// 1844   }
-// 1845 
-// 1846   return ( (void *)&touchLinkLeaveInitiated );
+// 1848   }
+// 1849 
+// 1850   return ( (void *)&touchLinkLeaveInitiated );
 ??initiatorZdoLeaveCnfCB_2:
         MOV       R2,#touchLinkLeaveInitiated & 0xff
         MOV       R3,#(touchLinkLeaveInitiated >> 8) & 0xff
 ??initiatorZdoLeaveCnfCB_1:
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
-// 1847 }
+// 1851 }
           CFI EndBlock cfiBlock25
-// 1848 
-// 1849 /*********************************************************************
-// 1850  * @fn      initiatorProcessStateChange
-// 1851  *
-// 1852  * @brief   Process ZDO device state change
-// 1853  *
-// 1854  * @param   state - The device's network state
+// 1852 
+// 1853 /*********************************************************************
+// 1854  * @fn      initiatorProcessStateChange
 // 1855  *
-// 1856  * @return  none
-// 1857  */
+// 1856  * @brief   Process ZDO device state change
+// 1857  *
+// 1858  * @param   state - The device's network state
+// 1859  *
+// 1860  * @return  none
+// 1861  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1858 static void initiatorProcessStateChange( devStates_t state )
+// 1862 static void initiatorProcessStateChange( devStates_t state )
 initiatorProcessStateChange:
           CFI Block cfiBlock26 Using cfiCommon0
           CFI Function initiatorProcessStateChange
         CODE
-// 1859 {
+// 1863 {
         FUNCALL initiatorProcessStateChange, touchLink_UpdateNV
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -10918,7 +10948,7 @@ initiatorProcessStateChange:
         ; Auto size: 0
         MOV       A,R1
         MOV       R6,A
-// 1860   if ( ( ( devState == DEV_ROUTER ) || ( devState == DEV_END_DEVICE ) ) && ( touchlinkDistNwk == TRUE ) )
+// 1864   if ( ( ( devState == DEV_ROUTER ) || ( devState == DEV_END_DEVICE ) ) && ( touchlinkDistNwk == TRUE ) )
         MOV       DPTR,#devState
         MOVX      A,@DPTR
         XRL       A,#0x7
@@ -10932,52 +10962,52 @@ initiatorProcessStateChange:
         MOVX      A,@DPTR
         XRL       A,#0x1
         JNZ       ??initiatorProcessStateChange_1
-// 1861   {
-// 1862     // Set touchlink flag to false after joining is complete
-// 1863     touchlinkDistNwk = FALSE;
+// 1865   {
+// 1866     // Set touchlink flag to false after joining is complete
+// 1867     touchlinkDistNwk = FALSE;
         MOV       DPTR,#touchlinkDistNwk
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 1864     
-// 1865     // Save the latest NIB to update our parent's address
-// 1866     touchLink_UpdateNV( TOUCHLINK_UPDATE_NV_NIB );
+// 1868     
+// 1869     // Save the latest NIB to update our parent's address
+// 1870     touchLink_UpdateNV( TOUCHLINK_UPDATE_NV_NIB );
         ; Setup parameters for call to function touchLink_UpdateNV
         MOV       R1,#0x1
         LCALL     `??touchLink_UpdateNV::?relay`; Banked call to: touchLink_UpdateNV
-// 1867    
-// 1868     if ( !_NIB.CapabilityFlags )
+// 1871    
+// 1872     if ( !_NIB.CapabilityFlags )
         MOV       DPTR,#_NIB + 14
         MOVX      A,@DPTR
         JNZ       ??initiatorProcessStateChange_2
-// 1869     {
-// 1870       _NIB.CapabilityFlags = ZDO_Config_Node_Descriptor.CapabilityFlags;
+// 1873     {
+// 1874       _NIB.CapabilityFlags = ZDO_Config_Node_Descriptor.CapabilityFlags;
         MOV       DPTR,#ZDO_Config_Node_Descriptor + 2
         MOVX      A,@DPTR
         MOV       DPTR,#_NIB + 14
         MOVX      @DPTR,A
-// 1871     }
-// 1872 
-// 1873 #if (ZSTACK_ROUTER_BUILD)
-// 1874       linkInfo_t *linkInfo;
-// 1875       
-// 1876       // check if entry exists
-// 1877       linkInfo = nwkNeighborGetLinkInfo( selectedTargetNwkAddr, _NIB.nwkPanId );
-// 1878 
-// 1879       // if not, look for a vacant entry to add this node...
-// 1880       if ( linkInfo == NULL )
-// 1881       {
-// 1882         nwkNeighborAdd( selectedTargetNwkAddr, _NIB.nwkPanId, DEF_LQI );
-// 1883         linkInfo = nwkNeighborGetLinkInfo( selectedTargetNwkAddr, _NIB.nwkPanId );
-// 1884         linkInfo->txCost = DEF_LINK_COST;
-// 1885         linkInfo->rxLqi = MIN_LQI_COST_1; 
-// 1886       }
-// 1887       
-// 1888       bdb_setNodeIsOnANetwork(TRUE);
-// 1889       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_NWK_FORMATION_SUCCESS_EVT, 500);
-// 1890 #endif
-// 1891 
-// 1892     // We found our parent
-// 1893     osal_stop_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT );
+// 1875     }
+// 1876 
+// 1877 #if (ZSTACK_ROUTER_BUILD)
+// 1878       linkInfo_t *linkInfo;
+// 1879       
+// 1880       // check if entry exists
+// 1881       linkInfo = nwkNeighborGetLinkInfo( selectedTargetNwkAddr, _NIB.nwkPanId );
+// 1882 
+// 1883       // if not, look for a vacant entry to add this node...
+// 1884       if ( linkInfo == NULL )
+// 1885       {
+// 1886         nwkNeighborAdd( selectedTargetNwkAddr, _NIB.nwkPanId, DEF_LQI );
+// 1887         linkInfo = nwkNeighborGetLinkInfo( selectedTargetNwkAddr, _NIB.nwkPanId );
+// 1888         linkInfo->txCost = DEF_LINK_COST;
+// 1889         linkInfo->rxLqi = MIN_LQI_COST_1; 
+// 1890       }
+// 1891       
+// 1892       bdb_setNodeIsOnANetwork(TRUE);
+// 1893       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_NWK_FORMATION_SUCCESS_EVT, 500);
+// 1894 #endif
+// 1895 
+// 1896     // We found our parent
+// 1897     osal_stop_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT );
 ??initiatorProcessStateChange_2:
         ; Setup parameters for call to function osal_stop_timerEx
         MOV       R2,#0x0
@@ -10988,9 +11018,9 @@ initiatorProcessStateChange:
         LCALL     `??osal_stop_timerEx::?relay`; Banked call to: osal_stop_timerEx
         MOV       A,R1
         SJMP      ??initiatorProcessStateChange_3
-// 1894   }
-// 1895   
-// 1896   else if ( ( state == DEV_NWK_ORPHAN ) || ( state == DEV_NWK_DISC ) )
+// 1898   }
+// 1899   
+// 1900   else if ( ( state == DEV_NWK_ORPHAN ) || ( state == DEV_NWK_DISC ) )
 ??initiatorProcessStateChange_1:
         MOV       A,#0xa
         XRL       A,R6
@@ -10998,9 +11028,9 @@ initiatorProcessStateChange:
         MOV       A,#0x2
         XRL       A,R6
         JNZ       ??initiatorProcessStateChange_3
-// 1897   {
-// 1898     // Device has lost information about its parent; give it some time to rejoin
-// 1899     if ( !osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT ) )
+// 1901   {
+// 1902     // Device has lost information about its parent; give it some time to rejoin
+// 1903     if ( !osal_get_timeoutEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT ) )
 ??initiatorProcessStateChange_4:
         ; Setup parameters for call to function osal_get_timeoutEx
         MOV       R2,#0x0
@@ -11014,9 +11044,9 @@ initiatorProcessStateChange:
         ORL       A,R4
         ORL       A,R5
         JNZ       ??initiatorProcessStateChange_3
-// 1900     {
-// 1901       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT,
-// 1902                           (NUM_DISC_ATTEMPTS + 1) * TOUCHLINK_INITIATOR_REJOIN_TIMEOUT );
+// 1904     {
+// 1905       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_REJOIN_EVT,
+// 1906                           (NUM_DISC_ATTEMPTS + 1) * TOUCHLINK_INITIATOR_REJOIN_TIMEOUT );
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_30d4
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -11031,31 +11061,31 @@ initiatorProcessStateChange:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 9)
         MOV       A,R1
-// 1903     }
-// 1904   }
-// 1905 }
+// 1907     }
+// 1908   }
+// 1909 }
 ??initiatorProcessStateChange_3:
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock26
-// 1906 
-// 1907 /*********************************************************************
-// 1908  * @fn      initiatorSetNwkToInitState
-// 1909  *
-// 1910  * @brief   Set our network state to its original state.
-// 1911  *
-// 1912  * @param   void
+// 1910 
+// 1911 /*********************************************************************
+// 1912  * @fn      initiatorSetNwkToInitState
 // 1913  *
-// 1914  * @return  void
-// 1915  */
+// 1914  * @brief   Set our network state to its original state.
+// 1915  *
+// 1916  * @param   void
+// 1917  *
+// 1918  * @return  void
+// 1919  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1916 static void initiatorSetNwkToInitState()
+// 1920 static void initiatorSetNwkToInitState()
 initiatorSetNwkToInitState:
           CFI Block cfiBlock27 Using cfiCommon0
           CFI Function initiatorSetNwkToInitState
         CODE
-// 1917 {
+// 1921 {
         FUNCALL initiatorSetNwkToInitState, ZMacSetReq
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -11144,30 +11174,30 @@ initiatorSetNwkToInitState:
           CFI CFA_XSP16 add(XSP16, 12)
         ; Saved register size: 12
         ; Auto size: 0
-// 1918   // Turn MAC receiver back to its old state
-// 1919   ZMacSetReq( ZMacRxOnIdle, &savedRxOnIdle );
+// 1922   // Turn MAC receiver back to its old state
+// 1923   ZMacSetReq( ZMacRxOnIdle, &savedRxOnIdle );
         ; Setup parameters for call to function ZMacSetReq
         MOV       R2,#savedRxOnIdle & 0xff
         MOV       R3,#(savedRxOnIdle >> 8) & 0xff
         MOV       R1,#0x52
         LCALL     `??ZMacSetReq::?relay`; Banked call to: ZMacSetReq
         MOV       A,R1
-// 1920 
-// 1921   // Tune back to our channel
-// 1922   touchLink_SetChannel( _NIB.nwkLogicalChannel );
+// 1924 
+// 1925   // Tune back to our channel
+// 1926   touchLink_SetChannel( _NIB.nwkLogicalChannel );
         ; Setup parameters for call to function touchLink_SetChannel
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??touchLink_SetChannel::?relay`; Banked call to: touchLink_SetChannel
-// 1923 
-// 1924   // Set NWK task to run
-// 1925   nwk_setStateIdle( FALSE );
+// 1927 
+// 1928   // Set NWK task to run
+// 1929   nwk_setStateIdle( FALSE );
         ; Setup parameters for call to function nwk_setStateIdle
         MOV       R1,#0x0
         LCALL     `??nwk_setStateIdle::?relay`; Banked call to: nwk_setStateIdle
-// 1926 
-// 1927   if ( savedPollRate != zgPollRate )
+// 1930 
+// 1931   if ( savedPollRate != zgPollRate )
         MOV       DPTR,#zgPollRate
         PUSH      DPL
           CFI CFA_SP SP+-1
@@ -11189,8 +11219,8 @@ initiatorSetNwkToInitState:
         MOV       R0,#?V0
         LCALL     ?L_EQ_X
         JZ        ??initiatorSetNwkToInitState_0
-// 1928   {
-// 1929     NLME_SetPollRate( savedPollRate );
+// 1932   {
+// 1933     NLME_SetPollRate( savedPollRate );
         ; Setup parameters for call to function NLME_SetPollRate
         MOV       DPTR,#savedPollRate
         MOVX      A,@DPTR
@@ -11204,16 +11234,16 @@ initiatorSetNwkToInitState:
         MOV       R4,A
         MOV       R5,A
         LCALL     `??NLME_SetPollRate::?relay`; Banked call to: NLME_SetPollRate
-// 1930     savedPollRate = POLL_RATE;
+// 1934     savedPollRate = POLL_RATE;
         MOV       DPTR,#savedPollRate
         MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 1931   }
-// 1932 
-// 1933   if ( savedQueuedPollRate != zgQueuedPollRate )
+// 1935   }
+// 1936 
+// 1937   if ( savedQueuedPollRate != zgQueuedPollRate )
 ??initiatorSetNwkToInitState_0:
         MOV       DPTR,#savedQueuedPollRate
         MOVX      A,@DPTR
@@ -11230,8 +11260,8 @@ initiatorSetNwkToInitState:
         XRL       A,R1
 ??initiatorSetNwkToInitState_1:
         JZ        ??initiatorSetNwkToInitState_2
-// 1934   {
-// 1935     NLME_SetQueuedPollRate( savedQueuedPollRate );
+// 1938   {
+// 1939     NLME_SetQueuedPollRate( savedQueuedPollRate );
         ; Setup parameters for call to function NLME_SetQueuedPollRate
         MOV       DPTR,#savedQueuedPollRate
         MOVX      A,@DPTR
@@ -11240,16 +11270,16 @@ initiatorSetNwkToInitState:
         MOVX      A,@DPTR
         MOV       R3,A
         LCALL     `??NLME_SetQueuedPollRate::?relay`; Banked call to: NLME_SetQueuedPollRate
-// 1936     savedQueuedPollRate = QUEUED_POLL_RATE;
+// 1940     savedQueuedPollRate = QUEUED_POLL_RATE;
         MOV       DPTR,#savedQueuedPollRate
         MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 1937   }
-// 1938 
-// 1939   if ( savedResponsePollRate != zgResponsePollRate )
+// 1941   }
+// 1942 
+// 1943   if ( savedResponsePollRate != zgResponsePollRate )
 ??initiatorSetNwkToInitState_2:
         MOV       DPTR,#savedResponsePollRate
         MOVX      A,@DPTR
@@ -11266,8 +11296,8 @@ initiatorSetNwkToInitState:
         XRL       A,R1
 ??initiatorSetNwkToInitState_3:
         JZ        ??initiatorSetNwkToInitState_4
-// 1940   {
-// 1941     NLME_SetResponseRate( savedResponsePollRate );
+// 1944   {
+// 1945     NLME_SetResponseRate( savedResponsePollRate );
         ; Setup parameters for call to function NLME_SetResponseRate
         MOV       DPTR,#savedResponsePollRate
         MOVX      A,@DPTR
@@ -11276,74 +11306,74 @@ initiatorSetNwkToInitState:
         MOVX      A,@DPTR
         MOV       R3,A
         LCALL     `??NLME_SetResponseRate::?relay`; Banked call to: NLME_SetResponseRate
-// 1942     savedResponsePollRate = RESPONSE_POLL_RATE;
+// 1946     savedResponsePollRate = RESPONSE_POLL_RATE;
         MOV       DPTR,#savedResponsePollRate
         MOV       A,#0x0
         MOVX      @DPTR,A
         INC       DPTR
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 1943   }
-// 1944 }
+// 1947   }
+// 1948 }
 ??initiatorSetNwkToInitState_4:
         MOV       R7,#0x4
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock27
-// 1945 
-// 1946 #if ( ZSTACK_ROUTER_BUILD )
-// 1947 /*********************************************************************
-// 1948  * @fn      initiatorJoinNwk
-// 1949  *
-// 1950  * @brief   Initiate a network join request.
-// 1951  *
-// 1952  * @param   void
+// 1949 
+// 1950 #if ( ZSTACK_ROUTER_BUILD )
+// 1951 /*********************************************************************
+// 1952  * @fn      initiatorJoinNwk
 // 1953  *
-// 1954  * @return  void
-// 1955  */
-// 1956 static void initiatorJoinNwk( void )
-// 1957 {
-// 1958   // Save free ranges
-// 1959   touchLink_UpdateNV( TOUCHLINK_UPDATE_NV_RANGES );
-// 1960 
-// 1961   // In case we're here after a leave
-// 1962   touchLinkLeaveInitiated = FALSE;
-// 1963 
-// 1964   // Clear leave control logic
-// 1965   ZDApp_LeaveCtrlReset();
-// 1966 
-// 1967   if ( POLL_RATE == 0 )
-// 1968   {
-// 1969     //allow to respond to TOUCHLINK commission utility commands after TL
-// 1970     NLME_SetPollRate( TOUCHLINK_INITIATOR_TEMP_POST_TL_POLL_RATE );
-// 1971     //polling should reset when TL life time expires
-// 1972   }
-// 1973 
-// 1974   touchLinkInitiator_PermitJoin( 0 );
-// 1975 
-// 1976   ZDOInitDevice( 0 );
-// 1977   // Perform a network rejoin request
-// 1978   _NIB.nwkState = NWK_REJOINING;
-// 1979   initiatorReJoinNwk( MODE_REJOIN );
-// 1980 }
-// 1981 #endif
-// 1982 
-// 1983 /*********************************************************************
-// 1984  * @fn      initiatorReJoinNwk
-// 1985  *
-// 1986  * @brief   Send out an Rejoin Request.
-// 1987  *
-// 1988  * @param   startMode - MODE_REJOIN or MODE_RESUME
+// 1954  * @brief   Initiate a network join request.
+// 1955  *
+// 1956  * @param   void
+// 1957  *
+// 1958  * @return  void
+// 1959  */
+// 1960 static void initiatorJoinNwk( void )
+// 1961 {
+// 1962   // Save free ranges
+// 1963   touchLink_UpdateNV( TOUCHLINK_UPDATE_NV_RANGES );
+// 1964 
+// 1965   // In case we're here after a leave
+// 1966   touchLinkLeaveInitiated = FALSE;
+// 1967 
+// 1968   // Clear leave control logic
+// 1969   ZDApp_LeaveCtrlReset();
+// 1970 
+// 1971   if ( POLL_RATE == 0 )
+// 1972   {
+// 1973     //allow to respond to TOUCHLINK commission utility commands after TL
+// 1974     NLME_SetPollRate( TOUCHLINK_INITIATOR_TEMP_POST_TL_POLL_RATE );
+// 1975     //polling should reset when TL life time expires
+// 1976   }
+// 1977 
+// 1978   touchLinkInitiator_PermitJoin( 0 );
+// 1979 
+// 1980   ZDOInitDevice( 0 );
+// 1981   // Perform a network rejoin request
+// 1982   _NIB.nwkState = NWK_REJOINING;
+// 1983   initiatorReJoinNwk( MODE_REJOIN );
+// 1984 }
+// 1985 #endif
+// 1986 
+// 1987 /*********************************************************************
+// 1988  * @fn      initiatorReJoinNwk
 // 1989  *
-// 1990  * @return  none
-// 1991  */
+// 1990  * @brief   Send out an Rejoin Request.
+// 1991  *
+// 1992  * @param   startMode - MODE_REJOIN or MODE_RESUME
+// 1993  *
+// 1994  * @return  none
+// 1995  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 1992 static void initiatorReJoinNwk( devStartModes_t startMode )
+// 1996 static void initiatorReJoinNwk( devStartModes_t startMode )
 initiatorReJoinNwk:
           CFI Block cfiBlock28 Using cfiCommon0
           CFI Function initiatorReJoinNwk
         CODE
-// 1993 {
+// 1997 {
         FUNCALL initiatorReJoinNwk, nwk_setStateIdle
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -11405,14 +11435,14 @@ initiatorReJoinNwk:
         ; Auto size: 0
         MOV       A,R1
         MOV       R6,A
-// 1994   // Set NWK task to run
-// 1995   nwk_setStateIdle( FALSE );
+// 1998   // Set NWK task to run
+// 1999   nwk_setStateIdle( FALSE );
         ; Setup parameters for call to function nwk_setStateIdle
         MOV       R1,#0x0
         LCALL     `??nwk_setStateIdle::?relay`; Banked call to: nwk_setStateIdle
-// 1996 
-// 1997   // Configure MAC with our network parameters
-// 1998   touchLink_SetMacNwkParams( _NIB.nwkDevAddress, _NIB.nwkPanId, _NIB.nwkLogicalChannel );
+// 2000 
+// 2001   // Configure MAC with our network parameters
+// 2002   touchLink_SetMacNwkParams( _NIB.nwkDevAddress, _NIB.nwkPanId, _NIB.nwkLogicalChannel );
         ; Setup parameters for call to function touchLink_SetMacNwkParams
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
@@ -11430,9 +11460,9 @@ initiatorReJoinNwk:
         MOVX      A,@DPTR
         MOV       R3,A
         LCALL     `??touchLink_SetMacNwkParams::?relay`; Banked call to: touchLink_SetMacNwkParams
-// 1999 
-// 2000   // Use the new network paramters
-// 2001   zgConfigPANID = _NIB.nwkPanId;
+// 2003 
+// 2004   // Use the new network paramters
+// 2005   zgConfigPANID = _NIB.nwkPanId;
         MOV       DPTR,#_NIB + 33
         MOVX      A,@DPTR
         MOV       R0,A
@@ -11445,31 +11475,31 @@ initiatorReJoinNwk:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2002   zgDefaultChannelList = _NIB.channelList;
+// 2006   zgDefaultChannelList = _NIB.channelList;
         MOV       DPTR,#_NIB + 36
         LCALL     ?XLOAD_R0123
         MOV       DPTR,#zgDefaultChannelList
         LCALL     ?XSTORE_R0123
-// 2003   osal_cpyExtAddr( ZDO_UseExtendedPANID, _NIB.extendedPANID );
+// 2007   osal_cpyExtAddr( ZDO_UseExtendedPANID, _NIB.extendedPANID );
         ; Setup parameters for call to function sAddrExtCpy
         MOV       R4,#(_NIB + 53) & 0xff
         MOV       R5,#((_NIB + 53) >> 8) & 0xff
         MOV       R2,#ZDO_UseExtendedPANID & 0xff
         MOV       R3,#(ZDO_UseExtendedPANID >> 8) & 0xff
         LCALL     `??sAddrExtCpy::?relay`; Banked call to: sAddrExtCpy
-// 2004 
-// 2005   devStartMode = startMode;
+// 2008 
+// 2009   devStartMode = startMode;
         MOV       A,R6
         MOV       DPTR,#devStartMode
         MOVX      @DPTR,A
-// 2006 
-// 2007   _tmpRejoinState = TRUE;
+// 2010 
+// 2011   _tmpRejoinState = TRUE;
         MOV       DPTR,#_tmpRejoinState
         MOV       A,#0x1
         MOVX      @DPTR,A
-// 2008 
-// 2009   // Start the network joining process
-// 2010   osal_set_event( ZDAppTaskID, ZDO_NETWORK_INIT );
+// 2012 
+// 2013   // Start the network joining process
+// 2014   osal_set_event( ZDAppTaskID, ZDO_NETWORK_INIT );
         ; Setup parameters for call to function osal_set_event
         MOV       R2,#0x1
         MOV       R3,#0x0
@@ -11478,28 +11508,28 @@ initiatorReJoinNwk:
         MOV       R1,A
         LCALL     `??osal_set_event::?relay`; Banked call to: osal_set_event
         MOV       A,R1
-// 2011 }
+// 2015 }
         MOV       R7,#0x1
         LJMP      ?BANKED_LEAVE_XDATA
           CFI EndBlock cfiBlock28
-// 2012 
-// 2013 /*********************************************************************
-// 2014  * @fn      initiatorSendScanReq
-// 2015  *
-// 2016  * @brief   Send out an Scan Request command on one of the TOUCHLINK channels.
-// 2017  *
-// 2018  * @param   freshScan - TRUE to start fresh scan, FALSE to resume existing process.
+// 2016 
+// 2017 /*********************************************************************
+// 2018  * @fn      initiatorSendScanReq
 // 2019  *
-// 2020  * @return  void
-// 2021  */
+// 2020  * @brief   Send out an Scan Request command on one of the TOUCHLINK channels.
+// 2021  *
+// 2022  * @param   freshScan - TRUE to start fresh scan, FALSE to resume existing process.
+// 2023  *
+// 2024  * @return  void
+// 2025  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 2022 static void initiatorSendScanReq( bool freshScan )
+// 2026 static void initiatorSendScanReq( bool freshScan )
 initiatorSendScanReq:
           CFI Block cfiBlock29 Using cfiCommon0
           CFI Function initiatorSendScanReq
         CODE
-// 2023 {
+// 2027 {
         FUNCALL initiatorSendScanReq, touchLink_DeviceIsInitiator
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -11576,97 +11606,97 @@ initiatorSendScanReq:
           CFI CFA_XSP16 add(XSP16, 29)
         MOV       A,R1
         MOV       R7,A
-// 2024   bdbTLScanReq_t req;
-// 2025   uint8 newChannel;
-// 2026   uint8 secondaryChList[] = TOUCHLINK_SECONDARY_CHANNELS_SET;
+// 2028   bdbTLScanReq_t req;
+// 2029   uint8 newChannel;
+// 2030   uint8 secondaryChList[] = TOUCHLINK_SECONDARY_CHANNELS_SET;
         MOV       DPTR,#`?<Constant {12, 13, 14, 16, 17, 18, 19, 21, 22`
         MOV       A,#0x8
         LCALL     ?XSTACK_DISP102_8
         MOV       A,#0xc
         LCALL     ?MOVE_LONG8_XDATA_XDATA
-// 2027   static uint8 channelIndex = 0;
-// 2028   
-// 2029   // Set the device as initiator of touchlink commissioning
-// 2030   touchLink_DeviceIsInitiator( TRUE );
+// 2031   static uint8 channelIndex = 0;
+// 2032   
+// 2033   // Set the device as initiator of touchlink commissioning
+// 2034   touchLink_DeviceIsInitiator( TRUE );
         ; Setup parameters for call to function touchLink_DeviceIsInitiator
         MOV       R1,#0x1
         LCALL     `??touchLink_DeviceIsInitiator::?relay`; Banked call to: touchLink_DeviceIsInitiator
-// 2031 
-// 2032   if ( freshScan )
+// 2035 
+// 2036   if ( freshScan )
         MOV       A,R7
         JZ        ??initiatorSendScanReq_0
-// 2033   {
-// 2034     channelIndex = 0;
+// 2037   {
+// 2038     channelIndex = 0;
         MOV       DPTR,#??channelIndex
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 2035   }
-// 2036 
-// 2037   // First figure out the channel
-// 2038   if ( scanReqChannels == TOUCHLINK_SCAN_PRIMARY_CHANNELS )
+// 2039   }
+// 2040 
+// 2041   // First figure out the channel
+// 2042   if ( scanReqChannels == TOUCHLINK_SCAN_PRIMARY_CHANNELS )
 ??initiatorSendScanReq_0:
         MOV       DPTR,#scanReqChannels
         MOVX      A,@DPTR
         XRL       A,#0x1
         JNZ       ??initiatorSendScanReq_1
-// 2039   {
-// 2040     if ( numScanReqSent < 5 )
+// 2043   {
+// 2044     if ( numScanReqSent < 5 )
         MOV       DPTR,#numScanReqSent
         MOVX      A,@DPTR
         CLR       C
         SUBB      A,#0x5
         JNC       ??initiatorSendScanReq_2
-// 2041     {
-// 2042       // First five consecutive requests are sent on channel 11
-// 2043       newChannel = TOUCHLINK_FIRST_CHANNEL;
+// 2045     {
+// 2046       // First five consecutive requests are sent on channel 11
+// 2047       newChannel = TOUCHLINK_FIRST_CHANNEL;
         MOV       R6,#0xb
         SJMP      ??initiatorSendScanReq_3
-// 2044     }
-// 2045     else if ( numScanReqSent == 5 )
+// 2048     }
+// 2049     else if ( numScanReqSent == 5 )
 ??initiatorSendScanReq_2:
         MOV       DPTR,#numScanReqSent
         MOVX      A,@DPTR
         XRL       A,#0x5
         JNZ       ??initiatorSendScanReq_4
-// 2046     {
-// 2047       // Sixth request is sent on channel 15
-// 2048       newChannel = TOUCHLINK_SECOND_CHANNEL;
+// 2050     {
+// 2051       // Sixth request is sent on channel 15
+// 2052       newChannel = TOUCHLINK_SECOND_CHANNEL;
         MOV       R6,#0xf
         SJMP      ??initiatorSendScanReq_3
-// 2049     }
-// 2050     else if ( numScanReqSent == 6 )
+// 2053     }
+// 2054     else if ( numScanReqSent == 6 )
 ??initiatorSendScanReq_4:
         MOV       DPTR,#numScanReqSent
         MOVX      A,@DPTR
         XRL       A,#0x6
         JNZ       ??initiatorSendScanReq_5
-// 2051     {
-// 2052       // Seventh request is sent on channel 20
-// 2053       newChannel = TOUCHLINK_THIRD_CHANNEL;
+// 2055     {
+// 2056       // Seventh request is sent on channel 20
+// 2057       newChannel = TOUCHLINK_THIRD_CHANNEL;
         MOV       R6,#0x14
         SJMP      ??initiatorSendScanReq_3
-// 2054     }
-// 2055     else
-// 2056     {
-// 2057       // Last request is sent on channel 25
-// 2058       newChannel = TOUCHLINK_FOURTH_CHANNEL;
+// 2058     }
+// 2059     else
+// 2060     {
+// 2061       // Last request is sent on channel 25
+// 2062       newChannel = TOUCHLINK_FOURTH_CHANNEL;
 ??initiatorSendScanReq_5:
         MOV       R6,#0x19
         SJMP      ??initiatorSendScanReq_3
-// 2059     }
-// 2060   }
-// 2061   else
-// 2062   {
-// 2063     // scan secondary channel list
-// 2064     if ( channelIndex < sizeof(secondaryChList) )
+// 2063     }
+// 2064   }
+// 2065   else
+// 2066   {
+// 2067     // scan secondary channel list
+// 2068     if ( channelIndex < sizeof(secondaryChList) )
 ??initiatorSendScanReq_1:
         MOV       DPTR,#??channelIndex
         MOVX      A,@DPTR
         CLR       C
         SUBB      A,#0xc
         JNC       ??initiatorSendScanReq_6
-// 2065     {
-// 2066        newChannel = secondaryChList[channelIndex++];
+// 2069     {
+// 2070        newChannel = secondaryChList[channelIndex++];
         MOV       DPTR,#??channelIndex
         MOVX      A,@DPTR
         MOV       R0,A
@@ -11686,21 +11716,21 @@ initiatorSendScanReq:
         ADD       A,#0x1
         MOVX      @DPTR,A
         SJMP      ??initiatorSendScanReq_3
-// 2067     }
-// 2068     else
-// 2069     {
-// 2070       // set it to initial value for next discovery process
-// 2071       channelIndex = 0;
+// 2071     }
+// 2072     else
+// 2073     {
+// 2074       // set it to initial value for next discovery process
+// 2075       channelIndex = 0;
 ??initiatorSendScanReq_6:
         MOV       DPTR,#??channelIndex
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 2072       return;
+// 2076       return;
         LJMP      ??initiatorSendScanReq_7 & 0xFFFF
-// 2073     }
-// 2074   }
-// 2075 
-// 2076   if ( touchLinkTransID != 0 )
+// 2077     }
+// 2078   }
+// 2079 
+// 2080   if ( touchLinkTransID != 0 )
 ??initiatorSendScanReq_3:
         MOV       DPTR,#touchLinkTransID
         LCALL     ?XLOAD_R0123
@@ -11710,26 +11740,26 @@ initiatorSendScanReq:
         ORL       A,R3
         JNZ       $+5
         LJMP      ??initiatorSendScanReq_8 & 0xFFFF
-// 2077   {
-// 2078     // Build the request
-// 2079     req.transID = touchLinkTransID;
+// 2081   {
+// 2082     // Build the request
+// 2083     req.transID = touchLinkTransID;
         MOV       DPTR,#touchLinkTransID
         LCALL     ?XLOAD_R0123
         MOV       DPL,?XSP + 0
         MOV       DPH,?XSP + 1
         LCALL     ?XSTORE_R0123
-// 2080     touchLinkLastAcceptedTransID = touchLinkTransID;
+// 2084     touchLinkLastAcceptedTransID = touchLinkTransID;
         MOV       DPTR,#touchLinkTransID
         LCALL     ?XLOAD_R0123
         MOV       DPTR,#touchLinkLastAcceptedTransID
         LCALL     ?XSTORE_R0123
-// 2081 
-// 2082     req.zInfo.zInfoByte = 0;
+// 2085 
+// 2086     req.zInfo.zInfoByte = 0;
         MOV       A,#0x4
         LCALL     ?XSTACK_DISP0_8
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 2083     req.zLogicalType = zgDeviceLogicalType;
+// 2087     req.zLogicalType = zgDeviceLogicalType;
         MOV       A,#0x4
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
@@ -11758,13 +11788,13 @@ initiatorSendScanReq:
         MOVX      A,@DPTR
         ORL       A,R1
         MOVX      @DPTR,A
-// 2084     if ( ZDO_Config_Node_Descriptor.CapabilityFlags & CAPINFO_RCVR_ON_IDLE )
+// 2088     if ( ZDO_Config_Node_Descriptor.CapabilityFlags & CAPINFO_RCVR_ON_IDLE )
         MOV       DPTR,#ZDO_Config_Node_Descriptor + 2
         MOVX      A,@DPTR
         MOV       C,0xE0 /* A   */.3
         JNC       ??initiatorSendScanReq_9
-// 2085     {
-// 2086       req.zRxOnWhenIdle = TRUE;
+// 2089     {
+// 2090       req.zRxOnWhenIdle = TRUE;
         MOV       A,#0x4
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
@@ -11774,15 +11804,15 @@ initiatorSendScanReq:
         MOVX      A,@DPTR
         ORL       A,#0x0
         MOVX      @DPTR,A
-// 2087     }
-// 2088 
-// 2089     req.touchLinkInfo.touchLinkInfoByte = 0;
+// 2091     }
+// 2092 
+// 2093     req.touchLinkInfo.touchLinkInfoByte = 0;
 ??initiatorSendScanReq_9:
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
         MOV       A,#0x0
         MOVX      @DPTR,A
-// 2090     req.touchLinkFactoryNew = !bdbAttributes.bdbNodeIsOnANetwork;
+// 2094     req.touchLinkFactoryNew = !bdbAttributes.bdbNodeIsOnANetwork;
         MOV       DPTR,#bdbAttributes + 14
         MOVX      A,@DPTR
         JNZ       ??initiatorSendScanReq_10
@@ -11814,7 +11844,7 @@ initiatorSendScanReq:
         MOVX      A,@DPTR
         ORL       A,R1
         MOVX      @DPTR,A
-// 2091     req.touchLinkAddressAssignment = TRUE;
+// 2095     req.touchLinkAddressAssignment = TRUE;
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
@@ -11824,7 +11854,7 @@ initiatorSendScanReq:
         MOVX      A,@DPTR
         ORL       A,#0x0
         MOVX      @DPTR,A
-// 2092     req.touchLinkInitiator = TRUE;
+// 2096     req.touchLinkInitiator = TRUE;
         MOV       A,#0x6
         LCALL     ?XSTACK_DISP0_8
         MOVX      A,@DPTR
@@ -11834,16 +11864,16 @@ initiatorSendScanReq:
         MOVX      A,@DPTR
         ORL       A,#0x0
         MOVX      @DPTR,A
-// 2093 
-// 2094     // First switch to the right channel
-// 2095     touchLink_SetChannel( newChannel );
+// 2097 
+// 2098     // First switch to the right channel
+// 2099     touchLink_SetChannel( newChannel );
         ; Setup parameters for call to function touchLink_SetChannel
         MOV       A,R6
         MOV       R1,A
         LCALL     `??touchLink_SetChannel::?relay`; Banked call to: touchLink_SetChannel
-// 2096 
-// 2097     // Broadcast the request
-// 2098     bdbTL_Send_ScanReq( TOUCHLINK_INTERNAL_ENDPOINT, &bcastAddr, &req, initiatorSeqNum++ );
+// 2100 
+// 2101     // Broadcast the request
+// 2102     bdbTL_Send_ScanReq( TOUCHLINK_INTERNAL_ENDPOINT, &bcastAddr, &req, initiatorSeqNum++ );
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
         MOV       R0,A
@@ -11867,16 +11897,16 @@ initiatorSendScanReq:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 29)
         MOV       A,R1
-// 2099 
-// 2100     numScanReqSent++;
+// 2103 
+// 2104     numScanReqSent++;
         MOV       DPTR,#numScanReqSent
         MOVX      A,@DPTR
         ADD       A,#0x1
         MOVX      @DPTR,A
-// 2101 
-// 2102     // After each transmission, wait BDBCTL_SCAN_TIME_BASE_DURATION seconds
-// 2103     // to receive any responses.
-// 2104     osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_TL_SCAN_BASE_EVT, BDBCTL_SCAN_TIME_BASE_DURATION );
+// 2105 
+// 2106     // After each transmission, wait BDBCTL_SCAN_TIME_BASE_DURATION seconds
+// 2107     // to receive any responses.
+// 2108     osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_TL_SCAN_BASE_EVT, BDBCTL_SCAN_TIME_BASE_DURATION );
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_fa
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -11892,16 +11922,16 @@ initiatorSendScanReq:
           CFI CFA_XSP16 add(XSP16, 29)
         MOV       A,R1
         SJMP      ??initiatorSendScanReq_7
-// 2105   }
-// 2106   else
-// 2107   {
-// 2108     touchLinkInitiator_AbortTL();
+// 2109   }
+// 2110   else
+// 2111   {
+// 2112     touchLinkInitiator_AbortTL();
 ??initiatorSendScanReq_8:
         ; Setup parameters for call to function touchLinkInitiator_AbortTL
         LCALL     `??touchLinkInitiator_AbortTL::?relay`; Banked call to: touchLinkInitiator_AbortTL
         MOV       A,R1
-// 2109   }
-// 2110 }
+// 2113   }
+// 2114 }
 ??initiatorSendScanReq_7:
         MOV       A,#0x14
         LCALL     ?DEALLOC_XSTACK8
@@ -11915,24 +11945,24 @@ initiatorSendScanReq:
 ??channelIndex:
         DS 1
         REQUIRE __INIT_XDATA_Z
-// 2111 
-// 2112 /*********************************************************************
-// 2113  * @fn      initiatorSendNwkStartReq
-// 2114  *
-// 2115  * @brief   Send out a Network Start Request command.
-// 2116  *
-// 2117  * @param   pRsp - received Scan Response
+// 2115 
+// 2116 /*********************************************************************
+// 2117  * @fn      initiatorSendNwkStartReq
 // 2118  *
-// 2119  * @return  ZStatus_t
-// 2120  */
+// 2119  * @brief   Send out a Network Start Request command.
+// 2120  *
+// 2121  * @param   pRsp - received Scan Response
+// 2122  *
+// 2123  * @return  ZStatus_t
+// 2124  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 2121 static ZStatus_t initiatorSendNwkStartReq( bdbTLScanRsp_t *pRsp )
+// 2125 static ZStatus_t initiatorSendNwkStartReq( bdbTLScanRsp_t *pRsp )
 initiatorSendNwkStartReq:
           CFI Block cfiBlock30 Using cfiCommon0
           CFI Function initiatorSendNwkStartReq
         CODE
-// 2122 {
+// 2126 {
         FUNCALL initiatorSendNwkStartReq, osal_mem_alloc
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -12112,10 +12142,10 @@ initiatorSendNwkStartReq:
         ; Auto size: 0
         MOV       ?V8,R2
         MOV       ?V9,R3
-// 2123   bdbTLNwkStartReq_t *pReq;
-// 2124   ZStatus_t status;
-// 2125 
-// 2126   pReq = (bdbTLNwkStartReq_t *)osal_mem_alloc( sizeof( bdbTLNwkStartReq_t ) );
+// 2127   bdbTLNwkStartReq_t *pReq;
+// 2128   ZStatus_t status;
+// 2129 
+// 2130   pReq = (bdbTLNwkStartReq_t *)osal_mem_alloc( sizeof( bdbTLNwkStartReq_t ) );
         ; Setup parameters for call to function osal_mem_alloc
         MOV       R2,#0x38
         MOV       R3,#0x0
@@ -12124,22 +12154,22 @@ initiatorSendNwkStartReq:
         MOV       ?V1,R3
         MOV       ?V2,?V0
         MOV       ?V3,?V1
-// 2127   if ( pReq != NULL )
+// 2131   if ( pReq != NULL )
         MOV       A,?V2
         ORL       A,?V3
         JNZ       $+5
         LJMP      ??initiatorSendNwkStartReq_0 & 0xFFFF
-// 2128   {
-// 2129     uint16 i;
-// 2130     bdbTLNwkParams_t *pParams = &(pReq->nwkParams);
+// 2132   {
+// 2133     uint16 i;
+// 2134     bdbTLNwkParams_t *pParams = &(pReq->nwkParams);
         MOV       A,?V2
         ADD       A,#0x4
         MOV       ?V0,A
         CLR       A
         ADDC      A,?V3
         MOV       ?V1,A
-// 2131 
-// 2132     osal_memset( pReq, 0, sizeof( bdbTLNwkStartReq_t ) );
+// 2135 
+// 2136     osal_memset( pReq, 0, sizeof( bdbTLNwkStartReq_t ) );
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x38
         MOV       R5,#0x0
@@ -12147,25 +12177,25 @@ initiatorSendNwkStartReq:
         MOV       R2,?V2
         MOV       R3,?V3
         LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-// 2133 
-// 2134     // Build the request
-// 2135     pReq->transID = selectedTarget.scanRsp.transID;
+// 2137 
+// 2138     // Build the request
+// 2139     pReq->transID = selectedTarget.scanRsp.transID;
         MOV       DPTR,#selectedTarget
         LCALL     ?XLOAD_R0123
         MOV       DPL,?V2
         MOV       DPH,?V3
         LCALL     ?XSTORE_R0123
-// 2136 
-// 2137     // Find out key index (prefer highest)
-// 2138     for ( i = 15; i > 0; i-- )
+// 2140 
+// 2141     // Find out key index (prefer highest)
+// 2142     for ( i = 15; i > 0; i-- )
         MOV       R6,#0xf
         MOV       R7,#0x0
 ??initiatorSendNwkStartReq_1:
         MOV       A,R6
         ORL       A,R7
         JZ        ??initiatorSendNwkStartReq_2
-// 2139     {
-// 2140       if ( ( (uint16)1 << i ) & pRsp->keyBitmask )
+// 2143     {
+// 2144       if ( ( (uint16)1 << i ) & pRsp->keyBitmask )
         MOV       DPL,?V8
         MOV       DPH,?V9
         INC       DPTR
@@ -12194,10 +12224,10 @@ initiatorSendNwkStartReq:
         MOV       A,R0
         ORL       A,R1
         JNZ       ??initiatorSendNwkStartReq_2
-// 2141       {
-// 2142         break;
-// 2143       }
-// 2144     }
+// 2145       {
+// 2146         break;
+// 2147       }
+// 2148     }
         MOV       A,R6
         ADD       A,#-0x1
         MOV       R6,A
@@ -12205,7 +12235,7 @@ initiatorSendNwkStartReq:
         ADDC      A,#-0x1
         MOV       R7,A
         SJMP      ??initiatorSendNwkStartReq_1
-// 2145     pParams->keyIndex = i;
+// 2149     pParams->keyIndex = i;
 ??initiatorSendNwkStartReq_2:
         MOV       A,R6
         PUSH      A
@@ -12223,9 +12253,9 @@ initiatorSendNwkStartReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2146 
-// 2147     // Copy in the encrypted network key
-// 2148     touchLink_EncryptNwkKey( pParams->nwkKey, i, pRsp->transID, pRsp->responseID );
+// 2150 
+// 2151     // Copy in the encrypted network key
+// 2152     touchLink_EncryptNwkKey( pParams->nwkKey, i, pRsp->transID, pRsp->responseID );
         ; Setup parameters for call to function touchLink_EncryptNwkKey
         MOV       A,?V8
         ADD       A,#0xb
@@ -12251,8 +12281,8 @@ initiatorSendNwkStartReq:
         MOV       A,#0x8
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 18)
-// 2149 
-// 2150     pParams->nwkAddr = touchLink_PopNwkAddress();
+// 2153 
+// 2154     pParams->nwkAddr = touchLink_PopNwkAddress();
         ; Setup parameters for call to function touchLink_PopNwkAddress
         LCALL     `??touchLink_PopNwkAddress::?relay`; Banked call to: touchLink_PopNwkAddress
         MOV       A,?V0
@@ -12266,7 +12296,7 @@ initiatorSendNwkStartReq:
         INC       DPTR
         MOV       A,R3
         MOVX      @DPTR,A
-// 2151     if ( pParams->nwkAddr == 0 )
+// 2155     if ( pParams->nwkAddr == 0 )
         MOV       A,?V0
         ADD       A,#0x1c
         MOV       DPL,A
@@ -12281,8 +12311,8 @@ initiatorSendNwkStartReq:
         MOV       A,R0
         ORL       A,R1
         JNZ       ??initiatorSendNwkStartReq_3
-// 2152     {
-// 2153       pParams->nwkAddr = osal_rand();
+// 2156     {
+// 2157       pParams->nwkAddr = osal_rand();
         ; Setup parameters for call to function osal_rand
         LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
         MOV       A,?V0
@@ -12296,9 +12326,9 @@ initiatorSendNwkStartReq:
         INC       DPTR
         MOV       A,R3
         MOVX      @DPTR,A
-// 2154     }
-// 2155     // update address for app notification
-// 2156     selectedTarget.newNwkAddr = pParams->nwkAddr;
+// 2158     }
+// 2159     // update address for app notification
+// 2160     selectedTarget.newNwkAddr = pParams->nwkAddr;
 ??initiatorSendNwkStartReq_3:
         MOV       A,?V0
         ADD       A,#0x1c
@@ -12317,7 +12347,7 @@ initiatorSendNwkStartReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2157     selectedTargetNwkAddr = pParams->nwkAddr;
+// 2161     selectedTargetNwkAddr = pParams->nwkAddr;
         MOV       A,?V0
         ADD       A,#0x1c
         MOV       DPL,A
@@ -12335,9 +12365,9 @@ initiatorSendNwkStartReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2158 
-// 2159     // Set group ID range
-// 2160     if ( pRsp->totalGrpIDs > 0 )
+// 2162 
+// 2163     // Set group ID range
+// 2164     if ( pRsp->totalGrpIDs > 0 )
         MOV       A,?V8
         ADD       A,#0x1e
         MOV       DPL,A
@@ -12346,8 +12376,8 @@ initiatorSendNwkStartReq:
         MOV       DPH,A
         MOVX      A,@DPTR
         JZ        ??initiatorSendNwkStartReq_4
-// 2161     {
-// 2162       touchLink_PopGrpIDRange( pRsp->totalGrpIDs, &(pParams->grpIDsBegin), &(pParams->grpIDsEnd) );
+// 2165     {
+// 2166       touchLink_PopGrpIDRange( pRsp->totalGrpIDs, &(pParams->grpIDsBegin), &(pParams->grpIDsEnd) );
         ; Setup parameters for call to function touchLink_PopGrpIDRange
         MOV       A,?V0
         ADD       A,#0x20
@@ -12370,9 +12400,9 @@ initiatorSendNwkStartReq:
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??touchLink_PopGrpIDRange::?relay`; Banked call to: touchLink_PopGrpIDRange
-// 2163     }
-// 2164 
-// 2165     if ( pRsp->touchLinkAddressAssignment )
+// 2167     }
+// 2168 
+// 2169     if ( pRsp->touchLinkAddressAssignment )
 ??initiatorSendNwkStartReq_4:
         MOV       DPL,?V8
         MOV       DPH,?V9
@@ -12394,9 +12424,9 @@ initiatorSendNwkStartReq:
         ANL       A,#0x1
         MOV       C,0xE0 /* A   */.0
         JNC       ??initiatorSendNwkStartReq_5
-// 2166     {
-// 2167       touchLink_SplitFreeRanges( &(pParams->freeNwkAddrBegin), &(pParams->freeNwkAddrEnd),
-// 2168                            &(pParams->freeGrpIDBegin), &(pParams->freeGrpIDEnd) );
+// 2170     {
+// 2171       touchLink_SplitFreeRanges( &(pParams->freeNwkAddrBegin), &(pParams->freeNwkAddrEnd),
+// 2172                            &(pParams->freeGrpIDBegin), &(pParams->freeGrpIDEnd) );
         ; Setup parameters for call to function touchLink_SplitFreeRanges
         MOV       A,?V0
         ADD       A,#0x28
@@ -12432,15 +12462,15 @@ initiatorSendNwkStartReq:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 18)
-// 2169     }
-// 2170 
-// 2171 #ifdef TOUCHLINK_INITIATOR_SET_NEW_NWK_PARAMS
-// 2172     pParams->logicalChannel = _NIB.nwkLogicalChannel;
-// 2173     pParams->panId = _NIB.nwkPanId;
-// 2174     osal_memcpy( pParams->extendedPANID, _NIB.extendedPANID ,Z_EXTADDR_LEN);
-// 2175 #endif
-// 2176 
-// 2177     osal_cpyExtAddr( pReq->initiatorIeeeAddr, NLME_GetExtAddr() );
+// 2173     }
+// 2174 
+// 2175 #ifdef TOUCHLINK_INITIATOR_SET_NEW_NWK_PARAMS
+// 2176     pParams->logicalChannel = _NIB.nwkLogicalChannel;
+// 2177     pParams->panId = _NIB.nwkPanId;
+// 2178     osal_memcpy( pParams->extendedPANID, _NIB.extendedPANID ,Z_EXTADDR_LEN);
+// 2179 #endif
+// 2180 
+// 2181     osal_cpyExtAddr( pReq->initiatorIeeeAddr, NLME_GetExtAddr() );
 ??initiatorSendNwkStartReq_5:
         ; Setup parameters for call to function NLME_GetExtAddr
         LCALL     `??NLME_GetExtAddr::?relay`; Banked call to: NLME_GetExtAddr
@@ -12456,7 +12486,7 @@ initiatorSendNwkStartReq:
         ADDC      A,?V3
         MOV       R3,A
         LCALL     `??sAddrExtCpy::?relay`; Banked call to: sAddrExtCpy
-// 2178     pReq->initiatorNwkAddr = _NIB.nwkDevAddress;
+// 2182     pReq->initiatorNwkAddr = _NIB.nwkDevAddress;
         MOV       DPTR,#_NIB + 20
         MOVX      A,@DPTR
         MOV       R0,A
@@ -12474,8 +12504,8 @@ initiatorSendNwkStartReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2179 
-// 2180     status = bdbTL_Send_NwkStartReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
+// 2183 
+// 2184     status = bdbTL_Send_NwkStartReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
         MOV       R0,A
@@ -12500,16 +12530,16 @@ initiatorSendNwkStartReq:
           CFI CFA_XSP16 add(XSP16, 18)
         MOV       A,R1
         MOV       ?V7,A
-// 2181     if ( status == ZSuccess )
+// 2185     if ( status == ZSuccess )
         MOV       A,?V7
         JNZ       ??initiatorSendNwkStartReq_6
-// 2182     {
-// 2183       // Keep a copy of the encryted network key sent to the target
-// 2184       keyIndexSent = i;
+// 2186     {
+// 2187       // Keep a copy of the encryted network key sent to the target
+// 2188       keyIndexSent = i;
         MOV       A,R6
         MOV       DPTR,#keyIndexSent
         MOVX      @DPTR,A
-// 2185       osal_memcpy( encKeySent, pParams->nwkKey, SEC_KEY_LEN );
+// 2189       osal_memcpy( encKeySent, pParams->nwkKey, SEC_KEY_LEN );
         ; Setup parameters for call to function osal_memcpy
         MOV       A,?V0
         ADD       A,#0x9
@@ -12529,7 +12559,7 @@ initiatorSendNwkStartReq:
         MOV       A,#0x3
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 18)
-// 2186       responseIDSent = pRsp->responseID;
+// 2190       responseIDSent = pRsp->responseID;
         MOV       A,?V8
         ADD       A,#0xb
         MOV       DPL,A
@@ -12539,10 +12569,10 @@ initiatorSendNwkStartReq:
         LCALL     ?XLOAD_R0123
         MOV       DPTR,#responseIDSent
         LCALL     ?XSTORE_R0123
-// 2187 
-// 2188       // After the transmission, wait BDBCTL_RX_WINDOW_DURATION seconds to
-// 2189       // receive a response.
-// 2190       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT, BDBCTL_RX_WINDOW_DURATION );
+// 2191 
+// 2192       // After the transmission, wait BDBCTL_RX_WINDOW_DURATION seconds to
+// 2193       // receive a response.
+// 2194       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_START_RSP_EVT, BDBCTL_RX_WINDOW_DURATION );
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_1388
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -12557,48 +12587,48 @@ initiatorSendNwkStartReq:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 18)
         MOV       A,R1
-// 2191     }
-// 2192 
-// 2193     osal_mem_free( pReq );
+// 2195     }
+// 2196 
+// 2197     osal_mem_free( pReq );
 ??initiatorSendNwkStartReq_6:
         ; Setup parameters for call to function osal_mem_free
         MOV       R2,?V2
         MOV       R3,?V3
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
         SJMP      ??initiatorSendNwkStartReq_7
-// 2194   }
-// 2195   else
-// 2196   {
-// 2197     status = ZMemError;
+// 2198   }
+// 2199   else
+// 2200   {
+// 2201     status = ZMemError;
 ??initiatorSendNwkStartReq_0:
         MOV       ?V7,#0x10
-// 2198   }
-// 2199 
-// 2200   return ( status );
+// 2202   }
+// 2203 
+// 2204   return ( status );
 ??initiatorSendNwkStartReq_7:
         MOV       R1,?V7
         MOV       R7,#0xa
         LJMP      ?BANKED_LEAVE_XDATA
-// 2201 }
+// 2205 }
           CFI EndBlock cfiBlock30
-// 2202 
-// 2203 /*********************************************************************
-// 2204  * @fn      initiatorSendNwkJoinReq
-// 2205  *
-// 2206  * @brief   Send out a Network Join Router or End Device Request command.
-// 2207  *
-// 2208  * @param   pRsp - received Scan Response
+// 2206 
+// 2207 /*********************************************************************
+// 2208  * @fn      initiatorSendNwkJoinReq
 // 2209  *
-// 2210  * @return  ZStatus_t
-// 2211  */
+// 2210  * @brief   Send out a Network Join Router or End Device Request command.
+// 2211  *
+// 2212  * @param   pRsp - received Scan Response
+// 2213  *
+// 2214  * @return  ZStatus_t
+// 2215  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 2212 static ZStatus_t initiatorSendNwkJoinReq( bdbTLScanRsp_t *pRsp )
+// 2216 static ZStatus_t initiatorSendNwkJoinReq( bdbTLScanRsp_t *pRsp )
 initiatorSendNwkJoinReq:
           CFI Block cfiBlock31 Using cfiCommon0
           CFI Function initiatorSendNwkJoinReq
         CODE
-// 2213 {
+// 2217 {
         FUNCALL initiatorSendNwkJoinReq, osal_mem_alloc
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -12771,11 +12801,11 @@ initiatorSendNwkJoinReq:
         ; Auto size: 0
         MOV       ?V8,R2
         MOV       ?V9,R3
-// 2214   bdbTLNwkJoinReq_t *pReq;
-// 2215   ZStatus_t status;
-// 2216   bdbFindingBindingRespondent_t *pCurr;
-// 2217 
-// 2218   pReq = (bdbTLNwkJoinReq_t *)osal_mem_alloc( sizeof( bdbTLNwkJoinReq_t ) );
+// 2218   bdbTLNwkJoinReq_t *pReq;
+// 2219   ZStatus_t status;
+// 2220   bdbFindingBindingRespondent_t *pCurr;
+// 2221 
+// 2222   pReq = (bdbTLNwkJoinReq_t *)osal_mem_alloc( sizeof( bdbTLNwkJoinReq_t ) );
         ; Setup parameters for call to function osal_mem_alloc
         MOV       R2,#0x2f
         MOV       R3,#0x0
@@ -12784,22 +12814,22 @@ initiatorSendNwkJoinReq:
         MOV       ?V1,R3
         MOV       ?V4,?V0
         MOV       ?V5,?V1
-// 2219   if ( pReq != NULL )
+// 2223   if ( pReq != NULL )
         MOV       A,?V4
         ORL       A,?V5
         JNZ       $+5
         LJMP      ??initiatorSendNwkJoinReq_0 & 0xFFFF
-// 2220   {
-// 2221     uint16 i;
-// 2222     bdbTLNwkParams_t *pParams = &(pReq->nwkParams);
+// 2224   {
+// 2225     uint16 i;
+// 2226     bdbTLNwkParams_t *pParams = &(pReq->nwkParams);
         MOV       A,?V4
         ADD       A,#0x4
         MOV       ?V0,A
         CLR       A
         ADDC      A,?V5
         MOV       ?V1,A
-// 2223 
-// 2224     osal_memset( pReq, 0, sizeof( bdbTLNwkJoinReq_t ) );
+// 2227 
+// 2228     osal_memset( pReq, 0, sizeof( bdbTLNwkJoinReq_t ) );
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x2f
         MOV       R5,#0x0
@@ -12807,25 +12837,25 @@ initiatorSendNwkJoinReq:
         MOV       R2,?V4
         MOV       R3,?V5
         LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-// 2225 
-// 2226     // Build the request
-// 2227     pReq->transID = selectedTarget.scanRsp.transID;
+// 2229 
+// 2230     // Build the request
+// 2231     pReq->transID = selectedTarget.scanRsp.transID;
         MOV       DPTR,#selectedTarget
         LCALL     ?XLOAD_R0123
         MOV       DPL,?V4
         MOV       DPH,?V5
         LCALL     ?XSTORE_R0123
-// 2228 
-// 2229     // Find out key index (prefer highest)
-// 2230     for ( i = 15; i > 0; i-- )
+// 2232 
+// 2233     // Find out key index (prefer highest)
+// 2234     for ( i = 15; i > 0; i-- )
         MOV       R6,#0xf
         MOV       R7,#0x0
 ??initiatorSendNwkJoinReq_1:
         MOV       A,R6
         ORL       A,R7
         JZ        ??initiatorSendNwkJoinReq_2
-// 2231     {
-// 2232       if ( ( (uint16)1 << i ) & pRsp->keyBitmask )
+// 2235     {
+// 2236       if ( ( (uint16)1 << i ) & pRsp->keyBitmask )
         MOV       DPL,?V8
         MOV       DPH,?V9
         INC       DPTR
@@ -12854,10 +12884,10 @@ initiatorSendNwkJoinReq:
         MOV       A,R0
         ORL       A,R1
         JNZ       ??initiatorSendNwkJoinReq_2
-// 2233       {
-// 2234         break;
-// 2235       }
-// 2236     }
+// 2237       {
+// 2238         break;
+// 2239       }
+// 2240     }
         MOV       A,R6
         ADD       A,#-0x1
         MOV       R6,A
@@ -12865,7 +12895,7 @@ initiatorSendNwkJoinReq:
         ADDC      A,#-0x1
         MOV       R7,A
         SJMP      ??initiatorSendNwkJoinReq_1
-// 2237     pParams->keyIndex = i;
+// 2241     pParams->keyIndex = i;
 ??initiatorSendNwkJoinReq_2:
         MOV       A,R6
         PUSH      A
@@ -12883,9 +12913,9 @@ initiatorSendNwkJoinReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2238 
-// 2239     // Copy in the encrypted network key
-// 2240     touchLink_EncryptNwkKey( pParams->nwkKey, i, pRsp->transID, pRsp->responseID );
+// 2242 
+// 2243     // Copy in the encrypted network key
+// 2244     touchLink_EncryptNwkKey( pParams->nwkKey, i, pRsp->transID, pRsp->responseID );
         ; Setup parameters for call to function touchLink_EncryptNwkKey
         MOV       A,?V8
         ADD       A,#0xb
@@ -12911,8 +12941,8 @@ initiatorSendNwkJoinReq:
         MOV       A,#0x8
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 20)
-// 2241 
-// 2242     pParams->nwkAddr = touchLink_PopNwkAddress();
+// 2245 
+// 2246     pParams->nwkAddr = touchLink_PopNwkAddress();
         ; Setup parameters for call to function touchLink_PopNwkAddress
         LCALL     `??touchLink_PopNwkAddress::?relay`; Banked call to: touchLink_PopNwkAddress
         MOV       A,?V0
@@ -12926,7 +12956,7 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R3
         MOVX      @DPTR,A
-// 2243     if ( pParams->nwkAddr == 0 )
+// 2247     if ( pParams->nwkAddr == 0 )
         MOV       A,?V0
         ADD       A,#0x1c
         MOV       DPL,A
@@ -12941,8 +12971,8 @@ initiatorSendNwkJoinReq:
         MOV       A,R0
         ORL       A,R1
         JNZ       ??initiatorSendNwkJoinReq_3
-// 2244     {
-// 2245       pParams->nwkAddr = osal_rand();
+// 2248     {
+// 2249       pParams->nwkAddr = osal_rand();
         ; Setup parameters for call to function osal_rand
         LCALL     `??osal_rand::?relay`; Banked call to: osal_rand
         MOV       A,?V0
@@ -12956,9 +12986,9 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R3
         MOVX      @DPTR,A
-// 2246     }
-// 2247     // update address for app notification
-// 2248     selectedTarget.newNwkAddr = pParams->nwkAddr;
+// 2250     }
+// 2251     // update address for app notification
+// 2252     selectedTarget.newNwkAddr = pParams->nwkAddr;
 ??initiatorSendNwkJoinReq_3:
         MOV       A,?V0
         ADD       A,#0x1c
@@ -12977,7 +13007,7 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2249     selectedTargetNwkAddr = pParams->nwkAddr;
+// 2253     selectedTargetNwkAddr = pParams->nwkAddr;
         MOV       A,?V0
         ADD       A,#0x1c
         MOV       DPL,A
@@ -12995,9 +13025,9 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2250     
-// 2251     // Set group ID range
-// 2252     if ( pRsp->totalGrpIDs > 0 )
+// 2254     
+// 2255     // Set group ID range
+// 2256     if ( pRsp->totalGrpIDs > 0 )
         MOV       A,?V8
         ADD       A,#0x1e
         MOV       DPL,A
@@ -13006,8 +13036,8 @@ initiatorSendNwkJoinReq:
         MOV       DPH,A
         MOVX      A,@DPTR
         JZ        ??initiatorSendNwkJoinReq_4
-// 2253     {
-// 2254       touchLink_PopGrpIDRange( pRsp->totalGrpIDs, &(pParams->grpIDsBegin), &(pParams->grpIDsEnd) );
+// 2257     {
+// 2258       touchLink_PopGrpIDRange( pRsp->totalGrpIDs, &(pParams->grpIDsBegin), &(pParams->grpIDsEnd) );
         ; Setup parameters for call to function touchLink_PopGrpIDRange
         MOV       A,?V0
         ADD       A,#0x20
@@ -13030,9 +13060,9 @@ initiatorSendNwkJoinReq:
         MOVX      A,@DPTR
         MOV       R1,A
         LCALL     `??touchLink_PopGrpIDRange::?relay`; Banked call to: touchLink_PopGrpIDRange
-// 2255     }
-// 2256 
-// 2257     if ( pRsp->touchLinkAddressAssignment )
+// 2259     }
+// 2260 
+// 2261     if ( pRsp->touchLinkAddressAssignment )
 ??initiatorSendNwkJoinReq_4:
         MOV       DPL,?V8
         MOV       DPH,?V9
@@ -13054,9 +13084,9 @@ initiatorSendNwkJoinReq:
         ANL       A,#0x1
         MOV       C,0xE0 /* A   */.0
         JNC       ??initiatorSendNwkJoinReq_5
-// 2258     {
-// 2259       touchLink_SplitFreeRanges( &(pParams->freeNwkAddrBegin), &(pParams->freeNwkAddrEnd),
-// 2260                            &(pParams->freeGrpIDBegin), &(pParams->freeGrpIDEnd) );
+// 2262     {
+// 2263       touchLink_SplitFreeRanges( &(pParams->freeNwkAddrBegin), &(pParams->freeNwkAddrEnd),
+// 2264                            &(pParams->freeGrpIDBegin), &(pParams->freeGrpIDEnd) );
         ; Setup parameters for call to function touchLink_SplitFreeRanges
         MOV       A,?V0
         ADD       A,#0x28
@@ -13092,9 +13122,9 @@ initiatorSendNwkJoinReq:
         MOV       A,#0x4
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 20)
-// 2261     }
-// 2262     // update 
-// 2263     pCurr = pRespondentHead;
+// 2265     }
+// 2266     // update 
+// 2267     pCurr = pRespondentHead;
 ??initiatorSendNwkJoinReq_5:
         MOV       DPTR,#pRespondentHead
         MOVX      A,@DPTR
@@ -13104,13 +13134,13 @@ initiatorSendNwkJoinReq:
         MOV       R1,A
         MOV       ?V6,R0
         MOV       ?V7,R1
-// 2264     while( pCurr != NULL )
+// 2268     while( pCurr != NULL )
 ??initiatorSendNwkJoinReq_6:
         MOV       A,?V6
         ORL       A,?V7
         JZ        ??initiatorSendNwkJoinReq_7
-// 2265     {
-// 2266       pCurr->data.addr.shortAddr = pParams->nwkAddr;
+// 2269     {
+// 2270       pCurr->data.addr.shortAddr = pParams->nwkAddr;
         MOV       A,?V0
         ADD       A,#0x1c
         MOV       DPL,A
@@ -13129,7 +13159,7 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2267       pCurr->data.addrMode = afAddr16Bit;
+// 2271       pCurr->data.addrMode = afAddr16Bit;
         MOV       DPL,?V6
         MOV       DPH,?V7
         INC       DPTR
@@ -13142,7 +13172,7 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,#0x2
         MOVX      @DPTR,A
-// 2268       pCurr->data.panId = _NIB.nwkPanId;
+// 2272       pCurr->data.panId = _NIB.nwkPanId;
         MOV       DPTR,#_NIB + 33
         MOVX      A,@DPTR
         MOV       R0,A
@@ -13166,7 +13196,7 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2269       pCurr = pCurr->pNext;
+// 2273       pCurr = pCurr->pNext;
         MOV       A,?V6
         ADD       A,#0xf
         MOV       DPL,A
@@ -13179,9 +13209,9 @@ initiatorSendNwkJoinReq:
         MOVX      A,@DPTR
         MOV       ?V7,A
         SJMP      ??initiatorSendNwkJoinReq_6
-// 2270     }
-// 2271 
-// 2272     pParams->logicalChannel = _NIB.nwkLogicalChannel;
+// 2274     }
+// 2275 
+// 2276     pParams->logicalChannel = _NIB.nwkLogicalChannel;
 ??initiatorSendNwkJoinReq_7:
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
@@ -13196,7 +13226,7 @@ initiatorSendNwkJoinReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2273     pParams->panId = _NIB.nwkPanId;
+// 2277     pParams->panId = _NIB.nwkPanId;
         MOV       DPTR,#_NIB + 33
         MOVX      A,@DPTR
         MOV       R0,A
@@ -13214,14 +13244,14 @@ initiatorSendNwkJoinReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2274     osal_cpyExtAddr( pParams->extendedPANID, _NIB.extendedPANID );
+// 2278     osal_cpyExtAddr( pParams->extendedPANID, _NIB.extendedPANID );
         ; Setup parameters for call to function sAddrExtCpy
         MOV       R4,#(_NIB + 53) & 0xff
         MOV       R5,#((_NIB + 53) >> 8) & 0xff
         MOV       R2,?V0
         MOV       R3,?V1
         LCALL     `??sAddrExtCpy::?relay`; Banked call to: sAddrExtCpy
-// 2275     pReq->nwkUpdateId = _NIB.nwkUpdateId;
+// 2279     pReq->nwkUpdateId = _NIB.nwkUpdateId;
         MOV       DPTR,#_NIB + 109
         MOVX      A,@DPTR
         PUSH      A
@@ -13235,9 +13265,9 @@ initiatorSendNwkJoinReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2276 
-// 2277     // Let PAN ID, Extended PAN ID and Logical Channel to be determined by the target
-// 2278     if ( pRsp->zLogicalType == ZG_DEVICETYPE_ROUTER )
+// 2280 
+// 2281     // Let PAN ID, Extended PAN ID and Logical Channel to be determined by the target
+// 2282     if ( pRsp->zLogicalType == ZG_DEVICETYPE_ROUTER )
         MOV       DPL,?V8
         MOV       DPH,?V9
         INC       DPTR
@@ -13255,9 +13285,9 @@ initiatorSendNwkJoinReq:
         MOV       A,R0
         XRL       A,#0x1
         JNZ       ??initiatorSendNwkJoinReq_8
-// 2279     {
-// 2280       // It's a light
-// 2281       status = bdbTL_Send_NwkJoinRtrReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
+// 2283     {
+// 2284       // It's a light
+// 2285       status = bdbTL_Send_NwkJoinRtrReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
         MOV       R0,A
@@ -13287,10 +13317,10 @@ initiatorSendNwkJoinReq:
         MOV       A,R1
         MOV       ?V2,A
         SJMP      ??initiatorSendNwkJoinReq_9
-// 2282     }
-// 2283     else // another controller
-// 2284     {
-// 2285       status = bdbTL_Send_NwkJoinEDReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
+// 2286     }
+// 2287     else // another controller
+// 2288     {
+// 2289       status = bdbTL_Send_NwkJoinEDReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
 ??initiatorSendNwkJoinReq_8:
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
@@ -13320,16 +13350,16 @@ initiatorSendNwkJoinReq:
           CFI CFA_XSP16 add(XSP16, 20)
         MOV       A,R1
         MOV       ?V2,A
-// 2286     }
-// 2287 
-// 2288     if ( status == ZSuccess )
+// 2290     }
+// 2291 
+// 2292     if ( status == ZSuccess )
 ??initiatorSendNwkJoinReq_9:
         MOV       A,?V2
         JNZ       ??initiatorSendNwkJoinReq_10
-// 2289     {
-// 2290       // After the transmission, wait BDBCTL_RX_WINDOW_DURATION seconds to
-// 2291       // receive a response.
-// 2292       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT, BDBCTL_RX_WINDOW_DURATION );
+// 2293     {
+// 2294       // After the transmission, wait BDBCTL_RX_WINDOW_DURATION seconds to
+// 2295       // receive a response.
+// 2296       osal_start_timerEx( touchLinkInitiator_TaskID, TOUCHLINK_W4_NWK_JOIN_RSP_EVT, BDBCTL_RX_WINDOW_DURATION );
         ; Setup parameters for call to function osal_start_timerEx
         MOV       DPTR,#__Constant_1388
         LCALL     ?PUSH_XSTACK8_X_FOUR
@@ -13344,48 +13374,48 @@ initiatorSendNwkJoinReq:
         LCALL     ?DEALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 20)
         MOV       A,R1
-// 2293     }
-// 2294 
-// 2295     osal_mem_free( pReq );
+// 2297     }
+// 2298 
+// 2299     osal_mem_free( pReq );
 ??initiatorSendNwkJoinReq_10:
         ; Setup parameters for call to function osal_mem_free
         MOV       R2,?V4
         MOV       R3,?V5
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
         SJMP      ??initiatorSendNwkJoinReq_11
-// 2296   }
-// 2297   else
-// 2298   {
-// 2299     status = ZMemError;
+// 2300   }
+// 2301   else
+// 2302   {
+// 2303     status = ZMemError;
 ??initiatorSendNwkJoinReq_0:
         MOV       ?V2,#0x10
-// 2300   }
-// 2301 
-// 2302   return ( status );
+// 2304   }
+// 2305 
+// 2306   return ( status );
 ??initiatorSendNwkJoinReq_11:
         MOV       R1,?V2
         MOV       R7,#0xc
         LJMP      ?BANKED_LEAVE_XDATA
-// 2303 }
+// 2307 }
           CFI EndBlock cfiBlock31
-// 2304 
-// 2305 /*********************************************************************
-// 2306  * @fn      initiatorSendNwkUpdateReq
-// 2307  *
-// 2308  * @brief   Send out a Network Update Request command.
-// 2309  *
-// 2310  * @param   pRsp - received Scan Response
+// 2308 
+// 2309 /*********************************************************************
+// 2310  * @fn      initiatorSendNwkUpdateReq
 // 2311  *
-// 2312  * @return  ZStatus_t
-// 2313  */
+// 2312  * @brief   Send out a Network Update Request command.
+// 2313  *
+// 2314  * @param   pRsp - received Scan Response
+// 2315  *
+// 2316  * @return  ZStatus_t
+// 2317  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 2314 static ZStatus_t initiatorSendNwkUpdateReq( bdbTLScanRsp_t *pRsp )
+// 2318 static ZStatus_t initiatorSendNwkUpdateReq( bdbTLScanRsp_t *pRsp )
 initiatorSendNwkUpdateReq:
           CFI Block cfiBlock32 Using cfiCommon0
           CFI Function initiatorSendNwkUpdateReq
         CODE
-// 2315 {
+// 2319 {
         FUNCALL initiatorSendNwkUpdateReq, osal_mem_alloc
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -13458,10 +13488,10 @@ initiatorSendNwkUpdateReq:
         ; Auto size: 0
         MOV       ?V2,R2
         MOV       ?V3,R3
-// 2316   bdbTLNwkUpdateReq_t *pReq;
-// 2317   ZStatus_t status;
-// 2318 
-// 2319   pReq = (bdbTLNwkUpdateReq_t *)osal_mem_alloc( sizeof( bdbTLNwkUpdateReq_t ) );
+// 2320   bdbTLNwkUpdateReq_t *pReq;
+// 2321   ZStatus_t status;
+// 2322 
+// 2323   pReq = (bdbTLNwkUpdateReq_t *)osal_mem_alloc( sizeof( bdbTLNwkUpdateReq_t ) );
         ; Setup parameters for call to function osal_mem_alloc
         MOV       R2,#0x12
         MOV       R3,#0x0
@@ -13470,21 +13500,21 @@ initiatorSendNwkUpdateReq:
         MOV       ?V5,R3
         MOV       R6,?V4
         MOV       R7,?V5
-// 2320   if ( pReq!= NULL )
+// 2324   if ( pReq!= NULL )
         MOV       A,R6
         ORL       A,R7
         JNZ       $+5
         LJMP      ??initiatorSendNwkUpdateReq_0 & 0xFFFF
-// 2321   {
-// 2322     // Build the request
-// 2323     pReq->transID = pRsp->transID;
+// 2325   {
+// 2326     // Build the request
+// 2327     pReq->transID = pRsp->transID;
         MOV       DPL,?V2
         MOV       DPH,?V3
         LCALL     ?XLOAD_R0123
         MOV       DPL,R6
         MOV       DPH,R7
         LCALL     ?XSTORE_R0123
-// 2324     osal_cpyExtAddr( pReq->extendedPANID, _NIB.extendedPANID );
+// 2328     osal_cpyExtAddr( pReq->extendedPANID, _NIB.extendedPANID );
         ; Setup parameters for call to function sAddrExtCpy
         MOV       R4,#(_NIB + 53) & 0xff
         MOV       R5,#((_NIB + 53) >> 8) & 0xff
@@ -13495,7 +13525,7 @@ initiatorSendNwkUpdateReq:
         ADDC      A,R7
         MOV       R3,A
         LCALL     `??sAddrExtCpy::?relay`; Banked call to: sAddrExtCpy
-// 2325     pReq->nwkUpdateId = _NIB.nwkUpdateId;
+// 2329     pReq->nwkUpdateId = _NIB.nwkUpdateId;
         MOV       DPTR,#_NIB + 109
         MOVX      A,@DPTR
         PUSH      A
@@ -13509,7 +13539,7 @@ initiatorSendNwkUpdateReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2326     pReq->logicalChannel = _NIB.nwkLogicalChannel;
+// 2330     pReq->logicalChannel = _NIB.nwkLogicalChannel;
         MOV       DPTR,#_NIB + 22
         MOVX      A,@DPTR
         PUSH      A
@@ -13523,7 +13553,7 @@ initiatorSendNwkUpdateReq:
         POP       A
           CFI CFA_SP SP+0
         MOVX      @DPTR,A
-// 2327     pReq->PANID = _NIB.nwkPanId;
+// 2331     pReq->PANID = _NIB.nwkPanId;
         MOV       DPTR,#_NIB + 33
         MOVX      A,@DPTR
         MOV       R0,A
@@ -13541,7 +13571,7 @@ initiatorSendNwkUpdateReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2328     pReq->nwkAddr = pRsp->nwkAddr;
+// 2332     pReq->nwkAddr = pRsp->nwkAddr;
         MOV       A,?V2
         ADD       A,#0x1b
         MOV       DPL,A
@@ -13564,8 +13594,8 @@ initiatorSendNwkUpdateReq:
         INC       DPTR
         MOV       A,R1
         MOVX      @DPTR,A
-// 2329 
-// 2330     status = bdbTL_Send_NwkUpdateReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
+// 2333 
+// 2334     status = bdbTL_Send_NwkUpdateReq( TOUCHLINK_INTERNAL_ENDPOINT, &(selectedTarget.srcAddr), pReq, initiatorSeqNum++ );
         MOV       DPTR,#initiatorSeqNum
         MOVX      A,@DPTR
         MOV       R0,A
@@ -13592,8 +13622,8 @@ initiatorSendNwkUpdateReq:
           CFI CFA_XSP16 add(XSP16, 14)
         MOV       A,R1
         MOV       ?V0,A
-// 2331 
-// 2332     osal_mem_free( pReq );
+// 2335 
+// 2336     osal_mem_free( pReq );
         ; Setup parameters for call to function osal_mem_free
         MOV       A,R6
         MOV       R2,A
@@ -13601,39 +13631,39 @@ initiatorSendNwkUpdateReq:
         MOV       R3,A
         LCALL     `??osal_mem_free::?relay`; Banked call to: osal_mem_free
         SJMP      ??initiatorSendNwkUpdateReq_1
-// 2333   }
-// 2334   else
-// 2335   {
-// 2336     status = ZMemError;
+// 2337   }
+// 2338   else
+// 2339   {
+// 2340     status = ZMemError;
 ??initiatorSendNwkUpdateReq_0:
         MOV       ?V0,#0x10
-// 2337   }
-// 2338 
-// 2339   return ( status );
+// 2341   }
+// 2342 
+// 2343   return ( status );
 ??initiatorSendNwkUpdateReq_1:
         MOV       R1,?V0
         MOV       R7,#0x6
         LJMP      ?BANKED_LEAVE_XDATA
-// 2340 }
+// 2344 }
           CFI EndBlock cfiBlock32
-// 2341 
-// 2342 /*********************************************************************
-// 2343  * @fn      initiatorClearSelectedTarget
-// 2344  *
-// 2345  * @brief   clear selected target variable.
-// 2346  *
-// 2347  * @param   none
+// 2345 
+// 2346 /*********************************************************************
+// 2347  * @fn      initiatorClearSelectedTarget
 // 2348  *
-// 2349  * @return  none
-// 2350  */
+// 2349  * @brief   clear selected target variable.
+// 2350  *
+// 2351  * @param   none
+// 2352  *
+// 2353  * @return  none
+// 2354  */
 
         RSEG BANKED_CODE:HUGECODE:NOROOT(0)
-// 2351 static void initiatorClearSelectedTarget( void )
+// 2355 static void initiatorClearSelectedTarget( void )
 initiatorClearSelectedTarget:
           CFI Block cfiBlock33 Using cfiCommon0
           CFI Function initiatorClearSelectedTarget
         CODE
-// 2352 {
+// 2356 {
         FUNCALL initiatorClearSelectedTarget, osal_memset
         LOCFRAME ISTACK, 2, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -13653,7 +13683,7 @@ initiatorClearSelectedTarget:
           CFI CFA_SP SP+-5
         ; Saved register size: 2
         ; Auto size: 0
-// 2353   osal_memset( &selectedTarget, 0x00, sizeof(targetCandidate_t) );
+// 2357   osal_memset( &selectedTarget, 0x00, sizeof(targetCandidate_t) );
         ; Setup parameters for call to function osal_memset
         MOV       R4,#0x36
         MOV       R5,#0x0
@@ -13661,11 +13691,11 @@ initiatorClearSelectedTarget:
         MOV       R2,#selectedTarget & 0xff
         MOV       R3,#(selectedTarget >> 8) & 0xff
         LCALL     `??osal_memset::?relay`; Banked call to: osal_memset
-// 2354   selectedTarget.lastRssi = TOUCHLINK_WORST_RSSI;
+// 2358   selectedTarget.lastRssi = TOUCHLINK_WORST_RSSI;
         MOV       DPTR,#selectedTarget + 53
-        MOV       A,#-0x46
+        MOV       A,#-0x1e
         MOVX      @DPTR,A
-// 2355 }
+// 2359 }
         POP       DPH
           CFI DPH0 SameValue
           CFI CFA_SP SP+-4
@@ -13990,8 +14020,8 @@ __Constant_32:
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
-__Constant_7d0:
-        DD 2000
+__Constant_c8:
+        DD 200
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA32
@@ -14019,13 +14049,13 @@ __Constant_1388:
         DD 5000
 
         END
-// 2356 
-// 2357 #endif //BDB_TL_INITIATOR
-// 2358 
-// 2359 /*********************************************************************
-// 2360 *********************************************************************/
+// 2360 
+// 2361 #endif //BDB_TL_INITIATOR
+// 2362 
+// 2363 /*********************************************************************
+// 2364 *********************************************************************/
 // 
-// 9 937 bytes in segment BANKED_CODE
+// 9 963 bytes in segment BANKED_CODE
 //   204 bytes in segment BANK_RELAYS
 //    27 bytes in segment XDATA_I
 //    27 bytes in segment XDATA_ID
@@ -14034,7 +14064,7 @@ __Constant_1388:
 // 
 //   231 bytes of CODE     memory
 //    33 bytes of CONST    memory (+ 40 bytes shared)
-// 9 937 bytes of HUGECODE memory
+// 9 963 bytes of HUGECODE memory
 //   246 bytes of XDATA    memory
 //
 //Errors: none

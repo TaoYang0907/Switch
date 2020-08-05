@@ -245,7 +245,8 @@ extern "C"
 
 // TOUCHLINK Profile Constants
 #define BDBCTL_INTER_PAN_TRANS_ID_LIFETIME               8000 // 8s
-#define BDBCTL_MIN_STARTUP_DELAY_TIME                    2000 // 2s
+//#define BDBCTL_MIN_STARTUP_DELAY_TIME                    2000 // 2s
+#define BDBCTL_MIN_STARTUP_DELAY_TIME                    200 // 2s
 #define BDBCTL_PRIMARY_CHANNEL_LIST                      ( 0x02108800 << TOUCHLINK_CH_OFFSET )
 #define BDBCTL_RX_WINDOW_DURATION                        5000 // 5s
 #define BDBCTL_SCAN_TIME_BASE_DURATION                   250  // 0.25s

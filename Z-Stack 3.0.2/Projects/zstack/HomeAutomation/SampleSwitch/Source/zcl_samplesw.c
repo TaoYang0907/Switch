@@ -145,12 +145,11 @@ devStates_t zclSampleSw_NwkState = DEV_INIT;
 #endif
 
 #define SAMPLESW_TOGGLE_TEST_EVT   0x1000
+#define SAMPLESW_RESET_TEST_EVT    0x1001
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
-//static void Send_To_SW1( void );
-//static void Send_To_SW2( void );
-//static void Send_To_SW3( void );
+
 
 static void zclSampleSw_HandleKeys( byte shift, byte keys );
 static void zclSampleSw_BasicResetCB( void );
@@ -325,6 +324,14 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
 //    return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
 //  }
 
+  if( events & SAMPLESW_RESET_TEST_EVT )
+  {
+    HalLedSet ( HAL_LED_1, HAL_LED_MODE_TOGGLE );
+    touchLinkInitiator_ResetToFNSelectedTarget();
+
+//    return (events ^ SAMPLESW_RESET_TEST_EVT);
+  }
+
   if ( events & SYS_EVENT_MSG )
   {
     while ( (MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive( zclSampleSw_TaskID )) )
@@ -342,14 +349,6 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
 
         case ZDO_STATE_CHANGE:
           break;
-
-//        case UART0_MESSAGE_SW1_TOGGLE:
-//          Send_To_SW1();
-//          break;
-//
-//        case UART0_MESSAGE_SW2_TOGGLE:
-//          Send_To_SW2();
-//          break;
 
 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
         case ZCL_OTA_CALLBACK_IND:
@@ -401,24 +400,21 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
  *                 HAL_KEY_SW_4
  *                 HAL_KEY_SW_2
  *                 HAL_KEY_SW_1
- *bdbAttributes.bdbNodeIsOnANetwork
+ *
  * @return  none
  */
 static void zclSampleSw_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_6 ) //key1
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_ON );
-//    bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
+    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
     touchLinkInitiator_StartDevDisc();
-//    NLME_SetPollRate(10000);
+    osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_RESET_TEST_EVT,2500);
   }    
   if ( keys & HAL_KEY_SW_5 ) //key2
   {
-//    Send_To_SW1();
     HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
     touchLinkInitiator_ResetToFNSelectedTarget();
-//    Send_To_SW2();
   }
 }
 
