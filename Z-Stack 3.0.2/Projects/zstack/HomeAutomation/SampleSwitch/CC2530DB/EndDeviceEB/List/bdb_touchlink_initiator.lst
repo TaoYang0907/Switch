@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR C/C++ Compiler V10.30.1.6000 for 8051               05/Aug/2020  22:50:57
+# IAR C/C++ Compiler V10.30.1.6000 for 8051               06/Aug/2020  10:36:56
 # Copyright 2004-2018 IAR Systems AB.
 # PC-locked license - IAR Embedded Workbench for 8051
 #
@@ -14,7 +14,7 @@
 #    Source file        =  
 #        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 #    Command line       =  
-#        -f C:\Users\sunli\AppData\Local\Temp\EW1245.tmp ("D:\AA\Z-Stack
+#        -f C:\Users\sunli\AppData\Local\Temp\EW6A73.tmp ("D:\AA\Z-Stack
 #        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
 #        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 #        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D xMT_SYS_FUNC
@@ -5507,329 +5507,299 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   000063   E9           MOV       A,R1
    \   000064   F5..         MOV       ?V1,A
    1584          
-   1585              printf("%d\n", rssi );
-   \   000066                ; Setup parameters for call to function printf
-   \   000066   E5..         MOV       A,?V1
-   \   000068   F5..         MOV       ?V6,A
-   \   00006A   33           RLC       A
-   \   00006B   95E0         SUBB      A,0xE0 /* A   */
-   \   00006D   F5..         MOV       ?V7,A
-   \   00006F   78..         MOV       R0,#?V6
-   \   000071   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000074   7A..         MOV       R2,#`?<Constant "%d\\n">` & 0xff
-   \   000076   7B..         MOV       R3,#(`?<Constant "%d\\n">` >> 8) & 0xff
-   \   000078   12....       LCALL     `??printf::?relay`; Banked call to: printf
-   \   00007B   7402         MOV       A,#0x2
-   \   00007D   12....       LCALL     ?DEALLOC_XSTACK8
+   1585          //    printf("%d\n", rssi );
    1586          
    1587              if ( pfnSelectDiscDevCB != NULL )
-   \   000080   90....       MOV       DPTR,#pfnSelectDiscDevCB
-   \   000083   E0           MOVX      A,@DPTR
-   \   000084   F8           MOV       R0,A
-   \   000085   A3           INC       DPTR
-   \   000086   E0           MOVX      A,@DPTR
-   \   000087   F9           MOV       R1,A
-   \   000088   E8           MOV       A,R0
-   \   000089   49           ORL       A,R1
-   \   00008A   6019         JZ        ??initiatorScanRspCB_1
+   \   000066   90....       MOV       DPTR,#pfnSelectDiscDevCB
+   \   000069   E0           MOVX      A,@DPTR
+   \   00006A   F8           MOV       R0,A
+   \   00006B   A3           INC       DPTR
+   \   00006C   E0           MOVX      A,@DPTR
+   \   00006D   F9           MOV       R1,A
+   \   00006E   E8           MOV       A,R0
+   \   00006F   49           ORL       A,R1
+   \   000070   6019         JZ        ??initiatorScanRspCB_1
    1588              {
    1589                selectThisTarget = pfnSelectDiscDevCB( pRsp, rssi );
-   \   00008C                ; Setup parameters for indirect call
-   \   00008C   A9..         MOV       R1,?V1
-   \   00008E   EE           MOV       A,R6
-   \   00008F   FA           MOV       R2,A
-   \   000090   EF           MOV       A,R7
-   \   000091   FB           MOV       R3,A
-   \   000092   90....       MOV       DPTR,#pfnSelectDiscDevCB
-   \   000095   E0           MOVX      A,@DPTR
-   \   000096   F8           MOV       R0,A
-   \   000097   A3           INC       DPTR
-   \   000098   E0           MOVX      A,@DPTR
-   \   000099   F583         MOV       DPH,A
-   \   00009B   8882         MOV       DPL,R0
-   \   00009D   12....       LCALL     ?CALL_IND
-   \   0000A0   E9           MOV       A,R1
-   \   0000A1   F5..         MOV       ?V0,A
-   \   0000A3   803D         SJMP      ??initiatorScanRspCB_2
+   \   000072                ; Setup parameters for indirect call
+   \   000072   A9..         MOV       R1,?V1
+   \   000074   EE           MOV       A,R6
+   \   000075   FA           MOV       R2,A
+   \   000076   EF           MOV       A,R7
+   \   000077   FB           MOV       R3,A
+   \   000078   90....       MOV       DPTR,#pfnSelectDiscDevCB
+   \   00007B   E0           MOVX      A,@DPTR
+   \   00007C   F8           MOV       R0,A
+   \   00007D   A3           INC       DPTR
+   \   00007E   E0           MOVX      A,@DPTR
+   \   00007F   F583         MOV       DPH,A
+   \   000081   8882         MOV       DPL,R0
+   \   000083   12....       LCALL     ?CALL_IND
+   \   000086   E9           MOV       A,R1
+   \   000087   F5..         MOV       ?V0,A
+   \   000089   803D         SJMP      ??initiatorScanRspCB_2
    1590              }
    1591              // Default selection - according to RSSI
    1592              else if ( rssi > TOUCHLINK_WORST_RSSI )
    \                     ??initiatorScanRspCB_1:
-   \   0000A5   E5..         MOV       A,?V1
-   \   0000A7   C3           CLR       C
-   \   0000A8   94E3         SUBB      A,#-0x1d
-   \   0000AA   A2D2         MOV       C,0xD0 /* PSW */.2
-   \   0000AC   65D0         XRL       A,PSW
-   \   0000AE   33           RLC       A
-   \   0000AF   4031         JC        ??initiatorScanRspCB_2
+   \   00008B   E5..         MOV       A,?V1
+   \   00008D   C3           CLR       C
+   \   00008E   94E3         SUBB      A,#-0x1d
+   \   000090   A2D2         MOV       C,0xD0 /* PSW */.2
+   \   000092   65D0         XRL       A,PSW
+   \   000094   33           RLC       A
+   \   000095   4031         JC        ??initiatorScanRspCB_2
    1593              {
    1594                if ( ( rssi + pRsp->rssiCorrection ) > selectedTarget.lastRssi )
-   \   0000B1   90....       MOV       DPTR,#selectedTarget + 53
-   \   0000B4   E0           MOVX      A,@DPTR
-   \   0000B5   FA           MOV       R2,A
-   \   0000B6   33           RLC       A
-   \   0000B7   95E0         SUBB      A,0xE0 /* A   */
-   \   0000B9   FB           MOV       R3,A
-   \   0000BA   E5..         MOV       A,?V1
-   \   0000BC   F8           MOV       R0,A
-   \   0000BD   33           RLC       A
-   \   0000BE   95E0         SUBB      A,0xE0 /* A   */
-   \   0000C0   F9           MOV       R1,A
-   \   0000C1   8E82         MOV       DPL,R6
-   \   0000C3   8F83         MOV       DPH,R7
-   \   0000C5   A3           INC       DPTR
-   \   0000C6   A3           INC       DPTR
-   \   0000C7   A3           INC       DPTR
-   \   0000C8   A3           INC       DPTR
-   \   0000C9   E0           MOVX      A,@DPTR
-   \   0000CA   FC           MOV       R4,A
-   \   0000CB   7D00         MOV       R5,#0x0
-   \   0000CD   E8           MOV       A,R0
-   \   0000CE   2C           ADD       A,R4
-   \   0000CF   F8           MOV       R0,A
-   \   0000D0   E9           MOV       A,R1
-   \   0000D1   3D           ADDC      A,R5
-   \   0000D2   F9           MOV       R1,A
-   \   0000D3   C3           CLR       C
-   \   0000D4   EA           MOV       A,R2
-   \   0000D5   98           SUBB      A,R0
-   \   0000D6   EB           MOV       A,R3
-   \   0000D7   99           SUBB      A,R1
-   \   0000D8   A2D2         MOV       C,0xD0 /* PSW */.2
-   \   0000DA   65D0         XRL       A,PSW
-   \   0000DC   33           RLC       A
-   \   0000DD   5003         JNC       ??initiatorScanRspCB_2
+   \   000097   90....       MOV       DPTR,#selectedTarget + 53
+   \   00009A   E0           MOVX      A,@DPTR
+   \   00009B   FA           MOV       R2,A
+   \   00009C   33           RLC       A
+   \   00009D   95E0         SUBB      A,0xE0 /* A   */
+   \   00009F   FB           MOV       R3,A
+   \   0000A0   E5..         MOV       A,?V1
+   \   0000A2   F8           MOV       R0,A
+   \   0000A3   33           RLC       A
+   \   0000A4   95E0         SUBB      A,0xE0 /* A   */
+   \   0000A6   F9           MOV       R1,A
+   \   0000A7   8E82         MOV       DPL,R6
+   \   0000A9   8F83         MOV       DPH,R7
+   \   0000AB   A3           INC       DPTR
+   \   0000AC   A3           INC       DPTR
+   \   0000AD   A3           INC       DPTR
+   \   0000AE   A3           INC       DPTR
+   \   0000AF   E0           MOVX      A,@DPTR
+   \   0000B0   FC           MOV       R4,A
+   \   0000B1   7D00         MOV       R5,#0x0
+   \   0000B3   E8           MOV       A,R0
+   \   0000B4   2C           ADD       A,R4
+   \   0000B5   F8           MOV       R0,A
+   \   0000B6   E9           MOV       A,R1
+   \   0000B7   3D           ADDC      A,R5
+   \   0000B8   F9           MOV       R1,A
+   \   0000B9   C3           CLR       C
+   \   0000BA   EA           MOV       A,R2
+   \   0000BB   98           SUBB      A,R0
+   \   0000BC   EB           MOV       A,R3
+   \   0000BD   99           SUBB      A,R1
+   \   0000BE   A2D2         MOV       C,0xD0 /* PSW */.2
+   \   0000C0   65D0         XRL       A,PSW
+   \   0000C2   33           RLC       A
+   \   0000C3   5003         JNC       ??initiatorScanRspCB_2
    1595                {
    1596                  // Better RSSI, select this target
    1597                  selectThisTarget = TRUE;
-   \   0000DF   75..01       MOV       ?V0,#0x1
+   \   0000C5   75..01       MOV       ?V0,#0x1
    1598                }
    1599              }
    1600              
    1601              if ( selectThisTarget )
    \                     ??initiatorScanRspCB_2:
-   \   0000E2   E5..         MOV       A,?V0
-   \   0000E4   7003         JNZ       $+5
-   \   0000E6   02....       LJMP      ??initiatorScanRspCB_3 & 0xFFFF
+   \   0000C8   E5..         MOV       A,?V0
+   \   0000CA   7003         JNZ       $+5
+   \   0000CC   02....       LJMP      ??initiatorScanRspCB_3 & 0xFFFF
    1602              {
    1603                selectedTarget.scanRsp = *pRsp;
-   \   0000E9   8E82         MOV       DPL,R6
-   \   0000EB   8F83         MOV       DPH,R7
-   \   0000ED   7C..         MOV       R4,#selectedTarget & 0xff
-   \   0000EF   7D..         MOV       R5,#(selectedTarget >> 8) & 0xff
-   \   0000F1   7426         MOV       A,#0x26
-   \   0000F3   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
+   \   0000CF   8E82         MOV       DPL,R6
+   \   0000D1   8F83         MOV       DPH,R7
+   \   0000D3   7C..         MOV       R4,#selectedTarget & 0xff
+   \   0000D5   7D..         MOV       R5,#(selectedTarget >> 8) & 0xff
+   \   0000D7   7426         MOV       A,#0x26
+   \   0000D9   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
    1604                selectedTarget.lastRssi = rssi;
-   \   0000F6   E5..         MOV       A,?V1
-   \   0000F8   90....       MOV       DPTR,#selectedTarget + 53
-   \   0000FB   F0           MOVX      @DPTR,A
+   \   0000DC   E5..         MOV       A,?V1
+   \   0000DE   90....       MOV       DPTR,#selectedTarget + 53
+   \   0000E1   F0           MOVX      @DPTR,A
    1605                selectedTarget.srcAddr = *srcAddr;
-   \   0000FC   85..82       MOV       DPL,?V2
-   \   0000FF   85..83       MOV       DPH,?V3
-   \   000102   7C..         MOV       R4,#(selectedTarget + 38) & 0xff
-   \   000104   7D..         MOV       R5,#((selectedTarget + 38) >> 8) & 0xff
-   \   000106   740C         MOV       A,#0xc
-   \   000108   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
+   \   0000E2   85..82       MOV       DPL,?V2
+   \   0000E5   85..83       MOV       DPH,?V3
+   \   0000E8   7C..         MOV       R4,#(selectedTarget + 38) & 0xff
+   \   0000EA   7D..         MOV       R5,#((selectedTarget + 38) >> 8) & 0xff
+   \   0000EC   740C         MOV       A,#0xc
+   \   0000EE   12....       LCALL     ?MOVE_LONG8_XDATA_XDATA
    1606                selectedTarget.srcAddr.panId = 0xFFFF;
-   \   00010B   90....       MOV       DPTR,#selectedTarget + 48
-   \   00010E   74FF         MOV       A,#-0x1
-   \   000110   F0           MOVX      @DPTR,A
-   \   000111   A3           INC       DPTR
-   \   000112   74FF         MOV       A,#-0x1
-   \   000114   F0           MOVX      @DPTR,A
+   \   0000F1   90....       MOV       DPTR,#selectedTarget + 48
+   \   0000F4   74FF         MOV       A,#-0x1
+   \   0000F6   F0           MOVX      @DPTR,A
+   \   0000F7   A3           INC       DPTR
+   \   0000F8   74FF         MOV       A,#-0x1
+   \   0000FA   F0           MOVX      @DPTR,A
    1607                touchLinkResponseID = pRsp->responseID;
-   \   000115   EE           MOV       A,R6
-   \   000116   240B         ADD       A,#0xb
-   \   000118   F582         MOV       DPL,A
-   \   00011A   E4           CLR       A
-   \   00011B   3F           ADDC      A,R7
-   \   00011C   F583         MOV       DPH,A
-   \   00011E   12....       LCALL     ?XLOAD_R0123
-   \   000121   90....       MOV       DPTR,#touchLinkResponseID
-   \   000124   12....       LCALL     ?XSTORE_R0123
+   \   0000FB   EE           MOV       A,R6
+   \   0000FC   240B         ADD       A,#0xb
+   \   0000FE   F582         MOV       DPL,A
+   \   000100   E4           CLR       A
+   \   000101   3F           ADDC      A,R7
+   \   000102   F583         MOV       DPH,A
+   \   000104   12....       LCALL     ?XLOAD_R0123
+   \   000107   90....       MOV       DPTR,#touchLinkResponseID
+   \   00010A   12....       LCALL     ?XSTORE_R0123
    1608                touchLinkTransID = pRsp->transID;
-   \   000127   8E82         MOV       DPL,R6
-   \   000129   8F83         MOV       DPH,R7
-   \   00012B   12....       LCALL     ?XLOAD_R0123
-   \   00012E   90....       MOV       DPTR,#touchLinkTransID
-   \   000131   12....       LCALL     ?XSTORE_R0123
+   \   00010D   8E82         MOV       DPL,R6
+   \   00010F   8F83         MOV       DPH,R7
+   \   000111   12....       LCALL     ?XLOAD_R0123
+   \   000114   90....       MOV       DPTR,#touchLinkTransID
+   \   000117   12....       LCALL     ?XSTORE_R0123
    1609          
-   1610                printf("%d\n", pRsp->logicalChannel );
-   \   000134                ; Setup parameters for call to function printf
-   \   000134   EE           MOV       A,R6
-   \   000135   2418         ADD       A,#0x18
-   \   000137   F582         MOV       DPL,A
-   \   000139   E4           CLR       A
-   \   00013A   3F           ADDC      A,R7
-   \   00013B   F583         MOV       DPH,A
-   \   00013D   E0           MOVX      A,@DPTR
-   \   00013E   F5..         MOV       ?V6,A
-   \   000140   75..00       MOV       ?V7,#0x0
-   \   000143   78..         MOV       R0,#?V6
-   \   000145   12....       LCALL     ?PUSH_XSTACK_I_TWO
-   \   000148   7A..         MOV       R2,#`?<Constant "%d\\n">` & 0xff
-   \   00014A   7B..         MOV       R3,#(`?<Constant "%d\\n">` >> 8) & 0xff
-   \   00014C   12....       LCALL     `??printf::?relay`; Banked call to: printf
-   \   00014F   7402         MOV       A,#0x2
-   \   000151   12....       LCALL     ?DEALLOC_XSTACK8
+   1610          //      printf("%d\n", pRsp->logicalChannel );
    1611          
    1612                // Remember channel we heard back this scan response on
    1613                ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));
-   \   000154                ; Setup parameters for call to function ZMacGetReq
-   \   000154   7A..         MOV       R2,#(selectedTarget + 52) & 0xff
-   \   000156   7B..         MOV       R3,#((selectedTarget + 52) >> 8) & 0xff
-   \   000158   79E1         MOV       R1,#-0x1f
-   \   00015A   12....       LCALL     `??ZMacGetReq::?relay`; Banked call to: ZMacGetReq
-   \   00015D   E9           MOV       A,R1
+   \   00011A                ; Setup parameters for call to function ZMacGetReq
+   \   00011A   7A..         MOV       R2,#(selectedTarget + 52) & 0xff
+   \   00011C   7B..         MOV       R3,#((selectedTarget + 52) >> 8) & 0xff
+   \   00011E   79E1         MOV       R1,#-0x1f
+   \   000120   12....       LCALL     `??ZMacGetReq::?relay`; Banked call to: ZMacGetReq
+   \   000123   E9           MOV       A,R1
    1614          
    1615                if ( pRsp->numSubDevices > 1 )
-   \   00015E   EE           MOV       A,R6
-   \   00015F   241D         ADD       A,#0x1d
-   \   000161   F582         MOV       DPL,A
-   \   000163   E4           CLR       A
-   \   000164   3F           ADDC      A,R7
-   \   000165   F583         MOV       DPH,A
-   \   000167   E0           MOVX      A,@DPTR
-   \   000168   C3           CLR       C
-   \   000169   9402         SUBB      A,#0x2
-   \   00016B   4047         JC        ??initiatorScanRspCB_4
+   \   000124   EE           MOV       A,R6
+   \   000125   241D         ADD       A,#0x1d
+   \   000127   F582         MOV       DPL,A
+   \   000129   E4           CLR       A
+   \   00012A   3F           ADDC      A,R7
+   \   00012B   F583         MOV       DPH,A
+   \   00012D   E0           MOVX      A,@DPTR
+   \   00012E   C3           CLR       C
+   \   00012F   9402         SUBB      A,#0x2
+   \   000131   4047         JC        ??initiatorScanRspCB_4
    1616                {
    1617                  selectedTarget.scanRsp.deviceInfo.endpoint = DEV_INFO_INVALID_EP;
-   \   00016D   90....       MOV       DPTR,#selectedTarget + 31
-   \   000170   74FE         MOV       A,#-0x2
-   \   000172   F0           MOVX      @DPTR,A
+   \   000133   90....       MOV       DPTR,#selectedTarget + 31
+   \   000136   74FE         MOV       A,#-0x2
+   \   000138   F0           MOVX      @DPTR,A
    1618          
    1619                  bdbTLDeviceInfoReq_t devInfoReq;
    1620                  devInfoReq.transID = pRsp->transID;
-   \   000173   8E82         MOV       DPL,R6
-   \   000175   8F83         MOV       DPH,R7
-   \   000177   12....       LCALL     ?XLOAD_R0123
-   \   00017A   85..82       MOV       DPL,?XSP + 0
-   \   00017D   85..83       MOV       DPH,?XSP + 1
-   \   000180   12....       LCALL     ?XSTORE_R0123
+   \   000139   8E82         MOV       DPL,R6
+   \   00013B   8F83         MOV       DPH,R7
+   \   00013D   12....       LCALL     ?XLOAD_R0123
+   \   000140   85..82       MOV       DPL,?XSP + 0
+   \   000143   85..83       MOV       DPH,?XSP + 1
+   \   000146   12....       LCALL     ?XSTORE_R0123
    1621                  devInfoReq.startIndex = 0;
-   \   000183   7404         MOV       A,#0x4
-   \   000185   12....       LCALL     ?XSTACK_DISP0_8
-   \   000188   7400         MOV       A,#0x0
-   \   00018A   F0           MOVX      @DPTR,A
+   \   000149   7404         MOV       A,#0x4
+   \   00014B   12....       LCALL     ?XSTACK_DISP0_8
+   \   00014E   7400         MOV       A,#0x0
+   \   000150   F0           MOVX      @DPTR,A
    1622          
    1623                  return bdbTL_Send_DeviceInfoReq( TOUCHLINK_INTERNAL_ENDPOINT, srcAddr,
    1624                                              &devInfoReq, initiatorSeqNum++ );
-   \   00018B   90....       MOV       DPTR,#initiatorSeqNum
-   \   00018E   E0           MOVX      A,@DPTR
-   \   00018F   F8           MOV       R0,A
-   \   000190   7401         MOV       A,#0x1
-   \   000192   28           ADD       A,R0
-   \   000193   90....       MOV       DPTR,#initiatorSeqNum
-   \   000196   F0           MOVX      @DPTR,A
-   \   000197                ; Setup parameters for call to function bdbTL_Send_DeviceInfoReq
-   \   000197   E8           MOV       A,R0
-   \   000198   F5..         MOV       ?V6,A
-   \   00019A   78..         MOV       R0,#?V6
-   \   00019C   12....       LCALL     ?PUSH_XSTACK_I_ONE
-   \   00019F   7401         MOV       A,#0x1
-   \   0001A1   12....       LCALL     ?XSTACK_DISP102_8
-   \   0001A4   AA..         MOV       R2,?V2
-   \   0001A6   AB..         MOV       R3,?V3
-   \   0001A8   790D         MOV       R1,#0xd
-   \   0001AA   12....       LCALL     `??bdbTL_Send_DeviceInfoReq::?relay`; Banked call to: bdbTL_Send_DeviceInfoReq
-   \   0001AD   7401         MOV       A,#0x1
-   \   0001AF   12....       LCALL     ?DEALLOC_XSTACK8
-   \   0001B2   8069         SJMP      ??initiatorScanRspCB_5
+   \   000151   90....       MOV       DPTR,#initiatorSeqNum
+   \   000154   E0           MOVX      A,@DPTR
+   \   000155   F8           MOV       R0,A
+   \   000156   7401         MOV       A,#0x1
+   \   000158   28           ADD       A,R0
+   \   000159   90....       MOV       DPTR,#initiatorSeqNum
+   \   00015C   F0           MOVX      @DPTR,A
+   \   00015D                ; Setup parameters for call to function bdbTL_Send_DeviceInfoReq
+   \   00015D   E8           MOV       A,R0
+   \   00015E   F5..         MOV       ?V6,A
+   \   000160   78..         MOV       R0,#?V6
+   \   000162   12....       LCALL     ?PUSH_XSTACK_I_ONE
+   \   000165   7401         MOV       A,#0x1
+   \   000167   12....       LCALL     ?XSTACK_DISP102_8
+   \   00016A   AA..         MOV       R2,?V2
+   \   00016C   AB..         MOV       R3,?V3
+   \   00016E   790D         MOV       R1,#0xd
+   \   000170   12....       LCALL     `??bdbTL_Send_DeviceInfoReq::?relay`; Banked call to: bdbTL_Send_DeviceInfoReq
+   \   000173   7401         MOV       A,#0x1
+   \   000175   12....       LCALL     ?DEALLOC_XSTACK8
+   \   000178   8069         SJMP      ??initiatorScanRspCB_5
    1625                }
    1626                  
    1627                // add new node to the list
    1628                pCurr = bdb_AddRespondentNode( &pRespondentHead, NULL );
    \                     ??initiatorScanRspCB_4:
-   \   0001B4                ; Setup parameters for call to function bdb_AddRespondentNode
-   \   0001B4   7C00         MOV       R4,#0x0
-   \   0001B6   7D00         MOV       R5,#0x0
-   \   0001B8   7A..         MOV       R2,#pRespondentHead & 0xff
-   \   0001BA   7B..         MOV       R3,#(pRespondentHead >> 8) & 0xff
-   \   0001BC   12....       LCALL     `??bdb_AddRespondentNode::?relay`; Banked call to: bdb_AddRespondentNode
-   \   0001BF   8A..         MOV       ?V6,R2
-   \   0001C1   8B..         MOV       ?V7,R3
-   \   0001C3   85....       MOV       ?V4,?V6
-   \   0001C6   85....       MOV       ?V5,?V7
+   \   00017A                ; Setup parameters for call to function bdb_AddRespondentNode
+   \   00017A   7C00         MOV       R4,#0x0
+   \   00017C   7D00         MOV       R5,#0x0
+   \   00017E   7A..         MOV       R2,#pRespondentHead & 0xff
+   \   000180   7B..         MOV       R3,#(pRespondentHead >> 8) & 0xff
+   \   000182   12....       LCALL     `??bdb_AddRespondentNode::?relay`; Banked call to: bdb_AddRespondentNode
+   \   000185   8A..         MOV       ?V6,R2
+   \   000187   8B..         MOV       ?V7,R3
+   \   000189   85....       MOV       ?V4,?V6
+   \   00018C   85....       MOV       ?V5,?V7
    1629                
    1630                if ( pCurr != NULL )
-   \   0001C9   E5..         MOV       A,?V4
-   \   0001CB   45..         ORL       A,?V5
-   \   0001CD   6048         JZ        ??initiatorScanRspCB_3
+   \   00018F   E5..         MOV       A,?V4
+   \   000191   45..         ORL       A,?V5
+   \   000193   6048         JZ        ??initiatorScanRspCB_3
    1631                {
    1632                  pCurr->data.endPoint = pRsp->deviceInfo.endpoint;
-   \   0001CF   EE           MOV       A,R6
-   \   0001D0   241F         ADD       A,#0x1f
-   \   0001D2   F582         MOV       DPL,A
-   \   0001D4   E4           CLR       A
-   \   0001D5   3F           ADDC      A,R7
-   \   0001D6   F583         MOV       DPH,A
-   \   0001D8   E0           MOVX      A,@DPTR
-   \   0001D9   C0E0         PUSH      A
-   \   0001DB   85..82       MOV       DPL,?V4
-   \   0001DE   85..83       MOV       DPH,?V5
-   \   0001E1   A3           INC       DPTR
-   \   0001E2   A3           INC       DPTR
-   \   0001E3   A3           INC       DPTR
-   \   0001E4   A3           INC       DPTR
-   \   0001E5   A3           INC       DPTR
-   \   0001E6   A3           INC       DPTR
-   \   0001E7   A3           INC       DPTR
-   \   0001E8   A3           INC       DPTR
-   \   0001E9   A3           INC       DPTR
-   \   0001EA   D0E0         POP       A
-   \   0001EC   F0           MOVX      @DPTR,A
+   \   000195   EE           MOV       A,R6
+   \   000196   241F         ADD       A,#0x1f
+   \   000198   F582         MOV       DPL,A
+   \   00019A   E4           CLR       A
+   \   00019B   3F           ADDC      A,R7
+   \   00019C   F583         MOV       DPH,A
+   \   00019E   E0           MOVX      A,@DPTR
+   \   00019F   C0E0         PUSH      A
+   \   0001A1   85..82       MOV       DPL,?V4
+   \   0001A4   85..83       MOV       DPH,?V5
+   \   0001A7   A3           INC       DPTR
+   \   0001A8   A3           INC       DPTR
+   \   0001A9   A3           INC       DPTR
+   \   0001AA   A3           INC       DPTR
+   \   0001AB   A3           INC       DPTR
+   \   0001AC   A3           INC       DPTR
+   \   0001AD   A3           INC       DPTR
+   \   0001AE   A3           INC       DPTR
+   \   0001AF   A3           INC       DPTR
+   \   0001B0   D0E0         POP       A
+   \   0001B2   F0           MOVX      @DPTR,A
    1633                  pCurr->data.panId = srcAddr->panId;
-   \   0001ED   85..82       MOV       DPL,?V2
-   \   0001F0   85..83       MOV       DPH,?V3
-   \   0001F3   A3           INC       DPTR
-   \   0001F4   A3           INC       DPTR
-   \   0001F5   A3           INC       DPTR
-   \   0001F6   A3           INC       DPTR
-   \   0001F7   A3           INC       DPTR
-   \   0001F8   A3           INC       DPTR
-   \   0001F9   A3           INC       DPTR
-   \   0001FA   A3           INC       DPTR
-   \   0001FB   A3           INC       DPTR
-   \   0001FC   A3           INC       DPTR
-   \   0001FD   E0           MOVX      A,@DPTR
-   \   0001FE   F8           MOV       R0,A
-   \   0001FF   A3           INC       DPTR
-   \   000200   E0           MOVX      A,@DPTR
-   \   000201   F9           MOV       R1,A
-   \   000202   85..82       MOV       DPL,?V4
-   \   000205   85..83       MOV       DPH,?V5
-   \   000208   A3           INC       DPTR
-   \   000209   A3           INC       DPTR
-   \   00020A   A3           INC       DPTR
-   \   00020B   A3           INC       DPTR
-   \   00020C   A3           INC       DPTR
-   \   00020D   A3           INC       DPTR
-   \   00020E   A3           INC       DPTR
-   \   00020F   A3           INC       DPTR
-   \   000210   A3           INC       DPTR
-   \   000211   A3           INC       DPTR
-   \   000212   E8           MOV       A,R0
-   \   000213   F0           MOVX      @DPTR,A
-   \   000214   A3           INC       DPTR
-   \   000215   E9           MOV       A,R1
-   \   000216   F0           MOVX      @DPTR,A
+   \   0001B3   85..82       MOV       DPL,?V2
+   \   0001B6   85..83       MOV       DPH,?V3
+   \   0001B9   A3           INC       DPTR
+   \   0001BA   A3           INC       DPTR
+   \   0001BB   A3           INC       DPTR
+   \   0001BC   A3           INC       DPTR
+   \   0001BD   A3           INC       DPTR
+   \   0001BE   A3           INC       DPTR
+   \   0001BF   A3           INC       DPTR
+   \   0001C0   A3           INC       DPTR
+   \   0001C1   A3           INC       DPTR
+   \   0001C2   A3           INC       DPTR
+   \   0001C3   E0           MOVX      A,@DPTR
+   \   0001C4   F8           MOV       R0,A
+   \   0001C5   A3           INC       DPTR
+   \   0001C6   E0           MOVX      A,@DPTR
+   \   0001C7   F9           MOV       R1,A
+   \   0001C8   85..82       MOV       DPL,?V4
+   \   0001CB   85..83       MOV       DPH,?V5
+   \   0001CE   A3           INC       DPTR
+   \   0001CF   A3           INC       DPTR
+   \   0001D0   A3           INC       DPTR
+   \   0001D1   A3           INC       DPTR
+   \   0001D2   A3           INC       DPTR
+   \   0001D3   A3           INC       DPTR
+   \   0001D4   A3           INC       DPTR
+   \   0001D5   A3           INC       DPTR
+   \   0001D6   A3           INC       DPTR
+   \   0001D7   A3           INC       DPTR
+   \   0001D8   E8           MOV       A,R0
+   \   0001D9   F0           MOVX      @DPTR,A
+   \   0001DA   A3           INC       DPTR
+   \   0001DB   E9           MOV       A,R1
+   \   0001DC   F0           MOVX      @DPTR,A
    1634                }
    1635              }
    1636              return ( ZSuccess );
    \                     ??initiatorScanRspCB_3:
-   \   000217   7900         MOV       R1,#0x0
-   \   000219   8002         SJMP      ??initiatorScanRspCB_5
+   \   0001DD   7900         MOV       R1,#0x0
+   \   0001DF   8002         SJMP      ??initiatorScanRspCB_5
    1637            }
    1638          
    1639            return ( ZFailure );
    \                     ??initiatorScanRspCB_0:
-   \   00021B   7901         MOV       R1,#0x1
+   \   0001E1   7901         MOV       R1,#0x1
    \                     ??initiatorScanRspCB_5:
-   \   00021D   7405         MOV       A,#0x5
-   \   00021F   12....       LCALL     ?DEALLOC_XSTACK8
-   \   000222   7F08         MOV       R7,#0x8
-   \   000224   02....       LJMP      ?BANKED_LEAVE_XDATA
+   \   0001E3   7405         MOV       A,#0x5
+   \   0001E5   12....       LCALL     ?DEALLOC_XSTACK8
+   \   0001E8   7F08         MOV       R7,#0x8
+   \   0001EA   02....       LJMP      ?BANKED_LEAVE_XDATA
    1640          }
    1641          
    1642          /*********************************************************************
@@ -8969,10 +8939,6 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
    \   000007   FF           DB 255
 
    \                                 In  segment XDATA_ROM_C, align 1
-   \                     `?<Constant "%d\\n">`:
-   \   000000   25640A00     DB "%d\012"
-
-   \                                 In  segment XDATA_ROM_C, align 1
    \                     `?<Constant {12, 13, 14, 16, 17, 18, 19, 21, 22`:
    \   000000   0C           DB 12
    \   000001   0D           DB 13
@@ -9103,12 +9069,11 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
         0     27   -> osal_stop_timerEx
         0     27   -> touchLink_GetMsgRssi
         0     31   -> touchLink_InitiatorSendScanRsp
-      1     23   initiatorScanRspCB
+      1     22   initiatorScanRspCB
         0     21   -> ZMacGetReq
         0     22   -> bdbTL_Send_DeviceInfoReq
         0     21   -> bdb_AddRespondentNode
         0     21   -> osal_get_timeoutEx
-        0     23   -> printf
         0     21   -> touchLink_GetMsgRssi
         0     21   -> touchLink_GetNwkKeyBitmask
         0     21   -> touchLink_IsValidTransID
@@ -9278,7 +9243,6 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ?<Constant "%d\n">
       12  ?<Constant {12, 13, 14, 16, 17, 18, 19, 21, 22
        8  ?<Constant {255, 255, 255, 255, 255, 255, 255,
        9  ?<Constant {{0}}>
@@ -9312,7 +9276,7 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
      104  initiatorReJoinNwk
        1  initiatorRegisteredMsgAppTaskID
      282  initiatorScanReqCB
-     551  initiatorScanRspCB
+     493  initiatorScanRspCB
      112  initiatorSelectNwkParams
      793  initiatorSendNwkJoinReq
      630  initiatorSendNwkStartReq
@@ -9354,16 +9318,16 @@ D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
      204  -- Other
 
  
- 9 963 bytes in segment BANKED_CODE
+ 9 905 bytes in segment BANKED_CODE
    204 bytes in segment BANK_RELAYS
     27 bytes in segment XDATA_I
     27 bytes in segment XDATA_ID
-    73 bytes in segment XDATA_ROM_C
+    69 bytes in segment XDATA_ROM_C
    219 bytes in segment XDATA_Z
  
    231 bytes of CODE     memory
-    33 bytes of CONST    memory (+ 40 bytes shared)
- 9 963 bytes of HUGECODE memory
+    29 bytes of CONST    memory (+ 40 bytes shared)
+ 9 905 bytes of HUGECODE memory
    246 bytes of XDATA    memory
 
 Errors: none

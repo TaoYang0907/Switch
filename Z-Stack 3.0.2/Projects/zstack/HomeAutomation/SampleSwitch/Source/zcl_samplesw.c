@@ -125,8 +125,7 @@ uint8 zclSampleSw_OnOffSwitchActions;
 /*********************************************************************
  * GLOBAL FUNCTIONS
  */
-//extern ZStatus_t touchLinkInitiator_StartDevDisc( void );
-//extern ZStatus_t touchLinkInitiator_ResetToFNSelectedTarget( void );
+
 /*********************************************************************
  * LOCAL VARIABLES
  */
@@ -136,8 +135,6 @@ afAddrType_t SW_DstAddr;
 uint16 SourceAddr;
 // Endpoint to allow SYS_APP_MSGs
 
-//static uint8 aProcessCmd[] = { 1, 0, 0, 0 }; // used for reset command, { length + cmd0 + cmd1 + data }
-
 devStates_t zclSampleSw_NwkState = DEV_INIT;
 
 #if defined (OTA_CLIENT) && (OTA_CLIENT == TRUE)
@@ -145,7 +142,7 @@ devStates_t zclSampleSw_NwkState = DEV_INIT;
 #endif
 
 #define SAMPLESW_TOGGLE_TEST_EVT   0x1000
-#define SAMPLESW_RESET_TEST_EVT    0x1001
+#define TOUCHLINK_RESET_TARGET_EVT    0x1001
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -158,8 +155,6 @@ static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bd
 
 
 // Functions to process ZCL Foundation incoming Command/Response messages
-
-//static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg );
 
 static void zclSampleSw_ProcessIncomingMsg( zclIncomingMsg_t *msg );
 #ifdef ZCL_READ
@@ -296,8 +291,7 @@ void zclSampleSw_Init( byte task_id )
   zdpExternalStateTaskID = zclSampleSw_TaskID;
 
   bdb_StartCommissioning( BDB_COMMISSIONING_MODE_INITIATOR_TL );
-  //touchLinkInitiator_ChannelChange( 11 );
-  //printf("init successful\r\n"); 
+
 }
 
 /*********************************************************************
@@ -314,22 +308,9 @@ uint16 zclSampleSw_event_loop( uint8 task_id, uint16 events )
   afIncomingMSGPacket_t *MSGpkt;
   (void)task_id;  // Intentionally unreferenced parameter
 
-  //Send toggle every 500ms
-//  if( events & SAMPLESW_TOGGLE_TEST_EVT )
-//  {
-//    osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_TOGGLE_TEST_EVT,500);
-//    zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &zclSampleSw_DstAddr, FALSE, 0 );
-//    
-//    // return unprocessed events
-//    return (events ^ SAMPLESW_TOGGLE_TEST_EVT);
-//  }
-
-  if( events & SAMPLESW_RESET_TEST_EVT )
+  if( events & TOUCHLINK_RESET_TARGET_EVT )
   {
-    HalLedSet ( HAL_LED_1, HAL_LED_MODE_TOGGLE );
     touchLinkInitiator_ResetToFNSelectedTarget();
-
-//    return (events ^ SAMPLESW_RESET_TEST_EVT);
   }
 
   if ( events & SYS_EVENT_MSG )
@@ -407,17 +388,10 @@ static void zclSampleSw_HandleKeys( byte shift, byte keys )
 {
   if ( keys & HAL_KEY_SW_6 ) //key1
   {
-    HalLedSet ( HAL_LED_2, HAL_LED_MODE_TOGGLE );
     touchLinkInitiator_StartDevDisc();
-    osal_start_timerEx(zclSampleSw_TaskID,SAMPLESW_RESET_TEST_EVT,2500);
+    osal_start_timerEx(zclSampleSw_TaskID,TOUCHLINK_RESET_TARGET_EVT,2500);
   }    
-  if ( keys & HAL_KEY_SW_5 ) //key2
-  {
-    HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
-    touchLinkInitiator_ResetToFNSelectedTarget();
-  }
 }
-
 
 /*********************************************************************
  * @fn      zclSampleSw_ProcessCommissioningStatus
@@ -436,7 +410,6 @@ static void zclSampleSw_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bd
       if(bdbCommissioningModeMsg->bdbCommissioningStatus == BDB_COMMISSIONING_SUCCESS)
       {
         //After formation, perform nwk steering again plus the remaining commissioning modes that has not been processed yet
-        //HalLedSet ( HAL_LED_1, HAL_LED_MODE_ON );
         bdb_StartCommissioning(BDB_COMMISSIONING_MODE_NWK_STEERING | bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
       }
       else
@@ -804,50 +777,3 @@ static void zclSampleSw_ProcessOTAMsgs( zclOTA_CallbackMsg_t* pMsg )
 
 /****************************************************************************
 ****************************************************************************/
-//static void zclSampleSw_ProcessInReportCmd( zclIncomingMsg_t *pInMsg )
-//{
-////  HalLedSet ( HAL_LED_3, HAL_LED_MODE_TOGGLE );
-//  
-//  zclReportCmd_t *pInTempSensorReport;
-//
-//  uint8 On_Off_State;
-//  uint16 Dev_Nwk_ID;
-//  uint8 End_Point;
-//  
-//  Dev_Nwk_ID = pInMsg->srcAddr.addr.shortAddr;
-//  End_Point = pInMsg->srcAddr.endPoint;
-//  SourceAddr = Dev_Nwk_ID;
-//    
-//  pInTempSensorReport = (zclReportCmd_t *)pInMsg->attrCmd;
-//  
-//  On_Off_State = pInTempSensorReport->attrList[0].attrData[0];
-////  zclSampleThermostat_LocalTemperature2 = BUILD_UINT16(pInTempSensorReport->attrList[0].attrData[1], pInTempSensorReport->attrList[0].attrData[2]);
-//
-//  printf( "0x%04X", Dev_Nwk_ID );
-//  printf( " %d", End_Point);
-//  printf( " %d\n", On_Off_State );
-//}
-
-//static void Send_To_SW1( void )
-//{
-//  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
-//  SW_DstAddr.endPoint = SW1_ENDPOINT;
-//  SW_DstAddr.addr.shortAddr = SourceAddr; 
-//  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
-//}
-//
-//static void Send_To_SW2( void )
-//{
-//  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
-//  SW_DstAddr.endPoint = SW2_ENDPOINT;
-//  SW_DstAddr.addr.shortAddr = SourceAddr; 
-//  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
-//}
-
-//static void Send_To_SW3( void )
-//{
-//  SW_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
-//  SW_DstAddr.endPoint = SW3_ENDPOINT;
-//  SW_DstAddr.addr.shortAddr = SourceAddr; 
-//  zclGeneral_SendOnOff_CmdToggle( SW1_ENDPOINT, &SW_DstAddr, FALSE, 0 );
-//}

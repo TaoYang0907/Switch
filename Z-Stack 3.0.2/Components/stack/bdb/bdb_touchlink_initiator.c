@@ -1582,7 +1582,7 @@ static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp
     uint8 selectThisTarget = FALSE;
     int8 rssi = touchLink_GetMsgRssi();
 
-    printf("%d\n", rssi );
+//    printf("%d\n", rssi );
 
     if ( pfnSelectDiscDevCB != NULL )
     {
@@ -1607,7 +1607,7 @@ static ZStatus_t initiatorScanRspCB( afAddrType_t *srcAddr, bdbTLScanRsp_t *pRsp
       touchLinkResponseID = pRsp->responseID;
       touchLinkTransID = pRsp->transID;
 
-      printf("%d\n", pRsp->logicalChannel );
+//      printf("%d\n", pRsp->logicalChannel );
 
       // Remember channel we heard back this scan response on
       ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));

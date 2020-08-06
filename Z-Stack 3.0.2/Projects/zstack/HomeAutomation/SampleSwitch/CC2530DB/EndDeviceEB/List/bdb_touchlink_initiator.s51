@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V10.30.1.6000 for 8051              05/Aug/2020  22:50:57
+// IAR C/C++ Compiler V10.30.1.6000 for 8051              06/Aug/2020  10:36:56
 // Copyright 2004-2018 IAR Systems AB.
 // PC-locked license - IAR Embedded Workbench for 8051
 //
@@ -14,7 +14,7 @@
 //    Source file        =  
 //        D:\AA\Z-Stack 3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c
 //    Command line       =  
-//        -f C:\Users\sunli\AppData\Local\Temp\EW1245.tmp ("D:\AA\Z-Stack
+//        -f C:\Users\sunli\AppData\Local\Temp\EW6A73.tmp ("D:\AA\Z-Stack
 //        3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c" -D SECURE=1 -D
 //        TC_LINKKEY_JOIN -D NV_INIT -D NV_RESTORE -D POWER_SAVING -D
 //        NWK_AUTO_POLL -D xZTOOL_P1 -D xMT_TASK -D xMT_APP_FUNC -D
@@ -285,7 +285,7 @@
         FUNCTION initiatorScanRspCB,0a1603H
         ARGFRAME XSTACK, 0, STACK
         LOCFRAME ISTACK, 1, STACK
-        LOCFRAME XSTACK, 23, STACK
+        LOCFRAME XSTACK, 22, STACK
         PUBLIC initiatorSelectNwkParams
         FUNCTION initiatorSelectNwkParams,021203H
         ARGFRAME XSTACK, 0, STACK
@@ -578,8 +578,6 @@ osal_start_timerEx  SYMBOL "osal_start_timerEx"
 `??osal_start_timerEx::?relay` SYMBOL "?relay", osal_start_timerEx
 osal_stop_timerEx   SYMBOL "osal_stop_timerEx"
 `??osal_stop_timerEx::?relay` SYMBOL "?relay", osal_stop_timerEx
-printf              SYMBOL "printf"
-`??printf::?relay`  SYMBOL "?relay", printf
 sAddrExtCmp         SYMBOL "sAddrExtCmp"
 `??sAddrExtCmp::?relay` SYMBOL "?relay", sAddrExtCmp
 sAddrExtCpy         SYMBOL "sAddrExtCpy"
@@ -775,8 +773,6 @@ touchLinkInitiator_event_loop SYMBOL "touchLinkInitiator_event_loop"
         FUNCTION `??osal_start_timerEx::?relay`,00H
         EXTERN `??osal_stop_timerEx::?relay`
         FUNCTION `??osal_stop_timerEx::?relay`,00H
-        EXTERN `??printf::?relay`
-        FUNCTION `??printf::?relay`,00H
         EXTERN `??sAddrExtCmp::?relay`
         FUNCTION `??sAddrExtCmp::?relay`,00H
         EXTERN `??sAddrExtCpy::?relay`
@@ -1210,13 +1206,6 @@ touchLinkInitiator_event_loop SYMBOL "touchLinkInitiator_event_loop"
         ARGFRAME DOVERLAY, 0, STATIC
         EXTERN pDiscoveredNwkParamList
         EXTERN pRespondentHead
-        EXTERN printf
-        FUNCTION printf,0202H
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 23, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
         EXTERN sAddrExtCmp
         FUNCTION sAddrExtCmp,0202H
         ARGFRAME ISTACK, 0, STACK
@@ -9065,28 +9054,6 @@ initiatorScanRspCB:
         ARGFRAME XSTACK, 21, STACK
         ARGFRAME IOVERLAY, 0, STATIC
         ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL initiatorScanRspCB, printf
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 23, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 23, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
-        FUNCALL initiatorScanRspCB, printf
-        LOCFRAME ISTACK, 0, STACK
-        LOCFRAME PSTACK, 0, STACK
-        LOCFRAME XSTACK, 23, STACK
-        LOCFRAME IOVERLAY, 0, STATIC
-        LOCFRAME DOVERLAY, 0, STATIC
-        ARGFRAME ISTACK, 0, STACK
-        ARGFRAME PSTACK, 0, STACK
-        ARGFRAME XSTACK, 23, STACK
-        ARGFRAME IOVERLAY, 0, STATIC
-        ARGFRAME DOVERLAY, 0, STATIC
         FUNCALL initiatorScanRspCB, ZMacGetReq
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -9223,22 +9190,7 @@ initiatorScanRspCB:
         MOV       A,R1
         MOV       ?V1,A
 // 1584 
-// 1585     printf("%d\n", rssi );
-        ; Setup parameters for call to function printf
-        MOV       A,?V1
-        MOV       ?V6,A
-        RLC       A
-        SUBB      A,0xE0 /* A   */
-        MOV       ?V7,A
-        MOV       R0,#?V6
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 23)
-        MOV       R2,#`?<Constant "%d\\n">` & 0xff
-        MOV       R3,#(`?<Constant "%d\\n">` >> 8) & 0xff
-        LCALL     `??printf::?relay`; Banked call to: printf
-        MOV       A,#0x2
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 21)
+// 1585 //    printf("%d\n", rssi );
 // 1586 
 // 1587     if ( pfnSelectDiscDevCB != NULL )
         MOV       DPTR,#pfnSelectDiscDevCB
@@ -9372,26 +9324,7 @@ initiatorScanRspCB:
         MOV       DPTR,#touchLinkTransID
         LCALL     ?XSTORE_R0123
 // 1609 
-// 1610       printf("%d\n", pRsp->logicalChannel );
-        ; Setup parameters for call to function printf
-        MOV       A,R6
-        ADD       A,#0x18
-        MOV       DPL,A
-        CLR       A
-        ADDC      A,R7
-        MOV       DPH,A
-        MOVX      A,@DPTR
-        MOV       ?V6,A
-        MOV       ?V7,#0x0
-        MOV       R0,#?V6
-        LCALL     ?PUSH_XSTACK_I_TWO
-          CFI CFA_XSP16 add(XSP16, 23)
-        MOV       R2,#`?<Constant "%d\\n">` & 0xff
-        MOV       R3,#(`?<Constant "%d\\n">` >> 8) & 0xff
-        LCALL     `??printf::?relay`; Banked call to: printf
-        MOV       A,#0x2
-        LCALL     ?DEALLOC_XSTACK8
-          CFI CFA_XSP16 add(XSP16, 21)
+// 1610 //      printf("%d\n", pRsp->logicalChannel );
 // 1611 
 // 1612       // Remember channel we heard back this scan response on
 // 1613       ZMacGetReq( ZMacChannel, &(selectedTarget.rxChannel));
@@ -13978,11 +13911,6 @@ initiatorClearSelectedTarget:
         DB 255
 
         RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
-        DATA32
-`?<Constant "%d\\n">`:
-        DB "%d\012"
-
-        RSEG XDATA_ROM_C:CONST:REORDER:NOROOT(0)
         DATA8
 `?<Constant {12, 13, 14, 16, 17, 18, 19, 21, 22`:
         DB 12
@@ -14055,16 +13983,16 @@ __Constant_1388:
 // 2363 /*********************************************************************
 // 2364 *********************************************************************/
 // 
-// 9 963 bytes in segment BANKED_CODE
+// 9 905 bytes in segment BANKED_CODE
 //   204 bytes in segment BANK_RELAYS
 //    27 bytes in segment XDATA_I
 //    27 bytes in segment XDATA_ID
-//    73 bytes in segment XDATA_ROM_C
+//    69 bytes in segment XDATA_ROM_C
 //   219 bytes in segment XDATA_Z
 // 
 //   231 bytes of CODE     memory
-//    33 bytes of CONST    memory (+ 40 bytes shared)
-// 9 963 bytes of HUGECODE memory
+//    29 bytes of CONST    memory (+ 40 bytes shared)
+// 9 905 bytes of HUGECODE memory
 //   246 bytes of XDATA    memory
 //
 //Errors: none
